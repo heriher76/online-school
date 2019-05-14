@@ -19,6 +19,21 @@ export default new Router({
       component: () => import("./views/cereout/Dashboard.vue")
     },
     {
+      path: "/cereout/leader board",
+      name: 'leader_board',
+      component: () => import("./views/cereout/LeaderBoard.vue")
+    },
+    {
+      path: "/cereout/my exams",
+      name: 'my_exams',
+      component: () => import("./views/cereout/MyExams.vue")
+    },
+    {
+      path: "/cereout/my results",
+      name: 'my_results',
+      component: () => import("./views/cereout/MyResults.vue")
+    },
+    {
       path: "/about",
       name: "about",
       // route level code-splitting

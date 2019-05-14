@@ -10,6 +10,8 @@
 
     <hr>
 
+    <v-divider></v-divider>
+
     <!-- content down -->
     <v-layout row wrap>
       <v-flex xs6>
