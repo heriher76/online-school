@@ -27,15 +27,15 @@
 
       <!-- <v-spacer></v-spacer> -->
       <!-- <v-btn flat>Sign In</v-btn> -->
-      <div style="border-left:1px solid #E0E0E0; padding-left:15px">
+      <div style="border-left:1px solid #E0E0E0; padding-left:25px">
         <div class="nav-bal" style="margin-top:10px">
-          <b>Balance : Rp. 999.999.999</b>
-          <a href="#">
+          <b style="color:#B71C1C">Balance : Rp. 999.999.999</b>
+          <a to="#">
             <v-icon style="margin:-4px">add</v-icon>
           </a>
         </div>
         <div class="nav-act">
-          <a href="">
+          <a to="">
             <v-icon>email</v-icon>
           </a>
 
@@ -85,7 +85,7 @@
     .nav-bal a{
     padding: 2px;
     margin-left: 10px;
-    background-color: #E0E0E0;
+    background-color: #FAFAFA;
     }
 
     .nav-bal a:hover{

@@ -1,6 +1,5 @@
 <template>
     <div class="my_exams">
-
         <v-container fluid grid-list-md>
             <v-layout row wrap>
                 <!-- sidebar -->
@@ -17,39 +16,13 @@
                         <v-card-text class="px-0"><h5 style="margin:4px 20px">My Exams</h5></v-card-text>
                     </v-card>                   
                     <v-layout row wrap>
-                        <v-flex md2 sm12 xs12>
-                            <v-navigation-drawer class="grey lighten-5">          
-                                <v-list dense class="pt-0">
-                                    <v-list-tile @click="" to="/cereout/my exams">
-                                        <v-list-tile-content>
-                                        <v-list-tile-title>Todays Exam</v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-
-                                    <v-list-tile @click="">
-                                        <v-list-tile-content>
-                                        <v-list-tile-title>Purchased Exam</v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-
-                                    <v-list-tile @click="">
-                                        <v-list-tile-content>
-                                        <v-list-tile-title>Upcoming Exam</v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-
-                                    <v-list-tile @click="">
-                                        <v-list-tile-content>
-                                        <v-list-tile-title>Expired Exam</v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-                                </v-list>
-                            </v-navigation-drawer>
-                        </v-flex>  
+                        <!-- sidebar -->
+                        <ExamBar/> 
+                        <!-- /sidebar -->
             
                         <v-flex md10 sm12 xs12>
                             <v-card>
-                                <v-card-text class="px-0"><h5 style="margin:4px 15px">Todays Exams</h5></v-card-text>
+                                <v-card-text class="px-0"><h5 style="margin:4px 15px">Expired Exams</h5></v-card-text>
                             </v-card>
                             <v-list dense class="pt-0">
                                 <v-card style="padding:5px" 
@@ -74,12 +47,14 @@
 </template>
 
 <script>
-    import SideBar from '../../components/SideBar'
+    import SideBar from '../../../components/SideBar'
+    import ExamBar from '../../../components/ExamBar'
 
     export default {
-        name: 'dashboard',
+        name: 'my_exams',
         components: {
             SideBar,
+            ExamBar
         },
         data: () => ({
             items: [
@@ -87,7 +62,10 @@
                 'Exam 2 | Lesson', 
                 'Exam 3 | Lesson', 
                 'Exam 4 | Lesson',
-                'Exam 5 | Lesson'
+                'Exam 5 | Lesson', 
+                'Exam 6 | Lesson', 
+                'Exam 7 | Lesson',
+                'Exam 8 | Lesson'
             ]
         })
     }

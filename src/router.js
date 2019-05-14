@@ -24,14 +24,29 @@ export default new Router({
       component: () => import("./views/cereout/LeaderBoard.vue")
     },
     {
-      path: "/cereout/my exams",
+      path: "/cereout/exams",
       name: 'my_exams',
-      component: () => import("./views/cereout/MyExams.vue")
+      component: () => import("./views/cereout/exams/TodaysExam.vue")
     },
     {
-      path: "/cereout/my results",
+      path: "/cereout/exams/purchased exams",
+      name: 'my_exams',
+      component: () => import("./views/cereout/exams/PurchasedExam.vue")
+    },
+    {
+      path: "/cereout/exams/upcoming exams",
+      name: 'my_exams',
+      component: () => import("./views/cereout/exams/UpcomingExam.vue")
+    },
+    {
+      path: "/cereout/exams/expired exams",
+      name: 'my_exams',
+      component: () => import("./views/cereout/exams/ExpiredExam.vue")
+    },
+    {
+      path: "/cereout/results",
       name: 'my_results',
-      component: () => import("./views/cereout/MyResults.vue")
+      component: () => import("./views/cereout/Results.vue")
     },
     {
       path: "/about",
