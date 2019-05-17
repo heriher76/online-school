@@ -90,6 +90,8 @@
                                     <template v-slot:items="props">
                                     <td>{{ props.item.name }}</td>
                                     <td>{{ props.item.calories }}</td>
+                                    <td>{{ props.item.name }}</td>
+                                    <td>{{ props.item.calories }}</td>
                                     <td>{{ props.item.fat }}</td>
                                     <td>{{ props.item.carbs }}</td>
                                     <td>{{ props.item.protein }}</td>

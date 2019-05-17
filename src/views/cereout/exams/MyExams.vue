@@ -16,20 +16,18 @@
                         <v-card-text class="px-0"><h5 style="margin:4px 20px">My Exams</h5></v-card-text>
                     </v-card>                   
                     <v-layout row wrap>
-                        <!-- sidebar -->
-                        <ExamBar/> 
-                        <!-- /sidebar -->
+                        <ExamBar/>  
             
                         <v-flex md10 sm12 xs12>
                             <v-card>
-                                <v-card-text class="px-0"><h5 style="margin:4px 15px">Expired Exams</h5></v-card-text>
+                                <v-card-text class="px-0"><h5 style="margin:4px 15px; text-transform: capitalize">{{$route.params.examType}} Exams</h5></v-card-text>
                             </v-card>
-                            <v-list dense class="pt-0">
-                                <v-card style="padding:5px" 
+                            <v-list>
+                                <v-card 
                                     v-for="item in items"
                                     :key="item"
                                     >
-                                    <v-list-tile @click="">
+                                    <v-list-tile @click="" class="list" :to="{ name: 'details_exams', params: { examType: 'todays' }}">
                                         <v-list-tile-content>
                                             <div><span style="color:#039BE5;font-size:15px">{{item}}</span><br><span style="color:#616161;font-size:14px">20 Questions</span></div>
                                         </v-list-tile-content>
@@ -51,7 +49,7 @@
     import ExamBar from '../../../components/ExamBar'
 
     export default {
-        name: 'my_exams',
+        name: 'dashboard',
         components: {
             SideBar,
             ExamBar

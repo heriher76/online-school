@@ -6,20 +6,20 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat to="/">Home</v-btn>
-        <v-btn flat to="">Informasi</v-btn>
+        <v-btn flat to="/" active-class="false">Home</v-btn>
+        <v-btn flat to="" active-class="false">Informasi</v-btn>
         <v-menu :nudge-width="100">         
           <template v-slot:activator="{ on }">
               <v-btn v-on="on" flat>Cerelink<v-icon>arrow_drop_down</v-icon></v-btn>
           </template>
           <v-list>
-            <v-list-tile @click="" to="">Cereveid</v-list-tile>
-            <v-list-tile @click="" to="/cereout/dashboard">Cereout</v-list-tile>
-            <v-list-tile @click="" to="">Cerejur</v-list-tile>
-            <v-list-tile @click="" to="">Cerecall</v-list-tile>
+            <v-list-tile @click="" to="" active-class="false">Cerevid</v-list-tile>
+            <v-list-tile @click="" to="/cereout/dashboard" active-class="false">Cereout</v-list-tile>
+            <v-list-tile @click="" to="" active-class="false">Cerejur</v-list-tile>
+            <v-list-tile @click="" to="/cerecall" active-class="false">Cerecall</v-list-tile>
           </v-list>
         </v-menu>
-        <v-btn flat>Kontak</v-btn>
+        <v-btn flat to="" active-class="false">Kontak</v-btn>
         <!-- search -->
         <v-text-field style="margin:14px 25px" flat prepend-inner-icon="search" placeholder="Search"></v-text-field>
         <!-- /search -->
