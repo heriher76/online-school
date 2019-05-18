@@ -13,6 +13,10 @@ export default new Router({
       name: "home",
       component: Home
     },
+
+    
+    // -----------------------------cereout-----------------------------
+
     {
       path: "/cereout/dashboard",
       name: 'dashboard',

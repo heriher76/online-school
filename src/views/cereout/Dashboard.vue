@@ -110,7 +110,7 @@
 </template>
 
 <script>
-    import SideBar from '../../components/SideBar'
+    import SideBar from '../../components/cereout-component/SideBar'
 
     export default {
         name: 'dashboard',
