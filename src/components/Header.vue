@@ -29,7 +29,7 @@
       <!-- <v-btn flat>Sign In</v-btn> -->
       <div style="border-left:1px solid #E0E0E0; padding-left:25px">
         <div class="nav-bal" style="margin-top:10px">
-          <b style="color:#B71C1C">Balance : Rp. 999.999.999</b>
+          <b style="color:#B71C1C">Poin : 1350</b>
           <a to="#">
             <v-icon style="margin:-4px">add</v-icon>
           </a>

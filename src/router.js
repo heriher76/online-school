@@ -23,16 +23,23 @@ export default new Router({
       name: 'leader_board',
       component: () => import("./views/cereout/LeaderBoard.vue")
     },
+
     {
-      path: "/cereout/exams/:examType",
+      path: "/cereout/exams",
       name: 'my_exams',
       component: () => import("./views/cereout/exams/MyExams.vue")
     },
 
     {
-      path: "/cereout/exams/:examType/exams details",
+      path: "/cereout/exams/detail",
       name: 'details_exams',
       component: () => import("./views/cereout/exams/ExamDetails.vue")
+    },
+
+    {
+      path: "/cereout/exams/start",
+      name: 'exam_page',
+      component: () => import("./views/cereout/exams/ExamPage.vue")
     },
 
     {
@@ -45,6 +52,12 @@ export default new Router({
       path: "/cerecall",
       name: 'cerecall',
       component: () => import("./views/cerecall/Index.vue")
+    },
+
+    {
+      path: "/cerecall/chat/:guruId",
+      name: 'cerecall_chat',
+      component: () => import("./views/cerecall/ChatPage.vue")
     },
 
 

@@ -82,78 +82,79 @@
                     </v-flex>
                 </v-layout>
                 <v-divider></v-divider>
-                <v-btn
-                :loading="loading1"
-                :disabled="loading1"
-                color="info"
-                @click="loader = 'loading1'"
-                >
-                Attempt Now
-                <v-icon right dark>launch</v-icon>
-                </v-btn>
-                <v-btn @click="$router.go(-1)">Cancel</v-btn>
+
+                <v-dialog v-model="dialog" width="500">
+                  <template v-slot:activator="{ on }">
+                    <v-btn dark color="info" v-on="on">
+                      Attempt Now
+                      <v-icon right dark>launch</v-icon>
+                    </v-btn>
+                    
+                    <v-btn @click="$router.go(-1)">Cancel</v-btn>
+                  </template>
+
+                  <v-card>
+                    <v-card-title class="headline grey lighten-2" primary-title>
+                      Privacy Policy
+                    </v-card-title>
+
+                    <v-card-text>
+                      <p>Ujian ini berbayar. Poin yang anda miliki akan terpotong secara otomotis ketika memulai ujian. Waktu penghitung ujian tidak dapat berhenti. Apakah anda bersedia?</p>
+                    </v-card-text>
+
+                    <v-divider></v-divider>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                  
+                      <v-btn flat :disabled="loading" :loading="loading" color="primary" @click="loading = true">
+                      I accept &amp; start the exam
+                      </v-btn>
+
+                      <v-dialog v-model="loading" hide-overlay persistent width="300">
+                        <v-card color="primary" dark>
+                          <v-card-text>
+                            Please stand by
+                            <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+                          </v-card-text>
+                        </v-card>
+                      </v-dialog>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
                 </v-card>
             </v-container>
         </v-container>
     </div>
 </template>
 
-<style>
-  .custom-loader {
-    animation: loader 1s infinite;
-    display: flex;
-  }
-  @-moz-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @-webkit-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @-o-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-</style>
-
 <script>
   export default {
     data () {
       return {
-        loader: null,
-        loading1: false
+        loading: false,
+        dialog: false
       }
     },
     watch: {
-      loader () {
-        const l = this.loader
-        this[l] = !this[l]
-
-        setTimeout(() => (this[l] = false), 3000)
-
-        this.loader = null
+      loading (val) {
+        this.dialog = false
+        if (!val) return
+        setTimeout(() => (
+          this.loading = false, 
+          window.open("/cereout/exams/start","my_window", "width=1600, height=1020")), 3000)
       }
+    },
+      methods:{
+      myFunction () {
+        var windowObjectReference;
+        var strWindowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";
+        windowObjectReference = window.open("http://www.cnn.com/", "CNN_WindowName", strWindowFeatures);
+      },
+
     }
+
   }
+
+
 </script>

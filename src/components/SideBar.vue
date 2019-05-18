@@ -25,7 +25,7 @@
                 </v-list-tile-content>
             </v-list-tile>
 
-            <v-list-tile :to="{ name: 'my_exams', params: { examType: 'todays' }}">
+            <v-list-tile to="/cereout/exams">
                 <v-list-tile-action>
                 <v-icon>border_color</v-icon>
                 </v-list-tile-action>
