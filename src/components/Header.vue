@@ -8,12 +8,12 @@
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn flat to="/" active-class="false">Home</v-btn>
         <v-btn flat to="" active-class="false">Informasi</v-btn>
-        <v-menu :nudge-width="100">         
+        <v-menu :nudge-width="100">
           <template v-slot:activator="{ on }">
               <v-btn v-on="on" flat>Cerelink<v-icon>arrow_drop_down</v-icon></v-btn>
           </template>
           <v-list>
-            <v-list-tile @click="" to="" active-class="false">Cerevid</v-list-tile>
+            <v-list-tile @click="" to="/cerevid" active-class="false">Cerevid</v-list-tile>
             <v-list-tile @click="" to="/cereout/dashboard" active-class="false">Cereout</v-list-tile>
             <v-list-tile @click="" to="" active-class="false">Cerejur</v-list-tile>
             <v-list-tile @click="" to="/cerecall" active-class="false">Cerecall</v-list-tile>
@@ -75,7 +75,7 @@
               </v-card-actions>
             </v-card>
           </v-menu>
-          
+
         </div>
       </div>
     </v-toolbar>
@@ -103,8 +103,8 @@
     }
 </style>
 
-<script>   
+<script>
 export default {
-  
+
 }
 </script>
