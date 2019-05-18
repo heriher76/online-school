@@ -13,8 +13,7 @@ export default new Router({
       name: "home",
       component: Home
     },
-
-    
+ 
     // -----------------------------cereout-----------------------------
 
     {
@@ -57,7 +56,6 @@ export default new Router({
       name: 'cerecall',
       component: () => import("./views/cerecall/Index.vue")
     },
-
 
     {
       path: "/cerecall/chat/:guruId",
