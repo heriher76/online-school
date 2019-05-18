@@ -13,7 +13,7 @@ export default new Router({
       name: "home",
       component: Home
     },
- 
+
     // -----------------------------cereout-----------------------------
 
     {
@@ -76,9 +76,9 @@ export default new Router({
       component: () => import("./views/cerevid/wishlist.vue")
     },
     {
-      path: "/cerevid/daftar-pelajaranku",
-      name: "cerevid_daftar-pelajaranku",
-      component: () => import("./views/cerevid/daftarPelajaranku.vue")
+      path: "/cerevid/daftar-pelajaran",
+      name: "cerevid_daftar_pelajaran",
+      component: () => import("./views/cerevid/daftarPelajaran.vue")
     },
     {
       path: "/cerevid/detail-pelajaran",
@@ -109,6 +109,11 @@ export default new Router({
       path: "/cerevid/detail-pelajaran/materi",
       name: "cerevid_materi",
       component: () => import("./views/cerevid/materi.vue")
+    },
+    {
+      path: "/cerevid/guru/daftar-pelajaran",
+      name: "cerevid_daftar_pelajaran_guru",
+      component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
     },
     // -----------------------------Lainnya-----------------------------
 

@@ -1,17 +1,16 @@
 <template>
-	<div class="daftar-pelajaranku">
+	<div class="daftar-pelajaranku-guru">
 		<!-- sub - navbar -->
-		<subNavbar />
+		<subNavbarGuru />
 		<!-- end sub - navbar -->
 		<!-- content -->
 		<v-container>
 		    <p class="display-1 text-uppercase font-weight-light">
 		      <v-layout row wrap pa-3>
-
-		        <v-flex xs12 sm8 md8>
+		        <v-flex xs12 sm12 md8>
 		          Daftar Pelajaran
 		        </v-flex>
-		        <v-flex xs12 sm4 md4>
+		        <v-flex xs12 sm12 md4>
 	                <v-text-field
 	                    label="Cari Pelajaran..."
 	                    append-icon="search"
@@ -41,7 +40,7 @@
 		            <v-card-title primary-title>
 		              <div>
 		                <div class="headline">
-		                  <router-link to="/cerevid/detail-pelajaran/ikhtisar" style="text-decoration: none;">Ilmu Hukum</router-link>
+		                  <router-link to="/cerevid/guru/detail-pelajaran" style="text-decoration: none;">Ilmu Hukum</router-link>
 		                </div>
 		                <span class="grey--text">John Doe, Ph.D</span>
 		              </div>
@@ -82,11 +81,11 @@
 	</div>
 </template>
 <script>
-	import subNavbar from '../../components/cerevid-component/subNavbar'
+	import subNavbarGuru from '../../components/cerevid-component/subNavbarGuru'
 	export default {
-		name:"daftar-pelajaranku",
+		name:"daftar-pelajaran-guru",
 		components:{
-			subNavbar,
+			subNavbarGuru,
 		}
 	}
 </script>
