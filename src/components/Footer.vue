@@ -31,8 +31,17 @@
 
                         <v-flex md2 style="margin:0px 20px">
                             <h5>Ikuti Kami</h5>
+                            
                             <ul class="link-cere">
-                                
+                                 <v-btn
+                                v-for="icon in icons"
+                                :key="icon"
+                                class="mx-3"
+                                dark
+                                icon
+                                >
+                                <v-icon size="24px">{{ icon }}</v-icon>
+                                </v-btn>
                             </ul>
                         </v-flex>
 
@@ -61,3 +70,17 @@
     text-decoration: none
 }
 </style>
+
+<script>
+  export default {
+    data: () => ({
+      icons: [
+        'fab fa-facebook',
+        'fab fa-twitter',
+        'fab fa-google-plus',
+        'fab fa-linkedin',
+        'fab fa-instagram'
+      ]
+    })
+  }
+</script>
