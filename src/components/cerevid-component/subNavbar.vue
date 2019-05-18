@@ -1,0 +1,21 @@
+<template>	
+	<v-card color="#34495e">
+		<v-layout
+	        fill-height
+	        align-center
+	        pa-5
+      	>
+      		<div class="headline white--text">
+      			My Courses
+      		</div>
+      	</v-layout>
+      	<v-toolbar
+      		height="40"
+      	>	
+			<v-toolbar-items>
+				<v-btn to="/cerevid/allcourse" flat color="#34495e"  style="text-decoration: none">All Course</v-btn>
+				<v-btn to="/cerevid/wishlist" flat color="#34495e"  style="text-decoration: none">Wishlist</v-btn>
+			</v-toolbar-items>
+		</v-toolbar>
+	</v-card>
+</template>
