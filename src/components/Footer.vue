@@ -30,7 +30,7 @@
                         </v-flex>
 
                         <v-flex md2 style="margin:0px 20px">
-                            <h5>Ikuti Kami</h5>
+                            <h5 class="title" style="color:black">Ikuti Kami</h5>
                             
                             <ul class="link-cere">
                                  <v-btn
@@ -63,6 +63,7 @@
     margin-left: -23px;
 }
 .link-cere li a{
+    text-decoration: none;
     color: #039BE5;
 }
 

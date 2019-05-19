@@ -1,4 +1,5 @@
 <template>
+  <div class="header">
     <v-toolbar app height="90">
       <v-toolbar-side-icon class="hidden-md-and-up" @click="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>
@@ -30,82 +31,87 @@
 
       <!-- <v-spacer></v-spacer> -->
 
-      <!-- <v-btn flat>Sign In</v-btn> -->
-      <div class="nav-action">
+      <v-btn flat @click="linkLogin">Sign In</v-btn>
+      
+      <!-- header actions -->
+      <!-- <div class="nav-action">
         <div class="nav-bal">
-          <router-link to="/" style="float:right">
+            <router-link to="/" style="float:right">
             <v-icon style="margin:-2px">add</v-icon>
-          </router-link>
-          <b>Poin : 999999 </b>
-          <div class="clear"></div>
+            </router-link>
+            <b>Poin : 999999 </b>
+            <div class="clear"></div>
         </div>
 
         <div class="nav-act">     
-          <v-tooltip bottom>
+            <v-tooltip bottom>
             <template v-slot:activator="{ on }">              
-              <router-link to="/cerevid/allcourse">
+                <router-link to="/cerevid/allcourse">
                 <v-icon color="blue" v-on="on">book</v-icon>
-              </router-link>
+                </router-link>
             </template>
             <span>Kelasku di Cerevid</span>
-          </v-tooltip>
+            </v-tooltip>
 
-          <v-tooltip bottom>
+            <v-tooltip bottom>
             <template v-slot:activator="{ on }">              
-              <router-link to="/cerevid/wishlist">
+                <router-link to="/cerevid/wishlist">
                 <v-icon color="pink" v-on="on">favorite</v-icon>
-              </router-link>
+                </router-link>
             </template>
             <span>Wishlist Cerevid</span>
-          </v-tooltip>
+            </v-tooltip>
 
-          <v-tooltip bottom>
+            <v-tooltip bottom>
             <template v-slot:activator="{ on }">              
-              <router-link to="">
+                <router-link to="">
                 <v-icon color="#F44336" v-on="on">email</v-icon>
-              </router-link>
+                </router-link>
             </template>
             <span>Pesan</span>
-          </v-tooltip>
+            </v-tooltip>
 
-          <v-menu
+            <v-menu
             v-model="menu"
             :close-on-content-click="false"
             :nudge-width="200"
             offset-x
-          >
+            >
             <template v-slot:activator="{ on }">
-              <a v-on="on">
+                <a v-on="on">
                 <v-icon>account_circle</v-icon><v-icon>arrow_drop_down</v-icon>
-              </a>
+                </a>
             </template>
 
             <v-card>
-              <v-list>
+                <v-list>
                 <v-list-tile avatar>
-                  <v-list-tile-avatar>
+                    <v-list-tile-avatar>
                     <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
-                  </v-list-tile-avatar>
+                    </v-list-tile-avatar>
 
-                  <v-list-tile-content>
+                    <v-list-tile-content>
                     <v-list-tile-title>John Leider</v-list-tile-title>
                     <v-list-tile-sub-title>jhonleider@mail.co</v-list-tile-sub-title>
-                  </v-list-tile-content>
+                    </v-list-tile-content>
 
                 </v-list-tile>
-              </v-list>
+                </v-list>
 
 
-              <v-card-actions>
+                <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="primary" flat @click="menu = false">Sign Out</v-btn>
-              </v-card-actions>
+                </v-card-actions>
             </v-card>
-          </v-menu>
+            </v-menu>
 
         </div>
-      </div>
+    </div> -->
+    <!-- header actions -->
+
     </v-toolbar>
+  </div>
 </template>
 
 <style>
@@ -157,6 +163,10 @@ export default {
     },
     linkCerecall(){
       this.$router.push({path:'/cerecall'})
+    },
+
+    linkLogin(){
+      this.$router.push({path:'/login'})
     }
   }
 }
