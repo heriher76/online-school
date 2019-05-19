@@ -1,26 +1,10 @@
 <template>
   <div class="home">
-  <!-- banner -->
-  <div style="height:550px">
-    <v-img :src="require('../assets/images/banner.jpg')" height="100%" width="100%">
-      <v-expand-transition>
-        <div
-          class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal display-3 white--text"
-          style="height: 100%;"
-        >
-          <div class="text-banner" style="top:150px; position:relative;text-align:center;">
-            <h1 style="font-family:'Arial';color:white;">Learn by Doing</h1>
-            <h5 style="font-family:'Arial';color:white;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h5>
-            <v-btn>Let's Start</v-btn>
-          </div>
-          <!-- <v-btn>Let's Start</v-btn> -->
-        </div>
-      </v-expand-transition>
-    </v-img>
-  </div>
-  <!-- /banner -->
+    <!-- banner -->
+    <Banner/>
+    <!-- /banner -->
 
-  <v-container grid-list-md>
+    <v-container>
     <!-- content up -->
     <div class='section'>
       <div id="icon-wrapper">
@@ -80,24 +64,22 @@
     <!-- /content down -->
   </v-container>
 
-
+    
   </div>
 </template>
 
+<script>
+  import Banner from "../components/Banner"
+  export default {
+    name: 'home',
+    components:{
+      Banner
+    }
+  }
+</script>
+
 
 <style>
-.v-card--reveal {
-  align-items: center;
-  bottom: 0px;
-  justify-content: center;
-  opacity: .5;
-  position: absolute;
-  width: 100%;
-  font-family: "Arial";
-  background-image: linear-gradient(10deg, #2c3e50,#ffffff,#ee1414,#51a9fc,#8e44ad);
-  background-size: 400% 350%;
-}
-
 .section{
 		float: left;
 		padding-top: 50px;
@@ -188,5 +170,4 @@
 		margin-top: -200px;
 	}
 }
-
 </style>

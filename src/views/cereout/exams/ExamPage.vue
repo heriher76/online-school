@@ -16,7 +16,7 @@
                         <v-card>
                             <div style="margin:10px auto;width:157px;font-size:24px">
                                 <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px;">
-                                    <span>99</span>
+                                    <span>99</span><br>
                                 </div>
                                 <div style="border:1px solid #BDBDBD;float:left;padding:8px">
                                     <span>99</span>
@@ -24,11 +24,11 @@
                                 <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px">
                                     <span>99</span>
                                 </div>
-                            <div class="clear"></div>
+                                <div class="clear"></div>
                             </div>
                         </v-card>
                         <v-card>
-                            <button type="submit">cek</button>
+                            <v-btn>cek</v-btn>
                         </v-card>
 
                     </v-card>
