@@ -41,7 +41,7 @@
 		            <v-card-title primary-title>
 		              <div>
 		                <div class="headline">
-		                  <router-link to="/cerevid/detail-pelajaran/ikhtisar" style="text-decoration: none;">Ilmu Hukum</router-link>
+		                  <router-link to="/cerevid/detail-pelajaran" style="text-decoration: none;">Ilmu Hukum</router-link>
 		                </div>
 		                <span class="grey--text">John Doe, Ph.D</span>
 		              </div>
