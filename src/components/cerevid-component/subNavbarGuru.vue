@@ -1,5 +1,5 @@
 <template>
-	<v-card color="#34495e">
+	<v-card color="red darken-4">
 		<v-layout
 	        align-center
 	        pa-5

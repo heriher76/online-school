@@ -126,7 +126,50 @@
 				           	<v-container>
 				           		<v-layout justify-end>
 					           		<flex md12>
-					           			<v-btn  class="white--text" color="#2c3e50">Berikan Ulasan</v-btn>
+													<template>
+													  <v-layout row justify-center>
+															<v-btn
+																dark color="#2c3e50"
+																@click.stop="dialog = true"
+															>
+																Berikan Ulasan
+															</v-btn>
+
+													    <v-dialog
+													      v-model="dialog"
+													      max-width="450"
+													    >
+													      <v-card>
+													        <v-card-title class="headline">Berikan Ulasan</v-card-title>
+
+													        <v-card-text justify-center>
+										                <v-rating class="text-xs-center"
+										                  v-model="berikanRating"
+										                  color="yellow darken-3"
+										                  background-color="grey darken-1"
+										                >
+										                </v-rating>
+										                <p class="text-xs-center">{{berikanRating}}</p>
+														        <v-textarea
+														          label="Isi Ulasan"
+														        ></v-textarea>
+													        </v-card-text>
+
+													        <v-card-actions>
+													          <v-spacer></v-spacer>
+
+													          <v-btn
+													            color="green darken-1"
+													            flat="flat"
+													            @click="dialog = false"
+													          >
+													            Kirim
+													          </v-btn>
+													        </v-card-actions>
+													      </v-card>
+													    </v-dialog>
+													  </v-layout>
+													</template>
 					           		</flex>
 				           		</v-layout>
 				           	</v-container>
@@ -143,7 +186,9 @@
 	export default {
 		name:"ulasan",
 		data: () => ({
+			dialog: false,
 			rating: 4.5,
+			berikanRating: 0,
 			items: [
           { header: 'Today' },
           {
