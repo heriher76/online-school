@@ -14,8 +14,19 @@ export default new Router({
       component: Home
     },
 
-    // -----------------------------cereout-----------------------------
+    // -----------------------------auth-----------------------------
+    {
+      path: "/login",
+      name: 'login',
+      component: () => import("./views/auth/Login.vue")
+    },
+    {
+      path: "/register",
+      name: 'register',
+      component: () => import("./views/auth/Register.vue")
+    },
 
+    // -----------------------------cereout-----------------------------
     {
       path: "/cereout/dashboard",
       name: 'dashboard',
@@ -114,6 +125,16 @@ export default new Router({
       path: "/cerevid/guru/daftar-pelajaran",
       name: "cerevid_daftar_pelajaran_guru",
       component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
+    },
+    {
+      path: "/cerevid/guru/detail-pelajaran",
+      name: "cerevid_detail_pelajaran_guru",
+      component: () => import("./views/cerevid/detailPelajaranGuru.vue")
+    },
+    {
+      path: "/cerevid/guru/tambah-pelajaran",
+      name: "cerevid_tambah_pelajaran",
+      component: () => import("./views/cerevid/tambahPelajaran.vue")
     },
     // -----------------------------Lainnya-----------------------------
 
