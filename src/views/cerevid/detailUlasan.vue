@@ -143,7 +143,8 @@
 													        <v-card-title class="headline">Berikan Ulasan</v-card-title>
 
 													        <v-card-text justify-center>
-										                <v-rating class="text-xs-center"
+										                <v-rating
+																			class="text-xs-center"
 										                  v-model="berikanRating"
 										                  color="yellow darken-3"
 										                  background-color="grey darken-1"

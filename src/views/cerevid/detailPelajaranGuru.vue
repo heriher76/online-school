@@ -8,50 +8,49 @@
 				<v-layout row wrap>
 					<v-flex xs12 sm12 md3>
 						<v-card-text style="padding-top:0">
-  						<v-toolbar flat dark>
-  							<v-list  style="background-color:#c62828">
-  								<v-list-tile>
-  									<v-list-tile-title class="title">
-  										Kelola Pelajaran
-  									</v-list-tile-title>
-  								</v-list-tile>
-  							</v-list>
-  						</v-toolbar>
-  						<v-list dense class="pt-0">
-  							<v-list-tile
-  								@click="daftarPelajaran"
-  							  >
-  								<v-list-tile-action>
-  									<v-icon>dashboard</v-icon>
-  								</v-list-tile-action>
+						<v-toolbar flat dark>
+							<v-list  style="background-color:#c62828">
+								<v-list-tile>
+									<v-list-tile-title class="title">
+										Kelola Pelajaran
+									</v-list-tile-title>
+								</v-list-tile>
+							</v-list>
+						</v-toolbar>
+						<v-list dense class="pt-0">
+							<v-list-tile
+								to="/cerevid/guru/daftar-pelajaran"
+							>
+								<v-list-tile-action>
+									<v-icon>dashboard</v-icon>
+								</v-list-tile-action>
 
-  								<v-list-tile-content>
-  									<v-list-tile-title>Daftar Pelajaran</v-list-tile-title>
-  								</v-list-tile-content>
-  							</v-list-tile>
-  							<v-list-tile
-  								@click="tambahPelajaran"
-  							  >
-  								<v-list-tile-action>
-  									<v-icon>dashboard</v-icon>
-  								</v-list-tile-action>
+								<v-list-tile-content>
+									<v-list-tile-title>Daftar Pelajaran</v-list-tile-title>
+								</v-list-tile-content>
+							</v-list-tile>
+							<v-list-tile
+								to="/cerevid/guru/tambah-pelajaran"
+							>
+								<v-list-tile-action>
+									<v-icon>dashboard</v-icon>
+								</v-list-tile-action>
 
-  								<v-list-tile-content>
-  									<v-list-tile-title>Tambah Pelajaran</v-list-tile-title>
-  								</v-list-tile-content>
-  							</v-list-tile>
-  						</v-list>
-					  </v-card-text>
+								<v-list-tile-content>
+									<v-list-tile-title>Tambah Pelajaran</v-list-tile-title>
+								</v-list-tile-content>
+							</v-list-tile>
+						</v-list>
+					</v-card-text>
 					</v-flex>
 					<v-flex xs12 sm12 md9>
             <div class="px-3">
-
               <v-tabs
                 color="#f5f5f5"
                 next-icon="mdi-arrow-right-bold-box-outline"
                 prev-icon="mdi-arrow-left-bold-box-outline"
                 show-arrows
-              >
+              	>
                 <v-tabs-slider color="#34495e"></v-tabs-slider>
                 <v-tab
                   :href="'#ikhtisar'"
@@ -189,40 +188,103 @@
                       <v-container fluid>
                         <v-flex  class="mx-4">
                           <v-container grid-list-md>
-                            <v-layout row wrap>
-                              <div>
-                                <div class="headline">
-                                  <div>Bahasa PHP dilengkapi tutorial 2019</div>
-                                </div>
-                                <v-container fluid>
-                                  <v-layout>
-                                    <v-flex>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                    </v-flex>
-                                  </v-layout>
-                                </v-container>
-                              </div>
-                              <v-layout class="justify-end">
-                        			<v-container fluid>
-                        				<v-flex xs12 class="text-xs-center text-sm-center text-md-center text-lg-center">
-                        					<img :src="imageUrl" height="150" v-if="imageUrl"/>
-                        					<v-text-field label="Select Image" @click='pickFile' v-model='imageName' prepend-icon='attach_file'></v-text-field>
-                        					<input
-                        						type="file"
-                        						style="display: none"
-                        						ref="image"
-                        						accept="image/*"
-                        						@change="onFilePicked"
-                        					>
-                        				</v-flex>
-                        			</v-container>
-                            </v-layout>
-                            </v-layout>
+								            	<v-layout row wrap>
+											      		<div class="headline">
+											            <div>Ulasan</div>
+											        	</div>
+								            		<v-layout row wrap>
+								            			<v-flex xs12 sm4 md3>
+											            	<v-card flat class="text-xs-center mt-4">
+											            		<div class="display-3 text-xs-center font-weight-normal">{{rating}}</div>
+													                <v-card-text style="padding-top: 0">
+													                <v-rating
+													                  v-model="rating"
+													                  dense
+													                  color="yellow darken-3"
+													                  background-color="grey darken-1"
+													                  half-increments
+													                  readonly
+													                >
+													                </v-rating>
+													                  (329) Ulasan
+													                </v-card-text>
+											            	</v-card>
+										            	</v-flex>
+								            			<v-flex xs12 sm7 md9>
+								            				<v-layout row wrap>
+									            				<v-flex md10>
+												            		<v-progress-linear
+																		      color="yellow darken-3"
+																		      height="18"
+																		      value="75"
+																		    ></v-progress-linear>
+														            		<v-progress-linear
+																		      color="yellow darken-3"
+																		      height="18"
+																		      value="75"
+																		    ></v-progress-linear>
+														            		<v-progress-linear
+																		      color="yellow darken-3"
+																		      height="18"
+																		      value="75"
+																		    ></v-progress-linear>
+														            		<v-progress-linear
+																		      color="yellow darken-3"
+																		      height="18"
+																		      value="75"
+																		    ></v-progress-linear>
+														            		<v-progress-linear
+																		      color="yellow darken-3"
+																		      height="18"
+																		      value="75"
+																		    ></v-progress-linear><v-spacer/>
+																			</v-flex>
+																		</v-layout>
+																	</v-flex>
+								            			<v-flex xs12 sm4 md12>
+																    <v-list three-line expand="true">
+															          <template v-for="(item, index) in items">
+															            <v-subheader
+															              v-if="item.header"
+															              :key="item.header"
+															            >
+															            </v-subheader>
+
+															            <v-divider
+															              v-else-if="item.divider"
+															              :key="index"
+															              :inset="item.inset"
+															            ></v-divider>
+
+															            <v-list-tile
+															              v-else
+															              :key="item.nama"
+															              avatar
+															            >
+															              <v-list-tile-avatar size="50">
+															                <img :src="item.avatar">
+															              </v-list-tile-avatar>
+
+															              <v-list-tile-content>
+															                <v-list-tile-title v-html="item.nama">
+															                </v-list-tile-title>
+															                <v-rating
+															                  v-model="rating"
+															                  dense
+															                  color="yellow darken-3"
+															                  background-color="grey darken-1"
+															                  readonly
+															                  small
+															                >
+															                </v-rating>
+															                <v-list-tile-sub-title v-html="item.ulasan"></v-list-tile-sub-title>
+															              </v-list-tile-content>
+															            </v-list-tile>
+															          </template>
+															      </v-list>
+										            	</v-flex>
+									           		</v-layout>
+															</v-layout>
                           </v-container>
                         </v-flex>
                       </v-container>
@@ -241,11 +303,28 @@
 	export default {
 		name:"detail-pelajaran-guru",
     data: () => ({
+			rating: 4,
       dialog: false,
-      title: "Image Upload",
-  		imageName: '',
-  		imageUrl: '',
-  		imageFile: ''
+			items: [
+          { header: 'Today' },
+          {
+            avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+            nama: 'James Doom',
+            ulasan: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
+          },
+          { divider: true, inset: true },
+          {
+            avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+            nama: 'Steven Connors',
+            ulasan: "Wish I could come, but I'm out of town this weekend."
+          },
+          { divider: true, inset: true },
+          {
+            avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+            nama: 'Sandra Adams',
+            ulasan: "Do you have Paris recommendations? Have you ever been?"
+          }
+        ]
     }),
 		components:{
 			subNavbarGuru,
@@ -256,29 +335,6 @@
 				tambahPelajaran(){
 		      return this.$router.push({path:'/cerevid/guru/tambah-pelajaran'})
 				},
-        pickFile () {
-            this.$refs.image.click ()
-        },
-
-		    onFilePicked (e) {
-    			const files = e.target.files
-    			if(files[0] !== undefined) {
-    				this.imageName = files[0].name
-    				if(this.imageName.lastIndexOf('.') <= 0) {
-    					return
-    				}
-    				const fr = new FileReader ()
-    				fr.readAsDataURL(files[0])
-    				fr.addEventListener('load', () => {
-    					this.imageUrl = fr.result
-    					this.imageFile = files[0] // this is an image file that can be sent to server...
-    				})
-    			} else {
-    				this.imageName = ''
-    				this.imageFile = ''
-    				this.imageUrl = ''
-    			}
-    		}
     }
 	}
 }
