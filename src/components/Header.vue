@@ -31,10 +31,10 @@
 
       <!-- <v-spacer></v-spacer> -->
 
-      <v-btn flat @click="linkLogin">Sign In</v-btn>
+      <!-- <v-btn flat @click="linkLogin">Sign In</v-btn> -->
       
       <!-- header actions -->
-      <!-- <div class="nav-action">
+      <div class="nav-action">
         <div class="nav-bal">
             <router-link to="/" style="float:right">
             <v-icon style="margin:-2px">add</v-icon>
@@ -107,7 +107,7 @@
             </v-menu>
 
         </div>
-    </div> -->
+    </div>
     <!-- header actions -->
 
     </v-toolbar>
@@ -125,15 +125,15 @@
   }
 
   .nav-bal a{
-  padding: 2px;
-  margin-left: 10px;
-  float: right;
-  background-color: #FAFAFA;
+    padding: 2px;
+    margin-left: 10px;
+    float: right;
+    background-color: #FAFAFA;
   }
 
   .nav-bal a:hover{
-  text-decoration: none;
-  background-color: #F5F5F5
+    text-decoration: none;
+    background-color: #F5F5F5
   }
 
   .nav-bal b{

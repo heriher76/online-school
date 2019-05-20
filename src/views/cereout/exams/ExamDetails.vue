@@ -95,7 +95,7 @@
 
                   <v-card>
                     <v-card-title class="headline grey lighten-2" primary-title>
-                      Privacy Policy
+                      Terms &amp; Conditions
                     </v-card-title>
 
                     <v-card-text>
@@ -145,7 +145,7 @@
           window.open("/cereout/exams/start","my_window", "width=1600, height=1020")), 3000)
       }
     },
-      methods:{
+    methods:{
       myFunction () {
         var windowObjectReference;
         var strWindowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";

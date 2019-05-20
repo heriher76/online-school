@@ -13,7 +13,7 @@
                 <!-- sub content -->
                 <v-flex md9 sm12 xs12>
                     <v-card style="margin-bottom:8px">
-                        <v-card-text class="px-0"><h5 style="margin:4px 20px">My Exams</h5></v-card-text>
+                        <v-card-text class="px-0"><h6 class="title" style="color:black;margin:4px 20px">My Exams</h6></v-card-text>
                     </v-card>                   
                     <v-layout row wrap>
                         <v-flex md2 sm12 xs12>
@@ -48,7 +48,7 @@
             
                         <v-flex md10 sm12 xs12>
                             <v-card>
-                                <v-card-text class="px-0"><h5 style="margin:4px 15px; text-transform: capitalize">{{ListName}} Exams</h5></v-card-text>
+                                <v-card-text class="px-0"><h6 class="title" style="margin:4px 15px; text-transform: capitalize">{{ListName}} Exams</h6></v-card-text>
                             </v-card>
                             <v-list>
                                 <v-card 

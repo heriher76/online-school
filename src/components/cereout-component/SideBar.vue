@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer permanent fixed style="margin-left:30px; top:113px; z-index:0;" height="260" width="250">
+    <v-navigation-drawer permanent fixed style="margin-left:30px; top:113px; z-index:0;" height="220" width="250">
         <v-toolbar height="50">
           <h5 class="headline" style="margin:0px 20px;color:black">Application</h5>
         </v-toolbar>
