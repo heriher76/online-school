@@ -44,14 +44,14 @@
                         <v-flex md4 sm12 xs12>
                             <v-card dark color="#42A5F5">
                                 <v-card-text color="#fffff" style="font-size:20px">My Exam Stats</v-card-text>
-                                <div style="border-top:0.5px solid #F5F5F5; border-bottom:0.5px solid #F5F5F5; padding-top:10px">
+                                <div style="border-top:0.5px solid #F5F5F5; border-bottom:0.5px solid #F5F5F5; padding:10px">
                                     <div style="text-align:center;width:50%;float:right">
                                         <h6 class="subheading">Total Exam Given</h6>
-                                        <h4 class="title">50</h4>
+                                        <h6 class="title">50</h6>
                                     </div>
                                     <div style="text-align:center;width:50%;float:right">
-                                        <h6 class="subheading">Rank</h6>
-                                        <h4 class="title">3</h4>
+                                        <h5 class="subheading">Rank</h5>
+                                        <h6 class="title">3</h6>
                                     </div>
                                     <div class="clear"></div>
                                 </div>

@@ -29,40 +29,6 @@
         ></v-text-field>
         <v-btn round large block>SIGN UP</v-btn>
         
-        
-        <div class="list">
-            <hr><label>OR</label><hr>
-            <div class="clear"></div>
-        </div>
-        
-        <v-btn
-        block
-        round
-        :loading="loading3"
-        :disabled="loading3"
-        color="error"
-        dark
-        large
-        @click="loader = 'loading3'"
-        >
-        <v-icon left dark></v-icon>
-        SIGN UP WITH GOOGLE
-        </v-btn>
-
-        <v-btn
-        block
-        round
-        :loading="loading3"
-        :disabled="loading3"
-        color="primary"
-        dark
-        large
-        @click="loader = 'loading3'"
-        >
-        <v-icon left dark></v-icon>
-        SIGN UP WITH FACEBOOK
-        </v-btn>
-
         <hr style="margin-bottom:15px">
         <label>Are you a member? <router-link to="/login" style="color:white">Login now</router-link></label>
 
