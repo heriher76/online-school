@@ -1,4 +1,4 @@
-<template>	
+<template>
 	<v-card color="#34495e">
 		<v-layout
 	        fill-height
@@ -6,14 +6,14 @@
 	        pa-5
       	>
       		<div class="headline white--text">
-      			My Courses
+      			Pelajaran Saya
       		</div>
       	</v-layout>
       	<v-toolbar
       		height="40"
-      	>	
+      	>
 			<v-toolbar-items>
-				<v-btn to="/cerevid/allcourse" flat color="#34495e"  style="text-decoration: none">All Course</v-btn>
+				<v-btn to="/cerevid/daftar-pelajaran" flat color="#34495e"  style="text-decoration: none">Semua Pelajaran</v-btn>
 				<v-btn to="/cerevid/wishlist" flat color="#34495e"  style="text-decoration: none">Wishlist</v-btn>
 			</v-toolbar-items>
 		</v-toolbar>

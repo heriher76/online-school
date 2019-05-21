@@ -13,7 +13,7 @@ export default new Router({
       name: "home",
       component: require("./views/Home.vue").default
     },
-    
+
     // -----------------------------auth-----------------------------
     {
       path: "/login",
@@ -95,9 +95,9 @@ export default new Router({
       component: () => import("./views/cerevid/wishlist.vue")
     },
     {
-      path: "/cerevid/daftar-pelajaranku",
-      name: "cerevid_daftar-pelajaranku",
-      component: () => import("./views/cerevid/daftarPelajaranku.vue")
+      path: "/cerevid/daftar-pelajaran",
+      name: "cerevid_daftar_pelajaran",
+      component: () => import("./views/cerevid/daftarPelajaran.vue")
     },
     {
       path: "/cerevid/detail-pelajaran",
@@ -129,6 +129,21 @@ export default new Router({
       name: "cerevid_materi",
       component: () => import("./views/cerevid/materi.vue")
     },
+    {
+      path: "/cerevid/guru/daftar-pelajaran",
+      name: "cerevid_daftar_pelajaran_guru",
+      component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
+    },
+    {
+      path: "/cerevid/guru/detail-pelajaran",
+      name: "cerevid_detail_pelajaran_guru",
+      component: () => import("./views/cerevid/detailPelajaranGuru.vue")
+    },
+    {
+      path: "/cerevid/guru/tambah-pelajaran",
+      name: "cerevid_tambah_pelajaran",
+      component: () => import("./views/cerevid/tambahPelajaran.vue")
+    },
     // -----------------------------Lainnya-----------------------------
 
     {
@@ -139,6 +154,42 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/About.vue")
+    },
+    // -----------------------------Guru---------------------------
+    {
+      path: "/guru",
+      name: 'dashboard_guru',
+      component: () => import("./views/guru/dashboard/Index.vue")
+    },
+    {
+      path: "/guru/login",
+      name: 'login_guru',
+      component: () => import("./views/guru/Login.vue")
+    },
+    {
+      path: "/guru/forget",
+      name: 'forget_guru',
+      component: () => import("./views/guru/Forget.vue")
+    },
+    {
+      path: "/guru/cerecall",
+      name: 'cerecall_guru',
+      component: () => import("./views/guru/cerecall/History.vue")
+    },
+    {
+      path: "/guru/cerecall/chat",
+      name: 'chat_guru',
+      component: () => import("./views/guru/cerecall/ChatPage.vue")
+    },
+    {
+      path: "/guru/profile/edit",
+      name: 'profile_guru',
+      component: () => import("./views/guru/dashboard/ProfileEdit.vue")
+    },
+    {
+      path: "/guru/account/edit",
+      name: 'account_guru',
+      component: () => import("./views/guru/dashboard/AccountEdit.vue")
     }
   ]
 });
