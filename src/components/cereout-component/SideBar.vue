@@ -1,7 +1,7 @@
 <template>
-    <v-navigation-drawer permanent fixed style="margin-left:30px; top:113px; z-index:0;" height="260" width="250">
+    <v-navigation-drawer permanent fixed style="margin-left:30px; top:113px; z-index:0;" height="220" width="250">
         <v-toolbar height="50">
-          <h5 style="margin:0px 20px">Application</h5>
+          <h5 class="headline" style="margin:0px 20px;color:black">Application</h5>
         </v-toolbar>
         <v-divider></v-divider>
         <v-list dense class="pt-0">
@@ -25,7 +25,7 @@
                 </v-list-tile-content>
             </v-list-tile>
 
-            <v-list-tile :to="{ name: 'my_exams', params: { examType: 'todays' }}">
+            <v-list-tile to="/cereout/exams">
                 <v-list-tile-action>
                 <v-icon>border_color</v-icon>
                 </v-list-tile-action>

@@ -14,7 +14,7 @@
                 <!-- leader board -->
                 <v-flex md9 sm12 xs12>
                     <v-card>
-                        <v-card-text class="px-0"><h5 style="margin:4px 20px">Leader Board</h5></v-card-text>
+                        <v-card-text class="px-0"><h6 class="title" style="color:black;margin:4px 20px">Leader Board</h6></v-card-text>
                     </v-card>
                     <br>
                     <v-card>
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-    import SideBar from '../../components/SideBar'
+    import SideBar from '../../components/cereout-component/SideBar'
 
     export default {
     name: 'dashboard',

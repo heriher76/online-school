@@ -17,7 +17,7 @@
                         <!-- Month Wise Performance -->   
                         <v-flex md8 sm12 xs12>
                             <v-card dark color="#78909C">
-                                <h4 style="padding:15px;margin-bottom:-18px;">Month Wise Performance</h4>
+                                <h4 class="headline" style="padding:15px;margin-bottom:-18px;">Month Wise Performance</h4>
 
                                 <v-card-text>
                                     <v-sheet color="rgba(0, 0, 0, .12)">
@@ -43,22 +43,22 @@
                         <!-- My Exam Stats -->
                         <v-flex md4 sm12 xs12>
                             <v-card dark color="#42A5F5">
-                                <v-card-text color="#fffff" style="font-size:18px">My Exam Stats</v-card-text>
-                                <div style="border-top:0.5px solid #F5F5F5; border-bottom:0.5px solid #F5F5F5; padding-top:10px">
+                                <v-card-text color="#fffff" style="font-size:20px">My Exam Stats</v-card-text>
+                                <div style="border-top:0.5px solid #F5F5F5; border-bottom:0.5px solid #F5F5F5; padding:10px">
                                     <div style="text-align:center;width:50%;float:right">
-                                        <h6>Total Exam Given</h6>
-                                        <h4>50</h4>
+                                        <h6 class="subheading">Total Exam Given</h6>
+                                        <h6 class="title">50</h6>
                                     </div>
                                     <div style="text-align:center;width:50%;float:right">
-                                        <h6>Rank</h6>
-                                        <h4>3</h4>
+                                        <h5 class="subheading">Rank</h5>
+                                        <h6 class="title">3</h6>
                                     </div>
                                     <div class="clear"></div>
                                 </div>
                                 <div style="margin: 10px 18px;">
-                                    <h6>Best Score In : SAINTEK 2 (BIO) TO Mei</h6>
+                                    <h6 class="subheading">Best Score In : SAINTEK 2 (BIO) TO Mei</h6>
                                 </div>
-                                <div style="border-top:0.5px solid #F5F5F5;padding: 8px 18px 0px 18px;">
+                                <div style="border-top:0.5px solid #F5F5F5; font-size:16px;padding: 8px 18px 5px 18px;">
                                     <div style="float:left;width:65%;">
                                         <b>Absent Exams</b><br>
                                         <b>Failed In</b><br>
@@ -110,7 +110,7 @@
 </template>
 
 <script>
-    import SideBar from '../../components/SideBar'
+    import SideBar from '../../components/cereout-component/SideBar'
 
     export default {
         name: 'dashboard',

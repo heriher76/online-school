@@ -3,29 +3,28 @@
   <v-container fluid>
     <v-layout row wrap>
       <v-flex xs12 sm12 md9>
-            <v-layout justify-center style="position: relative;background-color:#000;width:100%;height:0;padding-bottom: 56.25%;">
-                    <iframe src="https://www.youtube.com/embed/wYtmXrwD0IM" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </v-layout>
-            <br/>
-            <div class="headline pl-4">
-              <div>1.1 Percabangan | if - else</div>
-              <br/>
-            </div>
+        <div  v-if="tipeMateri == 'video'">
+          <materiVideo />
+        </div>
+        <div  v-else-if="tipeMateri == 'text'">
+          <materiText />
+        </div>
+        <div  v-else>
+          <materiQuiz />
+        </div>
       </v-flex>
       <v-flex xs12 sm12 md3>
-        <v-card  class="hidden-xs-and-down">
-          <v-toolbar color="#34495e" dark flat>
-            <v-list-tile>
-              <v-icon class="pr-3">book</v-icon>
-              <v-list-tile-title>Bahasa Pemrograman PHP</v-list-tile-title>
-            </v-list-tile>
-          </v-toolbar>
+        <v-toolbar color="#34495e" dark flat>
+          <v-list-tile>
+            <v-icon class="pr-3">book</v-icon>
+            <v-list-tile-title>Bahasa Pemrograman PHP</v-list-tile-title>
+          </v-list-tile>
+        </v-toolbar>
+        <v-card style="position: relative;width:100%;height:0;padding-bottom: 155%;">
 
-          <v-list three-line
-              id="scroll-target"
-              style="position: relative;width:100%;max-height:740px;"
-              class="scroll-y">
-            <template v-for="(item, index) in items"  v-scroll:#scroll-target="onScroll" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;">
+          <div style="position: absolute;top: 0;left: 0;width: 100%;height: 100%; overflow:auto">
+          <v-list three-line >
+            <template v-for="(item, index) in items">
               <v-subheader
                 v-if="item.header"
                 :key="item.header"
@@ -43,10 +42,12 @@
                 v-else
                 :key="item.title"
                 avatar
-                @click=""
+                @click="tipeMateri = item.tipe"
               >
                 <v-list-tile-avatar>
-                  <v-icon>videocam</v-icon>
+                  <v-icon v-if="item.tipe == 'video'">videocam</v-icon>
+                  <v-icon v-else-if="item.tipe == 'text'">assignment</v-icon>
+                  <v-icon v-else>create</v-icon>
                 </v-list-tile-avatar>
 
                 <v-list-tile-content>
@@ -56,6 +57,7 @@
               </v-list-tile>
             </template>
           </v-list>
+        </div>
         </v-card>
       </v-flex>
     </v-layout>
@@ -79,6 +81,12 @@
             style="text-decoration:none;"
           >
             Forum Diskusi
+          </v-tab>
+          <v-tab
+            :href="'#share'"
+            style="text-decoration:none;"
+          >
+            Share
           </v-tab>
 
           <v-tabs-items>
@@ -147,10 +155,46 @@
               								 </v-list-tile>
               							</template>
               	        </v-list>
+                        <v-container class="text-xs-center">
+                          <v-textarea
+                            name="input-7-1"
+                            label="Tulis Pertanyaan"
+                            hint="Isi pertanyaan anda disini."
+                          ></v-textarea>
+                          <div class="justify-end">
+                  		       <v-btn color="#2c3e50" class="white--text" v-on="on">Kirim Pertanyaan</v-btn>
+                          </div>
+                        </v-container>
+        			      	<v-layout class="justify-center">
+          		    		</v-layout>
                     </v-flex>
                   </v-container>
                 </v-card>
               </v-tab-item>
+                <v-tab-item
+                  :value="'share'"
+                >
+                  <v-card>
+                    <v-container fluid>
+                      <v-flex  class="mx-4">
+                        <v-container grid-list-md>
+                          <v-layout row wrap>
+                              <div>
+                                  <v-container>
+                                    <v-layout>
+                                      <v-flex>
+                                        <div class="headline">Bagikan post ini :</div>
+                                        <v-icon>twitter</v-icon>
+                                      </v-flex>
+                                    </v-layout>
+                                  </v-container>
+                              </div>
+                          </v-layout>
+                        </v-container>
+                      </v-flex>
+                    </v-container>
+                  </v-card>
+                </v-tab-item>
           </v-tabs-items>
         </v-tabs>
         </v-flex>
@@ -159,10 +203,19 @@
 </div>
 </template>
 <script>
+	import materiVideo from '../../components/cerevid-component/video'
+  import materiText from '../../components/cerevid-component/text'
+  import materiQuiz from '../../components/cerevid-component/quiz'
   export default {
     name: "materi",
+    components: {
+      materiVideo,
+      materiText,
+      materiQuiz
+    },
     data () {
       return {
+        tipeMateri: 'video',
   			forum: [
             { header: 'Berikan Pertanyaan' },
             {
@@ -188,55 +241,64 @@
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
             title: 'if-else',
-            subtitle: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
+            subtitle: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
+            tipe: 'video'
           },
           { divider: true, inset: true },
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
             title: 'if-elseif-else',
-            subtitle: "Wish I could come, but I'm out of town this weekend."
+            subtitle: "Wish I could come, but I'm out of town this weekend.",
+            tipe: "text"
           },
           { divider: true, inset: true },
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
             title: 'switch',
-            subtitle: "Do you have Paris recommendations? Have you ever been?"
+            subtitle: "Do you have Paris recommendations? Have you ever been?",
+            tipe: "quiz"
           },
           { header: 'Perulangan' },
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
             title: 'for',
-            subtitle: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
+            subtitle: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
+            tipe: 'video'
           },
           { divider: true, inset: true },
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
             title: 'while',
-            subtitle: "Wish I could come, but I'm out of town this weekend."
+            subtitle: "Wish I could come, but I'm out of town this weekend.",
+            tipe: "text"
           },
           { divider: true, inset: true },
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
             title: 'foreach',
-            subtitle: "Do you have Paris recommendations? Have you ever been?"
+            subtitle: "Do you have Paris recommendations? Have you ever been?",
+            tipe: "quiz"
           },
           { header: 'Perulangan' },
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
             title: 'for',
-            subtitle: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
+            subtitle: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
+            tipe: 'video'
           },
           { divider: true, inset: true },
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
             title: 'while',
-            subtitle: "Wish I could come, but I'm out of town this weekend."
+            subtitle: "Wish I could come, but I'm out of town this weekend.",
+            tipe: "text"
           },
           { divider: true, inset: true },
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
             title: 'foreach',
-            subtitle: "Do you have Paris recommendations? Have you ever been?"
+            subtitle: "Do you have Paris recommendations? Have you ever been?",
+            tipe: "quiz"
           },
         ]
       }

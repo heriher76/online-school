@@ -13,6 +13,20 @@ export default new Router({
       name: "home",
       component: Home
     },
+
+    // -----------------------------auth-----------------------------
+    {
+      path: "/login",
+      name: 'login',
+      component: () => import("./views/auth/Login.vue")
+    },
+    {
+      path: "/register",
+      name: 'register',
+      component: () => import("./views/auth/Register.vue")
+    },
+
+    // -----------------------------cereout-----------------------------
     {
       path: "/cereout/dashboard",
       name: 'dashboard',
@@ -23,16 +37,23 @@ export default new Router({
       name: 'leader_board',
       component: () => import("./views/cereout/LeaderBoard.vue")
     },
+
     {
-      path: "/cereout/exams/:examType",
+      path: "/cereout/exams",
       name: 'my_exams',
       component: () => import("./views/cereout/exams/MyExams.vue")
     },
 
     {
-      path: "/cereout/exams/:examType/exams details",
+      path: "/cereout/exams/detail",
       name: 'details_exams',
       component: () => import("./views/cereout/exams/ExamDetails.vue")
+    },
+
+    {
+      path: "/cereout/exams/start",
+      name: 'exam_page',
+      component: () => import("./views/cereout/exams/ExamPage.vue")
     },
 
     {
@@ -42,10 +63,25 @@ export default new Router({
     },
 
     {
+      path: "/cereout/results/detail/:id",
+      name: 'result_detail',
+      component: () => import("./views/cereout/ResultDetail.vue")
+    },
+
+    // -----------------------------cerecall-----------------------------
+    {
       path: "/cerecall",
       name: 'cerecall',
       component: () => import("./views/cerecall/Index.vue")
     },
+
+    {
+      path: "/cerecall/chat/:guruId",
+      name: 'cerecall_chat',
+      component: () => import("./views/cerecall/ChatPage.vue")
+    },
+
+
     // -----------------------------cerevid-----------------------------
     {
       path: "/cerevid",
@@ -58,9 +94,9 @@ export default new Router({
       component: () => import("./views/cerevid/wishlist.vue")
     },
     {
-      path: "/cerevid/daftar-pelajaranku",
-      name: "cerevid_daftar-pelajaranku",
-      component: () => import("./views/cerevid/daftarPelajaranku.vue")
+      path: "/cerevid/daftar-pelajaran",
+      name: "cerevid_daftar_pelajaran",
+      component: () => import("./views/cerevid/daftarPelajaran.vue")
     },
     {
       path: "/cerevid/detail-pelajaran",
@@ -92,7 +128,23 @@ export default new Router({
       name: "cerevid_materi",
       component: () => import("./views/cerevid/materi.vue")
     },
+    {
+      path: "/cerevid/guru/daftar-pelajaran",
+      name: "cerevid_daftar_pelajaran_guru",
+      component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
+    },
+    {
+      path: "/cerevid/guru/detail-pelajaran",
+      name: "cerevid_detail_pelajaran_guru",
+      component: () => import("./views/cerevid/detailPelajaranGuru.vue")
+    },
+    {
+      path: "/cerevid/guru/tambah-pelajaran",
+      name: "cerevid_tambah_pelajaran",
+      component: () => import("./views/cerevid/tambahPelajaran.vue")
+    },
     // -----------------------------Lainnya-----------------------------
+
     {
       path: "/about",
       name: "about",
@@ -121,7 +173,12 @@ export default new Router({
     {
       path: "/guru/cerecall",
       name: 'cerecall_guru',
-      component: () => import("./views/guru/dashboard/CereCall.vue")
+      component: () => import("./views/guru/cerecall/History.vue")
+    },
+    {
+      path: "/guru/cerecall/chat",
+      name: 'chat_guru',
+      component: () => import("./views/guru/cerecall/ChatPage.vue")
     },
     {
       path: "/guru/profile/edit",

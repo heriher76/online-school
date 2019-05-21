@@ -14,7 +14,7 @@
                 <!-- leader board -->
                 <v-flex md9 sm12 xs12>
                     <v-card>
-                        <v-card-text class="px-0"><h5 style="margin:4px 20px">My Results</h5></v-card-text>
+                        <v-card-text class="px-0"><h6 class="title" style="color:black;margin:4px 20px">My Results</h6></v-card-text>
                     </v-card>
                     <br>
                     <v-card>
@@ -29,7 +29,7 @@
                             <td>{{ props.item.fat }}</td>
                             <td>{{ props.item.carbs }}</td>
                             <td>{{ props.item.carbs }}</td>
-                            <td></td>
+                            <td> <router-link :to="{name: 'result_detail', params:{id:'1'}}">Detail</router-link> </td>
                         </template>
                         </v-data-table>
                     </v-card>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-    import SideBar from '../../components/SideBar'
+    import SideBar from '../../components/cereout-component/SideBar'
 
     export default {
     name: 'dashboard',

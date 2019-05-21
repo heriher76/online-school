@@ -14,7 +14,7 @@
                          
                 <v-flex md9 sm12 xs12>
                     <v-layout row wrap>
-
+                        <vue-snotify></vue-snotify>
                         <!-- Month Wise Performance -->   
                         <v-flex md8 sm12 xs12>
                             <v-card dark color="#78909C">
@@ -111,7 +111,39 @@
 </template>
 
 <script>
-    import SideBar from '../../../components/SideBar_Guru'
+    import SideBar from '../../../components/guru/SideBar'
+    import Vue from 'vue'
+    import Snotify, { SnotifyPosition } from 'vue-snotify'
+
+    const options = {
+      toast: {
+        position: SnotifyPosition.rightTop
+      }
+    }
+
+    Vue.use(Snotify, options)
+
+    // const yesAction = (toast: SnotifyToast) => {
+    //   if (!toast.value.match('snotify')) {
+    //     toast.valid = false;
+    //     return false;
+    //   } else {
+    //     toast.valid = true; // default value
+    //     vm.$snotify.remove(toast.id)
+    //   }
+    // }
+
+    // const noAction = (toast: SnotifyToast) => {
+    //   vm.$snotify.remove(toast.id) // default
+    // }
+
+    // vm.$snotify.prompt('Example body content', 'Example title', {
+    //   buttons: [
+    //     {text: 'Yes', action: yesAction, bold: true },
+    //     {text: 'No', action: noAction },
+    //   ],
+    //   placeholder: 'This is the example placeholder which you can pass'
+    // });
 
     export default {
         name: 'dashboard',
@@ -229,3 +261,16 @@
         }
     }
 </script>
+
+<style>
+    .notifications {
+        position: fixed;
+        right: 10px;
+        top: 10px;
+        width: 350px;
+        z-index: 1;
+    }
+    .notification p {
+        margin-right: 20px;
+    }
+</style>

@@ -14,21 +14,22 @@
                          
                 <v-flex md9 sm12 xs12>
                     <v-layout row wrap>
-                        <b-form @submit="onSubmit" class="container">
-                        	<h1>Edit Akun</h1>
-
-                        	<b-form-group>
-                        	  <b-form-input v-model="email" type="email" placeholder="Email :" required/>
-                        	</b-form-group>
-
-                        	<b-form-group>
-                        	  <b-form-input v-model="password" type="password" placeholder="Password :" required/>
-                        	</b-form-group>
-
-                        	<div class="text-center">
-                        	  <b-button type="submit" variant="primary">Update</b-button>
-                        	</div>
-                        </b-form>
+                        <form class="container">
+                            <h1>Edit Akun</h1>
+                            <b-form-group>
+                                <input type="email" v-model="email" class="form-control"  placeholder="Email :" required>
+                            </b-form-group>
+                            
+                            <br/>
+                            <b-form-group>
+                                <input type="password" v-model="password" class="form-control"  placeholder="Password :" required>
+                            </b-form-group>
+                            
+                            <br/>
+                            <div class="text-center">
+                              <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
                     </v-layout>
                 </v-flex>
                 
@@ -39,7 +40,7 @@
 </template>
 
 <script>
-    import SideBar from '../../../components/SideBar_Guru'
+    import SideBar from '../../../components/guru/SideBar'
 
     export default {
         name: 'dashboard',
