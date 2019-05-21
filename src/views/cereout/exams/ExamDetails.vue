@@ -123,6 +123,7 @@
                   </v-card>
                 </v-dialog>
                 </v-card>
+                
             </v-container>
         </v-container>
     </div>
@@ -142,14 +143,19 @@
         if (!val) return
         setTimeout(() => (
           this.loading = false, 
-          window.open("/cereout/exams/start","my_window", "width=1600, height=1020")), 3000)
+          window.open(
+                      "/cereout/exams/start",
+                      "my_window", 
+                      "width=1600, height=620, resizable=no")
+                    ), 
+        3000)
+          // window.open("/cereout/exams/start","my_window", 'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=no, width=SomeSize,height=SomeSize')), 3000)
       }
     },
+
     methods:{
       myFunction () {
-        var windowObjectReference;
-        var strWindowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";
-        windowObjectReference = window.open("http://www.cnn.com/", "CNN_WindowName", strWindowFeatures);
+       
       },
 
     }
