@@ -101,6 +101,37 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/About.vue")
+    },
+    // -----------------------------Guru---------------------------
+    {
+      path: "/guru",
+      name: 'dashboard_guru',
+      component: () => import("./views/guru/dashboard/Index.vue")
+    },
+    {
+      path: "/guru/login",
+      name: 'login_guru',
+      component: () => import("./views/guru/Login.vue")
+    },
+    {
+      path: "/guru/forget",
+      name: 'forget_guru',
+      component: () => import("./views/guru/Forget.vue")
+    },
+    {
+      path: "/guru/cerecall",
+      name: 'cerecall_guru',
+      component: () => import("./views/guru/dashboard/CereCall.vue")
+    },
+    {
+      path: "/guru/profile/edit",
+      name: 'profile_guru',
+      component: () => import("./views/guru/dashboard/ProfileEdit.vue")
+    },
+    {
+      path: "/guru/account/edit",
+      name: 'account_guru',
+      component: () => import("./views/guru/dashboard/AccountEdit.vue")
     }
   ]
 });
