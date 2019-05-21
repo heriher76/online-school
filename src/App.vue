@@ -1,32 +1,20 @@
 <template>
-  <v-app>
-    <!-- header -->
-    <Header/>
-    <!-- /header -->
-
-    <!-- content -->
-    <v-content>
+  <div id="app">
+    <component :is="layout">
       <router-view/>
-    </v-content>
-    <!-- /content -->
-
-    <!-- footer -->
-    <Footer/>
-    <!-- /footer -->
-  </v-app>
+    </component>
+  </div>
 </template>
 
 
 <script>
-import Header from './components/Header'
-import Footer from './components/Footer'
+  const default_layout = "default";
 
-export default {
-  name: 'App',
-  components: {
-    Header,
-    Footer
+  export default {
+    computed: {
+      layout() {
+        return (this.$route.meta.layout || default_layout) + '-layout';
+      }
+    }
   }
-}
-
 </script>

@@ -11,7 +11,7 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: Home
+      component: require("./views/Home.vue").default
     },
 
     // -----------------------------auth-----------------------------
@@ -53,6 +53,7 @@ export default new Router({
     {
       path: "/cereout/exams/start",
       name: 'exam_page',
+      meta: {layout: "exam"},
       component: () => import("./views/cereout/exams/ExamPage.vue")
     },
 

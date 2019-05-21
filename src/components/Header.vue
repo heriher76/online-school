@@ -17,7 +17,7 @@
           <v-list>
             <v-list-tile @click="linkCerevid" active-class="false">Cerevid</v-list-tile>
             <v-list-tile @click="linkCereout" active-class="false">Cereout</v-list-tile>
-            <v-list-tile @click="" to="" active-class="false">Cerejur</v-list-tile>
+            <v-list-tile @click="" to="" active-class="false">Cerelisasi</v-list-tile>
             <v-list-tile @click="linkCerecall" active-class="false">Cerecall</v-list-tile>
           </v-list>
         </v-menu>
