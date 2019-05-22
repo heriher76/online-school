@@ -157,6 +157,22 @@ export default new Router({
       name: "cerevid_tambah_pelajaran",
       component: () => import("./views/cerevid/tambahPelajaran.vue")
     },
+    // -----------------------------Cerelisasi-----------------------------
+    {
+      path: "/cerelisasi",
+      name: "cerelisasi_form_input",
+      component: () => import("./views/cerelisasi/formInput.vue")
+    },
+    {
+      path: "/cerelisasi/hasil-analisis",
+      name: "cerelisasi_analisis",
+      component: () => import("./views/cerelisasi/hasilAnalisis.vue")
+    },
+    {
+      path: "/cerelisasi/riwayat",
+      name: "cerelisasi_riwayat",
+      component: () => import("./views/cerelisasi/riwayat.vue")
+    },
     // -----------------------------Lainnya-----------------------------
 
     {
