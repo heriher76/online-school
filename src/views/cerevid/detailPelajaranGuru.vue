@@ -7,41 +7,9 @@
     <v-container fluid>
 				<v-layout row wrap>
 					<v-flex xs12 sm12 md3>
-						<v-card-text style="padding-top:0">
-						<v-toolbar flat dark>
-							<v-list  style="background-color:#c62828">
-								<v-list-tile>
-									<v-list-tile-title class="title">
-										Kelola Pelajaran
-									</v-list-tile-title>
-								</v-list-tile>
-							</v-list>
-						</v-toolbar>
-						<v-list dense class="pt-0">
-							<v-list-tile
-								to="/cerevid/guru/daftar-pelajaran"
-							>
-								<v-list-tile-action>
-									<v-icon>dashboard</v-icon>
-								</v-list-tile-action>
 
-								<v-list-tile-content>
-									<v-list-tile-title>Daftar Pelajaran</v-list-tile-title>
-								</v-list-tile-content>
-							</v-list-tile>
-							<v-list-tile
-								to="/cerevid/guru/tambah-pelajaran"
-							>
-								<v-list-tile-action>
-									<v-icon>dashboard</v-icon>
-								</v-list-tile-action>
+            <sidebarGuru/>
 
-								<v-list-tile-content>
-									<v-list-tile-title>Tambah Pelajaran</v-list-tile-title>
-								</v-list-tile-content>
-							</v-list-tile>
-						</v-list>
-					</v-card-text>
 					</v-flex>
 					<v-flex xs12 sm12 md9>
             <div class="px-3">
@@ -149,9 +117,9 @@
                               <v-layout class="justify-end">
                                 <v-container>
                                   <v-layout row justify-center>
-                                    <v-dialog v-model="dialog" persistent max-width="600px">
+                                    <v-dialog v-model="tambahBab" persistent max-width="600px">
                                       <template v-slot:activator="{ on }">
-                                        <v-btn color="primary" dark v-on="on">Tambah Sub Judul</v-btn>
+                                        <v-btn color="primary" dark v-on="on">Tambah Bab</v-btn>
                                       </template>
                                       <v-card>
                                         <v-card-title>
@@ -169,8 +137,33 @@
                                         </v-card-text>
                                         <v-card-actions>
                                           <v-spacer></v-spacer>
-                                          <v-btn color="blue darken-1" flat @click="dialog = false">Tutup</v-btn>
-                                          <v-btn color="blue darken-1" flat @click="dialog = false">Tambah</v-btn>
+                                          <v-btn color="blue darken-1" flat @click="tambahBab = false">Tutup</v-btn>
+                                          <v-btn color="blue darken-1" flat @click="tambahBab = false">Tambah</v-btn>
+                                        </v-card-actions>
+                                      </v-card>
+                                    </v-dialog>
+                                    <v-dialog v-model="tambahMateri" persistent max-width="600px">
+                                      <template v-slot:activator="{ on }">
+                                        <v-btn color="primary" dark v-on="on">Tambah Materi</v-btn>
+                                      </template>
+                                      <v-card>
+                                        <v-card-title>
+                                          <span class="headline">Tambah Materi</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                          <v-container grid-list-md>
+                                            <v-layout wrap>
+                                              <v-flex xs12 sm6 md12>
+                                                <v-text-field label="Nama" required></v-text-field>
+                                              </v-flex>
+                                            </v-layout>
+                                          </v-container>
+                                          <small>*indicates required field</small>
+                                        </v-card-text>
+                                        <v-card-actions>
+                                          <v-spacer></v-spacer>
+                                          <v-btn color="blue darken-1" flat @click="tambahMateri = false">Tutup</v-btn>
+                                          <v-btn color="blue darken-1" flat @click="tambahMateri = false">Tambah</v-btn>
                                         </v-card-actions>
                                       </v-card>
                                     </v-dialog>
@@ -241,7 +234,7 @@
 																			</v-flex>
 																		</v-layout>
 																	</v-flex>
-								            			<v-flex xs12 sm4 md12>
+								            			<v-flex xs12 sm12 md12>
 																    <v-list three-line expand="true">
 															          <template v-for="(item, index) in items">
 															            <v-subheader
@@ -299,12 +292,14 @@
   </div>
 </template>
 <script>
-	import subNavbarGuru from '../../components/cerevid-component/subNavbarGuru'
+  import subNavbarGuru from '../../components/cerevid-component/subNavbarGuru'
+  import sidebarGuru from '../../components/cerevid-component/sidebarGuru'
 	export default {
 		name:"detail-pelajaran-guru",
     data: () => ({
 			rating: 4,
-      dialog: false,
+      tambahBab: false,
+      tambahMateri: false,
 			items: [
           { header: 'Today' },
           {
@@ -328,14 +323,17 @@
     }),
 		components:{
 			subNavbarGuru,
-		methods: {
-		    daftarPelajaran(){
-		      return this.$router.push({path:'/cerevid/guru/daftar-pelajaran'})
-				},
-				tambahPelajaran(){
-		      return this.$router.push({path:'/cerevid/guru/tambah-pelajaran'})
-				},
-    }
+      sidebarGuru
+    },
 	}
-}
 </script>
+
+<style>
+.theme--light.v-expansion-panel .v-expansion-panel__container{
+  background-color: #353b48;
+  color: #fff;
+}
+.theme--light.v-expansion-panel .v-expansion-panel__container .v-expansion-panel__header .v-expansion-panel__header__icon .v-icon{
+  color:#fff;
+}
+</style>

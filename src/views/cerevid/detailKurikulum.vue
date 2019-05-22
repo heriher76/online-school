@@ -2,16 +2,8 @@
 	<div class="kurikulum">
 		<headerDetail />
 		<v-container>
-		    <v-toolbar
-		      height="40"
-		    >
-		      <v-toolbar-items>
-		        <v-btn to="/cerevid/detail-pelajaran/ikhtisar" flat color="#2c3e50"  style="text-decoration: none">Ikhtisar</v-btn>
-		        <v-btn to="/cerevid/detail-pelajaran/kurikulum" flat color="#2c3e50"  style="text-decoration: none">Kurikulum</v-btn>
-		        <v-btn to="/cerevid/detail-pelajaran/ulasan" flat color="#2c3e50"  style="text-decoration: none">Ulasan</v-btn>
-		        <v-btn to="/cerevid/detail-pelajaran/profil-pengajar" flat color="#2c3e50"  style="text-decoration: none">Profil Pengajar</v-btn>
-		      </v-toolbar-items>
-		    </v-toolbar>
+			
+			<menuPelajaran/>
 
 		    <v-card offset-md1>
 		      <v-container fluid>
@@ -59,10 +51,12 @@
 </template>
 <script>
 	import headerDetail from '../../components/cerevid-component/headerDetail'
+	import menuPelajaran from '../../components/cerevid-component/menuPelajaran'
 	export default {
 		name:"kurikulum",
 		components:{
 			headerDetail,
+			menuPelajaran
 		}
 	}
 </script>
@@ -72,9 +66,6 @@
 	color: #fff;
 }
 .theme--light.v-expansion-panel .v-expansion-panel__container .v-expansion-panel__header .v-expansion-panel__header__icon .v-icon{
-	color:#fff;
-}
-.v-btn:not(.v-btn--disabled):not(.v-btn--floating):not(.v-btn--icon) .v-btn__content .v-icon{
 	color:#fff;
 }
 </style>
