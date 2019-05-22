@@ -1,0 +1,47 @@
+<template>
+    <div>
+        <div style="margin:0px 15px">
+            <div style="margin:10px 22px">
+                <h6 class="title">RECENT POSTS</h6>
+            </div>
+            <ul>
+                <v-divider></v-divider>
+                <li v-for="item in posted" :key="item">
+                    <a href="">{{item.title}}&nbsp;</a> <br>
+                    <span style="color:#757575; font-size:12px">Posted: {{item.date}}</span>
+                    <v-divider></v-divider>
+                </li>
+            </ul>
+        </div>
+
+        <div style="margin:50px 15px">
+            <div style="margin:10px 22px">
+                <h6 class="title">PENGUMUMAN</h6>
+            </div>
+            <ul>
+                <v-divider></v-divider>
+                <li v-for="item in posted" :key="item">
+                    <a href="">{{item.title}}&nbsp;</a> <br>
+                    <span style="color:#757575; font-size:12px">Posted: {{item.date}}</span>
+                    <v-divider></v-divider>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
+
+<script>
+  export default {
+    data: () => ({
+        posted: [
+            {title: 'lorem ipsum dolor sit amet post 1', date: '23 Juni 2019'},
+            {title: 'lorem ipsum dolor sit amet post 2', date: '2 Juni 2019'},
+            {title: 'lorem ipsum dolor sit amet post 3', date: '3 Juni 2019'},
+            {title: 'lorem ipsum dolor sit amet post 4', date: '20 Juni 2019'},
+            {title: 'lorem ipsum dolor sit amet post 5', date: '21 Juni 2019'},
+            {title: 'lorem ipsum dolor sit amet post 6', date: '2 Juni 2019'},
+        ],
+    })
+  }
+</script>
+content_copy

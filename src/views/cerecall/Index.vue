@@ -25,8 +25,18 @@
               </v-img>
               <v-card-title>
                 <div class="mx-auto">
-                  <h5>Johnny English</h5>
-                  <span class="grey--text">Price : {{card}} point</span><br>          
+                  <h6 class="title" style="color:black">Johnny English</h6>
+                  <div style="float:left;">                   
+                    <b class="grey--text">Price : {{card}} point</b>
+                  </div>  
+                  <div style="float:right">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on }">              
+                          <v-icon v-on="on">comment</v-icon>
+                      </template>
+                      <span>ulasan &amp; rating</span>
+                    </v-tooltip>
+                  </div>
                 </div>
               </v-card-title>
 
