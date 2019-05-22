@@ -26,6 +26,19 @@ export default new Router({
       component: () => import("./views/auth/Register.vue")
     },
 
+    // -----------------------------informasi-----------------------------
+    {
+      path: "/informasi",
+      name: 'informasi',
+      component: () => import("./views/informasi/Index.vue")
+    },
+
+    {
+      path: "/informasi/detail",
+      name: 'detail_informasi',
+      component: () => import("./views/informasi/ReadMore.vue")
+    },
+
     // -----------------------------cereout-----------------------------
     {
       path: "/cereout/dashboard",
