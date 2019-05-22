@@ -9,7 +9,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat to="" active-class="false">Informasi</v-btn>
+        <v-btn flat to="/informasi" active-class="false">Informasi</v-btn>
         <v-menu :nudge-width="100">
           <template v-slot:activator="{ on }">
               <v-btn v-on="on" flat>Cerelink<v-icon>arrow_drop_down</v-icon></v-btn>

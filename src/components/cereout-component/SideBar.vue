@@ -3,7 +3,6 @@
         <v-toolbar height="50">
           <h5 class="headline" style="margin:0px 20px;color:black">Application</h5>
         </v-toolbar>
-        <v-divider></v-divider>
         <v-list dense class="pt-0">
             <v-list-tile to="/cereout/dashboard">
                 <v-list-tile-action>
