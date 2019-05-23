@@ -2,16 +2,9 @@
 	<div class="ulasan">
 		<headerDetail />
 		<v-container>
-		    <v-toolbar
-		      height="40"
-		    >
-		      <v-toolbar-items>
-		        <v-btn to="/cerevid/detail-pelajaran/ikhtisar" flat color="#2c3e50"  style="text-decoration: none">Ikhtisar</v-btn>
-		        <v-btn to="/cerevid/detail-pelajaran/kurikulum" flat color="#2c3e50"  style="text-decoration: none">Kurikulum</v-btn>
-		        <v-btn to="/cerevid/detail-pelajaran/ulasan" flat color="#2c3e50"  style="text-decoration: none">Ulasan</v-btn>
-		        <v-btn to="/cerevid/detail-pelajaran/profil-pengajar" flat color="#2c3e50"  style="text-decoration: none">Profil Pengajar</v-btn>
-		      </v-toolbar-items>
-		    </v-toolbar>
+		    
+			<menuPelajaran/>
+
 		    <v-card>
 		      <v-container fluid grid-list-md>
 		      	<v-flex style="margin:0px 20px;">
@@ -39,34 +32,34 @@
 					            	</v-flex>
 			            			<v-flex xs12 sm7 md9>
 			            				<v-layout row wrap>
-			            				<v-flex md10>
-						            		<v-progress-linear
-										      color="yellow darken-3"
-										      height="18"
-										      value="75"
-										    ></v-progress-linear>
-						            		<v-progress-linear
-										      color="yellow darken-3"
-										      height="18"
-										      value="75"
-										    ></v-progress-linear>
-						            		<v-progress-linear
-										      color="yellow darken-3"
-										      height="18"
-										      value="75"
-										    ></v-progress-linear>
-						            		<v-progress-linear
-										      color="yellow darken-3"
-										      height="18"
-										      value="75"
-										    ></v-progress-linear>
-						            		<v-progress-linear
-										      color="yellow darken-3"
-										      height="18"
-										      value="75"
-										    ></v-progress-linear><v-spacer/>
-										</v-flex>
-									</v-layout>
+				            				<v-flex md10>
+							            		<v-progress-linear
+											      color="yellow darken-3"
+											      height="18"
+											      value="75"
+											    ></v-progress-linear>
+							            		<v-progress-linear
+											      color="yellow darken-3"
+											      height="18"
+											      value="75"
+											    ></v-progress-linear>
+							            		<v-progress-linear
+											      color="yellow darken-3"
+											      height="18"
+											      value="75"
+											    ></v-progress-linear>
+							            		<v-progress-linear
+											      color="yellow darken-3"
+											      height="18"
+											      value="75"
+											    ></v-progress-linear>
+							            		<v-progress-linear
+											      color="yellow darken-3"
+											      height="18"
+											      value="75"
+											    ></v-progress-linear><v-spacer/>
+											</v-flex>
+										</v-layout>
 					            	</v-flex>
 				            	</v-layout>
 			            	</v-container>
@@ -80,7 +73,7 @@
 						      	<div class="headline">
 						            <div>Ulasan</div>
 						        </div>
-			            		<v-flex xs12 sm4 md12>
+			            		<v-flex xs12 sm12 md12>
 										    <v-list three-line expand="true">
 									          <template v-for="(item, index) in items">
 									            <v-subheader
@@ -184,6 +177,7 @@
 </template>
 <script>
 	import headerDetail from '../../components/cerevid-component/headerDetail'
+	import menuPelajaran from '../../components/cerevid-component/menuPelajaran'
 	export default {
 		name:"ulasan",
 		data: () => ({
@@ -213,6 +207,7 @@
 		}),
 		components:{
 			headerDetail,
+			menuPelajaran
 		}
 	}
 </script>

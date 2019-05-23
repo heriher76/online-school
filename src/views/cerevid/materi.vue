@@ -2,25 +2,27 @@
   <div class="materi">
   <v-container fluid>
     <v-layout row wrap>
-      <v-flex xs12 sm12 md9>
-        <div  v-if="tipeMateri == 'video'">
-          <materiVideo />
-        </div>
-        <div  v-else-if="tipeMateri == 'text'">
-          <materiText />
-        </div>
-        <div  v-else>
-          <materiQuiz />
-        </div>
+      <v-flex xs12 sm12 md8>
+        <v-card-text style="padding-top: 0">
+          <div  v-if="tipeMateri == 'video'">
+            <materiVideo />
+          </div>
+          <div  v-else-if="tipeMateri == 'text'">
+            <materiText />
+          </div>
+          <div  v-else>
+            <materiQuiz />
+          </div>
+        </v-card-text>
       </v-flex>
-      <v-flex xs12 sm12 md3>
+      <v-flex xs12 sm12 md4>
         <v-toolbar color="#34495e" dark flat>
           <v-list-tile>
             <v-icon class="pr-3">book</v-icon>
             <v-list-tile-title>Bahasa Pemrograman PHP</v-list-tile-title>
           </v-list-tile>
         </v-toolbar>
-        <v-card style="position: relative;width:100%;height:0;padding-bottom: 155%;">
+        <v-card style="position: relative;width:100%;height:0;padding-bottom: 100%;">
 
           <div style="position: absolute;top: 0;left: 0;width: 100%;height: 100%; overflow:auto">
           <v-list three-line >
@@ -62,7 +64,7 @@
       </v-flex>
     </v-layout>
     <v-layout row wrap mt-3>
-      <v-flex md9>
+      <v-flex md8>
         <v-tabs
           color="#f5f5f5"
           next-icon="mdi-arrow-right-bold-box-outline"
