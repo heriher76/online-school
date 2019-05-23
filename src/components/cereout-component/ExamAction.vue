@@ -47,12 +47,15 @@
                                 class="btn-num"
                                 v-for="(item, key, index) in questions" :key="item" 
                                 @click="viewQuestion(key)"
-                            >         
-                                <span v-if="key+1 < 10 && tmpanswer[key]==null" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
+                            >  
+                                <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
+                                <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
+
+                                <span v-else-if="key+1 < 10 && tmpanswer[key]==null" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
                                 <span v-else-if="key+1 >= 10 && tmpanswer[key]==null" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
                                 
                                 <span v-else-if="key+1 < 10 && tmpanswer[key]!=null" style="background:orange;padding:10px 14.6px">{{key+1}}</span>
-                                <span v-else-if="key+1 >= 10 && tmpanswer[key]!=null" style="background:orange;padding:10px 10.6px">{{key+1}}</span>                             
+                                <span v-else-if="key+1 >= 10 && tmpanswer[key]!=null" style="background:orange;padding:10px 10.6px">{{key+1}}</span>                                                     
                             </a>
                         </div>                   
                         <div class="clear"></div>
@@ -77,7 +80,7 @@
     }
 
     a.btn-num:hover{
-        color: blue
+        color: black
     }
 
     .container {
