@@ -5,7 +5,7 @@
                 <v-flex md8 sm12 xs12>
                         <v-layout row wrap>
                             <v-flex md12 sm12 xs12>
-                                <v-carousel style="max-height:400px">
+                                <v-carousel style="height:400px;">
                                     <v-carousel-item
                                     v-for="(item,i) in items"
                                     :key="i"
@@ -19,6 +19,7 @@
                                 </v-card>
                             </v-flex>
                             <v-flex md12 sm12 xs12>
+                                
                                 <div v-for="item in 3" :key="item">
                                     <v-layout row wrap="" style="border-bottom:1px solid grey; padding:10px 0px">
                                         <v-flex md4>
@@ -38,6 +39,7 @@
                                         </v-flex>                      
                                     </v-layout>
                                 </div>
+                                
                             </v-flex>
                         </v-layout>
                 </v-flex>
