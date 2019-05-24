@@ -23,7 +23,7 @@
                                 <div v-for="item in 3" :key="item">
                                     <v-layout row wrap="" style="border-bottom:1px solid grey; padding:10px 0px">
                                         <v-flex md4>
-                                            <div style="height:180px;width:260px;">
+                                            <div class="image_info">
                                                 <img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg" width="100%" height="100%" alt="">
                                             </div>
                                         </v-flex>
@@ -51,6 +51,22 @@
         </v-container>
     </div>
 </template>
+
+<style>
+    /* .image-info{
+        height:180px;
+        width:260px;
+    }
+    
+    @media only screen and (max-width: 1080px) {
+        
+        .image-info{
+            display: none
+        }
+    
+    } */
+
+</style>
 
 
 <script>
