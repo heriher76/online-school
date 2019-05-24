@@ -26,6 +26,25 @@ export default new Router({
       component: () => import("./views/auth/Register.vue")
     },
 
+    {
+      path: "/forgot password",
+      name: 'forgot_pass',
+      component: () => import("./views/auth/ForgotPassword.vue")
+    },
+
+    {
+      path: "/reset password",
+      name: 'reset_pass',
+      component: () => import("./views/auth/ResetPassword.vue")
+    },
+
+    // -----------------------------poin saldo-----------------------------
+    {
+      path: "/my poin",
+      name: 'my_poin',
+      component: () => import("./views/siswa/MyPoin.vue")
+    },    
+
     // -----------------------------informasi-----------------------------
     {
       path: "/informasi",
@@ -184,6 +203,16 @@ export default new Router({
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/About.vue")
     },
+
+
+    // -----------------------------siswa-----------------------------
+    {
+      path: "/my account",
+      name: 'my_account',
+      component: () => import("./views/siswa/MyAccount.vue")
+    },
+
+
     // -----------------------------Guru---------------------------
     {
       path: "/guru",
@@ -219,6 +248,13 @@ export default new Router({
       path: "/guru/account/edit",
       name: 'account_guru',
       component: () => import("./views/guru/dashboard/AccountEdit.vue")
+    },
+    
+    // -----------------------------Menu Lainnya---------------------------
+    {
+      path: "/pusat bantuan",
+      name: 'pusat_bantuan',
+      component: () => import("./views/PusatBantuan.vue")
     }
   ]
 });

@@ -33,10 +33,13 @@
 
                     <v-card>
                         <v-btn @click="previous(hal)" small> <v-icon left dark>keyboard_arrow_left</v-icon> Soal Sebelumnya</v-btn>
-                        <v-btn @click="next(hal)" small>soal Berikutnya <v-icon right dark>keyboard_arrow_right</v-icon></v-btn>         
+                        <v-btn @click="next(hal)" small>soal Berikutnya <v-icon right dark>keyboard_arrow_right</v-icon></v-btn>  
+                        
+                        <v-btn @click="mark(hal)" small>Tandai</v-btn>
+                        
                     </v-card>
                 </v-flex>
-
+    
                 <v-flex md3>
                     <v-card style="padding:15px;"> 
                         <div style="min-height:325px;">
@@ -48,14 +51,18 @@
                                 v-for="(item, key, index) in questions" :key="item" 
                                 @click="viewQuestion(key)"
                             >  
+                            
                                 <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
                                 <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
 
                                 <span v-else-if="key+1 < 10 && tmpanswer[key]==null" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
                                 <span v-else-if="key+1 >= 10 && tmpanswer[key]==null" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
                                 
-                                <span v-else-if="key+1 < 10 && tmpanswer[key]!=null" style="background:orange;padding:10px 14.6px">{{key+1}}</span>
-                                <span v-else-if="key+1 >= 10 && tmpanswer[key]!=null" style="background:orange;padding:10px 10.6px">{{key+1}}</span>                                                     
+                                <span v-else-if="key+1 < 10 && tmpanswer[key]!=null" style="background:#8BC34A;padding:10px 14.6px">{{key+1}}</span>
+                                <span v-else-if="key+1 >= 10 && tmpanswer[key]!=null" style="background:#8BC34A;padding:10px 10.6px">{{key+1}}</span>  
+
+                                <!-- <span v-else-if="key+1 < 10 && markanswer[key]!=key" style="background:orange;padding:10px 14.6px">{{key+1}} </span>
+                                <span v-else-if="key+1 >= 10 && markanswer[key]!=key" style="background:orange;padding:10px 10.6px">{{key+1}}</span>                                                      -->
                             </a>
                         </div>                   
                         <div class="clear"></div>
@@ -65,6 +72,10 @@
                 </v-flex>
 
             {{ answer }}
+
+            <!-- {{tmpanswer}} -->
+
+            <!-- {{ markanswer }} -->
         
             </v-layout>
         </v-container>
@@ -322,7 +333,9 @@
             options: [],
 
             answer: [],
-            tmpanswer: []
+            tmpanswer: [],
+
+            markanswer: []
 
         }),
 
@@ -379,6 +392,10 @@
                     this.quest = this.questions[hal].quest
                     this.options = this.questions[hal].options
                 }
+            },
+
+            mark(hal){
+                this.markanswer.push(hal)
             }
         },
 
