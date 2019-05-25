@@ -5,59 +5,186 @@
       
       <div class="panel-auth" style="color:white">
         <h2 class="display-1">Welcome</h2>
-        <p>Register a new account</p>
-        <v-text-field
+        <p>Register a new account</p>    
+          <v-text-field 
+            label="Name"
+            dark
+            color="white"
+            :rules="[rules_name.required]"
+            v-model="name"
+          ></v-text-field>
+
+          <v-text-field
             dark
             color="white"
             v-model="email"
-            :rules="[rules.required, rules.email]"
+            :rules="[rules_mail.required, rules_mail.email]"
             label="E-mail"
           ></v-text-field>
-        <v-text-field
-            required=""
-            dark
-            color="white"
-            v-model="password"
-            :append-icon="show_pass ? 'visibility' : 'visibility_off'"
-            :rules="[rules.required, rules.min]"
-            :type="show_pass ? 'text' : 'password'"
-            name="input-10-1"
-            label="Password"
-            hint="At least 8 characters"
-            counter
-            @click:append="show_pass = !show_pass"
-        ></v-text-field>
-        <v-btn round large block>SIGN UP</v-btn>
-        
+
+           <v-text-field
+              required=""
+              dark
+              color="white"
+              v-model="password"
+              :append-icon="show_pass ? 'visibility' : 'visibility_off'"
+              :rules="[rules_pass.required, rules_pass.min]"
+              :type="show_pass ? 'text' : 'password'"
+              name="input-10-1"
+              label="Password"
+              hint="At least 8 characters"
+              counter
+              @click:append="show_pass = !show_pass"
+          ></v-text-field>
+
+          <v-text-field
+              required=""
+              dark
+              color="white"
+              v-model="password_confirmation"
+              :append-icon="show_pass_conf ? 'visibility' : 'visibility_off'"
+              :rules="[rules_pass_conf.required, rules_pass_conf.match]"
+              :type="show_pass_conf ? 'text' : 'password'"
+              name="input-10-1"
+              label="Re-enter Password"
+              hint="At least 8 characters"
+              counter
+          ></v-text-field>
+
+          <v-btn @click="signUp" round large block>SIGN UP</v-btn>
+              
         <hr style="margin-bottom:15px">
         <label>Are you a member? <router-link to="/login" style="color:white">Login now</router-link></label>
 
       </div>
-      
     </div>
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     data () {
       return {
-        show_pass: false,
-        password: '',
-        rules: {
-          required: value => !!value || 'Required.',
-          min: v => v.length >= 8 || 'Min 8 characters'
-        },
-
+        items:[],
+  
+        name: '',
         email: '',
-        rules: {
+        password: '',
+        password_confirmation: '',
+
+        rules_name: {
+          required: value => !!value || 'Required.'
+        },
+        
+        rules_mail: {
           required: value => !!value || 'Required.',
-          counter: value => value.length <= 20 || 'Max 20 characters',
           email: value => {
             const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
             return pattern.test(value) || 'Invalid e-mail.'
           }
-        }
+        },
+
+        show_pass: false,            
+        rules_pass: {
+          required: value => !!value || 'Required.',
+          min: v => v.length >= 8 || 'Min 8 characters'
+        },
+
+        show_pass_conf: false,            
+        rules_pass_conf: {
+          required: value => !!value || 'Required.',
+          match: () => this.password == this.password_confirmation || ('The password confirmation does not match.')
+        },
+
+
       }
+    },
+
+    methods: {
+      signUp(e) {
+        e.preventDefault();
+        axios
+        .post('http://api.ceredinas.id/api/auth/signup', {
+            name : "Febri Ardi Saputra",
+            gender : "laki-laki",
+            address : "jln Cipadung",
+            phone : "082117912657",
+            birth_place : "Subang",
+            birth_date : "1997-02-10",
+            parrent_name : "Captain America",
+            parrent_phone : "0987654321",
+            email : "febri@gmail.com",
+            password : "febri1234",
+            password_confirmation : "febri1234"
+        })
+        .then(response => {
+          console.log(response.data)
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+      },
+
+      formSubmit(e) {
+          e.preventDefault();
+          axios
+          .post('https://reqres.in/api/users', {
+                name: "COBA",
+                position: "TERSERAH"
+          })
+          .then(response => (console.log(response.data)))
+          .catch(error => console.log(error))
+          .finally(() => this.loading = false)
+      }
+
+      // signUp(e) {
+      //   e.preventDefault();
+      //   axios
+      //   .post('http://api.ceredinas.id/api/auth/signup',{
+      //       name : "Harist",
+      //       gender : "laki-laki",
+      //       address : "jln Cipadung",
+      //       phone : "082117912657",
+      //       birth_place : "Subang",
+      //       birth_date : "1997-02-10",
+      //       parrent_name : "Captain America",
+      //       parrent_phone : "0987654321",
+      //       email : "jancok@gmail.com",
+      //       password : "123456",
+      //       password_confirmation : "123456"
+      //   })
+      //   .then(response => {
+      //     this.items.push(response.data)
+      //     this.name_field = ''
+      //     this.email_field = ''
+      //     this.password_field = ''
+      //     this.password_conf_field = ''
+      //   })
+      //   .catch(error => {
+      //     console.log(error)
+      //   })
+      // },
+
+      // cobaSubmit(e){
+      //   e.preventDefault();
+      //   axios({
+      //     method: 'post',
+      //     url: 'http://api.ceredinas.id/api/master/attempts/',
+      //     data: {
+      //       user_id: 3,
+      //     },
+      //     headers: {
+      //       'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjJiMmE2MWE1Mjc2OTFkYTQyYWE4Njk4NDViMTgyNGY0ODg1YjNmOGYxY2E3OTY1NmNkZjA4Mzg2ZTkyMTg0YzhkY2VmOWYxNjQyZjJhMDk0In0.eyJhdWQiOiIxIiwianRpIjoiMmIyYTYxYTUyNzY5MWRhNDJhYTg2OTg0NWIxODI0ZjQ4ODViM2Y4ZjFjYTc5NjU2Y2RmMDgzODZlOTIxODRjOGRjZWY5ZjE2NDJmMmEwOTQiLCJpYXQiOjE1NTg2MzExMzEsIm5iZiI6MTU1ODYzMTEzMSwiZXhwIjoxNTkwMjUzNTMxLCJzdWIiOiI3Iiwic2NvcGVzIjpbXX0.dXtoJm7IYfgeYqeh14hrNyucqPCjs0c8lCNA97uILoK4sgW2-SLh05TaFaRe3HKYKYFW7lGv7WR0fir253eHiLtjNUfLrzO5U32uBP75OeldA1Mj8eKCLv2zRe6DJtW_e_bQGDc2NPaCpZizmhAEKP86FOq3KvPnb8mc2mQZ_JcGO56YVkK5NlqszbFxGAMGbin7AOCRBlHLLOXtpsQGPm-NaVJmAw2WsjzWJZyrbiqoEVQaZo_WSR2rZjvHKv2nFBVOM7Vem_LZsjE7kviwW09l5_hGzSQxjRbvIX87zDn8gzsUrYapiZwu_--2C0JcjFL75lE1X4PcTqyk951Nz_L_qIDSC4u8KbWXimN-1ui7avy-IFmPrjhVxtX72z13gF1yjC8ieasNlY1l3f5XehngfPaAssAcGI6Bgy9TRkO7ED1V3hkGNXqjJOJP3usJc9Ml652ejFJ7cq4DeX9Hvjj7-NkJjWietV2Z9N89RdumH-xmQxmJig8wj6AN6yDIsUpKRC1K1Kb7RxTVIwaY-H5R5Hy2_AwSAak0DibnmeMT_B_w4GbzqIbKk4zdyGr7qsX8JsnM9GiieQgL1_vY0D7uWEggQgnVwysAmqvt32v9rDI2naH5aNMWmVTzZjlldvAVRJhJ5rzQ-v-ZSQhcqRWyh59unLBvLOeteN0ElK0'
+      //     }
+      //   })
+      //   .then(response => (console.log(response.data)))
+      //   .catch(error => console.log(error.response))
+      //   .finally(() => this.loading = false)
+      // },
+
+      
+
     }
   }
 </script>

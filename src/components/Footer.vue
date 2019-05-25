@@ -16,14 +16,13 @@
                             <ul class="link-cere">
                                 <li><a href="">Kebijakan Privasi</a></li>
                                 <li><a href="">Syarat &amp; Ketentuan </a></li>
-                                <li><a href="">FAQ</a></li>
                                 <li><a href="">Tentang Kami</a></li>
                             </ul>
                         </v-flex>
 
                         <v-flex md2 style="margin:0px 20px">
                             <ul class="link-cere">
-                                <li><a href="">Pusat Bantuan</a></li>
+                                <li><a href="/pusat bantuan">Pusat Bantuan</a></li>
                                 <li><a href="">Panduan Guru </a></li>
                                 <li><a href="">Panduan Siswa</a></li>
                             </ul>

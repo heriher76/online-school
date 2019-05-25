@@ -9,7 +9,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat to="/informasi" active-class="false">Informasi</v-btn>
+        <v-btn flat @click="linkInformasi" active-class="false">Informasi</v-btn>
         <v-menu :nudge-width="100">
           <template v-slot:activator="{ on }">
               <v-btn v-on="on" flat>Cerelink<v-icon>arrow_drop_down</v-icon></v-btn>
@@ -36,10 +36,17 @@
       <!-- header actions -->
       <div class="nav-action">
         <div class="nav-bal">
-            <router-link to="/" style="float:right">
-            <v-icon style="margin:-2px">add</v-icon>
-            </router-link>
+            <v-tooltip bottom>
+            <template v-slot:activator="{ on }">              
+                <router-link to="/my poin">
+                <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                </router-link>
+            </template>
+            <span>Top up</span>
+            </v-tooltip>
+
             <b>Poin : 999999 </b>
+            
             <div class="clear"></div>
         </div>
 
@@ -72,10 +79,10 @@
             </v-tooltip>
 
             <v-menu
-            v-model="menu"
-            :close-on-content-click="false"
-            :nudge-width="200"
-            offset-x
+              v-model="menu"
+              :close-on-content-click="false"
+              :nudge-width="200"
+              offset-x
             >
             <template v-slot:activator="{ on }">
                 <a v-on="on">
@@ -101,7 +108,8 @@
 
                 <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" flat @click="menu = false">Sign Out</v-btn>
+                <v-btn color="primary" flat @click="linkAkun">My Account</v-btn>
+                <v-btn color="red" flat @click="menu = false">Sign Out</v-btn>
                 </v-card-actions>
             </v-card>
             </v-menu>
@@ -154,7 +162,14 @@
 
 <script>
 export default {
+  data:() => ({
+    menu: false
+  }),
+
   methods: {
+    linkInformasi(){
+      this.$router.push({path:'/informasi'})
+    },
     linkCerevid(){
       return this.$router.push({path:'/cerevid'})
     },
@@ -170,7 +185,17 @@ export default {
 
     linkLogin(){
       this.$router.push({path:'/login'})
+    },
+    
+    linkAkun(){
+      this.menu = false
+      this.$router.push({path:'/my account'})
     }
+
+    // linkAkun(){
+    //   menu = false
+    //   this.$router.push({path:'/cerecall'})
+    // }
   }
 }
 </script>

@@ -4,7 +4,7 @@
             <div style="margin:10px 22px">
                 <h6 class="title">RECENT POSTS</h6>
             </div>
-            <ul>
+            <ul class="side_bar">
                 <v-divider></v-divider>
                 <li v-for="item in posted" :key="item">
                     <a href="">{{item.title}}&nbsp;</a> <br>
@@ -18,7 +18,7 @@
             <div style="margin:10px 22px">
                 <h6 class="title">PENGUMUMAN</h6>
             </div>
-            <ul>
+            <ul class="side_bar">
                 <v-divider></v-divider>
                 <li v-for="item in posted" :key="item">
                     <a href="">{{item.title}}&nbsp;</a> <br>
@@ -29,6 +29,18 @@
         </div>
     </div>
 </template>
+
+<style>
+    .side_bar li{
+        list-style: circle;
+    }
+
+    .side_bar li a{
+        text-decoration: none;
+        color: black;
+    }
+</style>
+
 
 <script>
   export default {
