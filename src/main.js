@@ -9,11 +9,13 @@ import store from "./store";
 
 import Default from "./layouts/Default.vue";
 import Exam from "./layouts/Exam.vue";
+import Guru from "./layouts/Guru.vue";
 
 
 Vue.use(VueSweetalert2);
 Vue.component('default-layout', Default);
 Vue.component('exam-layout', Exam);
+Vue.component('guru-layout', Guru);
 
 Vue.config.productionTip = false;
 

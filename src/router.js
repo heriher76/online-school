@@ -43,7 +43,7 @@ export default new Router({
       path: "/my poin",
       name: 'my_poin',
       component: () => import("./views/siswa/MyPoin.vue")
-    },    
+    },
 
     // -----------------------------informasi-----------------------------
     {
@@ -162,24 +162,38 @@ export default new Router({
       component: () => import("./views/cerevid/materi.vue")
     },
     {
-      path: "/cerevid/guru/daftar-pelajaran",
-      name: "cerevid_daftar_pelajaran_guru",
+      path: "/guru/cerevid",
+      name: "cerevid_dashboard_guru",
+      meta: {layout: "guru"},
       component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
     },
     {
-      path: "/cerevid/guru/detail-pelajaran",
+      path: "/guru/cerevid/daftar-pelajaran",
+      name: "cerevid_daftar_pelajaran_guru",
+      meta: {layout: "guru"},
+      component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
+    },
+    {
+      path: "/guru/cerevid/detail-pelajaran",
       name: "cerevid_detail_pelajaran_guru",
+      meta: {layout: "guru"},
       component: () => import("./views/cerevid/detailPelajaranGuru.vue")
     },
     {
-      path: "/cerevid/guru/tambah-pelajaran",
+      path: "/guru/cerevid/tambah-pelajaran",
       name: "cerevid_tambah_pelajaran",
+      meta: {layout: "guru"},
       component: () => import("./views/cerevid/tambahPelajaran.vue")
     },
     // -----------------------------Cerelisasi-----------------------------
     {
       path: "/cerelisasi",
       name: "cerelisasi_form_input",
+      component: () => import("./views/cerelisasi/formInput.vue")
+    },
+    {
+      path: "/cerelisasi/form-input-siswa",
+      name: "cerelisasi_form_input_siswa",
       component: () => import("./views/cerelisasi/formInput.vue")
     },
     {
@@ -217,39 +231,46 @@ export default new Router({
     {
       path: "/guru",
       name: 'dashboard_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/dashboard/Index.vue")
     },
     {
       path: "/guru/login",
       name: 'login_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/Login.vue")
     },
     {
       path: "/guru/forget",
       name: 'forget_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/Forget.vue")
     },
     {
       path: "/guru/cerecall",
       name: 'cerecall_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/cerecall/History.vue")
     },
     {
       path: "/guru/cerecall/chat",
       name: 'chat_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/cerecall/ChatPage.vue")
     },
     {
       path: "/guru/profile/edit",
       name: 'profile_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/dashboard/ProfileEdit.vue")
     },
     {
       path: "/guru/account/edit",
       name: 'account_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/dashboard/AccountEdit.vue")
     },
-    
+
     // -----------------------------Menu Lainnya---------------------------
     {
       path: "/pusat bantuan",
