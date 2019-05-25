@@ -164,6 +164,11 @@ export default new Router({
       component: () => import("./views/cerelisasi/formInput.vue")
     },
     {
+      path: "/cerelisasi/form-input-siswa",
+      name: "cerelisasi_form_input_siswa",
+      component: () => import("./views/cerelisasi/formInput.vue")
+    },
+    {
       path: "/cerelisasi/hasil-analisis",
       name: "cerelisasi_analisis",
       component: () => import("./views/cerelisasi/hasilAnalisis.vue")
@@ -188,36 +193,43 @@ export default new Router({
     {
       path: "/guru",
       name: 'dashboard_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/dashboard/Index.vue")
     },
     {
       path: "/guru/login",
       name: 'login_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/Login.vue")
     },
     {
       path: "/guru/forget",
       name: 'forget_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/Forget.vue")
     },
     {
       path: "/guru/cerecall",
       name: 'cerecall_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/cerecall/History.vue")
     },
     {
       path: "/guru/cerecall/chat",
       name: 'chat_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/cerecall/ChatPage.vue")
     },
     {
       path: "/guru/profile/edit",
       name: 'profile_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/dashboard/ProfileEdit.vue")
     },
     {
       path: "/guru/account/edit",
       name: 'account_guru',
+      meta: {layout: "guru"},
       component: () => import("./views/guru/dashboard/AccountEdit.vue")
     }
   ]
