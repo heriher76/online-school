@@ -28,7 +28,7 @@ export default new Vuex.Store({
       state.token = null
     },
 
-    getInformation(state, info){
+    SET_INFO(state, info){
       state.info = info
     }
   },
@@ -77,17 +77,16 @@ export default new Vuex.Store({
       }
     },
 
-    getInformation(context){
+    loadInformation(context){
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
 
       axios.get('/master/information')
       .then(response => {
-        // console.log(response.data)
-        context.commit('getInformation', response.data)
+        console.log(response.data)
       })
-      .catch(error => {
-        console.log(error)
-      })
+      // .then(info => {
+      //   commit('SET_INFO', info)
+      // })
     }
   }
 });

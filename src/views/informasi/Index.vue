@@ -20,7 +20,7 @@
                             </v-flex>
                             <v-flex md12 sm12 xs12>
                                 
-                                <div v-for="info in infos" :key="info">
+                                <div v-for="info in 3" :key="info">
                                     <v-layout row wrap="" style="border-bottom:1px solid grey; padding:10px 0px">
                                         <v-flex md4>
                                             <div class="image_info">
@@ -30,9 +30,9 @@
 
                                         <v-flex md8>
                                             <div style="margin: 0px 25px">
-                                                <h5 style="color:black" class="headline">{{info.title}}</h5>
+                                                <h5 style="color:black" class="headline">coba</h5>
                                                 <p>
-                                                    {{info.caption}}
+                                                    coba
                                                     <router-link to="/informasi/detail">Read more >></router-link>
                                                 </p>
                                             </div>
@@ -44,7 +44,14 @@
                         </v-layout>
                 </v-flex>
 
-                {{cek}}
+
+        cobalah
+
+        <div v-for="coin in coins" :key="coin.id">
+          <p>id : {{ coin.id }}</p>
+          <p>title : {{ coin.title }}</p>
+          <p>caption : {{ coin.caption }} </p>
+        </div>
 
                 <v-flex md4 sm12 xs12>
                         <SideBar/>
@@ -74,6 +81,8 @@
 <script>
     import SideBar from "../../components/informasi/Sidebar"
 
+    import { mapState } from 'vuex'
+
     export default {
         components: {
             SideBar
@@ -92,19 +101,27 @@
                     'caption': 'lorem ipsum dolor sit amet'
                 }
             ],
-            cek: []
         }),
 
-        mounted(){
-            this.$store.dispatch('getInformation')
-            .then(response => {
-                this.cek = "coba"
-                // this.infos.push({
-                //     id: response.data.id,
-                //     title: response.data.title,
-                //     caption: response.data.caption
-                // })
-            })
-        }
+        mounted () {
+            this.$store.dispatch('loadInformation')
+        },
+        computed: mapState([
+            'coins'
+        ])
+
+        // computed:{
+        //     getInformation() {
+        //         axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+
+        //         axios.get('/master/information')
+        //         .then(response => {
+        //             console.log(response.data)
+        //         })
+        //         .catch(error => {
+        //             console.log(error)
+        //         })
+        //     }
+        // }
     }
 </script>
