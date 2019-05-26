@@ -79,6 +79,22 @@
                     <div class="live_chat">
                         hello
                     </div>
+
+                    <!-- <v-text-field
+                        v-model="message"
+                        :append-icon="marker ? 'mdi-map-marker' : 'mdi-map-marker-off'"
+                        :append-outer-icon="message ? 'mdi-send' : 'mdi-microphone'"
+                        :prepend-icon="icon"
+                        box
+                        clear-icon="mdi-close-circle"
+                        clearable
+                        label="Message"
+                        type="text"
+                        @click:append="toggleMarker"
+                        @click:append-outer="sendMessage"
+                        @click:prepend="changeIcon"
+                        @click:clear="clearMessage"
+                    ></v-text-field> -->
                     <div class="action_chat">
                         <input type="text" placeholder="ketik pesan">
                     </div>
@@ -143,8 +159,23 @@
                 dialog2: false,
                 textArea: false,
                 rating: 3,
-                
                 currentRating: "No Rating",
+
+                 password: 'Password',
+                    show: false,
+                    message: 'Hey!',
+                    marker: true,
+                    iconIndex: 0,
+                    icons: [
+                        'mdi-emoticon',
+                        'mdi-emoticon-cool',
+                        'mdi-emoticon-dead',
+                        'mdi-emoticon-excited',
+                        'mdi-emoticon-happy',
+                        'mdi-emoticon-neutral',
+                        'mdi-emoticon-sad',
+                        'mdi-emoticon-tongue'
+                    ]
             }
         },
         methods: {
@@ -157,6 +188,31 @@
                 this.textArea = true
                 // this.rating = "You have Selected: " + rating + " stars";
             },
-        }
+
+            toggleMarker () {
+                this.marker = !this.marker
+            },
+            sendMessage () {
+                this.resetIcon()
+                this.clearMessage()
+            },
+            clearMessage () {
+                this.message = ''
+            },
+            resetIcon () {
+                this.iconIndex = 0
+            },
+            changeIcon () {
+                this.iconIndex === this.icons.length - 1
+                ? this.iconIndex = 0
+                : this.iconIndex++
+            }
+        },
+
+         computed: {
+            icon () {
+                return this.icons[this.iconIndex]
+            }
+        },
     }
 </script>

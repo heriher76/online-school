@@ -28,5 +28,4 @@ export default {
     Footer
   }
 }
-
 </script>

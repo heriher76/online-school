@@ -7,6 +7,7 @@
         <h2 class="display-1">Welcome</h2>
         <p>Login with your site account</p>
         
+        <form @submit.prevent="login">
           <v-text-field
             dark
             color="white"
@@ -38,7 +39,9 @@
           <router-link to="/forgot password" class="label-forgot">Forgot your password?</router-link>
           
           <v-btn @click="login" round large block>SIGN IN</v-btn>  
-    
+
+        </form>
+
         <div class="list">
             <hr><label>OR</label><hr>
             <div class="clear"></div>
@@ -63,6 +66,8 @@ import axios from "axios"
   export default {
     data () {
       return {
+        checkbox: '',
+
         show_pass: false,
         password: '',
         rules_pass: {
@@ -82,22 +87,32 @@ import axios from "axios"
     },
 
     methods:{
-      login(e) {
-        e.preventDefault();
-        axios
-        .post('http://api.ceredinas.id/api/auth/login',{
-            email: this.email, // 'rifardian@gmail.com',
-            password: this.password //'123456',
+      login(){
+        this.$store.dispatch('retrieveToken', {
+          email: this.email,
+          password: this.password
         })
         .then(response => {
-          // console.log(response.data)
-          this.$router.push({path:'/'})
-        })
-        .catch(error => {
-          // console.log(error.response)
-          this.$swal('Sorry', 'Your email or password is invalid', 'warning')
+          this.$router.push({path: '/'})
         })
       }
+
+      // login(e) {
+      //   e.preventDefault();
+      //   axios
+      //   .post('http://api.ceredinas.id/api/auth/login',{
+      //       email: this.email, // 'rifardian@gmail.com',
+      //       password: this.password //'123456',
+      //   })
+      //   .then(response => {
+      //     console.log(response.data)
+      //     // this.$router.push({path:'/'})
+      //   })
+      //   .catch(error => {
+      //     // console.log(error.response)
+      //     this.$swal('Sorry', 'Your email or password is invalid', 'warning')
+      //   })
+      // }
     }
   }
 </script>
