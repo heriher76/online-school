@@ -1,12 +1,35 @@
 <template>
-	<v-toolbar
-		height="40"
-	>
-		<v-toolbar-items class="hidden-sm-and-down">
-		    <v-btn to="/cerevid/detail-pelajaran/ikhtisar" flat color="#2c3e50"  style="text-decoration: none">Ikhtisar</v-btn>
-		    <v-btn to="/cerevid/detail-pelajaran/kurikulum" flat color="#2c3e50"  style="text-decoration: none">Kurikulum</v-btn>
-		    <v-btn to="/cerevid/detail-pelajaran/ulasan" flat color="#2c3e50"  style="text-decoration: none">Ulasan</v-btn>
-		    <v-btn to="/cerevid/detail-pelajaran/profil-pengajar" flat color="#2c3e50"  style="text-decoration: none">Profil Pengajar</v-btn>
-		</v-toolbar-items>
-    </v-toolbar>
+
+		<v-tabs
+			color="#f5f5f5"
+			next-icon="mdi-arrow-right-bold-box-outline"
+			prev-icon="mdi-arrow-left-bold-box-outline"
+			show-arrows
+			>
+			<v-tabs-slider color="#34495e"></v-tabs-slider>
+			<v-tab
+				:href="'#ikhtisar'"
+				style="text-decoration:none;"
+			>
+				Ikhtisar
+			</v-tab>
+			<v-tab
+				:href="'#kurikulum'"
+				style="text-decoration:none;"
+			>
+				Kurikulum
+			</v-tab>
+			<v-tab
+				:href="'#ulasan'"
+				style="text-decoration:none;"
+			>
+				Ulasan
+			</v-tab>
+			<v-tab
+				:href="'#profilPengajar'"
+				style="text-decoration:none;"
+			>
+				Profil Guru
+			</v-tab>
+		</v-tabs>
 </template>

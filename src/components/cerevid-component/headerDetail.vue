@@ -7,23 +7,23 @@
         >
           <v-layout row wrap class="headline white--text">
             <v-flex class="display-1" md6 sm10 style="font-weight:normal;">
-              Bahasa pemrograman PHP
+              {{datas.data.title}}
             </v-flex>
             <v-spacer/>
             <v-flex md8>
               <subheading class="font-weight-light">
-                Membahas bahasa pemrograman PHP dari tingkat dasar hingga tingkat menengah dilengkapi tutorial
+                {{datas.data.description}}
               </subheading>
             </v-flex>
             <v-flex md8 xs12 sm12>
               <h4>
-                Pengajar : <span  class="font-weight-light">John Doe</span>
+                Pengajar : <span  class="font-weight-light">{{datas.data.teacher.name}}</span>
               </h4>
             </v-flex>
             <v-flex md8>
               <v-card-actions>
                 <v-rating
-                  v-model="rating"
+                  v-model="datas.data.rating"
                   dense
                   color="yellow darken-3"
                   background-color="grey darken-1"
@@ -33,7 +33,6 @@
                   class="pa-1"
                 ></v-rating>
                 <span class="subheading mt-1">
-                  {{rating}} (329) Ulasan
                 </span>
               </v-card-actions>
             </v-flex>
@@ -43,8 +42,8 @@
 </template>
 <script>
   export default {
+    props: ['datas'],
     data: () => ({
-      rating: 4
     })
   }
 </script>

@@ -5,13 +5,13 @@
       <v-flex xs12 sm12 md8>
         <v-card-text style="padding-top: 0">
           <div  v-if="tipeMateri == 'video'">
-            <materiVideo />
+            <materiVideo/>
           </div>
           <div  v-else-if="tipeMateri == 'text'">
-            <materiText />
+            <materiText/>
           </div>
           <div  v-else>
-            <materiQuiz />
+            <materiQuiz/>
           </div>
         </v-card-text>
       </v-flex>
@@ -19,44 +19,63 @@
         <v-toolbar color="#34495e" dark flat>
           <v-list-tile>
             <v-icon class="pr-3">book</v-icon>
-            <v-list-tile-title>Bahasa Pemrograman PHP</v-list-tile-title>
+            <v-list-tile-title>{{items.data[0].course.title}}</v-list-tile-title>
           </v-list-tile>
         </v-toolbar>
         <v-card style="position: relative;width:100%;height:0;padding-bottom: 100%;">
 
           <div style="position: absolute;top: 0;left: 0;width: 100%;height: 100%; overflow:auto">
           <v-list three-line >
-            <template v-for="(item, index) in items">
-              <v-subheader
-                v-if="item.header"
-                :key="item.header"
-              >
-                {{ item.header }}
+            <template v-for="(item, index) in items.data">
+              <v-subheader>
+                {{ item.title }}
               </v-subheader>
+              <v-divider></v-divider>
+              <div v-for="materi in item.videos">
+                <v-list-tile
+                  avatar
+                  @click="tipeMateri = 'video'"
+                >
+                  <v-list-tile-avatar>
+                    <v-icon>videocam</v-icon>
+                  </v-list-tile-avatar>
 
-              <v-divider
-                v-else-if="item.divider"
-                :key="index"
-                :inset="item.inset"
-              ></v-divider>
+                  <v-list-tile-content>
+                    <v-list-tile-title v-html="materi.title"></v-list-tile-title>
+                    <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+              </div>
+              <div v-for="materi in item.texts">
+                  <v-list-tile
+                    avatar
+                    @click="tipeMateri = 'text'"
+                  >
+                    <v-list-tile-avatar>
+                      <v-icon>assignment</v-icon>
+                    </v-list-tile-avatar>
 
-              <v-list-tile
-                v-else
-                :key="item.title"
-                avatar
-                @click="tipeMateri = item.tipe"
-              >
-                <v-list-tile-avatar>
-                  <v-icon v-if="item.tipe == 'video'">videocam</v-icon>
-                  <v-icon v-else-if="item.tipe == 'text'">assignment</v-icon>
-                  <v-icon v-else>create</v-icon>
-                </v-list-tile-avatar>
+                    <v-list-tile-content>
+                      <v-list-tile-title v-html="materi.title"></v-list-tile-title>
+                      <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+              </div>
+              <div v-for="materi in item.quiz">
+                    <v-list-tile
+                      avatar
+                      @click="tipeMateri = 'text'"
+                    >
+                      <v-list-tile-avatar>
+                        <v-icon>create</v-icon>
+                      </v-list-tile-avatar>
 
-                <v-list-tile-content>
-                  <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                  <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
+                      <v-list-tile-content>
+                        <v-list-tile-title v-html="materi.title"></v-list-tile-title>
+                        <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
+                      </v-list-tile-content>
+                    </v-list-tile>
+              </div>
             </template>
           </v-list>
         </div>
@@ -104,12 +123,10 @@
                               <v-container>
                                 <v-layout>
                                   <v-flex>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                    <div class="headline">
+                                      <div>{{items.data[0].course.title}}</div>
+                                    </div>
+                                    {{items.data[0].course.description}}
                                   </v-flex>
                                 </v-layout>
                               </v-container>
@@ -127,34 +144,20 @@
                   <v-container fluid>
                     <v-flex class="mx-4">
               			    <v-list three-line expand="true">
-              							<template v-for="(item, index) in forum">
-              							   <v-subheader
-              								         v-if="item.header"
-              									       :key="item.header"
-                                       class="headline"
-              							   >
-                                  {{item.header}}
-              								 </v-subheader>
-                               <v-divider
-              									 v-else-if="item.divider"
-              									 :key="index"
-              									 :inset="item.inset"
-              								 >
-                               </v-divider>
+              							<template v-for="item in forum.data">
               								 <v-list-tile
-              								    v-else
-              									  :key="item.nama"
               									  avatar
               								 >
               								 <v-list-tile-avatar size="50">
-              								     <img :src="item.avatar">
+                                   <v-icon x-large>account_circle</v-icon>
               								 </v-list-tile-avatar>
                                <v-list-tile-content>
-              								     <v-list-tile-title v-html="item.nama" class="ml-3">
+              								     <v-list-tile-title v-html="item.user" class="ml-3">
               									   </v-list-tile-title>
-              								 <v-list-tile-sub-title v-html="item.ulasan" class="ml-3"></v-list-tile-sub-title>
+              								 <v-list-tile-sub-title v-html="item.body" class="ml-3"></v-list-tile-sub-title>
               								     </v-list-tile-content>
               								 </v-list-tile>
+                                <v-divider></v-divider>
               							</template>
               	        </v-list>
                         <v-container class="text-xs-center">
@@ -208,6 +211,8 @@
 	import materiVideo from '../../components/cerevid-component/video'
   import materiText from '../../components/cerevid-component/text'
   import materiQuiz from '../../components/cerevid-component/quiz'
+  import axios from 'axios'
+
   export default {
     name: "materi",
     components: {
@@ -215,95 +220,25 @@
       materiText,
       materiQuiz
     },
-    data () {
-      return {
+    data: () => ({
         tipeMateri: 'video',
-  			forum: [
-            { header: 'Berikan Pertanyaan' },
-            {
-              avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-              nama: 'James Doom',
-              ulasan: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-            },
-            { divider: true, inset: true },
-            {
-              avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-              nama: 'Steven Connors',
-              ulasan: "Wish I could come, but I'm out of town this weekend."
-            },
-            { divider: true, inset: true },
-            {
-              avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-              nama: 'Sandra Adams',
-              ulasan: "Do you have Paris recommendations? Have you ever been?"
-            }
-          ],
-        items: [
-          { header: 'Percabangan' },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            title: 'if-else',
-            subtitle: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
-            tipe: 'video'
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-            title: 'if-elseif-else',
-            subtitle: "Wish I could come, but I'm out of town this weekend.",
-            tipe: "text"
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-            title: 'switch',
-            subtitle: "Do you have Paris recommendations? Have you ever been?",
-            tipe: "quiz"
-          },
-          { header: 'Perulangan' },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            title: 'for',
-            subtitle: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
-            tipe: 'video'
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-            title: 'while',
-            subtitle: "Wish I could come, but I'm out of town this weekend.",
-            tipe: "text"
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-            title: 'foreach',
-            subtitle: "Do you have Paris recommendations? Have you ever been?",
-            tipe: "quiz"
-          },
-          { header: 'Perulangan' },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            title: 'for',
-            subtitle: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
-            tipe: 'video'
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-            title: 'while',
-            subtitle: "Wish I could come, but I'm out of town this weekend.",
-            tipe: "text"
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-            title: 'foreach',
-            subtitle: "Do you have Paris recommendations? Have you ever been?",
-            tipe: "quiz"
-          },
-        ]
-      }
-    }
+  			forum: [],
+        items: [],
+        auth: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImQxMTQwMzM4YjNjMzBiMzQ0M2FjMWEzYjBlZDYwMzQ4Y2I0M2QxZGVlNjZkMzBhMzJjM2YwZjI4YzEzMDFjMGUyMGMyMDg1MWM5MGQ0MmJkIn0.eyJhdWQiOiIxIiwianRpIjoiZDExNDAzMzhiM2MzMGIzNDQzYWMxYTNiMGVkNjAzNDhjYjQzZDFkZWU2NmQzMGEzMmMzZjBmMjhjMTMwMWMwZTIwYzIwODUxYzkwZDQyYmQiLCJpYXQiOjE1NTg4MTE1MzQsIm5iZiI6MTU1ODgxMTUzNCwiZXhwIjoxNTkwNDMzOTM0LCJzdWIiOiIzMiIsInNjb3BlcyI6W119.V7KZDWkUeqAgxhgiMgx6gcfhW4E1nmOorEhxxN0qM8zDzqnAlEJ1I7L63idl9EVFbCkUWKgm-vL9J0C3ndv4IsOV9H1cZ0c1u-KPmsWi_LpjQWP1ETtAmY6_RTc3ChZtETLc9Z5-dhfpKGEFp-dzg3izdrSr24iGFWz-2YrCXLwlf67po8Ln5n7INpHcDuOVjSnOebyeKkUbeB-kGR8ZzvCLPZ46LhP82_OH6T5vcKmF9rZy5mHumH4uHmfZTNS88OnuqDqlp0pzC1coLQAv7bMG25uZirjRaM0wfhv2-oswckPfVz9I28MB8OmuRLi6fWYOrrmJRm5o8m0NXEmiiDstCGC_eJM9cK_4MzoHaY4LQ0ulXvJCQv-sHgUjGXIYqyFhCMjlNBfxLs_U1dFjdDbnUV0r0jmlxILoQODnpLpiop2DXZbzvaq1bzMg3GEruVDD9L9qNv1jfCW0D8gKo6NMgkKFzQya9iFtdCVfqi3ez2iLz6hfGla8Vs19pPwuS2vSbWFiiWmXem4bPayu1yFBYkOWvXPB9qtAAqFG-dE20wjxl36gqCNBx02oGXZzGl9RHWayOf0GXkwr-imeTwrYfj63sQbZYT7wEuun-KozdaYbp_skcNbBnbxkCvjtmxcM7XB24p-UM4-kCnBoSNCcJVvPjSch00uoXnvetdM",
+    }),
+  	methods: {
+  		async loadApi(){
+  			const response = await axios.get('http://api.ceredinas.id/api/courses/'+this.$route.params.id+'/sections',{'headers': {'Authorization': this.auth}})
+  			this.items = response.data
+  		},
+    		async loadApiForum(){
+    			const response = await axios.get('http://api.ceredinas.id/api/courses/'+this.$route.params.id+'/forums',{'headers': {'Authorization': this.auth}})
+    			this.forum = response.data
+    		},
+  	},
+  	mounted(){
+  		this.loadApi()
+    	this.loadApiForum()
+  	}
   }
 </script>
