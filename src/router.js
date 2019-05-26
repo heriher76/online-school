@@ -18,18 +18,33 @@ export default new Router({
     {
       path: "/login",
       name: 'login',
-      component: () => import("./views/auth/Login.vue")
+      component: () => import("./views/auth/Login.vue"),
+      meta: {
+        requiresVisitor: true
+      }
     },
+    {
+      path: "/logout",
+      name: 'logout',
+      component: () => import("./views/auth/Logout.vue")
+    },
+
     {
       path: "/register",
       name: 'register',
-      component: () => import("./views/auth/Register.vue")
+      component: () => import("./views/auth/Register.vue"),
+      meta: {
+        requiresVisitor: true
+      }
     },
 
     {
       path: "/forgot password",
       name: 'forgot_pass',
-      component: () => import("./views/auth/ForgotPassword.vue")
+      component: () => import("./views/auth/ForgotPassword.vue"),
+      meta: {
+        requiresVisitor: true
+      }
     },
 
     {
@@ -42,8 +57,11 @@ export default new Router({
     {
       path: "/my poin",
       name: 'my_poin',
-      component: () => import("./views/siswa/MyPoin.vue")
-    },
+      component: () => import("./views/siswa/MyPoin.vue"),
+      meta: {
+        requiresAuth: true
+      }
+    },    
 
     // -----------------------------informasi-----------------------------
     {
@@ -62,7 +80,10 @@ export default new Router({
     {
       path: "/cereout/dashboard",
       name: 'dashboard',
-      component: () => import("./views/cereout/Dashboard.vue")
+      component: () => import("./views/cereout/Dashboard.vue"),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/cereout/leader board",

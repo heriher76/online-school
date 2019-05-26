@@ -10,7 +10,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn flat @click="linkInformasi" active-class="false">Informasi</v-btn>
-        <v-menu :nudge-width="100">
+        <v-menu v-if="loggedIn" :nudge-width="100">
           <template v-slot:activator="{ on }">
               <v-btn v-on="on" flat>Cerelink<v-icon>arrow_drop_down</v-icon></v-btn>
           </template>
@@ -31,10 +31,10 @@
 
       <!-- <v-spacer></v-spacer> -->
 
-      <!-- <v-btn flat @click="linkLogin">Sign In</v-btn> -->
-
+      <v-btn v-if="!loggedIn" flat @click="linkLogin">Sign In</v-btn>
+      
       <!-- header actions -->
-      <div class="nav-action">
+      <div v-if="loggedIn" class="nav-action">
         <div class="nav-bal">
             <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -109,7 +109,8 @@
                 <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="primary" flat @click="linkAkun">My Account</v-btn>
-                <v-btn color="red" flat @click="menu = false">Sign Out</v-btn>
+                <v-btn color="red" flat to="/logout">Sign Out</v-btn>
+                <!-- <v-btn color="red" flat @click="menu = false">Sign Out</v-btn> -->
                 </v-card-actions>
             </v-card>
             </v-menu>
@@ -117,54 +118,22 @@
         </div>
     </div>
     <!-- header actions -->
-
     </v-toolbar>
   </div>
 </template>
 
-<style>
-  .nav-action{
-    border-left:1px solid #E0E0E0;
-    padding-left:25px
-  }
-
-  .nav-bal{
-    margin-top:10px;
-  }
-
-  .nav-bal a{
-    padding: 2px;
-    margin-left: 10px;
-    float: right;
-    background-color: #FAFAFA;
-  }
-
-  .nav-bal a:hover{
-    text-decoration: none;
-    background-color: #F5F5F5
-  }
-
-  .nav-bal b{
-    color:#B71C1C;
-    float:right;
-    margin-top:3px
-  }
-
-  .nav-act{
-  float: right;
-  margin-top: 15px;
-  }
-
-  .nav-act span{
-  margin: 10px;
-  }
-</style>
 
 <script>
 export default {
   data:() => ({
     menu: false
   }),
+
+  computed:{
+    loggedIn: function(){
+      return this.$store.getters.loggedIn
+    }
+  },
 
   methods: {
     linkInformasi(){
@@ -199,3 +168,42 @@ export default {
   }
 }
 </script>
+
+
+<style>
+  .nav-action{
+    border-left:1px solid #E0E0E0; 
+    padding-left:25px
+  }
+
+  .nav-bal{
+    margin-top:10px;
+  }
+
+  .nav-bal a{
+    padding: 2px;
+    margin-left: 10px;
+    float: right;
+    background-color: #FAFAFA;
+  }
+
+  .nav-bal a:hover{
+    text-decoration: none;
+    background-color: #F5F5F5
+  }
+
+  .nav-bal b{
+    color:#B71C1C;
+    float:right; 
+    margin-top:3px
+  }
+
+  .nav-act{
+  float: right;
+  margin-top: 15px;
+  }
+
+  .nav-act span{
+  margin: 10px;
+  }
+</style>

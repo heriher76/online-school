@@ -69,7 +69,7 @@
   			this.dataKurikulum = response.data
   		},
   	},
-  	created(){
+  	mounted(){
   		this.loadApi()
   	}
   }
