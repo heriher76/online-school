@@ -248,6 +248,12 @@ export default new Router({
       component: () => import("./views/guru/Forget.vue")
     },
     {
+      path: "/guru/pusat-bantuan",
+      name: 'pusat_bantuan',
+      meta: {layout: "guru"},
+      component: () => import("./views/guru/dashboard/PusatBantuan.vue")
+    },
+    {
       path: "/guru/cerecall",
       name: 'cerecall_guru',
       meta: {layout: "guru"},

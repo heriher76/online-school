@@ -20,19 +20,17 @@
 			                    <v-toolbar-title>Riwayat Chat</v-toolbar-title>
 			                </v-toolbar>
 			                <v-data-table
-			                    :headers="headers"
-			                    :items="desserts"
 			                    class="elevation-1"
 			                >
-			                    <template v-slot:items="props">
-			                    <td>{{ props.item.name }}</td>
-			                    <td>{{ props.item.calories }}</td>
-			                    <td>{{ props.item.name }}</td>
-			                    <td>{{ props.item.calories }}</td>
-			                    <td>{{ props.item.fat }}</td>
-			                    <td>{{ props.item.carbs }}</td>
-			                    <td>{{ props.item.protein }}</td>
-			                    <td>{{ props.item.iron }}</td>
+			                    <template>
+			                    <td></td>
+			                    <td></td>
+			                    <td></td>
+			                    <td></td>
+			                    <td></td>
+			                    <td></td>
+			                    <td></td>
+			                    <td></td>
 			                    </template>
 			                </v-data-table>
 			            </v-card>
@@ -46,11 +44,11 @@
 
 <script>
 	import SideBar from '../../../components/guru/SideBar'
-
+	
 	export default {
         name: 'dashboard',
             components: {
-            SideBar,
+            SideBar
         }
     }
 </script>
