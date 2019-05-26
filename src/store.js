@@ -10,7 +10,8 @@ axios.defaults.baseURL = 'http://api.ceredinas.id/api'
 export default new Vuex.Store({
   state: {
     token: localStorage.getItem('access_token') || null, //get token,
-    info: []
+    info: [],
+    cek: "dataku"
   },
 
   getters: {
@@ -35,7 +36,7 @@ export default new Vuex.Store({
 
   actions: {
     //login function
-    retrieveToken(context, credentials){    
+    retrieveToken(context, credentials){
       return new Promise((resolve, reject) => {
         axios.post('/auth/login',{
           email: credentials.email,
@@ -90,4 +91,3 @@ export default new Vuex.Store({
     }
   }
 });
-

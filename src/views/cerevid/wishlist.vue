@@ -87,6 +87,8 @@
 		name:"wishlist",
 		components:{
 			subNavbar
-		}
+		},
+    data: () => ({
+    }),
 	}
 </script>
