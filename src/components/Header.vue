@@ -10,7 +10,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn flat @click="linkInformasi" active-class="false">Informasi</v-btn>
-        <v-menu :nudge-width="100">
+        <v-menu v-if="loggedIn" :nudge-width="100">
           <template v-slot:activator="{ on }">
               <v-btn v-on="on" flat>Cerelink<v-icon>arrow_drop_down</v-icon></v-btn>
           </template>
@@ -31,10 +31,10 @@
 
       <!-- <v-spacer></v-spacer> -->
 
-      <!-- <v-btn flat @click="linkLogin">Sign In</v-btn> -->
+      <v-btn v-if="!loggedIn" flat @click="linkLogin">Sign In</v-btn>
       
       <!-- header actions -->
-      <div class="nav-action">
+      <div v-if="loggedIn" class="nav-action">
         <div class="nav-bal">
             <v-tooltip bottom>
             <template v-slot:activator="{ on }">              
@@ -109,7 +109,8 @@
                 <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="primary" flat @click="linkAkun">My Account</v-btn>
-                <v-btn color="red" flat @click="menu = false">Sign Out</v-btn>
+                <v-btn color="red" flat to="/logout">Sign Out</v-btn>
+                <!-- <v-btn color="red" flat @click="menu = false">Sign Out</v-btn> -->
                 </v-card-actions>
             </v-card>
             </v-menu>
@@ -117,10 +118,57 @@
         </div>
     </div>
     <!-- header actions -->
-
     </v-toolbar>
   </div>
 </template>
+
+<script>
+export default {
+  data:() => ({
+    menu: false
+  }),
+
+  computed:{
+    loggedIn: function(){
+      return this.$store.getters.loggedIn
+    }
+  },
+
+  methods: {
+    linkInformasi(){
+      this.$router.push({path:'/informasi'})
+    },
+    linkCerevid(){
+      return this.$router.push({path:'/cerevid'})
+    },
+    linkCereout(){
+      this.$router.push({path:'/cereout/dashboard'})
+    },
+    linkCerelisasi(){
+      this.$router.push({path:'/cerelisasi'})
+    },
+    linkCerecall(){
+      this.$router.push({path:'/cerecall'})
+    },
+
+    linkLogin(){
+      this.$router.push({path:'/login'})
+    },
+    
+    linkAkun(){
+      this.menu = false
+      this.$router.push({path:'/my account'})
+    }
+
+    // linkAkun(){
+    //   menu = false
+    //   this.$router.push({path:'/cerecall'})
+    // }
+  }
+}
+</script>
+
+
 
 <style>
   .nav-action{
@@ -159,43 +207,3 @@
   margin: 10px;
   }
 </style>
-
-<script>
-export default {
-  data:() => ({
-    menu: false
-  }),
-
-  methods: {
-    linkInformasi(){
-      this.$router.push({path:'/informasi'})
-    },
-    linkCerevid(){
-      return this.$router.push({path:'/cerevid'})
-    },
-    linkCereout(){
-      this.$router.push({path:'/cereout/dashboard'})
-    },
-    linkCerelisasi(){
-      this.$router.push({path:'/cerelisasi'})
-    },
-    linkCerecall(){
-      this.$router.push({path:'/cerecall'})
-    },
-
-    linkLogin(){
-      this.$router.push({path:'/login'})
-    },
-    
-    linkAkun(){
-      this.menu = false
-      this.$router.push({path:'/my account'})
-    }
-
-    // linkAkun(){
-    //   menu = false
-    //   this.$router.push({path:'/cerecall'})
-    // }
-  }
-}
-</script>

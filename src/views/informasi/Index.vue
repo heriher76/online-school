@@ -20,7 +20,7 @@
                             </v-flex>
                             <v-flex md12 sm12 xs12>
                                 
-                                <div v-for="item in 3" :key="item">
+                                <div v-for="info in infos" :key="info">
                                     <v-layout row wrap="" style="border-bottom:1px solid grey; padding:10px 0px">
                                         <v-flex md4>
                                             <div class="image_info">
@@ -30,9 +30,9 @@
 
                                         <v-flex md8>
                                             <div style="margin: 0px 25px">
-                                                <h5 style="color:black" class="headline">Lorem Ipsum Dolor Sit Amet</h5>
+                                                <h5 style="color:black" class="headline">{{info.title}}</h5>
                                                 <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque voluptatem minus, nobis nam reiciendis labore veritatis ipsa iste, dicta maxime, exercitationem repellendus. Iure praesentium eveniet harum natus perspiciatis tenetur accusamus! <br>
+                                                    {{info.caption}}
                                                     <router-link to="/informasi/detail">Read more >></router-link>
                                                 </p>
                                             </div>
@@ -43,6 +43,8 @@
                             </v-flex>
                         </v-layout>
                 </v-flex>
+
+                {{cek}}
 
                 <v-flex md4 sm12 xs12>
                         <SideBar/>
@@ -81,7 +83,28 @@
                 {src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'},
                 {src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'},
                 {src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'},
-            ]
-        })
+            ],
+
+            infos: [
+                {
+                    'id': 1,
+                    'title': 'lorem',
+                    'caption': 'lorem ipsum dolor sit amet'
+                }
+            ],
+            cek: []
+        }),
+
+        mounted(){
+            this.$store.dispatch('getInformation')
+            .then(response => {
+                this.cek = "coba"
+                // this.infos.push({
+                //     id: response.data.id,
+                //     title: response.data.title,
+                //     caption: response.data.caption
+                // })
+            })
+        }
     }
 </script>
