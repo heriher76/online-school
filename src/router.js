@@ -132,32 +132,12 @@ export default new Router({
       component: () => import("./views/cerevid/daftarPelajaran.vue")
     },
     {
-      path: "/cerevid/detail-pelajaran",
+      path: "/cerevid/detail-pelajaran/:id",
       name: "cerevid_detail_pelajaran",
-      component: () => import("./views/cerevid/detailIkhtisar.vue")
+      component: () => import("./views/cerevid/detailPelajaran.vue")
     },
     {
-      path: "/cerevid/detail-pelajaran/ikhtisar",
-      name: "cerevid_ikhtisar",
-      component: () => import("./views/cerevid/detailIkhtisar.vue")
-    },
-    {
-      path: "/cerevid/detail-pelajaran/kurikulum",
-      name: "cerevid_kurikulum",
-      component: () => import("./views/cerevid/detailKurikulum.vue")
-    },
-    {
-      path: "/cerevid/detail-pelajaran/ulasan",
-      name: "cerevid_ulasan",
-      component: () => import("./views/cerevid/detailUlasan.vue")
-    },
-    {
-      path: "/cerevid/detail-pelajaran/profil-pengajar",
-      name: "cerevid_profil_pengajar",
-      component: () => import("./views/cerevid/detailProfilPengajar.vue")
-    },
-    {
-      path: "/cerevid/detail-pelajaran/materi",
+      path: "/cerevid/detail-pelajaran/:id/materi",
       name: "cerevid_materi",
       component: () => import("./views/cerevid/materi.vue")
     },
