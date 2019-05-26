@@ -37,7 +37,7 @@
       <div v-if="loggedIn" class="nav-action">
         <div class="nav-bal">
             <v-tooltip bottom>
-            <template v-slot:activator="{ on }">              
+            <template v-slot:activator="{ on }">
                 <router-link to="/my poin">
                 <v-icon style="margin:-2px" v-on="on">add</v-icon>
                 </router-link>
@@ -46,22 +46,22 @@
             </v-tooltip>
 
             <b>Poin : 999999 </b>
-            
+
             <div class="clear"></div>
         </div>
 
-        <div class="nav-act">     
+        <div class="nav-act">
             <v-tooltip bottom>
-            <template v-slot:activator="{ on }">              
-                <router-link to="/cerevid/allcourse">
+            <template v-slot:activator="{ on }">
+                <router-link to="/cerevid/daftar-pelajaran">
                 <v-icon color="blue" v-on="on">book</v-icon>
                 </router-link>
             </template>
-            <span>Kelasku di Cerevid</span>
+            <span>Pelajaran saya di Cerevid</span>
             </v-tooltip>
 
             <v-tooltip bottom>
-            <template v-slot:activator="{ on }">              
+            <template v-slot:activator="{ on }">
                 <router-link to="/cerevid/wishlist">
                 <v-icon color="pink" v-on="on">favorite</v-icon>
                 </router-link>
@@ -70,7 +70,7 @@
             </v-tooltip>
 
             <v-tooltip bottom>
-            <template v-slot:activator="{ on }">              
+            <template v-slot:activator="{ on }">
                 <router-link to="">
                 <v-icon color="#F44336" v-on="on">email</v-icon>
                 </router-link>
@@ -122,6 +122,7 @@
   </div>
 </template>
 
+
 <script>
 export default {
   data:() => ({
@@ -154,7 +155,7 @@ export default {
     linkLogin(){
       this.$router.push({path:'/login'})
     },
-    
+
     linkAkun(){
       this.menu = false
       this.$router.push({path:'/my account'})
@@ -167,7 +168,6 @@ export default {
   }
 }
 </script>
-
 
 
 <style>

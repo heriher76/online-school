@@ -11,7 +11,7 @@
 							</v-toolbar>
 							<v-list dense class="pt-0">
 								<v-list-tile
-									to="/cerevid/guru/daftar-pelajaran"
+									to="/guru/cerevid/daftar-pelajaran"
 								>
 									<v-list-tile-action>
 										<v-icon>dashboard</v-icon>
@@ -22,7 +22,7 @@
 									</v-list-tile-content>
 								</v-list-tile>
 								<v-list-tile
-									to="/cerevid/guru/tambah-pelajaran"
+									to="/guru/cerevid/tambah-pelajaran"
 								>
 									<v-list-tile-action>
 										<v-icon>dashboard</v-icon>
@@ -34,4 +34,4 @@
 								</v-list-tile>
 							</v-list>
 						</v-card-text>
-</template>						
+</template>
