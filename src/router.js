@@ -61,7 +61,7 @@ export default new Router({
       meta: {
         requiresAuth: true
       }
-    },    
+    },
 
     // -----------------------------informasi-----------------------------
     {
@@ -143,6 +143,11 @@ export default new Router({
       component: () => import("./views/cerevid/home.vue")
     },
     {
+      path: "/cerevid/semua-pelajaran",
+      name: "cerevid_semua_pelajaran",
+      component: () => import("./views/cerevid/semuaPelajaran.vue")
+    },
+    {
       path: "/cerevid/wishlist",
       name: "cerevid_wishlist",
       component: () => import("./views/cerevid/wishlist.vue")
@@ -161,30 +166,6 @@ export default new Router({
       path: "/cerevid/detail-pelajaran/:id/materi",
       name: "cerevid_materi",
       component: () => import("./views/cerevid/materi.vue")
-    },
-    {
-      path: "/guru/cerevid",
-      name: "cerevid_dashboard_guru",
-      meta: {layout: "guru"},
-      component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
-    },
-    {
-      path: "/guru/cerevid/daftar-pelajaran",
-      name: "cerevid_daftar_pelajaran_guru",
-      meta: {layout: "guru"},
-      component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
-    },
-    {
-      path: "/guru/cerevid/detail-pelajaran",
-      name: "cerevid_detail_pelajaran_guru",
-      meta: {layout: "guru"},
-      component: () => import("./views/cerevid/detailPelajaranGuru.vue")
-    },
-    {
-      path: "/guru/cerevid/tambah-pelajaran",
-      name: "cerevid_tambah_pelajaran",
-      meta: {layout: "guru"},
-      component: () => import("./views/cerevid/tambahPelajaran.vue")
     },
     // -----------------------------Cerelisasi-----------------------------
     {
@@ -249,7 +230,7 @@ export default new Router({
     },
     {
       path: "/guru/pusat-bantuan",
-      name: 'pusat_bantuan',
+      name: 'guru_pusat_bantuan',
       meta: {layout: "guru"},
       component: () => import("./views/guru/dashboard/PusatBantuan.vue")
     },
@@ -276,6 +257,30 @@ export default new Router({
       name: 'account_guru',
       meta: {layout: "guru"},
       component: () => import("./views/guru/dashboard/AccountEdit.vue")
+    },
+    {
+      path: "/guru/cerevid",
+      name: "cerevid_dashboard_guru",
+      meta: {layout: "guru"},
+      component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
+    },
+    {
+      path: "/guru/cerevid/daftar-pelajaran",
+      name: "cerevid_daftar_pelajaran_guru",
+      meta: {layout: "guru"},
+      component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
+    },
+    {
+      path: "/guru/cerevid/detail-pelajaran",
+      name: "cerevid_detail_pelajaran_guru",
+      meta: {layout: "guru"},
+      component: () => import("./views/cerevid/detailPelajaranGuru.vue")
+    },
+    {
+      path: "/guru/cerevid/tambah-pelajaran",
+      name: "cerevid_tambah_pelajaran",
+      meta: {layout: "guru"},
+      component: () => import("./views/cerevid/tambahPelajaran.vue")
     },
 
     // -----------------------------Menu Lainnya---------------------------

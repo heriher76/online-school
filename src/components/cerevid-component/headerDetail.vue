@@ -11,9 +11,9 @@
             </v-flex>
             <v-spacer/>
             <v-flex md8>
-              <subheading class="font-weight-light">
+              <div class="font-weight-light">
                 {{datas.data.description}}
-              </subheading>
+              </div>
             </v-flex>
             <v-flex md8 xs12 sm12>
               <h4>

@@ -77,7 +77,7 @@
 						    <div>Ulasan</div>
 						  </div>
 			        <v-flex xs12 sm12 md12>
-						    <v-list three-line expand="true">
+						    <v-list three-line :expand="true">
 							    <template v-for="review in datas.data.reviews">
 									  <v-divider
 									  ></v-divider>
@@ -105,40 +105,58 @@
 								</v-list>
 					    </v-flex>
 				     </v-layout>
-				     <v-container>
-				      <v-layout justify-end>
-					      <flex md12>
-                  <v-card>
-                    <v-card-title class="headline">Berikan Ulasan</v-card-title>
-                    <v-card-text justify-center>
-                      <v-rating
-                        class="text-xs-center"
-                        v-model="berikanRating"
-                        color="yellow darken-3"
-                        background-color="grey darken-1"
-                        >
-                      </v-rating>
-                      <p class="text-xs-center">{{berikanRating}}</p>
-                      <v-textarea
-                       label="Isi Ulasan"
-                       v-model="body"
-                      ></v-textarea>
-                      {{body}}
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        color="green darken-1"
-                        flat="flat"
-                        @click="kirimReview()"
-                        >
-                        Kirim
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-					      </flex>
-				      </v-layout>
-				    </v-container>
+
+             <v-container>
+               <v-layout justify-end>
+                 <v-flex md12>
+                   <template>
+                     <v-layout row justify-center>
+                       <v-btn
+                         dark color="#2c3e50"
+                         @click.stop="dialog = true"
+                       >
+                         Berikan Ulasan
+                       </v-btn>
+
+                       <v-dialog
+                         v-model="dialog"
+                         max-width="450"
+                       >
+                         <v-card>
+                           <v-card-title class="headline">Berikan Ulasan</v-card-title>
+
+                           <v-card-text justify-center>
+                             <v-rating class="text-xs-center"
+                               v-model="kasihRating"
+                               color="yellow darken-3"
+                               background-color="grey darken-1"
+                             >
+                             </v-rating>
+                             <p class="text-xs-center">{{kasihRating}}</p>
+                             <v-textarea
+                               label="Isi Ulasan"
+                               v-model="body"
+                             ></v-textarea>
+                           </v-card-text>
+
+                           <v-card-actions>
+                             <v-spacer></v-spacer>
+
+                             <v-btn
+                               color="green darken-1"
+                               flat="flat"
+                               @click="kirimUlasan"
+                             >
+                               Kirim
+                             </v-btn>
+                           </v-card-actions>
+                         </v-card>
+                       </v-dialog>
+                     </v-layout>
+                   </template>
+                 </v-flex>
+               </v-layout>
+             </v-container>
 			    </v-container>
 			  </v-card>
       </v-flex>
@@ -146,33 +164,32 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
   export default {
     props: ['datas'],
     data: () => ({
       dialog:false,
-    	auth: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImQxMTQwMzM4YjNjMzBiMzQ0M2FjMWEzYjBlZDYwMzQ4Y2I0M2QxZGVlNjZkMzBhMzJjM2YwZjI4YzEzMDFjMGUyMGMyMDg1MWM5MGQ0MmJkIn0.eyJhdWQiOiIxIiwianRpIjoiZDExNDAzMzhiM2MzMGIzNDQzYWMxYTNiMGVkNjAzNDhjYjQzZDFkZWU2NmQzMGEzMmMzZjBmMjhjMTMwMWMwZTIwYzIwODUxYzkwZDQyYmQiLCJpYXQiOjE1NTg4MTE1MzQsIm5iZiI6MTU1ODgxMTUzNCwiZXhwIjoxNTkwNDMzOTM0LCJzdWIiOiIzMiIsInNjb3BlcyI6W119.V7KZDWkUeqAgxhgiMgx6gcfhW4E1nmOorEhxxN0qM8zDzqnAlEJ1I7L63idl9EVFbCkUWKgm-vL9J0C3ndv4IsOV9H1cZ0c1u-KPmsWi_LpjQWP1ETtAmY6_RTc3ChZtETLc9Z5-dhfpKGEFp-dzg3izdrSr24iGFWz-2YrCXLwlf67po8Ln5n7INpHcDuOVjSnOebyeKkUbeB-kGR8ZzvCLPZ46LhP82_OH6T5vcKmF9rZy5mHumH4uHmfZTNS88OnuqDqlp0pzC1coLQAv7bMG25uZirjRaM0wfhv2-oswckPfVz9I28MB8OmuRLi6fWYOrrmJRm5o8m0NXEmiiDstCGC_eJM9cK_4MzoHaY4LQ0ulXvJCQv-sHgUjGXIYqyFhCMjlNBfxLs_U1dFjdDbnUV0r0jmlxILoQODnpLpiop2DXZbzvaq1bzMg3GEruVDD9L9qNv1jfCW0D8gKo6NMgkKFzQya9iFtdCVfqi3ez2iLz6hfGla8Vs19pPwuS2vSbWFiiWmXem4bPayu1yFBYkOWvXPB9qtAAqFG-dE20wjxl36gqCNBx02oGXZzGl9RHWayOf0GXkwr-imeTwrYfj63sQbZYT7wEuun-KozdaYbp_skcNbBnbxkCvjtmxcM7XB24p-UM4-kCnBoSNCcJVvPjSch00uoXnvetdM",
-      dataReview: {
-        "course_id": this.$route.params.id,
-      	"star": berikanRating,
-      	"body": body,
-      	"user_id": 3
-      }
+      kasihRating: 0,
+      body: "",
     }),
+    computed:{
+			userId(){
+				return this.$store.state.dataUser || {}
+			},
+    },
     methods: {
-        async kirimReview(){
-				  const response = await axios.post('http://api.ceredinas.id/api/courses/'+this.$route.params.id+'/reviews/create', {
-            "course_id": this.$route.params.id,
-          	"star": 2,
-          	"body": "kurang",
-          	"user_id": 3
-            },
-            {'headers': {'Authorization': "Bearer "+this.$store.state.token}})
-        .then(response =>{
-          console.log(response.data.message);
-        }).catch(err =>{
-          console.log(err);
-            console.log(err);
+      kirimUlasan(){
+        this.$store.dispatch('pushDataRating', {
+          course_id: this.$route.params.id,
+          star: this.kasihRating,
+          body: this.body,
+          user_id: this.userId,
+        })
+        .then(response => {
+          this.dialog = false
+        })
+        .catch(error => {
+          console.log(this.$route.params.id+' '+this.kasihRating+' '+this.body)
+          console.log(error)
         })
       }
     }

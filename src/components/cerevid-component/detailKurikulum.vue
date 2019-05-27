@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-expansion-panel expand="true" dark>
+    <v-expansion-panel :expand="true">
       <v-expansion-panel-content
-        v-for="section in dataKurikulum.data"
-      >
+        v-for="(section, index) in dataDetailMateri.data"
+        >
         <template v-slot:header>
-          <div>{{section.title}}</div>
+          <div>{{index+1}}. {{section.title}}</div>
         </template>
         <v-card>
           <div v-for="materi in section.videos">
@@ -14,7 +14,7 @@
                 <v-list-tile-sub-title>Materi | {{materi.title}}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
-                <v-btn  color="green">
+                <v-btn color="green">
                   <v-icon color="white--text">visibility</v-icon>
                   <span class="pa-1 white--text">Lihat</span>
                 </v-btn>
@@ -56,21 +56,33 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
   export default {
-    props: ['datas'],
   	data: () => ({
-  		auth: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImQxMTQwMzM4YjNjMzBiMzQ0M2FjMWEzYjBlZDYwMzQ4Y2I0M2QxZGVlNjZkMzBhMzJjM2YwZjI4YzEzMDFjMGUyMGMyMDg1MWM5MGQ0MmJkIn0.eyJhdWQiOiIxIiwianRpIjoiZDExNDAzMzhiM2MzMGIzNDQzYWMxYTNiMGVkNjAzNDhjYjQzZDFkZWU2NmQzMGEzMmMzZjBmMjhjMTMwMWMwZTIwYzIwODUxYzkwZDQyYmQiLCJpYXQiOjE1NTg4MTE1MzQsIm5iZiI6MTU1ODgxMTUzNCwiZXhwIjoxNTkwNDMzOTM0LCJzdWIiOiIzMiIsInNjb3BlcyI6W119.V7KZDWkUeqAgxhgiMgx6gcfhW4E1nmOorEhxxN0qM8zDzqnAlEJ1I7L63idl9EVFbCkUWKgm-vL9J0C3ndv4IsOV9H1cZ0c1u-KPmsWi_LpjQWP1ETtAmY6_RTc3ChZtETLc9Z5-dhfpKGEFp-dzg3izdrSr24iGFWz-2YrCXLwlf67po8Ln5n7INpHcDuOVjSnOebyeKkUbeB-kGR8ZzvCLPZ46LhP82_OH6T5vcKmF9rZy5mHumH4uHmfZTNS88OnuqDqlp0pzC1coLQAv7bMG25uZirjRaM0wfhv2-oswckPfVz9I28MB8OmuRLi6fWYOrrmJRm5o8m0NXEmiiDstCGC_eJM9cK_4MzoHaY4LQ0ulXvJCQv-sHgUjGXIYqyFhCMjlNBfxLs_U1dFjdDbnUV0r0jmlxILoQODnpLpiop2DXZbzvaq1bzMg3GEruVDD9L9qNv1jfCW0D8gKo6NMgkKFzQya9iFtdCVfqi3ez2iLz6hfGla8Vs19pPwuS2vSbWFiiWmXem4bPayu1yFBYkOWvXPB9qtAAqFG-dE20wjxl36gqCNBx02oGXZzGl9RHWayOf0GXkwr-imeTwrYfj63sQbZYT7wEuun-KozdaYbp_skcNbBnbxkCvjtmxcM7XB24p-UM4-kCnBoSNCcJVvPjSch00uoXnvetdM",
-  		dataKurikulum: "loading..."
   	}),
-  	methods: {
-  		async loadApi(){
-  			const response = await axios.get('http://api.ceredinas.id/api/courses/'+this.$route.params.id+'/sections',{'headers': {'Authorization': this.auth}})
-  			this.dataKurikulum = response.data
-  		},
-  	},
-  	mounted(){
-  		this.loadApi()
-  	}
+		methods: {
+      async getDataDetailMateri(){
+        this.$store.dispatch('getDataDetailMateri')
+        .then(response => {
+          console.log("telah load data..")
+        })
+      },
+		},
+		created(){
+			this.getDataDetailMateri()
+		},
+		computed: {
+			dataDetailMateri(){
+				return this.$store.state.dataDetailMateri
+			},
+		},
   }
 </script>
+<style>
+.theme--light.v-expansion-panel .v-expansion-panel__container{
+	background-color: #2c3e50;
+	color: #fff;
+}
+.theme--light.v-expansion-panel .v-expansion-panel__container .v-expansion-panel__header .v-expansion-panel__header__icon .v-icon{
+	color:#fff;
+}
+</style>
