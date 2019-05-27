@@ -97,13 +97,13 @@ export default new Vuex.Store({
             localStorage.removeItem('access_token')
             context.commit('destroyToken')
             context.commit('destroydataUser')
-            resolve(response)
+            // resolve(response)
             // console.log(response.data)
           })
           .catch(error => {
             localStorage.removeItem('access_token')
             context.commit('destroyToken')
-            reject(error)
+            // reject(error)
           })
         // })
       }
