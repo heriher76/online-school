@@ -20,11 +20,11 @@
                             </v-flex>
                             <v-flex md12 sm12 xs12>
                                 
-                                <div v-for="info in infos" :key="info">
+                                <div v-for="info in infos" :key="info.id">
                                     <v-layout row wrap="" style="border-bottom:1px solid grey; padding:10px 0px">
                                         <v-flex md4>
                                             <div class="image_info">
-                                                <img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg" width="100%" height="100%" alt="">
+                                                <img :src="info.url" width="100%" height="100%" alt="">
                                             </div>
                                         </v-flex>
 
@@ -43,8 +43,6 @@
                             </v-flex>
                         </v-layout>
                 </v-flex>
-
-                {{cek}}
 
                 <v-flex md4 sm12 xs12>
                         <SideBar/>
@@ -74,37 +72,37 @@
 <script>
     import SideBar from "../../components/informasi/Sidebar"
 
+    import axios from 'axios'
+
     export default {
         components: {
             SideBar
         },
-        data: () => ({
-            items: [
-                {src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'},
-                {src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'},
-                {src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'},
-            ],
 
-            infos: [
-                {
-                    'id': 1,
-                    'title': 'lorem',
-                    'caption': 'lorem ipsum dolor sit amet'
-                }
-            ],
-            cek: []
-        }),
+        data() {
+            return{
+                items: [
+                    {src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'},
+                    {src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'},
+                    {src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'},
+                ],
+
+                infos: []
+            }
+        },
 
         mounted(){
-            this.$store.dispatch('getInformation')
+        //  axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+
+            axios.get('/master/information')
             .then(response => {
-                this.cek = "coba"
-                // this.infos.push({
-                //     id: response.data.id,
-                //     title: response.data.title,
-                //     caption: response.data.caption
-                // })
+                this.infos = response.data.data
+                // console.log(response)
+            })
+            .catch(error =>{
+                console.log(error)
             })
         }
+        
     }
 </script>

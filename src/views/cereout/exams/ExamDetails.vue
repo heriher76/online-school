@@ -5,42 +5,42 @@
                 <v-toolbar-title>Exam Details</v-toolbar-title>
             </v-toolbar>
             <v-container>
-                <v-card>
+                <v-card style="text-transform:capitalize">
                     <v-layout>
                     <v-flex md6 sm12 xs12>
                         <v-list>
                             <v-list-tile>
                                 <v-list-tile-content>
                                 <v-list-tile-title>Name</v-list-tile-title>
-                                <v-list-tile-sub-title>SKD 3 (TKP) TO Mei</v-list-tile-sub-title>
+                                <v-list-tile-sub-title>{{detail.name}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
 
                             <v-list-tile>
                                 <v-list-tile-content>
                                 <v-list-tile-title>Passing Percentage</v-list-tile-title>
-                                <v-list-tile-sub-title>37%</v-list-tile-sub-title>
+                                <v-list-tile-sub-title>{{detail.passing_percentage}}%</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
 
                             <v-list-tile>
                                 <v-list-tile-content>
                                 <v-list-tile-title>Instruction</v-list-tile-title>
-                                <v-list-tile-sub-title>Change your</v-list-tile-sub-title>
+                                <v-list-tile-sub-title>{{detail.instruction}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
 
                             <v-list-tile>
                                 <v-list-tile-content>
                                 <v-list-tile-title>Duration</v-list-tile-title>
-                                <v-list-tile-sub-title>30 Mins</v-list-tile-sub-title>
+                                <v-list-tile-sub-title>{{detail.duration}} Mins</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
 
                             <v-list-tile>
                                 <v-list-tile-content>
                                 <v-list-tile-title>Class</v-list-tile-title>
-                                <v-list-tile-sub-title>Your status</v-list-tile-sub-title>
+                                <v-list-tile-sub-title>{{detail.class}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                         </v-list>
@@ -50,32 +50,32 @@
                             <v-list-tile>
                                 <v-list-tile-content>
                                 <v-list-tile-title>Attempt Count</v-list-tile-title>
-                                <v-list-tile-sub-title>Change your</v-list-tile-sub-title>
+                                <v-list-tile-sub-title>{{detail.attempt_count}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
 
                             <v-list-tile>
                                 <v-list-tile-content>
                                 <v-list-tile-title>Start Date</v-list-tile-title>
-                                <v-list-tile-sub-title>15-05-2019</v-list-tile-sub-title>
+                                <v-list-tile-sub-title>{{detail.start_date}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                             <v-list-tile>
                                 <v-list-tile-content>
                                 <v-list-tile-title>End Date</v-list-tile-title>
-                                <v-list-tile-sub-title>16-05-2019</v-list-tile-sub-title>
+                                <v-list-tile-sub-title>{{detail.end_date}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                             <v-list-tile>
                                 <v-list-tile-content>
-                                <v-list-tile-title>Expire days</v-list-tile-title>
-                                <v-list-tile-sub-title>Unlimited</v-list-tile-sub-title>
+                                <v-list-tile-title>Scoring System</v-list-tile-title>
+                                <v-list-tile-sub-title>{{detail.scoring_system}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                             <v-list-tile>
                                 <v-list-tile-content>
                                 <v-list-tile-title>Price</v-list-tile-title>
-                                <v-list-tile-sub-title>Rp. 1250.00</v-list-tile-sub-title>
+                                <v-list-tile-sub-title>{{detail.price}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                         </v-list>
@@ -107,7 +107,7 @@
                     <v-card-actions>
                       <v-spacer></v-spacer>
                   
-                      <v-btn flat :disabled="loading" :loading="loading" color="primary" @click="loading = true">
+                      <v-btn flat :disabled="loading" :loading="loading" color="primary" @click="action(detail.id)">
                       I accept &amp; start the exam
                       </v-btn>
 
@@ -123,7 +123,6 @@
                   </v-card>
                 </v-dialog>
                 </v-card>
-                
             </v-container>
         </v-container>
     </div>
@@ -131,34 +130,74 @@
 
 <script>
   export default {
+    // props:["detail"],
+    props: {
+      detail: {
+        type:Array,
+        default: []
+      }
+    },
     data () {
       return {
         loading: false,
         dialog: false
       }
     },
-    watch: {
-      loading (val) {
-        this.dialog = false
-        if (!val) return
-        setTimeout(() => (
-          this.loading = false, 
-          window.open(
-                      "/cereout/exams/start",
-                      "my_window", 
-                      "width=1600, height=620, resizable=no")
-                    ), 
-        3000)
-          // window.open("/cereout/exams/start","my_window", 'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=no, width=SomeSize,height=SomeSize')), 3000)
+
+    mounted(){
+      if(this.detail==null){
+        return this.$router.push({name: 'my_exams'})
       }
     },
 
-    methods:{
-      myFunction () {
-       
-      },
+    methods: {
+      action(id) {
+        // console.log(id)
+        
+        this.dialog  = false
+        this.loading = true
+        let routeData = this.$router.resolve({name: 'exam_page', params:{id:id}});
 
-    }
+        if (!this.loading) return
+        setTimeout(() => (
+          this.loading = false, 
+          window.open(
+                      routeData.href,
+                      'my_window', 
+                      'width=1600, height=620, resizable=no',
+                      '_blank'
+                      )
+                    ), 
+          3000)
+      }
+
+    // watch: {
+    //   loading (val) {
+    //     // this.dialog = false
+    //     // let routeData = this.$router.resolve({name: 'exam_page'});
+
+    //     console.log(val)
+
+    //     // if (!val) return
+    //     // setTimeout(() => (
+    //     //   this.loading = false, 
+    //     //   window.open(
+    //     //               routeData.href,
+    //     //               'my_window', 
+    //     //               'width=1600, height=620, resizable=no',
+    //     //               '_blank'
+    //     //               )
+    //     //             ), 
+    //     // 3000)
+
+    //     //   window.open(
+    //     //               "/cereout/exams/start",
+    //     //               "my_window", 
+    //     //               "width=1600, height=620, resizable=no")
+    //     //             ), 
+    //     // 3000)
+    //   }
+    },
 
   }
 

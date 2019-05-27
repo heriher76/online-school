@@ -11,7 +11,10 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: require("./views/Home.vue").default
+      component: require("./views/Home.vue").default,
+      // meta: {
+      //   requiresAuth:true
+      // }
     },
 
     // -----------------------------auth-----------------------------
@@ -20,7 +23,7 @@ export default new Router({
       name: 'login',
       component: () => import("./views/auth/Login.vue"),
       meta: {
-        requiresVisitor: true
+        requiresVisitor:true
       }
     },
     {
@@ -34,7 +37,7 @@ export default new Router({
       name: 'register',
       component: () => import("./views/auth/Register.vue"),
       meta: {
-        requiresVisitor: true
+        requiresVisitor:true
       }
     },
 
@@ -43,7 +46,7 @@ export default new Router({
       name: 'forgot_pass',
       component: () => import("./views/auth/ForgotPassword.vue"),
       meta: {
-        requiresVisitor: true
+        requiresVisitor:true
       }
     },
 
@@ -59,7 +62,7 @@ export default new Router({
       name: 'my_poin',
       component: () => import("./views/siswa/MyPoin.vue"),
       meta: {
-        requiresAuth: true
+        requiresAuth:true
       }
     },
 
@@ -73,6 +76,7 @@ export default new Router({
     {
       path: "/informasi/detail",
       name: 'detail_informasi',
+      props: true,
       component: () => import("./views/informasi/ReadMore.vue")
     },
 
@@ -100,14 +104,16 @@ export default new Router({
     {
       path: "/cereout/exams/detail",
       name: 'details_exams',
-      component: () => import("./views/cereout/exams/ExamDetails.vue")
+      component: () => import("./views/cereout/exams/ExamDetails.vue"),
+      props:true
     },
 
     {
-      path: "/cereout/exams/start",
+      path: "/cereout/exams/start/:id",
       name: 'exam_page',
       meta: {layout: "exam"},
-      component: () => import("./views/cereout/exams/ExamPage.vue")
+      component: () => import("./views/cereout/exams/ExamPage.vue"),
+      // props:true
     },
 
     {
@@ -286,7 +292,7 @@ export default new Router({
     // -----------------------------Menu Lainnya---------------------------
     {
       path: "/pusat bantuan",
-      name: 'pusat_bantuan',
+      name: 'pusat_bantuan_siswa',
       component: () => import("./views/PusatBantuan.vue")
     }
   ]

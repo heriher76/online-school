@@ -53,12 +53,12 @@
                             <v-list>
                                 <v-card 
                                     v-for="item in items"
-                                    :key="item"
+                                    :key="item.id"
                                     >
-                                    <v-list-tile @click="examDetail" class="list">
+                                    <v-list-tile @click="examDetail(item)" class="list">
                                         <v-list-tile-content>
-                                            <div><span style="color:#039BE5;font-size:15px">{{item.examName}}</span><br>
-                                            <span style="color:#616161;font-size:14px">{{item.questions}} Questions</span></div>
+                                            <div><span style="color:#039BE5;font-size:15px; text-transform:capitalize">{{item.name}} | {{item.lesson}}</span><br>
+                                            <span style="color:#616161;font-size:14px">Attempt Count: {{item.attempt_count}}</span></div>
                                         </v-list-tile-content>
                                     </v-list-tile>
                                 </v-card>
@@ -68,30 +68,28 @@
                     </v-layout>           
                 </v-flex>  
                 <!-- /sub content -->    
+
             </v-layout>
         </v-container>
+
     </div>
 </template>
 
 <script>
     import SideBar from '../../../components/cereout-component/SideBar'
+    import ExamDetail from '../exams/ExamDetails'
+
+    import axios from 'axios'
 
     export default {
         name: 'dashboard',
         components: {
-            SideBar
+            SideBar,
+            ExamDetail
         },
         data: () => ({
-            items: [
-                { examName: 'Exam 1 | Lesson', questions: 20},
-                { examName: 'Exam 2 | Lesson', questions: 21},
-                { examName: 'Exam 3 | Lesson', questions: 22},
-                { examName: 'Exam 4 | Lesson', questions: 23},
-                { examName: 'Exam 5 | Lesson', questions: 20},
-                { examName: 'Exam 6 | Lesson', questions: 28},
-                { examName: 'Exam 7 | Lesson', questions: 30},
-                { examName: 'Exam 8 | Lesson', questions: 50}
-            ],
+            items: [],
+            detail: '',
             ListName: 'Todays'
         }),
         
@@ -109,9 +107,25 @@
                 }
                 this.ListName = n
             },
-            examDetail() {
-                this.$router.push({path: '/cereout/exams/detail' })
+            examDetail(data) {
+                // this.detail = data
+                this.$router.push({name: 'details_exams', params: {detail:data} })
             }
+        },
+
+
+        mounted(){
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+
+            axios.get('/cereouts')
+            .then(response => {
+                this.items = response.data.data
+                // console.log(response.data)
+            })
+            .catch(error =>{
+                console.log(error)
+            })
+
         }
     }
 </script>

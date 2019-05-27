@@ -90,7 +90,7 @@ export default new Vuex.Store({
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
 
       if(context.getters.loggedIn) {
-        return new Promise((resolve, reject) => {
+        // return new Promise((resolve, reject) => {
           axios.get('/auth/logout')
           .then(response => {
             localStorage.removeItem('getDataUser')
@@ -105,22 +105,22 @@ export default new Vuex.Store({
             context.commit('destroyToken')
             reject(error)
           })
-        })
+        // })
       }
     },
 
-    getInformation(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+    // loadInformation(context){
+    //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+    //   axios.get('/master/information')
+    //   .then(response => {
+    //     // console.log(response.data)
+    //     context.commit('getInformation', response.data)
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //   })
+    // },
 
-      axios.get('/master/information')
-      .then(response => {
-        // console.log(response.data)
-        context.commit('getInformation', response.data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    },
 //---------------------------------cerevid function-----------------------------------------------
     getDataPelajaran(context){
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
@@ -165,22 +165,22 @@ export default new Vuex.Store({
         console.log(error)
       })
     },
-      //Input Ulasan & Rating
-      pushDataRating(context, credentials){
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-        axios.post('/courses/'+router.currentRoute.params.id+'/reviews/create',{
-          course_id: credentials.course_id,
-          star: credentials.star,
-          body: credentials.body,
-          user_id: credentials.user_id
-        })
-        .then(response => {
-          console.log(response.data)
-          router.push({path: '/cerevid/'})
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      },
+    //Input Ulasan & Rating
+    pushDataRating(context, credentials){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.post('/courses/'+router.currentRoute.params.id+'/reviews/create',{
+        course_id: credentials.course_id,
+        star: credentials.star,
+        body: credentials.body,
+        user_id: credentials.user_id
+      })
+      .then(response => {
+        console.log(response.data)
+        router.push({path: '/cerevid/'})
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
   }
 });
