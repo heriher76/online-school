@@ -20,6 +20,8 @@ Vue.component('guru-layout', Guru);
 
 Vue.config.productionTip = false;
 
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
+
 new Vue({
   router,
   store,

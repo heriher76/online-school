@@ -45,7 +45,7 @@
             <span>Top up</span>
             </v-tooltip>
 
-            <b>Poin : 999999 </b>
+            <b>Poin : {{user.balance}} </b>
 
             <div class="clear"></div>
         </div>
@@ -96,7 +96,6 @@
                     <v-list-tile-avatar>
                     <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
                     </v-list-tile-avatar>
-
                     <v-list-tile-content>
                     <v-list-tile-title>{{user.name}}</v-list-tile-title>
                     <v-list-tile-sub-title>{{user.email}}</v-list-tile-sub-title>
@@ -109,13 +108,13 @@
                 <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="primary" flat @click="linkAkun">My Account</v-btn>
-                <v-btn color="red" flat to="/logout">Sign Out</v-btn>
-                <!-- <v-btn color="red" flat @click="menu = false">Sign Out</v-btn> -->
+                <v-btn color="red" flat @click="linkLogout">Sign Out</v-btn>
                 </v-card-actions>
             </v-card>
             </v-menu>
         </div>
     </div>
+    <!-- {{user}} -->
     <!-- header actions -->      
     </v-toolbar>
   </div>
@@ -137,8 +136,7 @@ export default {
     }
   },
 
-  mounted(){  
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token    
+  mounted(){   
     axios.get('/auth/user')
     .then(response => {
       this.user = response.data.data
@@ -167,6 +165,11 @@ export default {
 
     linkLogin(){
       this.$router.push({path:'/login'})
+    },
+
+    linkLogout(){
+      this.menu = false
+      this.$router.push({path:'/logout'})
     },
 
     linkAkun(){

@@ -83,15 +83,21 @@
                 </v-layout>
                 <v-divider></v-divider>
 
+                <v-btn dark @click="action(detail.id)" color="info">
+                  Attempt Now
+                  <v-icon right dark>launch</v-icon>
+                </v-btn>
+                <v-btn @click="$router.go(-1)">Cancel</v-btn>
+
                 <v-dialog v-model="dialog" width="500">
-                  <template v-slot:activator="{ on }">
+                  <!-- <template v-slot:activator="{ on }">
                     <v-btn dark color="info" v-on="on">
                       Attempt Now
                       <v-icon right dark>launch</v-icon>
                     </v-btn>
                     
                     <v-btn @click="$router.go(-1)">Cancel</v-btn>
-                  </template>
+                  </template> -->
 
                   <v-card>
                     <v-card-title class="headline grey lighten-2" primary-title>
@@ -129,6 +135,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  
   export default {
     // props:["detail"],
     props: {
@@ -153,50 +161,47 @@
     methods: {
       action(id) {
         // console.log(id)
-        
-        this.dialog  = false
         this.loading = true
-        let routeData = this.$router.resolve({name: 'exam_page', params:{id:id}});
 
-        if (!this.loading) return
-        setTimeout(() => (
-          this.loading = false, 
-          window.open(
-                      routeData.href,
-                      'my_window', 
-                      'width=1600, height=620, resizable=no',
-                      '_blank'
-                      )
-                    ), 
-          3000)
+        // axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+        axios.post('/cereouts/' + id + '/attempts', {
+          user_id: 31
+        })
+        .then(response => {
+          this.loading = false
+          // console.log(response.data)
+          if(response.data.status == false){
+            let routeData = this.$router.resolve({name: 'exam_page', params:{id:id}});
+            window.open(routeData.href,
+                        'my_window', 
+                        'width=1600, height=620, resizable=no',
+                        '_blank'
+                        )
+          }else{
+            return this.dialog = true
+          }
+
+        })
+        .catch(error =>{
+            console.log(error)
+        })
+        
+        // this.dialog  = false
+        // this.loading = true
+        // let routeData = this.$router.resolve({name: 'exam_page', params:{id:id}});
+
+        // if (!this.loading) return
+        // setTimeout(() => (
+        //   this.loading = false, 
+        //   window.open(
+        //               routeData.href,
+        //               'my_window', 
+        //               'width=1600, height=620, resizable=no',
+        //               '_blank'
+        //               )
+        //             ), 
+        //   3000)
       }
-
-    // watch: {
-    //   loading (val) {
-    //     // this.dialog = false
-    //     // let routeData = this.$router.resolve({name: 'exam_page'});
-
-    //     console.log(val)
-
-    //     // if (!val) return
-    //     // setTimeout(() => (
-    //     //   this.loading = false, 
-    //     //   window.open(
-    //     //               routeData.href,
-    //     //               'my_window', 
-    //     //               'width=1600, height=620, resizable=no',
-    //     //               '_blank'
-    //     //               )
-    //     //             ), 
-    //     // 3000)
-
-    //     //   window.open(
-    //     //               "/cereout/exams/start",
-    //     //               "my_window", 
-    //     //               "width=1600, height=620, resizable=no")
-    //     //             ), 
-    //     // 3000)
-    //   }
     },
 
   }

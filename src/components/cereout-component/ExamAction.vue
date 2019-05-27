@@ -30,7 +30,7 @@
                         <v-container>
                             <p style="font-size:16px">{{quest}}</p>
                             <div style="float:left">
-                                <label class="container" v-for="(n,key,index) in options" :key="n">
+                                <label class="container" v-for="(n,key,index) in options" :key="n.index">
                                 <input type="radio" :value="n.option" v-model="tmpanswer[hal]" name="opt">
                                 <span class="checkmark"><p>{{n.option}} </p></span>
                                 </label>   
@@ -278,8 +278,7 @@
         },
 
         mounted(){
-            
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+            // axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
             axios.get('/cereouts/question/' + this.idQuestion)
             .then(response => {
                 this.load_data = false

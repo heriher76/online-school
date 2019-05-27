@@ -47,7 +47,7 @@ export default {
     data:() => ({
         dialog:true,
         timer: null,
-        totalTime: 10
+        totalTime: 60
     }),
 
     methods: {
