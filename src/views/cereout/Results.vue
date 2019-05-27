@@ -29,7 +29,10 @@
                             <td>{{ props.item.fat }}</td>
                             <td>{{ props.item.carbs }}</td>
                             <td>{{ props.item.carbs }}</td>
-                            <td> <router-link :to="{name: 'result_detail', params:{id:'1'}}">Detail</router-link> </td>
+                            <td> 
+                                <router-link :to="{name: 'result_detail', params:{id:'1'}}">Detail</router-link> | 
+                                <router-link :to="{name: 'result_detail', params:{id:'1'}}">Lihat Pembahasan</router-link>
+                            </td>
                         </template>
                         </v-data-table>
                     </v-card>

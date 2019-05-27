@@ -2,6 +2,7 @@
   <div class="home">
     <!-- banner -->
     <Banner/>
+    <v-btn to="/login">cek</v-btn>
     <!-- /banner -->
 
     <v-container>

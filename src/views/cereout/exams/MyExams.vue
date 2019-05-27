@@ -21,25 +21,19 @@
                                 <v-list dense class="pt-0">
                                     <v-list-tile @click="changeList(1)" active-class="false">
                                         <v-list-tile-content>
-                                        <v-list-tile-title>Todays Exam</v-list-tile-title>
+                                        <v-list-tile-title>Daftar Tryout</v-list-tile-title>
                                         </v-list-tile-content>
                                     </v-list-tile>
 
                                     <v-list-tile @click="changeList(2)" active-class="false">
                                         <v-list-tile-content>
-                                        <v-list-tile-title>Purchased Exam</v-list-tile-title>
+                                        <v-list-tile-title>Tryout Dibeli</v-list-tile-title>
                                         </v-list-tile-content>
                                     </v-list-tile>
 
                                     <v-list-tile @click="changeList(3)" active-class="false">
                                         <v-list-tile-content>
-                                        <v-list-tile-title>Upcoming Exam</v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-
-                                    <v-list-tile @click="changeList(4)" active-class="false">
-                                        <v-list-tile-content>
-                                        <v-list-tile-title>Expired Exam</v-list-tile-title>
+                                        <v-list-tile-title>Tryout Kadaluarsa</v-list-tile-title>
                                         </v-list-tile-content>
                                     </v-list-tile>
                                 </v-list>
@@ -48,7 +42,7 @@
             
                         <v-flex md10 sm12 xs12>
                             <v-card>
-                                <v-card-text class="px-0"><h6 class="title" style="margin:4px 15px; text-transform: capitalize">{{ListName}} Exams</h6></v-card-text>
+                                <v-card-text class="px-0"><h6 class="title" style="margin:4px 15px; text-transform: capitalize">{{ListName}}</h6></v-card-text>
                             </v-card>
                             <v-list>
                                 <div v-show="load_data" style="margin:10px auto; width:5%;">
@@ -62,7 +56,15 @@
                                     v-for="item in items"
                                     :key="item.id"
                                     >
-                                    <v-list-tile @click="examDetail(item)" class="list">
+
+                                    <v-list-tile v-if="ListName == 'Tryout Kadaluarsa'" class="list">
+                                        <v-list-tile-content>
+                                            <div><span style="color:#039BE5;font-size:15px; text-transform:capitalize">{{item.name}} | {{item.lesson}}</span><br>
+                                            <span style="color:#616161;font-size:14px">Attempt Count: {{item.attempt_count}}</span></div>
+                                        </v-list-tile-content>
+                                    </v-list-tile>
+
+                                    <v-list-tile v-else @click="examDetail(item)" class="list">
                                         <v-list-tile-content>
                                             <div><span style="color:#039BE5;font-size:15px; text-transform:capitalize">{{item.name}} | {{item.lesson}}</span><br>
                                             <span style="color:#616161;font-size:14px">Attempt Count: {{item.attempt_count}}</span></div>
@@ -75,6 +77,7 @@
                     </v-layout>           
                 </v-flex>  
                 <!-- /sub content -->    
+                
             </v-layout>
         </v-container>
 
@@ -97,42 +100,61 @@
             load_data:true,
             items: [],
             detail: '',
-            ListName: 'Todays'
+            ListName: 'Daftar Tryout',
+            idTryout:'',
         }),
         
         methods:{
             changeList(list){
-                var n=''
+                
+                axios.get('/auth/user').then(response => {this.idTryout = response.data.data.id})
+
                 if(list==1){
-                    n = "Todays"
+                    this.ListName = "Daftar Tryout"
+                    axios.get('/cereouts')
+                    .then(response => {
+                        this.items = response.data.data
+                    })
+                    .catch(error =>{
+                        console.log(error)
+                    })
                 }else if(list==2){
-                    n = "Purchased"
+                    this.ListName = "Tryout Dibeli"
+                    axios.get('/cereouts/attempttryout/'+this.idTryout)
+                    .then(response => {
+                        this.items = response.data.data
+                    })
+                    .catch(error =>{
+                        console.log(error)
+                    })
                 }else if(list==3){
-                    n = "Upcoming"
-                }else if(list==4){
-                    n = "Expired"
+                    this.ListName = "Tryout Kadaluarsa"
+                    axios.get('/cereouts/attempttryout/'+this.idTryout+'/expire')
+                    .then(response => {
+                        this.items = response.data.data
+                    })
+                    .catch(error =>{
+                        console.log(error)
+                    })
                 }
-                this.ListName = n
             },
+
             examDetail(data) {
-                // this.detail = data
                 this.$router.push({name: 'details_exams', params: {detail:data} })
             },
         },
 
-
         mounted(){
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+            // axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
             axios.get('/cereouts')
             .then(response => {
                 this.load_data = false
                 this.items = response.data.data
-                // console.log(response.data)
             })
             .catch(error =>{
                 console.log(error)
             })
 
-        }
+        },
     }
 </script>
