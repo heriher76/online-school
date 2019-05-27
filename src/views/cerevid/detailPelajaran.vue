@@ -1,6 +1,7 @@
 <template>
 	<div class="detailPelajaran">
 		<headerDetail :datas="dataDetailPelajaran"/>
+		{{dataUser}}
 		<v-container>
 			<v-tabs
 				color="#f5f5f5"
@@ -41,7 +42,7 @@
 							<v-container fluid>
 								<v-flex  class="mx-4">
 									<v-container grid-list-md>
-										<detailIkhtisar :datas="dataDetailPelajaran"/>
+											<detailIkhtisar :datas="dataDetailPelajaran"/>
 									</v-container>
 								</v-flex>
 							</v-container>
@@ -53,9 +54,7 @@
 						<v-card>
 							<v-container fluid>
 								<v-flex  class="mx-4">
-									<v-container grid-list-md>
-										<detailKurikulum :datas="dataDetailPelajaran"/>
-									</v-container>
+									<detailKurikulum/>
 								</v-flex>
 							</v-container>
 						</v-card>
@@ -67,7 +66,8 @@
 							<v-container fluid>
 								<v-flex  class="mx-4">
 									<v-container grid-list-md>
-										<detailUlasan :datas="dataDetailPelajaran"/>
+											<detailUlasan :datas="dataDetailPelajaran"/>
+										</v-layout>
 									</v-container>
 								</v-flex>
 							</v-container>
@@ -80,7 +80,9 @@
 							<v-container fluid>
 								<v-flex  class="mx-4">
 									<v-container grid-list-md>
-										<detailProfilPengajar :datas="dataDetailPelajaran"/>
+										<v-layout row wrap>
+											<detailProfilPengajar :datas="dataDetailPelajaran"/>
+										</v-layout>
 									</v-container>
 								</v-flex>
 							</v-container>
@@ -98,7 +100,7 @@
 	import detailKurikulum from '../../components/cerevid-component/detailKurikulum'
 	import detailUlasan from '../../components/cerevid-component/detailUlasan'
 	import detailProfilPengajar from '../../components/cerevid-component/detailProfilPengajar'
-	import axios from 'axios'
+
 	export default {
 		name:"detailPelajaran",
 		components:{
@@ -110,16 +112,22 @@
 			detailProfilPengajar
 		},
 		data: () => ({
-			dataDetailPelajaran: "loading..."
 		}),
 		methods: {
-			async loadApi(){
-				const response = await axios.get('http://api.ceredinas.id/api/courses/'+this.$route.params.id,{'headers': {'Authorization': "Bearer "+this.$store.state.token}})
-				this.dataDetailPelajaran = response.data
+      async getDataDetailPelajaran(){
+        this.$store.dispatch('getDataDetailPelajaran')
+        .then(response => {
+          console.log("telah load data..")
+        })
+      },
+		},
+		created(){
+			this.getDataDetailPelajaran()
+		},
+		computed: {
+			dataDetailPelajaran(){
+				return this.$store.state.dataDetailPelajaran || {}
 			},
 		},
-		async mounted(){
-			this.loadApi()
-		}
 	}
 </script>
