@@ -6,7 +6,7 @@
                     <v-card>
                         <v-layout row wrap>
                             <v-flex md9 style="padding-top:22px;padding-left:35px">                        
-                               <h6 class="title">Mata Pelajaran</h6>
+                               <h6 class="title">Mata Pelajaran </h6>
                             </v-flex>
                             <v-flex md3>
                                 <Timer/>
@@ -24,8 +24,8 @@
                             <p style="font-size:16px">{{quest}}</p>
                             <div style="float:left">
                                 <label class="container" v-for="(n,key,index) in options" :key="n">
-                                <input type="radio" :value="n" v-model="tmpanswer[hal]" name="opt">
-                                <span class="checkmark"><p>{{n}} </p></span>
+                                <input type="radio" :value="n.option" v-model="tmpanswer[hal]" name="opt">
+                                <span class="checkmark"><p>{{n.option}} </p></span>
                                 </label>   
                             </div>
                         </v-container>                    
@@ -48,7 +48,7 @@
                             </v-card><br>
                             <a
                                 class="btn-num"
-                                v-for="(item, key, index) in questions" :key="item" 
+                                v-for="(item, key, index) in questions" :key="item.id" 
                                 @click="viewQuestion(key)"
                             >  
                             
@@ -64,15 +64,16 @@
                                 <!-- <span v-else-if="key+1 < 10 && markanswer[key]!=key" style="background:orange;padding:10px 14.6px">{{key+1}} </span>
                                 <span v-else-if="key+1 >= 10 && markanswer[key]!=key" style="background:orange;padding:10px 10.6px">{{key+1}}</span>                                                      -->
                             </a>
-                        </div>                   
-                        <div class="clear"></div>
+                            
+                            <div class="clear"></div>
+                            <v-divider></v-divider>
+                        </div>     
                         <v-divider></v-divider>
                         <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn>
                     </v-card>
                 </v-flex>
 
             {{ answer }}
-
             <!-- {{tmpanswer}} -->
 
             <!-- {{ markanswer }} -->
@@ -153,8 +154,14 @@
 
 <script>
     import Timer from "../Timer"
+    
+    import axios from 'axios';
 
     export default {
+        props:{
+            idQuestion: String
+        },
+
         components:{
             Timer
         },
@@ -165,169 +172,20 @@
             text: '',
             dialog: false,
 
-            questions: [
-                {
-                    id: '1', 
-                    quest: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis cumque ullam, est eligendi doloremque veniam natus nulla inventore labore suscipit quasi, nobis eum impedit a animi repellendus dolorum aliquam. Inventore 1 ...', 
-                    options: {
-                        opt_a: 'jancok1', 
-                        opt_b: 'asu1',
-                        opt_c: 'jangkrik1',
-                        opt_d: 'bro1'
-                    },
-                },
+            // cek: [
+            //     {
+            //         id: '1', 
+            //         question: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis cumque ullam, est eligendi doloremque veniam natus nulla inventore labore suscipit quasi, nobis eum impedit a animi repellendus dolorum aliquam. Inventore 1 ...', 
+            //         option: {
+            //             opt_a: 'jancok1', 
+            //             opt_b: 'asu1',
+            //             opt_c: 'jangkrik1',
+            //             opt_d: 'bro1'
+            //         },
+            //     },
+            // ],
 
-                {
-                    id: '2', 
-                    quest: 'Lorem est eligendi doloremque veniam natus nulla inventore labore suscipit quasi, nobis eum impedit a animi repellendus dolorum aliquam. Inventore 2 ...', 
-                    options: {
-                        opt_a: 'jancok2', 
-                        opt_b: 'asu2',
-                        opt_c: 'jangkrik2',
-                        opt_d: 'bro2'
-                    },
-                },
-
-                {
-                    id: '3', 
-                    quest: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis cumque ullam, est eligendi doloremque veniam natus nmpedit a animi repellendus dolorum aliquam. Inventore 3 ...', 
-                    options: {
-                        opt_a: 'jancok3', 
-                        opt_b: 'asu3',
-                        opt_c: 'jangkrik3',
-                        opt_d: 'bro3'
-                    },
-                },
-
-                {
-                    id: '4', 
-                    quest: 'lorem ipsum dolor sit amet 4 ...', 
-                    options: {
-                        opt_a: 'jancok4', 
-                        opt_b: 'asu4',
-                        opt_c: 'jangkrik4',
-                        opt_d: 'bro4'
-                    },
-                },
-
-                {
-                    id: '5', 
-                    quest: 'lorem sit amet 5 ...', 
-                    options: {
-                        opt_a: 'jancok5', 
-                        opt_b: 'asu5',
-                        opt_c: 'jangkrik5',
-                        opt_d: 'bro5'
-                    },
-                },{
-                    id: '1', 
-                    quest: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis cumque ullam, est eligendi doloremque veniam natus nulla inventore labore suscipit quasi, nobis eum impedit a animi repellendus dolorum aliquam. Inventore 1 ...', 
-                    options: {
-                        opt_a: 'jancok1', 
-                        opt_b: 'asu1',
-                        opt_c: 'jangkrik1',
-                        opt_d: 'bro1'
-                    },
-                },
-
-                {
-                    id: '2', 
-                    quest: 'Lorem est eligendi doloremque veniam natus nulla inventore labore suscipit quasi, nobis eum impedit a animi repellendus dolorum aliquam. Inventore 2 ...', 
-                    options: {
-                        opt_a: 'jancok2', 
-                        opt_b: 'asu2',
-                        opt_c: 'jangkrik2',
-                        opt_d: 'bro2'
-                    },
-                },
-
-                {
-                    id: '3', 
-                    quest: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis cumque ullam, est eligendi doloremque veniam natus nmpedit a animi repellendus dolorum aliquam. Inventore 3 ...', 
-                    options: {
-                        opt_a: 'jancok3', 
-                        opt_b: 'asu3',
-                        opt_c: 'jangkrik3',
-                        opt_d: 'bro3'
-                    },
-                },
-
-                {
-                    id: '4', 
-                    quest: 'lorem ipsum dolor sit amet 4 ...', 
-                    options: {
-                        opt_a: 'jancok4', 
-                        opt_b: 'asu4',
-                        opt_c: 'jangkrik4',
-                        opt_d: 'bro4'
-                    },
-                },
-
-                            {
-                    id: '5', 
-                    quest: 'lorem sit amet 5 ...', 
-                    options: {
-                        opt_a: 'jancok5', 
-                        opt_b: 'asu5',
-                        opt_c: 'jangkrik5',
-                        opt_d: 'bro5'
-                    },
-                },
-                {
-                    id: '1', 
-                    quest: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis cumque ullam, est eligendi doloremque veniam natus nulla inventore labore suscipit quasi, nobis eum impedit a animi repellendus dolorum aliquam. Inventore 1 ...', 
-                    options: {
-                        opt_a: 'jancok1', 
-                        opt_b: 'asu1',
-                        opt_c: 'jangkrik1',
-                        opt_d: 'bro1'
-                    },
-                },
-
-                {
-                    id: '2', 
-                    quest: 'Lorem est eligendi doloremque veniam natus nulla inventore labore suscipit quasi, nobis eum impedit a animi repellendus dolorum aliquam. Inventore 2 ...', 
-                    options: {
-                        opt_a: 'jancok2', 
-                        opt_b: 'asu2',
-                        opt_c: 'jangkrik2',
-                        opt_d: 'bro2'
-                    },
-                },
-
-                {
-                    id: '3', 
-                    quest: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis cumque ullam, est eligendi doloremque veniam natus nmpedit a animi repellendus dolorum aliquam. Inventore 3 ...', 
-                    options: {
-                        opt_a: 'jancok3', 
-                        opt_b: 'asu3',
-                        opt_c: 'jangkrik3',
-                        opt_d: 'bro3'
-                    },
-                },
-
-                {
-                    id: '4', 
-                    quest: 'lorem ipsum dolor sit amet 4 ...', 
-                    options: {
-                        opt_a: 'jancok4', 
-                        opt_b: 'asu4',
-                        opt_c: 'jangkrik4',
-                        opt_d: 'bro4'
-                    },
-                },
-
-                            {
-                    id: '5', 
-                    quest: 'lorem sit amet 5 ...', 
-                    options: {
-                        opt_a: 'jancok5', 
-                        opt_b: 'asu5',
-                        opt_c: 'jangkrik5',
-                        opt_d: 'bro5'
-                    },
-                },
-            ],
+            questions: [],
                 
             quest: "",
             options: [],
@@ -372,16 +230,16 @@
 
             viewQuestion(index) {   
                 this.hal   = index 
-                this.quest = this.questions[index].quest
-                this.options = this.questions[index].options
+                this.quest = this.questions[index].question
+                this.options = this.questions[index].option
             },
 
             previous(hal){
                 if(hal > 0){
                     hal--
                     this.hal   = hal
-                    this.quest = this.questions[hal].quest
-                    this.options = this.questions[hal].options
+                    this.quest = this.questions[hal].question
+                    this.options = this.questions[hal].option
                 }
             },
 
@@ -389,8 +247,8 @@
                 if(hal < this.questions.length-1){
                     hal++
                     this.hal   = hal
-                    this.quest = this.questions[hal].quest
-                    this.options = this.questions[hal].options
+                    this.quest = this.questions[hal].question
+                    this.options = this.questions[hal].option
                 }
             },
 
@@ -400,8 +258,18 @@
         },
 
         mounted(){
-            this.quest   = this.questions[0].quest;
-            this.options = this.questions[0].options;
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+            axios.get('/cereouts/question/' + this.idQuestion)
+            .then(response => {
+                this.questions = response.data.data
+
+                this.quest     = this.questions[0].question
+                this.options   = this.questions[0].option;
+                // console.log(response.data)
+            })
+            .catch(error =>{
+                console.log(error)
+            })
         }
     }
 </script>

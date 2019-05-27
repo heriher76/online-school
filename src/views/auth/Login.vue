@@ -39,7 +39,6 @@
           <router-link to="/forgot password" class="label-forgot">Forgot your password?</router-link>
           
           <v-btn @click="login" round large block>SIGN IN</v-btn>  
-
         </form>
 
         <div class="list">

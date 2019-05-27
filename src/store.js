@@ -10,8 +10,7 @@ axios.defaults.baseURL = 'http://api.ceredinas.id/api'
 export default new Vuex.Store({
   state: {
     token: localStorage.getItem('access_token') || null, //get token,
-    info: [],
-    cek: "dataku"
+    // infos: [],
   },
 
   getters: {
@@ -29,9 +28,9 @@ export default new Vuex.Store({
       state.token = null
     },
 
-    SET_INFO(state, info){
-      state.info = info
-    }
+    // SET_INFO(state, infos){
+    //   state.infos = infos
+    // }
   },
 
   actions: {
@@ -61,33 +60,37 @@ export default new Vuex.Store({
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
 
       if(context.getters.loggedIn) {
-        return new Promise((resolve, reject) => {
+        // return new Promise((resolve, reject) => {
           axios.get('/auth/logout')
-          .then(response => {
-            localStorage.removeItem('access_token')
-            context.commit('destroyToken')
-            resolve(response)
-            // console.log(response.data)
-          })
-          .catch(error => {
-            localStorage.removeItem('access_token')
-            context.commit('destroyToken')
-            reject(error)
-          })
-        })
+            .then(response => {
+              localStorage.removeItem('access_token')
+              context.commit('destroyToken')
+              // resolve(response)
+              // console.log(response.data)
+            })
+            .catch(error => {
+              localStorage.removeItem('access_token')
+              context.commit('destroyToken')
+              // reject(error)
+            })
+          // })
       }
     },
 
-    loadInformation(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+    // loadInformation(context){
+    //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
 
-      axios.get('/master/information')
-      .then(response => {
-        console.log(response.data)
-      })
-      // .then(info => {
-      //   commit('SET_INFO', info)
-      // })
-    }
+    //   axios.get('/master/information')
+    //   .then(response => {
+    //     // console.log(response.data)
+    //     context.commit('SET_INFO', response.data)
+    //   })
+    //   .catch(error =>{
+    //     console.log(error)
+    //   })
+    //   // .then(info => {
+    //   //   commit('SET_INFO', info)
+    //   // })
+    // }
   }
 });

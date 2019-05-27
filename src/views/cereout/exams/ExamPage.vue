@@ -1,13 +1,12 @@
 <template>
-    <v-div>
-        <ExamAction/>
-    </v-div>
+    <div>
+        <ExamAction :idQuestion="$route.params.id"/>
+    </div>
 </template>
 
 
 <script>
 import ExamAction from "../../../components/cereout-component/ExamAction"
-
 
 export default {
     components:{

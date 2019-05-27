@@ -44,6 +44,6 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } else {
-    next()
+    next() // make sure to always call next()!
   }
 })
