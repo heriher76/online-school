@@ -24,9 +24,10 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    retrieveToken(state,token){
+    retrieveToken(state, token){
       state.token = token
     },
+
     retrieveDataUser(state,dataUser){
       state.dataUser = dataUser
     },
@@ -39,6 +40,7 @@ export default new Vuex.Store({
       state.dataUser = null
     },
 
+//----------------------------------------informasi---------------------------------------------
     getInformation(state, info){
       state.info = info
     },
@@ -62,6 +64,26 @@ export default new Vuex.Store({
 
   actions: {
     //login function
+    postRegister(context, r){
+      return new Promise((resolve, reject) => {
+        axios.post('/auth/signup',{
+          name: r.name,
+          email: r.email,
+          password: r.password,
+          password_confirmation: r.password_confirmation
+        })
+        .then(response => {
+          console.log(response.data)
+          resolve(response)
+        })
+        .catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+    
+    //login function
     retrieveToken(context, credentials){
       return new Promise((resolve, reject) => {
         axios.post('/auth/login',{
@@ -69,7 +91,7 @@ export default new Vuex.Store({
           password: credentials.password
         })
         .then(response => {
-          const token = response.data.access_token
+          const token    = response.data.access_token
           const dataUser = response.data.data.id
           localStorage.setItem('access_token', token)
           localStorage.setItem('getDataUser', dataUser)
@@ -101,8 +123,10 @@ export default new Vuex.Store({
             // console.log(response.data)
           })
           .catch(error => {
+            localStorage.removeItem('getDataUser')
             localStorage.removeItem('access_token')
             context.commit('destroyToken')
+            context.commit('destroydataUser')
             // reject(error)
           })
         // })

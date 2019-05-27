@@ -51,6 +51,13 @@
                                 <v-card-text class="px-0"><h6 class="title" style="margin:4px 15px; text-transform: capitalize">{{ListName}} Exams</h6></v-card-text>
                             </v-card>
                             <v-list>
+                                <div v-show="load_data" style="margin:10px auto; width:5%;">
+                                    <v-progress-circular
+                                    :size="40"
+                                    color="primary"
+                                    indeterminate
+                                    ></v-progress-circular>
+                                </div>
                                 <v-card 
                                     v-for="item in items"
                                     :key="item.id"
@@ -68,7 +75,6 @@
                     </v-layout>           
                 </v-flex>  
                 <!-- /sub content -->    
-
             </v-layout>
         </v-container>
 
@@ -88,6 +94,7 @@
             ExamDetail
         },
         data: () => ({
+            load_data:true,
             items: [],
             detail: '',
             ListName: 'Todays'
@@ -110,15 +117,15 @@
             examDetail(data) {
                 // this.detail = data
                 this.$router.push({name: 'details_exams', params: {detail:data} })
-            }
+            },
         },
 
 
         mounted(){
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-
             axios.get('/cereouts')
             .then(response => {
+                this.load_data = false
                 this.items = response.data.data
                 // console.log(response.data)
             })
