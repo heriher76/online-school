@@ -5,7 +5,40 @@
                 <img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg" width="100%" height="100%" alt="">
             </div>
             <div v-show="edit_prof">
-                <v-btn style="margin-left:-1px" small>Change</v-btn>
+                <v-btn 
+                    @click.stop="dialog = true" style="margin-left:-1px" small>Change</v-btn>
+
+                    <v-dialog v-model="dialog" max-width="290">
+                    <v-card>
+                        <v-card-title class="headline">Ganti Foto Profile</v-card-title>
+
+                        <v-card-text>
+                            <label for="foto">Upload Foto:</label>
+                            <input id="foto" type="file">
+                        </v-card-text>
+
+                        <v-card-actions>
+                        <v-spacer></v-spacer>
+
+                        <v-btn
+                            color="blue"
+                            flat="flat"
+                            @click="dialog = false"
+                        >
+                            Batal
+                        </v-btn>
+
+                        <v-btn
+                            color="blue"
+                            flat="flat"
+                            @click="dialog = false"
+                        >
+                            Update
+                        </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                    </v-dialog>
+
                 <hr style="width:85%">
                 <a @click="changePass">Change Password </a>
             </div>
@@ -31,6 +64,7 @@
     import ChangePassword from "../siswa/ChangePassword"
     export default {
         data: () => ({
+            dialog: false,
             chg_pass:false,
             edit_prof:true
         }),
