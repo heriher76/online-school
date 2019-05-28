@@ -14,6 +14,9 @@ export default new Vuex.Store({
     info: [],
     dataPelajaran: [],
     dataDetailPelajaran: [],
+    dataPelajaranbyLesson: [],
+    dataFavoritbyUser: [],
+    dataPelajaranbyUser: [],
     dataDetailMateri: [],
     dataDetailForum: [],
   },
@@ -52,6 +55,14 @@ export default new Vuex.Store({
 
     getDataPelajaranbyLesson(state, dataPelajaranbyLesson){
       state.dataPelajaranbyLesson = dataPelajaranbyLesson
+    },
+
+    getDataPelajaranbyUser(state, dataPelajaranbyUser){
+      state.dataPelajaranbyUser = dataPelajaranbyUser
+    },
+
+    getDataFavoritbyUser(state, dataFavoritbyUser){
+      state.dataFavoritbyUser = dataFavoritbyUser
     },
 
     getDataDetailPelajaran(state, dataDetailPelajaran){
@@ -174,6 +185,28 @@ export default new Vuex.Store({
       })
     },
 
+    getDataPelajaranbyUser(context){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/courses/'+this.state.dataUser+'/learned')
+      .then(response => {
+        context.commit('getDataPelajaranbyUser', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    getDataFavoritbyUser(context){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/courses/favorites')
+      .then(response => {
+        context.commit('getDataFavoritbyUser', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
     getDataDetailPelajaran(context){
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
       axios.get('/courses/'+router.currentRoute.params.id)
@@ -214,10 +247,30 @@ export default new Vuex.Store({
         axios.post('/courses/'+router.currentRoute.params.id+'/reviews/create',{
           course_id: credentials.course_id,
           star: credentials.star,
-          body: credentials.body,
+          body: credentials.isi,
           user_id: credentials.user_id
         })
         .then(response => {
+          console.log(response.data)
+          resolve(response)
+        })
+        .catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+
+    pushDataForum(context, credentials){
+      return new Promise((resolve, reject) => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.post('/courses/'+router.currentRoute.params.id+'/forums/create',{
+          course_id: credentials.course_id,
+          body: credentials.isi,
+          user_id: credentials.user_id
+        })
+        .then(response => {
+          router.push('/cerevid/detail-pelajaran/'+router.currentRoute.params.id+'/materi')
           console.log(response.data)
           resolve(response)
         })

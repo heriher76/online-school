@@ -166,9 +166,10 @@
                             name="input-7-1"
                             label="Tulis Pertanyaan"
                             hint="Isi pertanyaan anda disini."
+                            v-model="body"
                           ></v-textarea>
                           <div class="justify-end">
-                  		       <v-btn color="#2c3e50" class="white--text" v-on="on">Kirim Pertanyaan</v-btn>
+                  		       <v-btn color="#2c3e50" class="white--text" v-on:click="kirimPertanyaan">Kirim Pertanyaan</v-btn>
                           </div>
                         </v-container>
         			      	<v-layout class="justify-center">
@@ -221,7 +222,8 @@
       materiQuiz
     },
     data: () => ({
-        tipeMateri: 'video',
+      tipeMateri: 'video',
+      body: "",
     }),
   	methods: {
         async getDataDetailMateri(){
@@ -236,6 +238,14 @@
             console.log("telah load data..")
           })
         },
+      kirimPertanyaan(){
+        this.$store.dispatch('pushDataForum', {
+          course_id: this.$route.params.id,
+          isi: this.body,
+          user_id: this.userId,
+        })
+      }
+
     },
     created(){
       this.getDataDetailMateri()
@@ -247,6 +257,9 @@
       },
       dataDetailForum(){
         return this.$store.state.dataDetailForum || {}
+      },
+      userId(){
+        return this.$store.state.dataUser || {}
       },
     },
   }
