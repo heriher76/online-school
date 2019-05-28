@@ -178,10 +178,11 @@
     },
     methods: {
       kirimUlasan(){
+        console.log(1)
         this.$store.dispatch('pushDataRating', {
           course_id: this.$route.params.id,
           star: this.kasihRating,
-          body: this.body,
+          isi: this.body,
           user_id: this.userId,
         })
         .then(response => {

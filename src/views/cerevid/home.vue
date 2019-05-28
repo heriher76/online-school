@@ -3,12 +3,11 @@
 	  <!-- Featured -->
 	  <banner />
 	  <!-- End Featured -->
-	  <!-- Featured -->
+	  <!-- content -->
 	  <featured :datas="dataDaftarPelajaranbyLesson" />
-	  <!-- End Featured -->
-	  <!-- Featured -->
+
 	  <daftarPelajaran :datas="dataDaftarPelajaran" />
-	  <!-- End Featured -->
+	  <!-- End content -->
 	</div>
 </template>
 <script>
@@ -23,20 +22,20 @@
   		featured,
   		daftarPelajaran
   	},
-		methods: {
+	methods: {
       async getDataPelajaran(){
         this.$store.dispatch('getDataPelajaran')
         .then(response => {
           console.log("telah load data..")
         })
       },
-			async getDataPelajaranbyLesson(){
+	  async getDataPelajaranbyLesson(){
         this.$store.dispatch('getDataPelajaranbyLesson')
         .then(response => {
           console.log("telah load data..")
         })
       },
-		},
+	},
 		created(){
 			this.getDataPelajaran()
 			this.getDataPelajaranbyLesson()
