@@ -6,10 +6,17 @@
                         <v-layout row wrap>
                             <v-flex md12 sm12 xs12>
                                 <v-carousel style="height:400px;">
+                                    <div v-show="load_data" style="margin:130px auto; width:5%;">
+                                        <v-progress-circular
+                                        :size="40"
+                                        color="primary"
+                                        indeterminate
+                                        ></v-progress-circular>
+                                    </div>
                                     <v-carousel-item
-                                    v-for="(item,i) in items"
+                                    v-for="(item,i) in sliders"
                                     :key="i"
-                                    :src="item.src"
+                                    :src="item.url"
                                     ></v-carousel-item>
                                 </v-carousel>
                             </v-flex>
@@ -19,6 +26,13 @@
                                 </v-card>
                             </v-flex>
                             <v-flex md12 sm12 xs12>
+                                <div v-show="load_data" style="margin:10px auto; width:5%;">
+                                    <v-progress-circular
+                                    :size="40"
+                                    color="primary"
+                                    indeterminate
+                                    ></v-progress-circular>
+                                </div>
                                 
                                 <div v-for="info in infos" :key="info.id">
                                     <v-layout row wrap="" style="border-bottom:1px solid grey; padding:10px 0px">
@@ -31,10 +45,10 @@
                                         <v-flex md8>
                                             <div style="margin: 0px 25px">
                                                 <h5 style="color:black" class="headline">{{info.title}}</h5>
-                                                <p>
+                                                <span> 
                                                     {{info.caption}}
-                                                    <router-link to="/informasi/detail">Read more >></router-link>
-                                                </p>
+                                                </span> <br>
+                                                <router-link :to="{name: 'detail_informasi', params: {data: info} }">Read more >></router-link>
                                             </div>
                                         </v-flex>                      
                                     </v-layout>
@@ -81,12 +95,9 @@
 
         data() {
             return{
-                items: [
-                    {src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'},
-                    {src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'},
-                    {src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'},
-                ],
+                load_data:true,
 
+                sliders:[],
                 infos: []
             }
         },
@@ -96,8 +107,11 @@
 
             axios.get('/master/information')
             .then(response => {
+                this.load_data = false
+                // if(response.data.data.category = 'sliders'){
+                this.sliders = response.data.data
+                // }
                 this.infos = response.data.data
-                // console.log(response)
             })
             .catch(error =>{
                 console.log(error)

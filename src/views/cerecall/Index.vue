@@ -1,5 +1,9 @@
 <template>
     <v-container grid-list-md>
+      <v-card style="padding:10px 20px" color="orange" dark>
+        <h6 class="title">Layanan Konsultasi</h6>
+      </v-card>
+
         <v-select
           :items="items"
           label="Pilih Mata Pelajaran"
@@ -30,9 +34,12 @@
                     <b class="grey--text">Price : {{card}} point</b>
                   </div>  
                   <div style="float:right">
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on }">              
+                    <v-tooltip bottom >
+                      <template v-slot:activator="{ on }">      
+                        <a @click="linkUlasan">
                           <v-icon v-on="on">comment</v-icon>
+                        </a>        
+                        
                       </template>
                       <span>ulasan &amp; rating</span>
                     </v-tooltip>
@@ -97,6 +104,10 @@
         }
         this.mapel = m
         this.show = true
+      },
+
+      linkUlasan(){
+        return this.$router.push({name:'cerecall_ulasan', params: { guruId: '1'}})
       }
     }
   }

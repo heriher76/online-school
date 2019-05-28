@@ -137,13 +137,14 @@ export default {
   },
 
   mounted(){   
-    axios.get('/auth/user')
-    .then(response => {
-      this.user = response.data.data
-    })
-    .catch(error => {
-      console.log(error)
-    })
+      axios.get('/auth/user')
+      .then(response => {
+        this.user = response.data.data
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    
   },
 
   methods: {

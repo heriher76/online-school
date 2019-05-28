@@ -106,9 +106,7 @@
         
         methods:{
             changeList(list){
-                
                 axios.get('/auth/user').then(response => {this.idTryout = response.data.data.id})
-
                 if(list==1){
                     this.ListName = "Daftar Tryout"
                     axios.get('/cereouts')

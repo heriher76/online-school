@@ -136,6 +136,12 @@ export default new Router({
     },
 
     {
+      path: "/cerecall/ulasan/:guruId",
+      name: 'cerecall_ulasan',
+      component: () => import("./views/cerecall/Ulasan.vue")
+    },
+
+    {
       path: "/cerecall/chat/:guruId",
       name: 'cerecall_chat',
       component: () => import("./views/cerecall/ChatPage.vue")
