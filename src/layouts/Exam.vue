@@ -55,3 +55,13 @@
     <!-- /footer -->
   </v-app>
 </template>
+
+<script>
+export default {
+  data(){
+    return{
+      menu: false
+    }
+  }
+}
+</script>
