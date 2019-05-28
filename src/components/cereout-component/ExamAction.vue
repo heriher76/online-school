@@ -189,8 +189,7 @@
 </style>
 
 <script>
-    import Timer from "../cereout-component/Timer"
-    
+    import Timer from "../cereout-component/Timer"    
     import axios from 'axios';
 
     export default {
@@ -291,9 +290,7 @@
             .catch(error =>{
                 console.log(error)
             })
-
-            
-            
+          
         }
     }
 </script>
