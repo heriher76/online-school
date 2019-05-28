@@ -114,12 +114,12 @@
 		data: () => ({
 		}),
 		methods: {
-      async getDataDetailPelajaran(){
-        this.$store.dispatch('getDataDetailPelajaran')
-        .then(response => {
-          console.log("telah load data..")
-        })
-      },
+	      async getDataDetailPelajaran(){
+	        this.$store.dispatch('getDataDetailPelajaran')
+	        .then(response => {
+	          console.log("telah load data..")
+	        })
+	      },
 		},
 		created(){
 			this.getDataDetailPelajaran()
