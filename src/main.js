@@ -3,6 +3,8 @@ import './plugins/vuetify';
 
 import VueSweetalert2 from 'vue-sweetalert2';
 
+import axios from 'axios'
+
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -18,6 +20,8 @@ Vue.component('guru-layout', Guru);
 
 Vue.config.productionTip = false;
 
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
+
 new Vue({
   router,
   store,
@@ -27,6 +31,7 @@ new Vue({
 //middleware router
 //tambahan meta route
 router.beforeEach((to, from, next) => {
+  // const currentUser = axios.auth().currentUser;
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!store.getters.loggedIn) {
       next({

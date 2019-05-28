@@ -6,6 +6,8 @@
       <div class="panel-auth" style="color:white">
         <h2 class="display-1">Welcome</h2>
         <p>Register a new account</p>    
+          
+        <!-- <form @submit.prevent="signUp"> -->
           <v-text-field 
             label="Name"
             dark
@@ -49,9 +51,12 @@
               label="Re-enter Password"
               hint="At least 8 characters"
               counter
+              @click:append="show_pass_conf = !show_pass_conf"
           ></v-text-field>
+          <!-- <v-btn round large block>SIGN UP</v-btn>
+        </form> -->
 
-          <v-btn @click="signUp" round large block>SIGN UP</v-btn>
+        <v-btn round large block @click="signUp">SIGN UP</v-btn>
               
         <hr style="margin-bottom:15px">
         <label>Are you a member? <router-link to="/login" style="color:white">Login now</router-link></label>
@@ -67,6 +72,8 @@
     data () {
       return {
         items:[],
+
+        loading_screen: false,
   
         name: '',
         email: '',
@@ -102,69 +109,17 @@
     },
 
     methods: {
-      signUp(e) {
-        e.preventDefault();
-        axios
-        .post('http://api.ceredinas.id/api/auth/signup', {
-            name : "Febri Ardi Saputra",
-            gender : "laki-laki",
-            address : "jln Cipadung",
-            phone : "082117912657",
-            birth_place : "Subang",
-            birth_date : "1997-02-10",
-            parrent_name : "Captain America",
-            parrent_phone : "0987654321",
-            email : "febri@gmail.com",
-            password : "febri1234",
-            password_confirmation : "febri1234"
+      signUp() {
+        // alert('hello')
+        this.$store.dispatch('postRegister', {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          password_confirmation: this.password_confirmation
         })
-        .then(response => {
-          console.log(response.data)
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
+       
       },
 
-      formSubmit(e) {
-          e.preventDefault();
-          axios
-          .post('https://reqres.in/api/users', {
-                name: "COBA",
-                position: "TERSERAH"
-          })
-          .then(response => (console.log(response.data)))
-          .catch(error => console.log(error))
-          .finally(() => this.loading = false)
-      }
-
-      // signUp(e) {
-      //   e.preventDefault();
-      //   axios
-      //   .post('http://api.ceredinas.id/api/auth/signup',{
-      //       name : "Harist",
-      //       gender : "laki-laki",
-      //       address : "jln Cipadung",
-      //       phone : "082117912657",
-      //       birth_place : "Subang",
-      //       birth_date : "1997-02-10",
-      //       parrent_name : "Captain America",
-      //       parrent_phone : "0987654321",
-      //       email : "jancok@gmail.com",
-      //       password : "123456",
-      //       password_confirmation : "123456"
-      //   })
-      //   .then(response => {
-      //     this.items.push(response.data)
-      //     this.name_field = ''
-      //     this.email_field = ''
-      //     this.password_field = ''
-      //     this.password_conf_field = ''
-      //   })
-      //   .catch(error => {
-      //     console.log(error)
-      //   })
-      // },
 
       // cobaSubmit(e){
       //   e.preventDefault();

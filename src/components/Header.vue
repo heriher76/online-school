@@ -8,7 +8,7 @@
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-sm-and-down">
+      <v-toolbar-items class="hidden-sm-and-down" style="min-width:750px">
         <v-btn flat @click="linkInformasi" active-class="false">Informasi</v-btn>
         <v-menu v-if="loggedIn" :nudge-width="100">
           <template v-slot:activator="{ on }">
@@ -45,7 +45,7 @@
             <span>Top up</span>
             </v-tooltip>
 
-            <b>Poin : 999999 </b>
+            <b>Poin : {{user.balance}} </b>
 
             <div class="clear"></div>
         </div>
@@ -96,10 +96,9 @@
                     <v-list-tile-avatar>
                     <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
                     </v-list-tile-avatar>
-
                     <v-list-tile-content>
-                    <v-list-tile-title>John Leider</v-list-tile-title>
-                    <v-list-tile-sub-title>jhonleider@mail.co</v-list-tile-sub-title>
+                    <v-list-tile-title>{{user.name}}</v-list-tile-title>
+                    <v-list-tile-sub-title>{{user.email}}</v-list-tile-sub-title>
                     </v-list-tile-content>
 
                 </v-list-tile>
@@ -109,30 +108,42 @@
                 <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="primary" flat @click="linkAkun">My Account</v-btn>
-                <v-btn color="red" flat to="/logout">Sign Out</v-btn>
-                <!-- <v-btn color="red" flat @click="menu = false">Sign Out</v-btn> -->
+                <v-btn color="red" flat @click="linkLogout">Sign Out</v-btn>
                 </v-card-actions>
             </v-card>
             </v-menu>
-
         </div>
     </div>
-    <!-- header actions -->
+    <!-- {{user}} -->
+    <!-- header actions -->      
     </v-toolbar>
   </div>
 </template>
 
 
 <script>
+import axios from 'axios'
 export default {
   data:() => ({
-    menu: false
+    menu: false,
+    user: []
   }),
 
   computed:{
     loggedIn: function(){
+      this.menu = false
       return this.$store.getters.loggedIn
     }
+  },
+
+  mounted(){   
+    axios.get('/auth/user')
+    .then(response => {
+      this.user = response.data.data
+    })
+    .catch(error => {
+      console.log(error)
+    })
   },
 
   methods: {
@@ -154,6 +165,11 @@ export default {
 
     linkLogin(){
       this.$router.push({path:'/login'})
+    },
+
+    linkLogout(){
+      this.menu = false
+      this.$router.push({path:'/logout'})
     },
 
     linkAkun(){
