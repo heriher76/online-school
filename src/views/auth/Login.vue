@@ -58,14 +58,23 @@
         <hr style="margin-bottom:15px">
         <label>Not a member yet? <router-link to="/register" style="color:white">Register now</router-link></label>
       </div>
+      
+      <LoadingScreen2 :loading="loadLogin"></LoadingScreen2>
     </div>
 </template>
 
 <script>
 import axios from "axios"
+import LoadingScreen2 from'../../components/loading-screen/Loading2'
+
   export default {
+    components:{ 
+      LoadingScreen2
+    },
+
     data () {
       return {
+        loadLogin: false,
         btn_load: false,
         
         checkbox: '',
@@ -91,16 +100,21 @@ import axios from "axios"
     methods:{
       login(){      
         this.btn_load = true
+        this.loadLogin = true
         this.$store.dispatch('retrieveToken', {
           email: this.email,
           password: this.password
         })
         .then(response => {
           this.btn_load = false
-          this.$router.push({path: '/'})
+          this.loadLogin = false
+          
+          window.location.href = "/"
+          // this.$router.push({path: '/'})
         })
         .catch(error => {
           this.btn_load = false
+          this.loadLogin = false
           this.$swal('Oopps', 'Your email or password is invalid', 'warning')
         })
       },
@@ -109,22 +123,6 @@ import axios from "axios"
         return window.open("http://api.ceredinas.id/login/google",'_blank')                  
       }
 
-      // login(e) {
-      //   e.preventDefault();
-      //   axios
-      //   .post('http://api.ceredinas.id/api/auth/login',{
-      //       email: this.email, // 'rifardian@gmail.com',
-      //       password: this.password //'123456',
-      //   })
-      //   .then(response => {
-      //     console.log(response.data)
-      //     // this.$router.push({path:'/'})
-      //   })
-      //   .catch(error => {
-      //     // console.log(error.response)
-      //     this.$swal('Sorry', 'Your email or password is invalid', 'warning')
-      //   })
-      // }
     }
   }
 </script>

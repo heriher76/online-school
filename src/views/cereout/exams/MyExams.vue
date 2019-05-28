@@ -106,32 +106,40 @@
         
         methods:{
             changeList(list){
+                this.items = null
+                this.load_data = true
                 axios.get('/auth/user').then(response => {this.idTryout = response.data.data.id})
                 if(list==1){
                     this.ListName = "Daftar Tryout"
                     axios.get('/cereouts')
                     .then(response => {
+                        this.load_data = false
                         this.items = response.data.data
                     })
                     .catch(error =>{
+                        this.load_data = false
                         console.log(error)
                     })
                 }else if(list==2){
                     this.ListName = "Tryout Dibeli"
                     axios.get('/cereouts/attempttryout/'+this.idTryout)
                     .then(response => {
+                        this.load_data = false
                         this.items = response.data.data
                     })
                     .catch(error =>{
+                        this.load_data = false
                         console.log(error)
                     })
                 }else if(list==3){
                     this.ListName = "Tryout Kadaluarsa"
                     axios.get('/cereouts/attempttryout/'+this.idTryout+'/expire')
                     .then(response => {
+                        this.load_data = false
                         this.items = response.data.data
                     })
                     .catch(error =>{
+                        this.load_data = false
                         console.log(error)
                     })
                 }

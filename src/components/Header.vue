@@ -32,7 +32,7 @@
       <!-- <v-spacer></v-spacer> -->
 
       <v-btn v-if="!loggedIn" flat @click="linkLogin">Sign In</v-btn>
-      
+
       <!-- header actions -->
       <div v-if="loggedIn" class="nav-action">
         <div class="nav-bal">
@@ -112,6 +112,8 @@
                 </v-card-actions>
             </v-card>
             </v-menu>
+            
+            <LoadingScreen1 :loading="loadLogout"></LoadingScreen1>
         </div>
     </div>
     <!-- {{user}} -->
@@ -123,8 +125,14 @@
 
 <script>
 import axios from 'axios'
+import LoadingScreen1 from'../components/loading-screen/Loading1'
+
 export default {
+  components:{
+    LoadingScreen1
+  },
   data:() => ({
+    loadLogout: false,
     menu: false,
     user: []
   }),
@@ -136,15 +144,14 @@ export default {
     }
   },
 
-  mounted(){   
-      axios.get('/auth/user')
-      .then(response => {
-        this.user = response.data.data
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    
+  mounted(){      
+    axios.get('/auth/user')
+    .then(response => {
+      this.user = response.data.data
+    })
+    .catch(error => {
+      console.log(error)
+    })
   },
 
   methods: {
@@ -170,7 +177,13 @@ export default {
 
     linkLogout(){
       this.menu = false
-      this.$router.push({path:'/logout'})
+      this.loadLogout = true
+
+      if (!this.loadLogout) return
+      setTimeout(() => (
+        this.loadLogout = false,
+        this.$router.push({path:'/logout'}) 
+      ), 3000)      
     },
 
     linkAkun(){
