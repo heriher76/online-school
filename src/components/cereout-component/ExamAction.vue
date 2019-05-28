@@ -20,10 +20,17 @@
                         <span style="margin:18px;font-size:18px"><b>Soal No. {{hal+1}}</b></span>
                     </v-card>
                     <v-card style="min-height:347px">
+                        <div v-show="load_data" style="margin:0px auto; padding-top:40px; width:5%;">
+                            <v-progress-circular
+                            :size="40"
+                            color="primary"
+                            indeterminate
+                            ></v-progress-circular>
+                        </div>
                         <v-container>
                             <p style="font-size:16px">{{quest}}</p>
                             <div style="float:left">
-                                <label class="container" v-for="(n,key,index) in options" :key="n">
+                                <label class="container" v-for="(n,key,index) in options" :key="n.index">
                                 <input type="radio" :value="n.option" v-model="tmpanswer[hal]" name="opt">
                                 <span class="checkmark"><p>{{n.option}} </p></span>
                                 </label>   
@@ -64,16 +71,45 @@
                                 <!-- <span v-else-if="key+1 < 10 && markanswer[key]!=key" style="background:orange;padding:10px 14.6px">{{key+1}} </span>
                                 <span v-else-if="key+1 >= 10 && markanswer[key]!=key" style="background:orange;padding:10px 10.6px">{{key+1}}</span>                                                      -->
                             </a>
-                            
                             <div class="clear"></div>
-                            <v-divider></v-divider>
+                            
+                            <v-card style="padding:2px 5px">
+                                <b>Keterangan</b>
+                            </v-card>
+                            <v-layout>
+                                <v-flex md5>
+                                    <div>
+                                        <span style="width:15px;height:15px;background:#8BC34A; margin:2.6px; float:left"></span> 
+                                       <span>Terjawab</span>
+                                    </div>
+
+                                    <div>
+                                        <span style="width:15px;height:15px;background:orange; margin:2.6px; float:left"></span> 
+                                       <span>Ditandai</span>
+                                    </div>
+                            
+                                </v-flex>
+                                <v-flex md7>
+                                    <div>
+                                        <span style="width:15px;height:15px;background:#BDBDBD; margin:2.6px; float:left"></span> 
+                                       <span>Belum Terjawab</span>
+                                    </div>
+
+                                    <div>
+                                        <span style="width:15px;height:15px;background:#03A9F4; margin:2.6px; float:left"></span> 
+                                       <span>Aktif</span>
+                                    </div>
+
+                                </v-flex>
+                            </v-layout>
+
                         </div>     
                         <v-divider></v-divider>
                         <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn>
                     </v-card>
                 </v-flex>
-
             {{ answer }}
+            <!-- {{questions}} -->
             <!-- {{tmpanswer}} -->
 
             <!-- {{ markanswer }} -->
@@ -153,7 +189,7 @@
 </style>
 
 <script>
-    import Timer from "../Timer"
+    import Timer from "../cereout-component/Timer"
     
     import axios from 'axios';
 
@@ -167,26 +203,11 @@
         },
         
         data: () => ({
-            hal: 0,
-
-            text: '',
+            load_data: true,
             dialog: false,
 
-            // cek: [
-            //     {
-            //         id: '1', 
-            //         question: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis cumque ullam, est eligendi doloremque veniam natus nulla inventore labore suscipit quasi, nobis eum impedit a animi repellendus dolorum aliquam. Inventore 1 ...', 
-            //         option: {
-            //             opt_a: 'jancok1', 
-            //             opt_b: 'asu1',
-            //             opt_c: 'jangkrik1',
-            //             opt_d: 'bro1'
-            //         },
-            //     },
-            // ],
-
-            questions: [],
-                
+            hal: 0,
+            questions: [],       
             quest: "",
             options: [],
 
@@ -194,7 +215,6 @@
             tmpanswer: [],
 
             markanswer: []
-
         }),
 
 
@@ -258,9 +278,10 @@
         },
 
         mounted(){
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+            // axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
             axios.get('/cereouts/question/' + this.idQuestion)
             .then(response => {
+                this.load_data = false
                 this.questions = response.data.data
 
                 this.quest     = this.questions[0].question
@@ -270,6 +291,9 @@
             .catch(error =>{
                 console.log(error)
             })
+
+            
+            
         }
     }
 </script>

@@ -7,14 +7,13 @@
 	      Featured
 	    </p>
 			<div class="subheading">(Berdasarkan Pelajaran)</div>
-			<div v-for="post in datas">
-		    <h4 class="font-weight-light"><v-icon>keyboard_arrow_right</v-icon>{{post.name}}</h4>
+		    <h4 class="font-weight-light"><v-icon>keyboard_arrow_right</v-icon>{{datas.data[0].lesson.name}}</h4>
 		    <v-container
 		      fluid
 		      grid-list-md
 		    >
 				<v-data-iterator
-					:items="datas.data.courses"
+					:items="datas.data"
 					:rows-per-page-items="rowsPerPageItems"
 					content-class="layout row wrap"
 					:expand="expand"
@@ -80,7 +79,6 @@
 					</template>
 				</v-data-iterator>
 		    </v-container>
-			</div>
 	  </v-container>
 	</template>
 <script>

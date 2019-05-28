@@ -38,19 +38,20 @@
           ></v-checkbox>
           <router-link to="/forgot password" class="label-forgot">Forgot your password?</router-link>
           
-          <v-btn @click="login" round large block>SIGN IN</v-btn>  
+          <v-btn @click="login" :loading="btn_load" round large block>SIGN IN</v-btn>  
         </form>
 
         <div class="list">
             <hr><label>OR</label><hr>
             <div class="clear"></div>
         </div>
+
         
-        <v-btn block round color="error" dark large>
+        <v-btn block round color="error" dark large @click="googleLogin">
           SIGN IN WITH GOOGLE
         </v-btn>
 
-        <v-btn block round color="primary" dark large>
+        <v-btn block round color="primary" dark large href="http://api.ceredinas.id/login/facebook">
           SIGN IN WITH FACEBOOK
         </v-btn>
 
@@ -65,6 +66,8 @@ import axios from "axios"
   export default {
     data () {
       return {
+        btn_load: false,
+        
         checkbox: '',
 
         show_pass: false,
@@ -86,14 +89,24 @@ import axios from "axios"
     },
 
     methods:{
-      login(){
+      login(){      
+        this.btn_load = true
         this.$store.dispatch('retrieveToken', {
           email: this.email,
           password: this.password
         })
         .then(response => {
+          this.btn_load = false
           this.$router.push({path: '/'})
         })
+        .catch(error => {
+          this.btn_load = false
+          this.$swal('Oopps', 'Your email or password is invalid', 'warning')
+        })
+      },
+
+      googleLogin(){
+        return window.open("http://api.ceredinas.id/login/google",'_blank')                  
       }
 
       // login(e) {

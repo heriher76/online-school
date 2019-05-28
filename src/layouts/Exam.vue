@@ -14,8 +14,7 @@
         <v-menu v-model="menu" :close-on-content-click="false" :width="200" offset-x>
           <template v-slot:activator="{ on }">
             <v-list-tile v-on="on">
-              <v-icon>account_circle</v-icon> 
-              Febri Ardi Saputra
+              <v-icon>account_circle</v-icon>  {{user.name}}
               <v-icon>arrow_drop_down</v-icon>
               </v-list-tile>
           </template>
@@ -27,14 +26,14 @@
                     </v-list-tile-avatar>
 
                     <v-list-tile-content>
-                    <v-list-tile-title>John Leider</v-list-tile-title>
-                    <v-list-tile-sub-title>jhonleider@mail.co</v-list-tile-sub-title>
+                    <v-list-tile-title>{{user.name}}</v-list-tile-title>
+                    <v-list-tile-sub-title>{{user.email}}</v-list-tile-sub-title>
                     </v-list-tile-content>
                 </v-list-tile>
               </v-list>
               <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" flat @click="menu = false">Sign Out</v-btn>
+              <v-btn color="primary" flat to="/logout">Sign Out</v-btn>
               </v-card-actions>
           </v-card>
         </v-menu>
@@ -57,11 +56,26 @@
 </template>
 
 <script>
+
+import axios from 'axios'
+
 export default {
   data(){
     return{
-      menu: false
+      menu: false,
+      user: []
     }
-  }
+  },
+
+  mounted(){  
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token    
+    axios.get('/auth/user')
+    .then(response => {
+      this.user = response.data.data
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  },
 }
 </script>
