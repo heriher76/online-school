@@ -48,7 +48,7 @@ export default new Vuex.Store({
     getInformation(state, info){
       state.info = info
     },
-//----------------------------------------cerevid---------------------------------------------
+//------------------------------------------cerevid---------------------------------------------
     getDataPelajaran(state, dataPelajaran){
       state.dataPelajaran = dataPelajaran
     },
@@ -75,9 +75,14 @@ export default new Vuex.Store({
 
     getDataDetailForum(state, dataDetailForum){
       state.dataDetailForum = dataDetailForum
+    },
+
+    pushDataDetailForum(state, dataForum){
+      state.dataDetailForum.data.push(dataForum.data)
     }
   },
 
+//------------------------------------------cerelisasi-------------------------------------------
   actions: {
     //login function
     postRegister(context, r){
@@ -268,9 +273,9 @@ export default new Vuex.Store({
           course_id: credentials.course_id,
           body: credentials.isi,
           user_id: credentials.user_id
-        })
+        },)
         .then(response => {
-          router.push('/cerevid/detail-pelajaran/'+router.currentRoute.params.id+'/materi')
+          context.commit('pushDataDetailForum', response.data)
           console.log(response.data)
           resolve(response)
         })
