@@ -1,11 +1,5 @@
 	<template>
-		<v-container
-	    id="about"
-	    tag="section"
-	  >
-	    <p class="display-1 text-uppercase font-weight-light">
-	      Featured
-	    </p>
+		<div>
 			<div class="subheading">(Berdasarkan Pelajaran)</div>
 		    <h4 class="font-weight-light"><v-icon>keyboard_arrow_right</v-icon>{{datas.data[0].lesson.name}}</h4>
 		    <v-container
@@ -79,7 +73,7 @@
 					</template>
 				</v-data-iterator>
 		    </v-container>
-	  </v-container>
+		</div>
 	</template>
 <script>
   export default {

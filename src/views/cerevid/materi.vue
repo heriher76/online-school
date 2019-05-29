@@ -18,8 +18,7 @@
       <v-flex xs12 sm12 md4>
         <v-toolbar color="#34495e" dark flat>
           <v-list-tile>
-            <v-icon class="pr-3">book</v-icon>
-            <v-list-tile-title>{{dataDetailMateri.data[0].course.title}}</v-list-tile-title>
+            <v-list-tile-title>Materi Pelajaran</v-list-tile-title>
           </v-list-tile>
         </v-toolbar>
         <v-card style="position: relative;width:100%;height:0;padding-bottom: 100%;">
@@ -38,7 +37,7 @@
                   :href="'#'+materi.id"
                 >
                   <v-list-tile-avatar>
-                    <v-icon>videocam</v-icon>
+                    <v-icon class="mt-3">videocam</v-icon>
                   </v-list-tile-avatar>
 
                   <v-list-tile-content>
@@ -54,7 +53,7 @@
                     :href="'#'+materi.id"
                   >
                     <v-list-tile-avatar>
-                      <v-icon>assignment</v-icon>
+                      <v-icon class="mt-3">assignment</v-icon>
                     </v-list-tile-avatar>
 
                     <v-list-tile-content>
@@ -70,7 +69,7 @@
                       :href="'#'+materi.id"
                     >
                       <v-list-tile-avatar>
-                        <v-icon>create</v-icon>
+                        <v-icon class="mt-3">create</v-icon>
                       </v-list-tile-avatar>
 
                       <v-list-tile-content>
@@ -162,15 +161,19 @@
               							</template>
               	        </v-list>
                         <v-container class="text-xs-center">
-                          <v-textarea
-                            name="input-7-1"
-                            label="Tulis Pertanyaan"
-                            hint="Isi pertanyaan anda disini."
-                            v-model="body"
-                          ></v-textarea>
-                          <div class="justify-end">
-                  		       <v-btn color="#2c3e50" class="white--text" v-on:click="kirimPertanyaan">Kirim Pertanyaan</v-btn>
-                          </div>
+                          <form @submit.prevent="kirimPertanyaan">
+                            <v-textarea
+                              name="input-7-1"
+                              v-model="body"
+                              label="Tulis Pertanyaan"
+                              hint="Isi pertanyaan anda disini."
+                              :rules="[rules_body.required]"
+                            ></v-textarea>
+                            <div class="justify-end">
+                    		       <v-btn color="#2c3e50" class="white--text" @click="kirimPertanyaan">Kirim Pertanyaan</v-btn>
+                            </div>
+                            <LoadingScreen :loading="is_load"></LoadingScreen>
+                          </form>
                         </v-container>
         			      	<v-layout class="justify-center">
           		    		</v-layout>
@@ -213,17 +216,23 @@
 	import materiVideo from '../../components/cerevid-component/video'
   import materiText from '../../components/cerevid-component/text'
   import materiQuiz from '../../components/cerevid-component/quiz'
+  import LoadingScreen from'../../components/loading-screen/Loading2'
 
   export default {
     name: "materi",
     components: {
       materiVideo,
       materiText,
-      materiQuiz
+      materiQuiz,
+      LoadingScreen
     },
     data: () => ({
       tipeMateri: 'video',
       body: "",
+      is_load: false,
+      rules_body: {
+        required: value => !!value || 'Required.',
+      },
     }),
   	methods: {
         async getDataDetailMateri(){
@@ -239,10 +248,20 @@
           })
         },
       kirimPertanyaan(){
+        this.is_load = true
         this.$store.dispatch('pushDataForum', {
           course_id: this.$route.params.id,
           isi: this.body,
           user_id: this.userId,
+        })
+        .then(response =>{
+          this.is_load = false
+          this.body = ''
+        })
+        .catch(error => {
+          this.is_load = false
+          this.body = ''
+          this.$swal('Oopps', 'Your email or password is invalid', 'warning')
         })
       }
 
