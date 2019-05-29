@@ -120,7 +120,14 @@ import LoadingScreen2 from'../../components/loading-screen/Loading2'
       },
 
       googleLogin(){
-        return window.open("http://api.ceredinas.id/login/google",'_blank')                  
+        // return window.open("http://api.ceredinas.id/login/google",'_blank')   
+        axios.get('http://api.ceredinas.id/login/google')
+        .then(response => {
+          console.log(response.data)
+        })         
+        .catch(error => {
+          console.log(error)
+        })
       }
 
     }

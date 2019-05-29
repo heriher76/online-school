@@ -8,8 +8,49 @@
                             <v-flex md9 style="padding-top:22px;padding-left:35px">                        
                                <h6 class="title">Mata Pelajaran </h6>
                             </v-flex>
-                            <v-flex md3>
-                                <Timer/>
+                            <v-flex md3>             
+                                <!-- timer -->
+                                <!-- <Timer :time="time"/> -->
+                                <div style="width:180px;float:right; color:red" v-if="hours <= '00' && minutes <= '00' && seconds <= '00'">
+                                    <!-- dialog time out -->
+                                    <v-dialog v-model="dialog" persistent max-width="290">
+                                    <v-card>
+                                        <v-card-title class="headline">Waktu Habis</v-card-title>
+                                        <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+                                        <v-card-actions>
+                                        <v-btn color="green darken-1" flat @click="dialog = false" block>OK</v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                    </v-dialog>
+                                    <!-- /dialog time out -->
+
+                                    <h6 class="subheading" style="float:left">Timer :</h6>
+                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px">
+                                        <span>00</span>
+                                    </div>
+                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px">
+                                        <span>00</span>
+                                    </div>
+                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px">
+                                        <span>00</span>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+
+                                <div style="width:180px;float:right;" v-else>
+                                    <h6 class="subheading" style="float:left">Timer :</h6> 
+                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;">
+                                        <span>{{ hours }}</span>
+                                    </div>
+                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px;">
+                                        <span>{{ minutes }}</span>
+                                    </div>
+                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;">
+                                        <span> {{ seconds }}</span>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <!-- timer -->
                             </v-flex>
                         </v-layout>
                     </v-card>
@@ -31,7 +72,7 @@
                             <p style="font-size:16px">{{quest}}</p>
                             <div style="float:left">
                                 <label class="container" v-for="(n,key,index) in options" :key="n.index">
-                                <input type="radio" :value="n.option" v-model="tmpanswer[hal]" name="opt">
+                                <input type="radio" :value="key" v-model="tmpanswer[hal]" name="opt">
                                 <span class="checkmark"><p>{{n.option}} </p></span>
                                 </label>   
                             </div>
@@ -101,14 +142,18 @@
                                     </div>
 
                                 </v-flex>
-                            </v-layout>
-
+                            </v-layout>          
                         </div>     
                         <v-divider></v-divider>
-                        <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn>
+                        <!-- <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn> -->                
+                        <v-btn block color="red" dark @click="submit">Akhiri</v-btn>
                     </v-card>
                 </v-flex>
-            {{ answer }}
+            {{ myTime }}
+            {{ answer }}  
+
+            
+
             <!-- {{questions}} -->
             <!-- {{tmpanswer}} -->
 
@@ -193,28 +238,33 @@
     import axios from 'axios';
 
     export default {
-        props:{
-            idQuestion: String
-        },
+        props:["idQuestion", "time", "attemptId"],
 
         components:{
             Timer
         },
         
-        data: () => ({
-            load_data: true,
-            dialog: false,
+        data () {
+            return {
+                dialog:true,
+                timer: null,
+                totalTime: this.time * 60,//konversi ke detik
 
-            hal: 0,
-            questions: [],       
-            quest: "",
-            options: [],
+                load_data: true,
+                dialog: false,
 
-            answer: [],
-            tmpanswer: [],
+                hal: 0,
+                questions: [],       
+                quest: "",
+                options: [],
 
-            markanswer: []
-        }),
+                myTime: [],
+                answer: [],
+
+                tmpanswer: [],
+                markanswer: []
+            }
+        },
 
 
         methods:{
@@ -224,7 +274,7 @@
                     text: 'You can\'t revert your action',
                     type: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Yes Delete it!',
+                    confirmButtonText: 'Yes Submit!',
                     cancelButtonText: 'No, Keep it!',
                     showCloseButton: true,
                     showLoaderOnConfirm: true
@@ -238,13 +288,63 @@
             },
 
             submit() {
+                var ans = ''
+                var n = ''
+                // this.myTime = [this.hours, this.minutes, this.seconds]
+                
+                this.myTime = this.minutes
                 for(var i=0; i < this.questions.length; i++){
+                    if(this.tmpanswer[i] == 0){
+                        ans = 'A'
+                    }else if(this.tmpanswer[i] == 1){
+                        ans = 'B'
+                    }else if(this.tmpanswer[i] == 2){
+                        ans = 'C'
+                    }else if(this.tmpanswer[i] == 3){
+                        ans = 'D'
+                    }else if(this.tmpanswer[i] == 4){
+                        ans = 'E'
+                    }else if(this.tmpanswer[i] == 5){
+                        ans = 'F'
+                    }
+
+                    if(ans==this.questions[i].correct_answer){
+                        n = 'true'
+                    }else{
+                        n = 'false'
+                    }
+                    
                     var tmp = {
-                        question_id: this.questions[i].id,
-                        answer: this.tmpanswer[i],
+                        question_id: this.questions[i].id,                
+                        answer: ans,
+                        mark: n
                     }              
                     this.answer.push(tmp)
                 }
+
+                //
+                // this.$store.dispatch('submitTryout', {
+                //     questionId: 1,
+                //     attemptId: 294,
+                //     my_time : this.myTime,
+                //     answer: this.answer
+                // })
+                // .then(response => {
+                //     // console.log(response)
+                // })
+
+                axios.post('/cereouts/'+1+'/attempts/'+294+'/valuation', {
+                    my_time: this.myTime,
+                    answer: this.answer
+                })
+                .then(response => {
+                    console.log(response.data)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+
+
             },
 
             viewQuestion(index) {   
@@ -273,7 +373,37 @@
 
             mark(hal){
                 this.markanswer.push(hal)
+            },
+
+            //function timer
+            startTimer: function() {
+                this.timer = setInterval(() => this.countdown(), 1000); //1000ms = 1 second
+            },
+            
+            padTime: function(time){
+                return (time < 10 ? '0' : '') + time;
+            },
+            countdown: function() {
+                this.totalTime--;
             }
+            //function timer
+        },
+
+        computed: {
+            //function timer
+            hours: function() {        
+                const hours = Math.trunc(this.totalTime / 60 /60) % 24;
+                return this.padTime(hours);
+            },
+            minutes: function(){
+                const minutes = Math.trunc(this.totalTime / 60) % 60;
+                return this.padTime(minutes);
+            },
+            seconds: function() {
+                const seconds = Math.trunc(this.totalTime - this.minutes) % 60;
+                return this.padTime(seconds);
+            }
+            //function timer
         },
 
         mounted(){
@@ -282,6 +412,8 @@
             .then(response => {
                 this.load_data = false
                 this.questions = response.data.data
+                
+                this.startTimer()
 
                 this.quest     = this.questions[0].question
                 this.options   = this.questions[0].option;
@@ -290,7 +422,6 @@
             .catch(error =>{
                 console.log(error)
             })
-          
         }
     }
 </script>
