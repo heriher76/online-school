@@ -79,7 +79,7 @@ export default new Vuex.Store({
   },
 
   actions: {
-    //login function
+    //register function
     postRegister(context, r){
       return new Promise((resolve, reject) => {
         axios.post('/auth/signup',{
@@ -149,17 +149,25 @@ export default new Vuex.Store({
       }
     },
 
-    // loadInformation(context){
-    //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-    //   axios.get('/master/information')
-    //   .then(response => {
-    //     // console.log(response.data)
-    //     context.commit('getInformation', response.data)
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //   })
-    // },
+    
+//---------------------------------cereout function-----------------------------------------------
+
+    submitTryout(context, res){
+      return new Promise((resolve, reject) => {
+        axios.post('/cereouts/'+res.questionId+'/attempts/'+res.attemptId+'/valuation',
+          res.my_time,
+          res.answer
+        )
+        .then(response => {
+          console.log(response.data)
+          resolve(response)
+        })
+        .catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
 
 //---------------------------------cerevid function-----------------------------------------------
   //--------------------------------cerevid get--------------------------------

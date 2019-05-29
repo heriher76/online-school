@@ -8,7 +8,8 @@
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-sm-and-down" style="min-width:750px">
+      <v-toolbar-items class="hidden-sm-and-down" style="min-width:750px">  
+        <v-btn flat @click="linkHome" active-class="false">Home</v-btn>
         <v-btn flat @click="linkInformasi" active-class="false">Informasi</v-btn>
         <v-menu v-if="loggedIn" :nudge-width="100">
           <template v-slot:activator="{ on }">
@@ -21,7 +22,6 @@
             <v-list-tile @click="linkCerecall" active-class="false">Cerecall</v-list-tile>
           </v-list>
         </v-menu>
-        <v-btn flat to="" active-class="false">Kontak</v-btn>
 
         <!-- search -->
         <v-text-field style="margin:14px 25px; width:300px" flat prepend-inner-icon="search" placeholder="Search"></v-text-field>
@@ -155,6 +155,9 @@ export default {
   },
 
   methods: {
+    linkHome(){
+      this.$router.push({path:'/'})
+    },
     linkInformasi(){
       this.$router.push({path:'/informasi'})
     },
