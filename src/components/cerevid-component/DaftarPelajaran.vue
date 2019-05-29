@@ -1,16 +1,4 @@
 <template>
-  <v-container
-    class="daftarPelajaran"
-    tag="section"
-  >
-    <p class="display-1 text-uppercase font-weight-light">
-      <v-layout row wrap>
-
-        <v-flex xs8 sm8 md8>
-          Daftar Pelajaran
-        </v-flex>
-      </v-layout>
-    </p>
     <v-container
       fluid
       grid-list-md
@@ -84,8 +72,8 @@
       <v-layout justify-center class="ma-3">
         <v-btn color="primary" to="/cerevid/semua-pelajaran">Lihat Selengkapnya</v-btn>
       </v-layout>
+
     </v-container>
-  </v-container>
 </template>
 <script>
   export default {
@@ -94,7 +82,5 @@
       expand: true,
       rowsPerPageItems: [4],
     }),
-    methods: {
-    }
   }
 </script>
