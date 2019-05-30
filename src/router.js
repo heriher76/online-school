@@ -229,10 +229,10 @@ export default new Router({
       component: () => import("./views/guru/Login.vue")
     },
     {
-      path: "/guru/forget",
-      name: 'forget_guru',
+      path: "/guru/forgot-password",
+      name: 'forgot_guru',
       meta: {layout: "guru"},
-      component: () => import("./views/guru/Forget.vue")
+      component: () => import("./views/guru/ForgotPassword.vue")
     },
     {
       path: "/guru/pusat-bantuan",
