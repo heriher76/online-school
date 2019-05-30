@@ -7,7 +7,7 @@
 	  <v-container>
 		    <p class="display-1 text-uppercase font-weight-light">
 		      Featured
-		    </p>		
+		    </p>
 			<LoadingScreen1 :loading="is_load1"></LoadingScreen1>
 			<featured :datas="dataDaftarPelajaranbyLesson" />
 	  </v-container>
@@ -78,6 +78,6 @@
 		this.getDataPelajaranbyLesson()
 		this.getDataPelajaran()
 	},
-		
+
   }
 </script>

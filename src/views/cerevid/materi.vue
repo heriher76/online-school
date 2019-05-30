@@ -11,7 +11,7 @@
             <materiText :datas="dataDetailMateri.data"/>
           </div>
           <div  v-else>
-            <materiQuiz :datas="dataDetailMateri.data"/>
+            <materiQuiz :datas="dataQuiz.data"/>
           </div>
         </v-card-text>
       </v-flex>
@@ -66,7 +66,7 @@
                     <v-list-tile
                       avatar
                       @click="tipeMateri = 'quiz'"
-                      :href="'#'+materi.id"
+                      :href="'#'+materi.section_id+'-'+materi.id"
                     >
                       <v-list-tile-avatar>
                         <v-icon class="mt-3">create</v-icon>
@@ -235,6 +235,15 @@
       },
     }),
   	methods: {
+        async getDataQuiz(){
+          this.$store.dispatch('getDataQuiz',{
+            section_id: this.$route.hash.split('-')[0].substring(1),
+            id: this.$route.hash.split('-')[1]
+          })
+          .then(response => {
+            console.log("telah load data..")
+          })
+        },
         async getDataDetailMateri(){
           this.$store.dispatch('getDataDetailMateri')
           .then(response => {
@@ -269,6 +278,7 @@
     created(){
       this.getDataDetailMateri()
       this.getDataDetailForum()
+      this.getDataQuiz()
     },
     computed: {
       dataDetailMateri(){
@@ -276,6 +286,9 @@
       },
       dataDetailForum(){
         return this.$store.state.dataDetailForum || {}
+      },
+      dataQuiz(){
+        return this.$store.state.dataQuiz|| {}
       },
       userId(){
         return this.$store.state.dataUser || {}
