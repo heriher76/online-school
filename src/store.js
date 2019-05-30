@@ -18,6 +18,7 @@ export default new Vuex.Store({
     dataFavoritbyUser: [],
     dataPelajaranbyUser: [],
     dataDetailMateri: [],
+    dataQuiz: [],
     dataDetailForum: [],
   },
 
@@ -73,6 +74,10 @@ export default new Vuex.Store({
       state.dataDetailMateri = dataDetailMateri
     },
 
+    getDataQuiz(state, dataQuiz){
+      state.dataQuiz = dataQuiz
+    },
+
     getDataDetailForum(state, dataDetailForum){
       state.dataDetailForum = dataDetailForum
     },
@@ -103,7 +108,7 @@ export default new Vuex.Store({
         })
       })
     },
-    
+
     //login function
     retrieveToken(context, credentials){
       return new Promise((resolve, reject) => {
@@ -154,7 +159,7 @@ export default new Vuex.Store({
       }
     },
 
-    
+
 //---------------------------------cereout function-----------------------------------------------
 
     submitTryout(context, res){
@@ -236,6 +241,17 @@ export default new Vuex.Store({
       axios.get('/courses/'+router.currentRoute.params.id+'/sections')
       .then(response => {
         context.commit('getDataDetailMateri', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    getDataQuiz(context, data){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/sections/'+data.section_id+'/quiz/'+data.id)
+      .then(response => {
+        context.commit('getDataQuiz', response.data)
       })
       .catch(error => {
         console.log(error)
