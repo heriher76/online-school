@@ -1,5 +1,5 @@
 <template>
-    <div v-if="loading">
+    <div v-show="loading">
       <div class="text-xs-center">
         <v-progress-circular
           indeterminate
@@ -11,13 +11,13 @@
 <script>
 export default {
     props: ['loading'],
-    
+
     data(){
         return{
-            
+
         }
     }
-    
+
 }
 </script>
 <style lang="stylus" scoped>
