@@ -83,29 +83,30 @@
                 </v-layout>
                 <v-divider></v-divider>
 
-                <v-btn dark @click="action(detail.id)" color="info">
+                <v-btn dark @click="action(detail)" color="info">
                   Attempt Now
                   <v-icon right dark>launch</v-icon>
                 </v-btn>
                 <v-btn @click="$router.go(-1)">Cancel</v-btn>
 
-                <v-dialog v-model="dialog" width="500">
-                  <!-- <template v-slot:activator="{ on }">
+                <!-- <v-dialog v-model="dialog" width="500">
+                  <template v-slot:activator="{ on }">
                     <v-btn dark color="info" v-on="on">
                       Attempt Now
                       <v-icon right dark>launch</v-icon>
                     </v-btn>
                     
                     <v-btn @click="$router.go(-1)">Cancel</v-btn>
-                  </template> -->
+                  </template>
 
                   <v-card>
                     <v-card-title class="headline grey lighten-2" primary-title>
-                      Terms &amp; Conditions
+                      Anda Belum Menjadi Member
                     </v-card-title>
 
                     <v-card-text>
-                      <p>Ujian ini berbayar. Poin yang anda miliki akan terpotong secara otomotis ketika memulai ujian. Waktu penghitung ujian tidak dapat berhenti. Apakah anda bersedia?</p>
+                      <p>Syarat &amp; Ketentuan</p> 
+                      <p>Ujian ini khusus untuk member cerebrum. Poin yang anda miliki akan dipotong secara otomotis untuk memulai ujian. Apakah anda bersedia?</p>
                     </v-card-text>
 
                     <v-divider></v-divider>
@@ -113,7 +114,7 @@
                     <v-card-actions>
                       <v-spacer></v-spacer>
                   
-                      <v-btn flat :disabled="loading" :loading="loading" color="primary" @click="action(detail.id)">
+                      <v-btn flat :disabled="loading" :loading="loading" color="primary" @click="">
                       I accept &amp; start the exam
                       </v-btn>
 
@@ -127,7 +128,7 @@
                       </v-dialog>
                     </v-card-actions>
                   </v-card>
-                </v-dialog>
+                </v-dialog> -->
                 </v-card>
             </v-container>
         </v-container>
@@ -138,13 +139,13 @@
   import axios from 'axios'
   
   export default {
-    // props:["detail"],
-    props: {
-      detail: {
-        type:Array,
-        default: []
-      }
-    },
+    props:["detail"],
+    // props: {
+    //   detail: {
+    //     type:Array,
+    //     default: [],
+    //   }
+    // },
     data () {
       return {
         loading: false,
@@ -159,48 +160,34 @@
     },
 
     methods: {
-      action(id) {
-        // console.log(id)
+      action(data) {
         this.loading = true
 
         // axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-        axios.post('/cereouts/' + id + '/attempts', {
-          user_id: 31
+        axios.post('/cereouts/' + data.id + '/attempts', {
+          user_id: this.$store.state.dataUser
         })
         .then(response => {
           this.loading = false
-          // console.log(response.data)
-          if(response.data.status == false){
-            let routeData = this.$router.resolve({name: 'exam_page', params:{id:id}});
+          console.log(response)
+        
+          if(response.data.status == true){ //cek user member atau bukan
+            let routeData = this.$router.resolve({name: 'exam_page', params:{id:data.id, durasi:data.duration, attemptId:response.data.data.id}});
             window.open(routeData.href,
                         'my_window', 
                         'width=1600, height=620, resizable=no',
                         '_blank'
                         )
           }else{
-            return this.dialog = true
+            // return this.dialog = true
+            return this.$swal('Oopps', response.data.message, 'warning')
           }
 
         })
         .catch(error =>{
             console.log(error)
         })
-        
-        // this.dialog  = false
-        // this.loading = true
-        // let routeData = this.$router.resolve({name: 'exam_page', params:{id:id}});
 
-        // if (!this.loading) return
-        // setTimeout(() => (
-        //   this.loading = false, 
-        //   window.open(
-        //               routeData.href,
-        //               'my_window', 
-        //               'width=1600, height=620, resizable=no',
-        //               '_blank'
-        //               )
-        //             ), 
-        //   3000)
       }
     },
 

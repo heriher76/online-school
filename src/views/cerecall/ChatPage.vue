@@ -21,8 +21,40 @@
                                                 <v-icon v-on="on">done</v-icon>
                                             </v-btn>
                                         </template>
-                                        <span>Done</span>
+                                        <span>Akhiri</span>
                                     </v-tooltip>
+                                    <v-menu :nudge-width="100">
+                                        <template v-slot:activator="{ on }" style="margin-bottom:-80px">
+                                            <span v-on="on" flat style="cursor:pointer"><v-icon>more_vert</v-icon></span>
+                                        </template>
+                                        <v-list>
+                                        
+                                            <v-dialog v-model="dialog_report" persistent max-width="400">
+                                                <template v-slot:activator="{ on }">
+                                                    <v-btn color="black" flat="" dark v-on="on">Laporkan</v-btn>
+                                                </template>
+                                                <v-card>
+                                                    <v-card-title class="headline">Laporkan Guru</v-card-title>
+                                                    
+                                                    <v-card-text>
+                                                        <v-textarea
+                                                            solo
+                                                            label="Isi Laporan"
+                                                        ></v-textarea>
+                                                    </v-card-text>
+
+                                                    <input type="file" style="margin-left:16px">
+                                                    
+                                                    <v-card-actions>
+                                                    <v-spacer></v-spacer>
+                                                    <v-btn color="red" flat @click="dialog_report = false">Batal</v-btn>
+                                                    <v-btn color="primary" flat @click="dialog_report = false">Kirim</v-btn>
+                                                    </v-card-actions>
+                                                </v-card>
+                                            </v-dialog>
+
+                                        </v-list>
+                                    </v-menu>
                                 </div>
 
                                     <v-dialog v-model="dialog1" persistent max-width="300">
@@ -150,11 +182,12 @@
     import StarRating from 'vue-star-rating'
     export default {
         components: {
-            StarRating
+            StarRating,
         },
 
         data () {
-            return {
+            return {            
+                dialog_report:false,
                 dialog1: false,
                 dialog2: false,
                 textArea: false,

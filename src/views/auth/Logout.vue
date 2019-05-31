@@ -9,6 +9,7 @@ export default {
         this.$store.dispatch('destroyToken')
             .then(response => {
                 this.$router.push({path:'/'})
+                // window.location.href = "/"
             })
             // .catch(error => {
             //     console.log(error)

@@ -18,6 +18,7 @@ export default new Vuex.Store({
     dataFavoritbyUser: [],
     dataPelajaranbyUser: [],
     dataDetailMateri: [],
+    dataQuiz: [],
     dataDetailForum: [],
   },
 
@@ -48,7 +49,7 @@ export default new Vuex.Store({
     getInformation(state, info){
       state.info = info
     },
-//----------------------------------------cerevid---------------------------------------------
+//------------------------------------------cerevid---------------------------------------------
     getDataPelajaran(state, dataPelajaran){
       state.dataPelajaran = dataPelajaran
     },
@@ -73,13 +74,22 @@ export default new Vuex.Store({
       state.dataDetailMateri = dataDetailMateri
     },
 
+    getDataQuiz(state, dataQuiz){
+      state.dataQuiz = dataQuiz
+    },
+
     getDataDetailForum(state, dataDetailForum){
       state.dataDetailForum = dataDetailForum
+    },
+
+    pushDataDetailForum(state, dataForum){
+      state.dataDetailForum.data.push(dataForum.data)
     }
   },
 
+//------------------------------------------cerelisasi-------------------------------------------
   actions: {
-    //login function
+    //register function
     postRegister(context, r){
       return new Promise((resolve, reject) => {
         axios.post('/auth/signup',{
@@ -98,7 +108,7 @@ export default new Vuex.Store({
         })
       })
     },
-    
+
     //login function
     retrieveToken(context, credentials){
       return new Promise((resolve, reject) => {
@@ -149,17 +159,12 @@ export default new Vuex.Store({
       }
     },
 
-    // loadInformation(context){
-    //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-    //   axios.get('/master/information')
-    //   .then(response => {
-    //     // console.log(response.data)
-    //     context.commit('getInformation', response.data)
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //   })
-    // },
+
+//---------------------------------cereout function-----------------------------------------------
+
+//
+//
+//
 
 //---------------------------------cerevid function-----------------------------------------------
   //--------------------------------cerevid get--------------------------------
@@ -229,6 +234,17 @@ export default new Vuex.Store({
       })
     },
 
+    getDataQuiz(context, data){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/sections/'+data.section_id+'/quiz/'+data.id)
+      .then(response => {
+        context.commit('getDataQuiz', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
     getDataDetailForum(context){
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
       axios.get('/courses/'+router.currentRoute.params.id+'/forums')
@@ -268,9 +284,9 @@ export default new Vuex.Store({
           course_id: credentials.course_id,
           body: credentials.isi,
           user_id: credentials.user_id
-        })
+        },)
         .then(response => {
-          router.push('/cerevid/detail-pelajaran/'+router.currentRoute.params.id+'/materi')
+          context.commit('pushDataDetailForum', response.data)
           console.log(response.data)
           resolve(response)
         })

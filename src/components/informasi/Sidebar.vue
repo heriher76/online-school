@@ -6,9 +6,16 @@
             </div>
             <ul class="side_bar">
                 <v-divider></v-divider>
-                <li v-for="recent in recents" :key="recent.id">
-                    <a href="">{{recent.title}}&nbsp;</a> <br>
-                    <span style="color:#757575; font-size:12px">Posted: {{recent.date}}</span>
+                <div v-show="load_data" style="margin:10px auto; width:5%;">
+                    <v-progress-circular
+                    :size="30"
+                    color="primary"
+                    indeterminate
+                    ></v-progress-circular>
+                </div>
+                <li v-for="recent in posts" :key="recent.id">
+                    <router-link :to="{name: 'detail_informasi', params: {data: recent} }">{{recent.title}}&nbsp;</router-link> <br>
+                    <span style="color:#757575; font-size:12px">Posted: {{recent.created_at}}</span>
                     <v-divider></v-divider>
                 </li>
             </ul>
@@ -20,9 +27,16 @@
             </div>
             <ul class="side_bar">
                 <v-divider></v-divider>
-                <li v-for="info in infos" :key="info.id">
-                    <a href="">{{info.title}}&nbsp;</a> <br>
-                    <span style="color:#757575; font-size:12px">Posted: {{info.date}}</span>
+                <div v-show="load_data" style="margin:10px auto; width:5%;">
+                    <v-progress-circular
+                    :size="30"
+                    color="primary"
+                    indeterminate
+                    ></v-progress-circular>
+                </div>
+                <li v-for="info in posts" :key="info.id">
+                    <router-link :to="{name: 'detail_informasi', params: {data: info} }">{{info.title}}&nbsp;</router-link> <br>
+                    <span style="color:#757575; font-size:12px">Posted: {{info.created_at}}</span>
                     <v-divider></v-divider>
                 </li>
             </ul>
@@ -43,27 +57,26 @@
 
 
 <script>
-  export default {
-      data(){
+    import axios from 'axios'
+    export default {
+        data(){
             return {
-                recents: [
-                    {id: 1,title: 'lorem ipsum dolor sit amet post 1', date: '23 Juni 2019'},
-                    {id: 2,title: 'lorem ipsum dolor sit amet post 2', date: '2 Juni 2019'},
-                    {id: 3,title: 'lorem ipsum dolor sit amet post 3', date: '3 Juni 2019'},
-                    {id: 4,title: 'lorem ipsum dolor sit amet post 4', date: '20 Juni 2019'},
-                    {id: 5,title: 'lorem ipsum dolor sit amet post 5', date: '21 Juni 2019'},
-                    {id: 6,title: 'lorem ipsum dolor sit amet post 6', date: '2 Juni 2019'},
-                ],   
-                infos: [
-                    {id: 1,title: 'lorem ipsum dolor sit amet post 1', date: '23 Juni 2019'},
-                    {id: 2,title: 'lorem ipsum dolor sit amet post 2', date: '2 Juni 2019'},
-                    {id: 3,title: 'lorem ipsum dolor sit amet post 3', date: '3 Juni 2019'},
-                    {id: 4,title: 'lorem ipsum dolor sit amet post 4', date: '20 Juni 2019'},
-                    {id: 5,title: 'lorem ipsum dolor sit amet post 5', date: '21 Juni 2019'},
-                    {id: 6,title: 'lorem ipsum dolor sit amet post 6', date: '2 Juni 2019'},
-                ],       
-        }
-    }
+                posts: [], 
+                load_data:true,
+            }
+        },
 
-  }
+        mounted(){
+            axios.get('/master/information')
+            .then(response => {
+                this.load_data = false
+                this.posts = response.data.data
+                // console.log(response.data)
+            })
+            .catch(error =>{
+                console.log(error)
+            })
+        }
+        
+    }
 </script>

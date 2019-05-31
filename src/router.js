@@ -109,11 +109,11 @@ export default new Router({
     },
 
     {
-      path: "/cereout/exams/start/:id",
+      path: "/cereout/exams/start/:id/:durasi/:attemptId",
       name: 'exam_page',
       meta: {layout: "exam"},
       component: () => import("./views/cereout/exams/ExamPage.vue"),
-      // props:true
+      props:true
     },
 
     {
@@ -133,6 +133,12 @@ export default new Router({
       path: "/cerecall",
       name: 'cerecall',
       component: () => import("./views/cerecall/Index.vue")
+    },
+
+    {
+      path: "/cerecall/ulasan/:guruId",
+      name: 'cerecall_ulasan',
+      component: () => import("./views/cerecall/Ulasan.vue")
     },
 
     {

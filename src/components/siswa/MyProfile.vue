@@ -8,13 +8,13 @@
         <v-flex md9 style="font-size:14px">
             <table>
                 <tr height="30">
-                    <td width="120"><b>Name</b></td><td>Febri Ardi Saputra</td>
+                    <td width="120"><b>Name</b></td><td>{{dataUser.name}}</td>
                 </tr>
                 <tr height="30">
-                    <td><b>E-mail</b></td><td>ardisaputrafebri@gmail.com</td>
+                    <td><b>E-mail</b></td><td>{{dataUser.email}}</td>
                 </tr>
                 <tr height="30">
-                    <td><b>Phone Number</b></td><td>08886370090</td>
+                    <td><b>Phone Number</b></td><td>{{dataUser.phone}}</td>
                 </tr>
                 <tr height="30">
                     <td><b>Admission Date</b></td><td>04 May 2019</td>
@@ -23,6 +23,13 @@
                     <td><b>Groups</b></td><td></td>
                 </tr>
             </table>
+            <!-- {{dataUser}} -->
         </v-flex>
     </v-layout>
 </template>
+
+<script>
+export default {
+    props:["dataUser"]
+}
+</script>
