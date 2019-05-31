@@ -253,13 +253,13 @@ export default new Router({
       component: () => import("./views/guru/cerecall/ChatPage.vue")
     },
     {
-      path: "/guru/profile/edit",
+      path: "/guru/profile",
       name: 'profile_guru',
       meta: {layout: "guru"},
-      component: () => import("./views/guru/dashboard/ProfileEdit.vue")
+      component: () => import("./views/guru/dashboard/MyProfile.vue")
     },
     {
-      path: "/guru/account/edit",
+      path: "/guru/account",
       name: 'account_guru',
       meta: {layout: "guru"},
       component: () => import("./views/guru/dashboard/AccountEdit.vue")

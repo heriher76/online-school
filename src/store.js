@@ -12,11 +12,13 @@ export default new Vuex.Store({
     token: localStorage.getItem('access_token') || null, //get token,
     dataUser : localStorage.getItem('getDataUser') || null,
     info: [],
+    dataProfileUser: [],
     dataPelajaran: [],
     dataDetailPelajaran: [],
     dataPelajaranbyLesson: [],
     dataFavoritbyUser: [],
     dataPelajaranbyUser: [],
+    dataPelajaranbyTeacher: [],
     dataDetailMateri: [],
     dataDetailForum: [],
   },
@@ -61,6 +63,10 @@ export default new Vuex.Store({
       state.dataPelajaranbyUser = dataPelajaranbyUser
     },
 
+    getDataPelajaranbyTeacher(state, dataPelajaranbyTeacher){
+      state.dataPelajaranbyTeacher = dataPelajaranbyTeacher
+    },
+
     getDataFavoritbyUser(state, dataFavoritbyUser){
       state.dataFavoritbyUser = dataFavoritbyUser
     },
@@ -75,6 +81,11 @@ export default new Vuex.Store({
 
     getDataDetailForum(state, dataDetailForum){
       state.dataDetailForum = dataDetailForum
+    },
+
+    //-----------------------------------Profile Siswa-------------------------
+    getProfileUser(state, dataProfileUser){
+      state.dataProfileUser = dataProfileUser
     }
   },
 
@@ -196,6 +207,17 @@ export default new Vuex.Store({
       })
     },
 
+    getDataPelajaranbyTeacher(context){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/courses/teacher/'+this.state.dataUser)
+      .then(response => {
+        context.commit('getDataPelajaranbyTeacher', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
     getDataFavoritbyUser(context){
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
       axios.get('/courses/favorites')
@@ -279,6 +301,49 @@ export default new Vuex.Store({
           reject(error)
         })
       })
+    },
+
+    // -----------------------------SISWA
+    // get profile
+    getProfileUser(context){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/auth/user')
+      .then(response => {
+        context.commit('getProfileUser', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    // edit profile function
+    editProfileUser(context, credentials){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+
+      if(context.getters.loggedIn) {
+          const data = {
+            name: credentials.name,
+            gender: credentials.gender,
+            phone: credentials.phone,
+            birth_place: credentials.birth_place,
+            birth_date: credentials.birth_date,
+            parrent_name: credentials.parrent_name,
+            parrent_phone: credentials.parrent_phone,
+            address: credentials.address,
+            file: credentials.file
+          }
+          // return new Promise((resolve, reject) => {
+          axios.put('/auth/user/'+this.state.dataUser, data)
+          .then(response => {
+
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(response.data)
+            // reject(error)
+          })
+        // })
+      }
     },
   }
 });
