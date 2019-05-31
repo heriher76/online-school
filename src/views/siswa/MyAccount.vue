@@ -9,6 +9,7 @@
                     </v-card-title>                
                     <v-card-title style="float:right">
                         <a @click="pg_edit" v-show="my_profile"> <v-icon small>create</v-icon> Edit Profile</a>
+                        <a @click="" v-show="back"> <v-icon small>create</v-icon> Back</a>
                     </v-card-title>
                     <div class="clear"></div>
                 </v-card>
@@ -16,8 +17,8 @@
                 <v-card>
                     <v-card-title>
                         <!-- detail -->
-                        <MyProfile v-show="my_profile"/>
-                        <EditProfile v-show="edit_profile"/>
+                        <MyProfile :dataUser="user" v-show="my_profile"/>
+                        <EditProfile :dataUser="user" v-show="edit_profile"/>
                         <!-- /detail -->
                     </v-card-title>   
                 </v-card>
@@ -28,14 +29,18 @@
 </template>
 
 <script>
+    import axios from 'axios'
     import MyProfile from "../../components/siswa/MyProfile"
     import EditProfile from "../../components/siswa/EditProfile"
 
     export default {
-        data: () => ({
-            my_profile: true,
-            edit_profile: false
-        }),
+        data () {
+            return {
+                user: [],
+                my_profile: true,
+                edit_profile: false
+            }
+        },
 
         components:{
             MyProfile,
@@ -47,6 +52,17 @@
                 this.edit_profile = true
                 this.my_profile   = false
             }
-        }
+        },
+
+          mounted(){      
+            axios.get('/auth/user')
+            .then(response => {
+                this.user = response.data.data
+                // console.log(response.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        },
     }
 </script>

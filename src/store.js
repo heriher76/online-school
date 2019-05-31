@@ -162,22 +162,9 @@ export default new Vuex.Store({
 
 //---------------------------------cereout function-----------------------------------------------
 
-    submitTryout(context, res){
-      return new Promise((resolve, reject) => {
-        axios.post('/cereouts/'+res.questionId+'/attempts/'+res.attemptId+'/valuation',
-          res.my_time,
-          res.answer
-        )
-        .then(response => {
-          console.log(response.data)
-          resolve(response)
-        })
-        .catch(error => {
-          console.log(error)
-          reject(error)
-        })
-      })
-    },
+//
+//
+//
 
 //---------------------------------cerevid function-----------------------------------------------
   //--------------------------------cerevid get--------------------------------

@@ -146,13 +146,14 @@
                         </div>     
                         <v-divider></v-divider>
                         <!-- <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn> -->                
-                        <v-btn block color="red" dark @click="submit">Akhiri</v-btn>
+                        <v-btn block color="red" dark @click="alertDisplay">Akhiri</v-btn>
                     </v-card>
                 </v-flex>
-            {{ myTime }}
-            {{ answer }}  
 
-            
+                <!-- attempt id : {{attemptId}}
+                cereout id : {{cereoutId}} -->
+ 
+            answers : {{ answer }}  
 
             <!-- {{questions}} -->
             <!-- {{tmpanswer}} -->
@@ -238,7 +239,7 @@
     import axios from 'axios';
 
     export default {
-        props:["idQuestion", "time", "attemptId"],
+        props:["cereoutId", "time", "attemptId"],
 
         components:{
             Timer
@@ -258,7 +259,7 @@
                 quest: "",
                 options: [],
 
-                myTime: [],
+                myTime: '',
                 answer: [],
 
                 tmpanswer: [],
@@ -280,7 +281,7 @@
                     showLoaderOnConfirm: true
                 }).then((result) => {
                     if(result.value) { 
-                        this.submit()
+                        return this.submit()
                     } else {
                         this.$swal('Cancelled', 'Your file is still intact', 'info')
                     }
@@ -309,9 +310,9 @@
                     }
 
                     if(ans==this.questions[i].correct_answer){
-                        n = 'true'
+                        n = 1
                     }else{
-                        n = 'false'
+                        n = 0
                     }
                     
                     var tmp = {
@@ -322,29 +323,16 @@
                     this.answer.push(tmp)
                 }
 
-                //
-                // this.$store.dispatch('submitTryout', {
-                //     questionId: 1,
-                //     attemptId: 294,
-                //     my_time : this.myTime,
-                //     answer: this.answer
-                // })
-                // .then(response => {
-                //     // console.log(response)
-                // })
-
-                axios.post('/cereouts/'+1+'/attempts/'+294+'/valuation', {
+                axios.post('/cereouts/'+this.cereoutId+'/attempts/'+this.attemptId+'/valuation', {
                     my_time: this.myTime,
-                    answer: this.answer
+                    answers: this.answer
                 })
                 .then(response => {
                     console.log(response.data)
                 })
                 .catch(error => {
-                    console.log(error)
+                    console.log(error.response)
                 })
-
-
             },
 
             viewQuestion(index) {   
@@ -408,7 +396,7 @@
 
         mounted(){
             // axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-            axios.get('/cereouts/question/' + this.idQuestion)
+            axios.get('/cereouts/question/' + this.cereoutId)
             .then(response => {
                 this.load_data = false
                 this.questions = response.data.data
