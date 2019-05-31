@@ -1,7 +1,7 @@
 <template>
     <div>
-        <ExamAction :idQuestion="$route.params.id" :time="durasi"/>
-        <!-- {{durasi}} -->
+        <ExamAction :cereoutId="$route.params.id" :time="durasi" :attemptId="attemptId"/>
+        <!-- durasi{{durasi}} -->
     </div>
 </template>
 
@@ -10,7 +10,7 @@
 import ExamAction from "../../../components/cereout-component/ExamAction"
 
 export default {
-    props:["durasi"],
+    props:["durasi", "attemptId"],
     components:{
         ExamAction
     },

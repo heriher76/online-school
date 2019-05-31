@@ -89,15 +89,15 @@
                 </v-btn>
                 <v-btn @click="$router.go(-1)">Cancel</v-btn>
 
-                <v-dialog v-model="dialog" width="500">
-                  <!-- <template v-slot:activator="{ on }">
+                <!-- <v-dialog v-model="dialog" width="500">
+                  <template v-slot:activator="{ on }">
                     <v-btn dark color="info" v-on="on">
                       Attempt Now
                       <v-icon right dark>launch</v-icon>
                     </v-btn>
                     
                     <v-btn @click="$router.go(-1)">Cancel</v-btn>
-                  </template> -->
+                  </template>
 
                   <v-card>
                     <v-card-title class="headline grey lighten-2" primary-title>
@@ -128,7 +128,7 @@
                       </v-dialog>
                     </v-card-actions>
                   </v-card>
-                </v-dialog>
+                </v-dialog> -->
                 </v-card>
             </v-container>
         </v-container>
@@ -169,6 +169,7 @@
         })
         .then(response => {
           this.loading = false
+          console.log(response)
         
           if(response.data.status == true){ //cek user member atau bukan
             let routeData = this.$router.resolve({name: 'exam_page', params:{id:data.id, durasi:data.duration, attemptId:response.data.data.id}});
@@ -178,7 +179,8 @@
                         '_blank'
                         )
           }else{
-            return this.dialog = true
+            // return this.dialog = true
+            return this.$swal('Oopps', response.data.message, 'warning')
           }
 
         })

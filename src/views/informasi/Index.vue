@@ -17,7 +17,9 @@
                                     v-for="(item,i) in sliders"
                                     :key="i"
                                     :src="item.url"
-                                    ></v-carousel-item>
+                                    >
+                                        <h5 style="color:white; padding:10px 20px; background:rgba(0,0,0,0.2)" class="headline">{{item.title}}</h5>
+                                    </v-carousel-item>
                                 </v-carousel>
                             </v-flex>
                             <v-flex md12 sm12 xs12>
