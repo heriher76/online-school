@@ -16,8 +16,8 @@
                 <v-card>
                     <v-card-title>
                         <!-- detail -->
-                        <MyProfile v-show="my_profile"/>
-                        <EditProfile v-show="edit_profile"/>
+                        <MyProfile v-show="my_profile" :datas="dataProfileUser"/>
+                        <EditProfile v-show="edit_profile" :datas="dataProfileUser"/>
                         <!-- /detail -->
                     </v-card-title>   
                 </v-card>
@@ -46,7 +46,24 @@
             pg_edit() {
                 this.edit_profile = true
                 this.my_profile   = false
+            },
+            async getProfileUser(){
+              this.$store.dispatch('getProfileUser')
+              .then(response => {
+                console.log("telah load data..")
+              })
             }
+        },
+        created(){
+         this.getProfileUser()
+        },
+        computed: {
+          dataProfileUser(){
+            return this.$store.state.dataProfileUser || {}
+          },
+          userId(){
+            return this.$store.state.dataUser || {}
+          },
         }
     }
 </script>
