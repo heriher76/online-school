@@ -82,10 +82,14 @@
                     <v-card>
                         <v-btn @click="previous(hal)" small> <v-icon left dark>keyboard_arrow_left</v-icon> Soal Sebelumnya</v-btn>
                         <v-btn @click="next(hal)" small>soal Berikutnya <v-icon right dark>keyboard_arrow_right</v-icon></v-btn>  
-                        
-                        <v-btn @click="mark(hal)" small>Tandai</v-btn>
+                        <v-btn v-if="hal == markanswer[hal]" @click="delMark(hal)" dark color="orange" small>Hapus Tanda</v-btn>
+                        <v-btn v-else @click="mark(hal)" small>Tandai</v-btn>
+
+                        mark:{{markanswer[hal]}}, hal:{{hal}}, an: {{markanswer}}
+
                         
                     </v-card>
+
                 </v-flex>
     
                 <v-flex md3>
@@ -99,7 +103,6 @@
                                 v-for="(item, key, index) in questions" :key="item.id" 
                                 @click="viewQuestion(key)"
                             >  
-                            
                                 <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
                                 <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
 
@@ -109,8 +112,7 @@
                                 <span v-else-if="key+1 < 10 && tmpanswer[key]!=null" style="background:#8BC34A;padding:10px 14.6px">{{key+1}}</span>
                                 <span v-else-if="key+1 >= 10 && tmpanswer[key]!=null" style="background:#8BC34A;padding:10px 10.6px">{{key+1}}</span>  
 
-                                <!-- <span v-else-if="key+1 < 10 && markanswer[key]!=key" style="background:orange;padding:10px 14.6px">{{key+1}} </span>
-                                <span v-else-if="key+1 >= 10 && markanswer[key]!=key" style="background:orange;padding:10px 10.6px">{{key+1}}</span>                                                      -->
+                                <span v-else-if="key+1 < 10 && markanswer[key]!=null" style="background:orange;padding:10px 14.6px">{{key+1}} </span>                                                    
                             </a>
                             <div class="clear"></div>
                             
@@ -146,93 +148,22 @@
                         </div>     
                         <v-divider></v-divider>
                         <!-- <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn> -->                
-                        <v-btn block color="red" dark @click="alertDisplay">Akhiri</v-btn>
+                        <v-btn block color="red" dark @click="submit">Akhiri</v-btn>
                     </v-card>
                 </v-flex>
 
-                <!-- attempt id : {{attemptId}}
-                cereout id : {{cereoutId}} -->
- 
-            answers : {{ answer }}  
+            <!-- my_time : {{ myTime }}
+            answers : {{ answer }}   -->
 
             <!-- {{questions}} -->
             <!-- {{tmpanswer}} -->
 
-            <!-- {{ markanswer }} -->
+            {{ markanswer }}
         
             </v-layout>
         </v-container>
     </div>
 </template>
-
-
-<style>
-    a.btn-num{
-        margin: 5px 5px 25px 5px; 
-        float:left; 
-        color:white
-    }
-
-    a.btn-num:hover{
-        color: black
-    }
-
-    .container {
-        display: block;
-        position: relative;
-        margin-bottom:-20px;
-    }
-
-    .container input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-    }
-
-    .checkmark {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        height: 16px;
-        width: 16px;
-        background-color: #eee;
-        border-radius: 100%;
-    }
-
-    .checkmark p {
-        margin-left:24px; 
-        margin-top:-4px; 
-        font-size:16px
-    }
-
-    .container:hover input ~ .checkmark {
-        background-color: #ccc;
-    }
-
-    .container input:checked ~ .checkmark {
-        background-color: #2196F3;
-    }
-
-    .checkmark:after {
-        content: "";
-        position: absolute;
-        display: none;
-    }
-
-    .container input:checked ~ .checkmark:after {
-        display: block;
-    }
-
-    .container .checkmark:after {
-        top: 4px;
-        left: 4px;
-        width: 8px;
-        height: 8px;
-        border-radius: 100%;
-        background: white;
-    }
-</style>
 
 <script>
     import Timer from "../cereout-component/Timer"    
@@ -363,6 +294,11 @@
                 this.markanswer.push(hal)
             },
 
+            delMark(hal){
+                const index = this.markanswer.indexOf(hal) //mencari index
+                this.markanswer.splice(index, 1)
+            },
+
             //function timer
             startTimer: function() {
                 this.timer = setInterval(() => this.countdown(), 1000); //1000ms = 1 second
@@ -413,3 +349,71 @@
         }
     }
 </script>
+
+<style>
+    a.btn-num{
+        margin: 5px 5px 25px 5px; 
+        float:left; 
+        color:white
+    }
+
+    a.btn-num:hover{
+        color: black
+    }
+
+    .container {
+        display: block;
+        position: relative;
+        margin-bottom:-20px;
+    }
+
+    .container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .checkmark {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        height: 16px;
+        width: 16px;
+        background-color: #eee;
+        border-radius: 100%;
+    }
+
+    .checkmark p {
+        margin-left:24px; 
+        margin-top:-4px; 
+        font-size:16px
+    }
+
+    .container:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+
+    .container input:checked ~ .checkmark {
+        background-color: #2196F3;
+    }
+
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    .container input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    .container .checkmark:after {
+        top: 4px;
+        left: 4px;
+        width: 8px;
+        height: 8px;
+        border-radius: 100%;
+        background: white;
+    }
+</style>
