@@ -123,9 +123,10 @@ export default new Router({
     },
 
     {
-      path: "/cereout/results/detail/:id",
+      path: "/cereout/results/detail",
       name: 'result_detail',
-      component: () => import("./views/cereout/ResultDetail.vue")
+      component: () => import("./views/cereout/ResultDetail.vue"),
+      props: true
     },
 
     // -----------------------------cerecall-----------------------------
