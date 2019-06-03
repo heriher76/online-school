@@ -277,7 +277,7 @@ export default new Router({
       component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
     },
     {
-      path: "/guru/cerevid/detail-pelajaran",
+      path: "/guru/cerevid/detail-pelajaran/:id",
       name: "cerevid_detail_pelajaran_guru",
       meta: {layout: "guru"},
       component: () => import("./views/cerevid/detailPelajaranGuru.vue")

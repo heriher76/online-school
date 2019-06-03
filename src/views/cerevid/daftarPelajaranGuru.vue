@@ -44,7 +44,7 @@
 							        <v-flex xs12 sm6 md4>
 							          <v-card>
 							            <v-img
-							              src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+							              v-bind:src="'http://admin.ceredinas.id/public/cover/' + props.item.cover"
 							              height="200px"
 							            	>
 							                <v-flex offset-xs9 align-end flexbox>
@@ -57,9 +57,9 @@
 							            <v-card-title primary-title>
 							              <div>
 							                <div class="headline">
-							                	<router-link to="/guru/cerevid/detail-pelajaran" style="text-decoration: none;">Ilmu Hukum</router-link>
+							                	<router-link v-bind:to="'/guru/cerevid/detail-pelajaran/'+props.item.id" style="text-decoration: none;">{{props.item.title}}</router-link>
 							                </div>
-							                <span class="grey--text">John Doe, Ph.D</span>
+							                <span class="grey--text">{{props.item.teacher.name}}</span>
 							              </div>
 							            </v-card-title>
 										<div class="text-xs-center mt-1">

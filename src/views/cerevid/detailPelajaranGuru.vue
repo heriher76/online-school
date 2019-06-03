@@ -321,6 +321,22 @@
           }
         ]
     }),
+    methods: {
+        async getDataDetailPelajaran(){
+          this.$store.dispatch('getDataDetailPelajaran')
+          .then(response => {
+            console.log("telah load data..")
+          })
+        },
+    },
+    created(){
+      this.getDataDetailPelajaran()
+    },
+    computed: {
+      dataDetailPelajaran(){
+        return this.$store.state.dataDetailPelajaran || {}
+      },
+    },
 		components:{
 			subNavbarGuru,
       sidebarGuru

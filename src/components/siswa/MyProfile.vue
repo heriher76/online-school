@@ -37,18 +37,18 @@
                 <tr height="30">
                     <td><b>Membership</b></td><td>{{ datas.data.membership }}</td>
                 </tr>
-                <tr height="30">
-                    <td><b>Class</b></td><td>{{ datas.data.class }}</td>
-                </tr>
-                <tr height="30">
+                <!-- <tr height="30">
+                    <td><b>Class</b></td><td>{{ datas.data.class.name_class }}</td>
+                </tr> -->
+                <!-- <tr height="30">
                     <td><b>Pilihan Pertama</b></td><td>{{ datas.data.option1.department_name }} - {{ datas.data.option1.university_name }}</td>
                 </tr>
                 <tr height="30">
                     <td><b>Pilihan Kedua</b></td><td>{{ datas.data.option2.department_name }} - {{ datas.data.option2.university_name }}</td>
-                </tr>
-                <tr height="30">
+                </tr> -->
+                <!-- <tr height="30">
                     <td><b>Pilihan Ketiga</b></td><td>{{ datas.data.option3.department_name }} - {{ datas.data.option3.university_name }}</td>
-                </tr>
+                </tr> -->
             </table>
         </v-flex>
     </v-layout>
@@ -59,7 +59,7 @@
     data: () => ({
     }),
     mounted() {
-        
+        console.log(this.datas)
     }
   }
 </script>

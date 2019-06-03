@@ -9,7 +9,7 @@
                     </v-card>
                 </v-flex>
                 <!-- /sidebar -->
-                
+
                 <v-flex md9 sm12 xs12>
                 <v-card>
                     <v-card-title style="float:left">
@@ -24,8 +24,8 @@
                 <v-card>
                     <v-card-title>
                         <!-- detail -->
-                        <MyProfile v-show="my_profile"/>
-                        <EditProfile v-show="edit_profile"/>
+                        <MyProfile v-show="my_profile" :datas="dataProfileGuru"/>
+                        <EditProfile v-show="edit_profile" :datas="dataProfileGuru"/>
                         <!-- /detail -->
                     </v-card-title>   
                 </v-card>
@@ -56,7 +56,24 @@
             pg_edit() {
                 this.edit_profile = true
                 this.my_profile   = false
+            },
+            async getProfileGuru(){
+              this.$store.dispatch('getProfileGuru')
+              .then(response => {
+                console.log("telah load data..")
+              })
             }
+        },
+        created(){
+         this.getProfileGuru()
+        },
+        computed: {
+          dataProfileGuru(){
+            return this.$store.state.dataProfileGuru || {}
+          },
+          userId(){
+            return this.$store.state.dataGuru || {}
+          },
         }
     }
 </script>

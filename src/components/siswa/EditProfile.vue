@@ -15,26 +15,25 @@
             <!--  -->
             <div v-show="edit_prof" class="edit_profile">
                 <form @submit.prevent="login">
-                    <v-text-field style="height:60px" v-model="name" label="Name" placeholder="nama lengkap"></v-text-field>
-                    <v-text-field style="height:60px" v-model="email" label="Email" placeholder="email"></v-text-field>
-                    <v-text-field style="height:60px" v-model="phone" label="Phone Number" placeholder="nomor telepon"></v-text-field>
-                    <v-text-field style="height:60px" v-model="gender" label="Gender" placeholder="gender"></v-text-field>
-                    <v-text-field style="height:60px" v-model="birth_place" label="Birth Place" placeholder="birth place"></v-text-field>
-                    <v-text-field style="height:60px" v-model="birth_date" label="Birth Date" placeholder="birth date"></v-text-field>
-                    <v-text-field style="height:60px" v-model="parrent_name" label="Parrent Name" placeholder="parrent name"></v-text-field>
-                    <v-text-field style="height:60px" v-model="parrent_phone" label="Parrent Phone" placeholder="parrent phone"></v-text-field>
-                    <v-text-field style="height:60px" v-model="kelas" label="Class" placeholder="class"></v-text-field>
-                    <v-text-field style="height:60px" v-model="option1" label="Pilihan Pertama" placeholder="pilihan pertama"></v-text-field>
-                    <v-text-field style="height:60px" v-model="option2" label="Pilihan Kedua" placeholder="pilihan kedua"></v-text-field>
-                    <v-text-field style="height:60px" v-model="option3" label="Pilihan Ketiga" placeholder="pilihan ketiga"></v-text-field>
-                    <!-- <v-text-field style="height:60px" readonly label="Admission Date" value="23-02-2019" ></v-text-field>
-                    <v-text-field style="height:60px" readonly label="Group" value="" ></v-text-field> -->
+                    <v-text-field style="height:60px" v-model="datas.data.name" label="Name" placeholder="nama lengkap"></v-text-field>
+                    <!-- <v-text-field style="height:60px" v-model="datas.data.email" label="Email" placeholder="email"></v-text-field>
+                     -->
+                    <v-text-field style="height:60px" v-model="datas.data.phone" label="Phone Number" placeholder="nomor telepon"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.gender" label="Gender" placeholder="gender"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.birth_place" label="Birth Place" placeholder="birth place"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.birth_date" label="Birth Date" placeholder="birth date"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.parrent_name" label="Parrent Name" placeholder="parrent name"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.parrent_phone" label="Parrent Phone" placeholder="parrent phone"></v-text-field>
+                    <!-- <v-text-field style="height:60px" v-model="datas.data.class.name_class" label="Class" placeholder="class"></v-text-field> -->
+                    <!-- <v-text-field style="height:60px" v-model="datas.data.option1.department_name" label="Pilihan Pertama" placeholder="pilihan pertama"></v-text-field> -->
+                    <v-text-field style="height:60px" v-model="datas.data.option2" label="Pilihan Kedua" placeholder="pilihan kedua"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.option3" label="Pilihan Ketiga" placeholder="pilihan ketiga"></v-text-field>
                     <v-divider></v-divider>
                     <v-btn @click="submit" :loading="btn_load" dark>Update</v-btn>  
                 </form>
             </div>
             <!--  -->
-            <ChangePassword v-show="chg_pass"/>
+            <ChangePassword v-show="chg_pass" :idUser="this.datas.data.id"/>
         </v-flex>
     </v-layout>
 </template>
@@ -64,20 +63,6 @@
         components:{
             ChangePassword
         },
-        mounted() {
-            this.name = this.datas.data.name
-            this.email = this.datas.data.email
-            this.gender = this.datas.data.gender
-            this.phone = this.datas.data.phone
-            this.birth_place = this.datas.data.birth_place
-            this.birth_date = this.datas.data.birth_date
-            this.parrent_name = this.datas.data.parrent_name
-            this.parrent_phone = this.datas.data.parrent_phone
-            this.kelas = this.datas.data.class.name_class
-            this.option1 = this.datas.data.option1.department_name
-            this.option2 = this.datas.data.option2.department_name
-            this.option3 = this.datas.data.option3.department_name
-        },
         methods:{
             changePass() {
                 this.edit_prof = false
@@ -89,14 +74,14 @@
             submit (event) {
                 this.btn_load = true
                 this.$store.dispatch('editProfileUser', {
-                    name: this.name,
-                    gender: this.gender,
-                    phone: this.phone,
-                    birth_place: this.birth_place,
-                    birth_date: this.birth_date,
-                    parrent_name: this.parrent_name,
-                    parrent_phone: this.parrent_phone,
-                    address: this.address,
+                    name: this.datas.data.name,
+                    gender: this.datas.data.gender,
+                    phone: this.datas.data.phone,
+                    birth_place: this.datas.data.birth_place,
+                    birth_date: this.datas.data.birth_date,
+                    parrent_name: this.datas.data.parrent_name,
+                    parrent_phone: this.datas.data.parrent_phone,
+                    address: this.datas.data.address,
                     file: this.file
                 })
                 .then(response => {
@@ -111,4 +96,3 @@
         }
     }
 </script>
-

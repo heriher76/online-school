@@ -11,8 +11,10 @@ export default new Vuex.Store({
   state: {
     token: localStorage.getItem('access_token') || null, //get token,
     dataUser : localStorage.getItem('getDataUser') || null,
+    dataGuru : localStorage.getItem('getDataGuru') || null,
     info: [],
     dataProfileUser: [],
+    dataProfileGuru: [],
     dataPelajaran: [],
     dataDetailPelajaran: [],
     dataPelajaranbyLesson: [],
@@ -38,12 +40,20 @@ export default new Vuex.Store({
       state.dataUser = dataUser
     },
 
+    retrieveDataGuru(state,dataGuru){
+      state.dataGuru = dataGuru
+    },
+
     destroyToken(state) {
       state.token = null
     },
 
     destroydataUser(state) {
       state.dataUser = null
+    },
+
+    destroydataGuru(state) {
+      state.dataGuru = null
     },
 
 //----------------------------------------informasi---------------------------------------------
@@ -86,6 +96,11 @@ export default new Vuex.Store({
     //-----------------------------------Profile Siswa-------------------------
     getProfileUser(state, dataProfileUser){
       state.dataProfileUser = dataProfileUser
+    },
+
+    //-----------------------------------Profile Siswa-------------------------
+    getProfileGuru(state, dataProfileGuru){
+      state.dataProfileGuru = dataProfileGuru
     }
   },
 
@@ -233,6 +248,7 @@ export default new Vuex.Store({
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
       axios.get('/courses/'+router.currentRoute.params.id)
       .then(response => {
+        console.log(response.data)
         context.commit('getDataDetailPelajaran', response.data)
       })
       .catch(error => {
@@ -316,6 +332,18 @@ export default new Vuex.Store({
       })
     },
 
+    // get profile
+    getProfileGuru(context){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/auth/user')
+      .then(response => {
+        context.commit('getProfileGuru', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
     // edit profile function
     editProfileUser(context, credentials){
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
@@ -334,6 +362,35 @@ export default new Vuex.Store({
           }
           // return new Promise((resolve, reject) => {
           axios.put('/auth/user/'+this.state.dataUser, data)
+          .then(response => {
+
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(response.data)
+            // reject(error)
+          })
+        // })
+      }
+    },
+
+    editProfileGuru(context, credentials){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+
+      if(context.getters.loggedIn) {
+          const data = {
+            name: credentials.name,
+            gender: credentials.gender,
+            phone: credentials.phone,
+            birth_place: credentials.birth_place,
+            birth_date: credentials.birth_date,
+            parrent_name: credentials.parrent_name,
+            parrent_phone: credentials.parrent_phone,
+            address: credentials.address,
+            file: credentials.file
+          }
+          // return new Promise((resolve, reject) => {
+          axios.put('/auth/teacher/'+this.state.dataUser, data)
           .then(response => {
 
             console.log(response.data)
