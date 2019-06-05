@@ -38,6 +38,12 @@
                 >
                   Ulasan
                 </v-tab>
+                <v-tab
+                  :href="'#forum'"
+                  style="text-decoration:none;"
+                >
+                  Forum
+                </v-tab>
                 <v-tabs-items>
                   <v-tab-item
                     :value="'ikhtisar'"
@@ -60,7 +66,7 @@
                                 </v-container>
                               </div>
                               <v-layout class="justify-center">
-                                <v-btn color="warning" class="white--text" to="/cerevid/detail-pelajaran/materi" >Ubah</v-btn>
+                                <v-btn color="warning" class="white--text" v-bind:to="'/guru/cerevid/detail-pelajaran/'+dataDetailPelajaran.data.id+'/edit'" >Ubah</v-btn>
                             </v-layout>
                             </v-layout>
                           </v-container>
@@ -76,36 +82,62 @@
                         <v-flex  class="mx-4">
                           <v-expansion-panel expand="true">
                           <v-expansion-panel-content
-                            v-for="(item,i) in 5"
+                            v-for="(item,i) in this.sections"
                             :key="i"
                           >
                             <template v-slot:header>
-                              <div>Looping - 7 Materi</div>
+                              <div>{{ item.title }}</div>
                             </template>
                             <v-card>
-                              <v-list-tile>
-                                  <v-list-tile-content>
-                                    <v-list-tile-sub-title>Materi 1 | For</v-list-tile-sub-title>
-                                  </v-list-tile-content>
-                                  <v-list-tile-action>
-                                    <v-btn  color="green">
-                                      <v-icon color="white--text">visibility</v-icon>
-                                      <span class="pa-1 white--text">Lihat</span>
-                                    </v-btn>
-                                  </v-list-tile-action>
-                                </v-list-tile>
-                                <v-divider style="margin:0"></v-divider>
-                              <v-list-tile>
-                                  <v-list-tile-content>
-                                    <v-list-tile-sub-title>Materi 2 | While</v-list-tile-sub-title>
-                                  </v-list-tile-content>
-                                  <v-list-tile-action>
-                                    <v-btn disabled>
-                                      <v-icon>lock</v-icon>
-                                      <span class="pa-1">Lihat</span>
-                                    </v-btn>
-                                  </v-list-tile-action>
-                                </v-list-tile>
+                              <v-list-tile
+                                v-for="(video,j) in item.videos"
+                                :key="j"
+                              >
+                                <v-list-tile-content>
+                                  <v-list-tile-sub-title>{{ video.title }}</v-list-tile-sub-title>
+                                </v-list-tile-content>
+                                <v-list-tile-action>
+                                  <v-btn  color="green">
+                                    <v-icon color="white--text">visibility</v-icon>
+                                    <span class="pa-1 white--text">Lihat</span>
+                                  </v-btn>
+                                </v-list-tile-action>
+                              </v-list-tile>
+                              
+                              <v-divider style="margin:0"></v-divider>
+                              
+                              <v-list-tile
+                                v-for="(text,k) in item.texts"
+                                :key="k"
+                              >
+                                <v-list-tile-content>
+                                  <v-list-tile-sub-title>{{ text.title }}</v-list-tile-sub-title>
+                                </v-list-tile-content>
+                                <v-list-tile-action>
+                                  <v-btn color="green">
+                                    <v-icon color="white--text">visibility</v-icon>
+                                    <span class="pa-1 white--text">Lihat</span>
+                                  </v-btn>
+                                </v-list-tile-action>
+                              </v-list-tile>
+
+                              <v-divider style="margin:0"></v-divider>
+                              
+                              <v-list-tile
+                                v-for="(quiz_item,l) in item.quiz"
+                                :key="l"
+                              >
+                                <v-list-tile-content>
+                                  <v-list-tile-sub-title>{{ quiz_item.title }}</v-list-tile-sub-title>
+                                </v-list-tile-content>
+                                <v-list-tile-action>
+                                  <v-btn color="green">
+                                    <v-icon color="white--text">visibility</v-icon>
+                                    <span class="pa-1 white--text">Lihat</span>
+                                  </v-btn>
+                                </v-list-tile-action>
+                              </v-list-tile>
+
                             </v-card>
                           </v-expansion-panel-content>
                         </v-expansion-panel>
@@ -183,10 +215,10 @@
 								            		<v-layout row wrap>
 								            			<v-flex xs12 sm4 md3>
 											            	<v-card flat class="text-xs-center mt-4">
-											            		<div class="display-3 text-xs-center font-weight-normal">{{rating}}</div>
+											            		<div class="display-3 text-xs-center font-weight-normal">{{this.reviews[0].star}}</div>
 													                <v-card-text style="padding-top: 0">
 													                <v-rating
-													                  v-model="rating"
+													                  v-model="this.reviews[0].star"
 													                  dense
 													                  color="yellow darken-3"
 													                  background-color="grey darken-1"
@@ -194,7 +226,7 @@
 													                  readonly
 													                >
 													                </v-rating>
-													                  (329) Ulasan
+													                  
 													                </v-card-text>
 											            	</v-card>
 										            	</v-flex>
@@ -231,33 +263,33 @@
 																	</v-flex>
 								            			<v-flex xs12 sm12 md12>
 																    <v-list three-line expand="true">
-															          <template v-for="(item, index) in items">
+															          <template v-for="(review, index) in reviews">
 															            <v-subheader
-															              v-if="item.header"
-															              :key="item.header"
+															              v-if="review.header"
+															              :key="review.header"
 															            >
 															            </v-subheader>
 
 															            <v-divider
-															              v-else-if="item.divider"
+															              v-else-if="review.divider"
 															              :key="index"
-															              :inset="item.inset"
+															              :inset="review.inset"
 															            ></v-divider>
 
 															            <v-list-tile
 															              v-else
-															              :key="item.nama"
+															              :key="review.user"
 															              avatar
 															            >
 															              <v-list-tile-avatar size="50">
-															                <img :src="item.avatar">
+															                <img :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'">
 															              </v-list-tile-avatar>
 
 															              <v-list-tile-content>
-															                <v-list-tile-title v-html="item.nama">
+															                <v-list-tile-title v-html="review.user">
 															                </v-list-tile-title>
 															                <v-rating
-															                  v-model="rating"
+															                  v-model="review.star"
 															                  dense
 															                  color="yellow darken-3"
 															                  background-color="grey darken-1"
@@ -265,9 +297,12 @@
 															                  small
 															                >
 															                </v-rating>
-															                <v-list-tile-sub-title v-html="item.ulasan"></v-list-tile-sub-title>
+															                <v-list-tile-sub-title v-html="review.body"></v-list-tile-sub-title>
 															              </v-list-tile-content>
 															            </v-list-tile>
+
+                                          <v-divider style="margin:0"></v-divider>
+
 															          </template>
 															      </v-list>
 										            	</v-flex>
@@ -278,7 +313,103 @@
                       </v-container>
                     </v-card>
                   </v-tab-item>
+                
+                
+                  <v-tab-item
+                    :value="'forum'"
+                    >
+                    <v-card>
+                      <v-container fluid>
+                        <v-flex  class="mx-4">
+                          <v-container grid-list-md>
+                              <v-layout row wrap>
+                                <div class="headline">
+                                  <div>Forum</div>
+                                </div>
+                                <v-layout row wrap>
+                                  
+                                  <v-flex xs12 sm12 md12>
+                                    <v-list three-line expand="true">
+                                        <template v-for="(forum, index) in forums">
+                                          <v-subheader
+                                            v-if="forum.header"
+                                            :key="forum.header"
+                                          >
+                                          </v-subheader>
+
+                                          <v-divider
+                                            v-else-if="forum.divider"
+                                            :key="index"
+                                            :inset="forum.inset"
+                                          ></v-divider>
+
+                                          <v-list-tile
+                                            v-else
+                                            :key="forum.user"
+                                            avatar
+                                          >
+                                            <v-list-tile-avatar size="50">
+                                              <img :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'">
+                                            </v-list-tile-avatar>
+
+                                            <v-list-tile-content>
+                                              <v-list-tile-title v-html="forum.user">
+                                              </v-list-tile-title>
+                                              
+                                              <v-list-tile-sub-title v-html="forum.body"></v-list-tile-sub-title>
+                                            </v-list-tile-content>
+                                          </v-list-tile>
+                                          
+                                          <v-divider style="margin:0"></v-divider>
+
+                                        </template>
+                                        
+                                        <v-btn
+                                          dark color="#2c3e50"
+                                          @click.stop="dialog = true"
+                                        >
+                                          Posting Forum
+                                        </v-btn>
+
+                                        <v-dialog
+                                          v-model="dialog"
+                                          max-width="450"
+                                        >
+                                          <v-card>
+                                            <v-card-title class="headline">Posting Forum</v-card-title>
+
+                                            <v-card-text justify-center>
+                                              <v-textarea
+                                                label="Isi Pesan"
+                                                v-model="body"
+                                              ></v-textarea>
+                                            </v-card-text>
+
+                                            <v-card-actions>
+                                              <v-spacer></v-spacer>
+
+                                              <v-btn
+                                                color="green darken-1"
+                                                flat="flat"
+                                                @click="kirimForum"
+                                              >
+                                                Kirim
+                                              </v-btn>
+                                            </v-card-actions>
+                                          </v-card>
+                                        </v-dialog>
+
+                                    </v-list>
+                                  </v-flex>
+                                </v-layout>
+                              </v-layout>
+                          </v-container>
+                        </v-flex>
+                      </v-container>
+                    </v-card>
+                  </v-tab-item>
                 </v-tabs-items>
+                
               </v-tabs>
             </div>
           </v-flex>
@@ -289,32 +420,17 @@
 <script>
   import subNavbarGuru from '../../components/cerevid-component/subNavbarGuru'
   import sidebarGuru from '../../components/cerevid-component/sidebarGuru'
+  import axios from 'axios'
 	export default {
 		name:"detail-pelajaran-guru",
     data: () => ({
-			rating: 4,
+      sections: '',
+			reviews: '',
+      forums: '',
+      body: '',
+      dialog:false,
       tambahBab: false,
-      tambahMateri: false,
-			items: [
-          { header: 'Today' },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            nama: 'James Doom',
-            ulasan: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-            nama: 'Steven Connors',
-            ulasan: "Wish I could come, but I'm out of town this weekend."
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-            nama: 'Sandra Adams',
-            ulasan: "Do you have Paris recommendations? Have you ever been?"
-          }
-        ]
+      tambahMateri: false
     }),
     methods: {
         async getDataDetailPelajaran(){
@@ -323,9 +439,55 @@
             console.log("telah load data..")
           })
         },
+        kirimForum(){
+          axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+          axios.post('courses/'+this.$route.params.id+'/forums/create', {
+            course_id: this.$route.params.id,
+            body: this.body,
+            user_id: this.$store.state.dataUser
+          })
+          .then(response => {
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        }
     },
     created(){
       this.getDataDetailPelajaran()
+
+      // get sections of course
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+      axios.get('/courses/'+this.$route.params.id+'/sections')
+      .then(response => {
+        this.sections = response.data.data
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+      // get reviews of course
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+      axios.get('/courses/'+this.$route.params.id+'/reviews')
+      .then(response => {
+        console.log(response.data.data)
+        this.reviews = response.data.data
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+      // get forums of course
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+      axios.get('/courses/'+this.$route.params.id+'/forums')
+      .then(response => {
+        console.log(response.data.data)
+        this.forums = response.data.data
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
     computed: {
       dataDetailPelajaran(){

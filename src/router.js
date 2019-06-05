@@ -283,6 +283,11 @@ export default new Router({
       component: () => import("./views/cerevid/detailPelajaranGuru.vue")
     },
     {
+      path: "/guru/cerevid/detail-pelajaran/:id/edit",
+      name: "cerevid_edit_pelajaran_guru",
+      component: () => import("./views/cerevid/editPelajaranGuru.vue")
+    },
+    {
       path: "/guru/cerevid/tambah-pelajaran",
       name: "cerevid_tambah_pelajaran",
       meta: {layout: "guru"},
