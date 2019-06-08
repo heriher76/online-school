@@ -77,7 +77,8 @@
           <p>Adapun misi dari cerebrum adalah menjadi penyedia bimbingan belajar Online No. 1 di Indonesia yang membuat belajar menjadi menyenangkan, dengan kualitas terbaik, secara gratis, tanpa biaya yang mahal.</p>
         </v-flex>
         <v-flex md4 sm12 xs12>
-          <div style="width:300px; margin-top:-50px; margin-left:50px ">          
+          <!-- <div style="width:300px; margin-top:-50px; margin-left:50px ">-->
+          <div style="margin-top:-30px; margin-left:50px ">    
             <img :src="require('../assets/images/cerebrum.png')" width="100%" height="100%">
           </div>
         </v-flex>
