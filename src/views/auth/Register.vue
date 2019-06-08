@@ -2,6 +2,20 @@
     <div class="banner-login">     
       <img :src="require('../../assets/images/cerevid-1.png')" alt="" height="100%" width="100%">
       <div class="baner-color"></div>
+
+      <v-snackbar
+        v-model="snackbar"
+        :multi-line="'multi-line'"
+        :right="'right'"
+        :timeout="8000"
+        :top="'top'"
+        color="rgba(0,0,0,0.5)"
+      >
+        {{ text }}
+        <v-btn :color="'col'" flat @click="snackbar = false">
+          Close
+        </v-btn>
+      </v-snackbar>
       
       <div class="panel-auth" style="color:white">
         <h2 class="display-1">Welcome</h2>
@@ -71,6 +85,10 @@
   export default {
     data () {
       return {
+        snackbar: false,
+        text: '',
+        col: '',
+
         items:[],
 
         loading_screen: false,
@@ -103,8 +121,6 @@
           required: value => !!value || 'Required.',
           match: () => this.password == this.password_confirmation || ('The password confirmation does not match.')
         },
-
-
       }
     },
 
@@ -117,7 +133,18 @@
           password: this.password,
           password_confirmation: this.password_confirmation
         })
-       
+        .then(response => {
+          this.col = 'orange'
+          this.text = response.data.message //"Registrasi Berhasil !!"
+          this.snackbar = true
+          this.$router.push({name: 'login'})
+        })
+        .catch(error => {
+          this.col = 'red'
+          this.text = response.data.errors //"Registrasi Gagal !!"
+          this.snackbar = true
+          console.log(error.response)
+        })  
       },
 
 
@@ -137,9 +164,7 @@
       //   .catch(error => console.log(error.response))
       //   .finally(() => this.loading = false)
       // },
-
-      
-
+    
     }
   }
 </script>
@@ -148,6 +173,12 @@
     .banner-login{
         height:650px;
         position:relative
+    }
+
+    @media only screen and (max-width: 650px) {
+      .banner-login {
+        height: 620px;
+      }
     }
 
     .baner-color {
@@ -173,6 +204,12 @@
         background: rgba(0, 0, 0, 0.3);
         position:absolute;
         text-align:center;
+    }
+
+    @media only screen and (max-width: 650px) {
+      .panel-auth {
+        width: 100%;
+      }
     }
 
     .text-banner h1,h5{

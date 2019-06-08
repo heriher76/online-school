@@ -1,10 +1,11 @@
 <template>
   <div class="header">
     <v-toolbar app height="90">
-      <v-toolbar-side-icon class="hidden-md-and-up" @click="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon class="grey--text hidden-md-and-up" style="margin-right:-10px" @click="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>
         <router-link to="/">
-          <v-img :src="require('../assets/images/logo_final2.png')" width="200px"></v-img>
+          <v-img :src="require('../assets/images/logo_final2.png')" class="hidden-sm-and-down" width="200px"></v-img>
+          <v-img :src="require('../assets/images/logo_final2.png')" class="hidden-md-and-up" style="margin-left:-10px" width="200px"></v-img>
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -18,7 +19,7 @@
           <v-list>
             <v-list-tile @click="linkCerevid" active-class="false">Cerevid</v-list-tile>
             <v-list-tile @click="linkCereout" active-class="false">Cereout</v-list-tile>
-            <v-list-tile @click="linkCerelisasi" to="" active-class="false">Cerelisasi</v-list-tile>
+            <v-list-tile @click="linkCerelisasi" active-class="false">Cerelisasi</v-list-tile>
             <v-list-tile @click="linkCerecall" active-class="false">Cerecall</v-list-tile>
           </v-list>
         </v-menu>
@@ -26,15 +27,21 @@
         <!-- search -->
         <v-text-field style="margin:14px 25px; width:300px" flat prepend-inner-icon="search" placeholder="Search"></v-text-field>
         <!-- /search -->
-
       </v-toolbar-items>
+
+      <!-- search mobile respon-->
+      <v-toolbar-side-icon class="grey--text hidden-md-and-up" v-if="loggedIn" v-show="bt_src" @click="src=true,bt_src=false"><v-icon>search</v-icon></v-toolbar-side-icon>
+      <v-toolbar-side-icon class="grey--text hidden-md-and-up" v-else style="margin-right:-25px" v-show="bt_src" @click="src=true,bt_src=false"><v-icon>search</v-icon></v-toolbar-side-icon>
+      <v-text-field v-show="src" class="hidden-md-and-up" v-if="loggedIn" style="margin:14px 25px; width:900px" flat prepend-inner-icon="search" placeholder="Search"></v-text-field>
+      <v-text-field v-show="src" class="hidden-md-and-up" v-else style="padding-left:5px; width:700px" flat prepend-inner-icon="search" placeholder="Search"></v-text-field>
+      <!-- /search -->
 
       <!-- <v-spacer></v-spacer> -->
 
       <v-btn v-if="!loggedIn" flat @click="linkLogin">Sign In</v-btn>
 
       <!-- header actions -->
-      <div v-if="loggedIn" class="nav-action">
+      <div v-if="loggedIn" class="nav-action hidden-sm-and-down">
         <div class="nav-bal">
             <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -116,9 +123,129 @@
             <LoadingScreen1 :loading="loadLogout"></LoadingScreen1>
         </div>
     </div>
-    <!-- {{user}} -->
     <!-- header actions -->      
     </v-toolbar>
+
+    <!-- navigation-drawer -->
+    <v-navigation-drawer v-model="drawer" app>
+      <v-toolbar flat class="transparent">
+        <v-toolbar-title>
+          <router-link to="/">
+            <v-img :src="require('../assets/images/logo_final2.png')" width="200px"></v-img>
+          </router-link>
+        </v-toolbar-title>
+      </v-toolbar>
+      <v-divider></v-divider>
+      <v-toolbar flat v-if="loggedIn" style="padding:20px 0px" class="transparent">
+        <v-list class="pa-0">
+          <v-list-tile avatar>
+            <v-list-tile-avatar style="margin-top:-20px">
+              <img src="https://randomuser.me/api/portraits/men/85.jpg">
+            </v-list-tile-avatar>
+
+            <v-list-tile-content style="height:70px;">
+              <v-list-tile-title>{{user.name}}
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                    <a @click="linkAkun">
+                    <v-icon color="blue" v-on="on">edit</v-icon>
+                    </a>
+                </template>
+                <span>My Account</span>
+              </v-tooltip>
+              
+              </v-list-tile-title>
+              <v-list-tile-sub-title>{{user.email}}</v-list-tile-sub-title>
+            
+              <v-list-tile-sub-title>
+                <a style="color:red" flat @click="linkLogout">SIGN OUT</a>
+                <div style="float:right;">
+                  <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                      <router-link to="/cerevid/daftar-pelajaran">
+                      <v-icon color="blue" v-on="on">book</v-icon>
+                      </router-link>
+                  </template>
+                  <span>Pelajaran saya di Cerevid</span>
+                  </v-tooltip>
+                  
+                  <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                      <router-link to="/cerevid/wishlist">
+                      <v-icon color="pink" v-on="on">favorite</v-icon>
+                      </router-link>
+                  </template>
+                  <span>Wishlist Cerevid</span>
+                  </v-tooltip>
+
+                  <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                      <router-link to="">
+                      <v-icon color="#F44336" v-on="on">email</v-icon>
+                      </router-link>
+                  </template>
+                  <span>Pesan</span>
+                  </v-tooltip>
+                </div>  
+
+              </v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-toolbar>
+
+      <v-list class="pt-0" dense>
+        <v-divider></v-divider>
+
+        <v-list-tile @click="linkHome">
+          <v-list-tile-content>
+            <v-list-tile-title>HOME</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile @click="linkInformasi">
+          <v-list-tile-content>
+            <v-list-tile-title>INFORMASI</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-group value="false" v-if="loggedIn">
+          <template v-slot:activator>
+            <v-list-tile>
+              <v-list-tile-title>CERELINK</v-list-tile-title>
+            </v-list-tile>
+          </template>
+
+          <v-list-tile @click="linkCerevid">
+            <v-list-tile-content style="margin-left:20px">
+              <v-list-tile-title>CEREVID</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
+          <v-list-tile @click="linkCereout">
+            <v-list-tile-content style="margin-left:20px">
+              <v-list-tile-title>CEREOUT</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
+          <v-list-tile @click="linkCerelisasi">
+            <v-list-tile-content style="margin-left:20px">
+              <v-list-tile-title>CERELISASI</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
+          <v-list-tile @click="linkCerecall">
+            <v-list-tile-content style="margin-left:20px">
+              <v-list-tile-title>CERECALL</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
+        </v-list-group>
+        
+      </v-list>
+    </v-navigation-drawer>
+    <!-- /navigation-drawer -->
+
   </div>
 </template>
 
@@ -131,11 +258,16 @@ export default {
   components:{
     LoadingScreen1
   },
-  data:() => ({
-    loadLogout: false,
-    menu: false,
-    user: []
-  }),
+  data() {
+    return {
+      bt_src:true,
+      src: false,
+      drawer: false,
+      loadLogout: false,
+      menu: false,
+      user: []
+    }
+  },
 
   computed:{
     loggedIn: function(){

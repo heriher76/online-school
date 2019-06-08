@@ -142,6 +142,13 @@
         margin:0px auto;
     }
 
+    
+    @media only screen and (max-width: 650px) {
+        .chat_box{
+            width:100%;
+        }
+    }
+
     .header_chat{
 
     }

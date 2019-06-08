@@ -41,9 +41,9 @@
           <v-btn @click="login" :loading="btn_load" round large block>SIGN IN</v-btn>  
         </form>
 
-        <div class="list">
-            <hr><label>OR</label><hr>
-            <div class="clear"></div>
+        <div style="text-align:center; margin-top:25px">
+          <div style="background:#ffffff; width:100%; height:1.5px"></div>
+          <span style="padding:8px; background:#7e88a0; position:relative;top:-11px"><label>OR</label></span>
         </div>
 
         
@@ -115,13 +115,13 @@ import LoadingScreen2 from'../../components/loading-screen/Loading2'
         .catch(error => {
           this.btn_load = false
           this.loadLogin = false
-          this.$swal('Oopps', 'Your email or password is invalid', 'warning')
+          this.$swal('Oops', 'Your email or password is invalid', 'warning')
         })
       },
 
       googleLogin(){
-        // return window.open("http://api.ceredinas.id/login/google",'_blank')   
-        axios.get('http://api.ceredinas.id/login/google')
+        // return window.open("https://api.ceredinas.id/login/google",'_blank')   
+        axios.get('https://api.ceredinas.id/login/google')
         .then(response => {
           console.log(response.data)
         })         
@@ -165,21 +165,16 @@ import LoadingScreen2 from'../../components/loading-screen/Loading2'
         text-align:center;
     }
 
+    
+    @media only screen and (max-width: 650px) {
+      .panel-auth {
+        width: 100%;
+      }
+    }
+
     .text-banner h1,h5{
         font-family:'Arial';
         color:white;
-    }
-
-    .list hr {
-        float:left;
-        width:184px;
-        margin-top: 11px;
-        background:white
-    }
-
-    .list label{
-        float:left; 
-        margin: 2px 10px;
     }
 
     .label-forgot{

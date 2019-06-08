@@ -7,7 +7,7 @@
                         <v-flex md4>         
                             <v-img :src="require('../assets/images/logo_final2.png')" width="280px"></v-img>
                             <div style="margin:10px 20px">
-                                <p>Get connected with us on social networks</p>
+                                <!-- <p>Get connected with us on social networks</p> -->
                                 <p>Jl. Raya Cipadung No.334 Cipadung Wetan, Panyileukan Bandung, Jawa Barat, 40614.</p>
                             </div>
                         </v-flex>
@@ -28,7 +28,7 @@
                             </ul>
                         </v-flex>
 
-                        <v-flex md2 style="margin:0px 20px">
+                        <v-flex md2 class="med">
                             <h5 class="title" style="color:black">Ikuti Kami</h5>
                             
                             <ul class="link-cere">
@@ -57,18 +57,26 @@
 </template>
 
 <style>
-.link-cere li{
-    list-style: none;
-    margin-left: -23px;
-}
-.link-cere li a{
-    text-decoration: none;
-    color: #039BE5;
-}
+    .link-cere li{
+        list-style: none;
+        margin-left: -23px;
+    }
+    .link-cere li a{
+        text-decoration: none;
+        color: #039BE5;
+    }
 
-.link-cere li a:hover{
-    text-decoration: none
-}
+    .link-cere li a:hover{
+        text-decoration: none
+    }
+    .med {
+        margin:0px 20px
+    }
+    @media only screen and (max-width: 650px) {
+        .med {
+            margin:20px 20px 0px 20px
+        }
+    }
 </style>
 
 <script>
