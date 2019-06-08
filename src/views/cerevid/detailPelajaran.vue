@@ -1,7 +1,6 @@
 <template>
 	<div class="detailPelajaran">
 		<headerDetail :datas="dataDetailPelajaran"/>
-		{{dataUser}}
 		<v-container>
 			<v-tabs
 				color="#f5f5f5"

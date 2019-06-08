@@ -12,6 +12,8 @@ export default new Vuex.Store({
     token: localStorage.getItem('access_token') || null, //get token,
     dataUser : localStorage.getItem('getDataUser') || null,
     info: [],
+    dataClass: [],
+    dataLesson: [],
     dataPelajaran: [],
     dataDetailPelajaran: [],
     dataPelajaranbyLesson: [],
@@ -52,6 +54,14 @@ export default new Vuex.Store({
 //------------------------------------------cerevid---------------------------------------------
     getDataPelajaran(state, dataPelajaran){
       state.dataPelajaran = dataPelajaran
+    },
+
+    getDataClass(state, dataClass){
+      state.dataClass = dataClass
+    },
+
+    getDataLesson(state, dataLesson){
+      state.dataLesson = dataLesson
     },
 
     getDataPelajaranbyLesson(state, dataPelajaranbyLesson){
@@ -179,9 +189,31 @@ export default new Vuex.Store({
       })
     },
 
-    getDataPelajaranbyLesson(context){
+    getDataClass(context){
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-      axios.get('/courses/lesson/1')
+      axios.get('/master/class')
+      .then(response => {
+        context.commit('getDataClass', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    getDataLesson(context){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/master/lesson')
+      .then(response => {
+        context.commit('getDataLesson', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    getDataPelajaranbyLesson(context,data){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/courses/lesson/'+data.id)
       .then(response => {
         context.commit('getDataPelajaranbyLesson', response.data)
       })

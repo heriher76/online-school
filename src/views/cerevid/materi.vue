@@ -11,7 +11,7 @@
             <materiText :datas="dataDetailMateri.data"/>
           </div>
           <div  v-else>
-            <materiQuiz :datas="dataQuiz.data"/>
+            <materiQuiz :datas="dataDetailMateri.data"/>
           </div>
         </v-card-text>
       </v-flex>
@@ -235,15 +235,6 @@
       },
     }),
   	methods: {
-        async getDataQuiz(){
-          this.$store.dispatch('getDataQuiz',{
-            section_id: this.$route.hash.split('-')[0].substring(1),
-            id: this.$route.hash.split('-')[1]
-          })
-          .then(response => {
-            console.log("telah load data..")
-          })
-        },
         async getDataDetailMateri(){
           this.$store.dispatch('getDataDetailMateri')
           .then(response => {
@@ -270,7 +261,7 @@
         .catch(error => {
           this.is_load = false
           this.body = ''
-          this.$swal('Oopps', 'Your email or password is invalid', 'warning')
+          this.$swal('Oopps', 'Gagal Mengirim Pertanyaan...', 'warning')
         })
       }
 
@@ -278,7 +269,6 @@
     created(){
       this.getDataDetailMateri()
       this.getDataDetailForum()
-      this.getDataQuiz()
     },
     computed: {
       dataDetailMateri(){
@@ -286,9 +276,6 @@
       },
       dataDetailForum(){
         return this.$store.state.dataDetailForum || {}
-      },
-      dataQuiz(){
-        return this.$store.state.dataQuiz|| {}
       },
       userId(){
         return this.$store.state.dataUser || {}
