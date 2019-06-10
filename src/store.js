@@ -5,7 +5,7 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-axios.defaults.baseURL = 'https://api.ceredinas.id/api'
+axios.defaults.baseURL = 'https://api.ceredinas.id/api';
 
 export default new Vuex.Store({
   state: {
@@ -109,7 +109,9 @@ export default new Vuex.Store({
     },
     pushDataDetailForum(state, dataForum){
       state.dataDetailForum.data.push(dataForum.data)
-    },
+    }
+    
+  },
 
 //------------------------------------------cerelisasi-------------------------------------------
   actions: {
