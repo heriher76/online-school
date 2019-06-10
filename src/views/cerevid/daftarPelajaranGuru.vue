@@ -1,7 +1,7 @@
 <template>
 	<div class="daftar-pelajaranku-guru">
 		<!-- sub - navbar -->
-		<subNavbarGuru />
+		<subNavbarGuru :datas="dataPelajaranbyTeacher.data" />
 		<!-- end sub - navbar -->
 		<!-- content -->
 		<v-container fluid>

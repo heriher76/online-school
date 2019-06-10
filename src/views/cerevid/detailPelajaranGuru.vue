@@ -456,7 +456,6 @@
     },
     created(){
       this.getDataDetailPelajaran()
-
       // get sections of course
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
       axios.get('/courses/'+this.$route.params.id+'/sections')

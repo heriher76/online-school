@@ -248,6 +248,7 @@ export default new Vuex.Store({
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
       axios.get('/courses/'+router.currentRoute.params.id)
       .then(response => {
+        console.log(response.data)
         context.commit('getDataDetailPelajaran', response.data)
       })
       .catch(error => {
