@@ -11,7 +11,7 @@
                 </v-flex>
                 <!-- /sidebar -->
                 
-                <!-- leader board -->
+                <!-- results -->
                 <v-flex md9 sm12 xs12>
                     <v-card>
                         <v-card-text class="px-0"><h6 class="title" style="color:black;margin:4px 20px">My Results</h6></v-card-text>
@@ -20,24 +20,25 @@
                     <v-card>
                         <v-data-table
                         :headers="headers"
-                        :items="desserts"
+                        :items="results"
                         >
                         <template v-slot:items="props">
-                            <td>{{ props.item.no }}</td>
-                            <td>{{ props.item.name }}</td>
-                            <td>{{ props.item.name }}</td>
-                            <td>{{ props.item.fat }}</td>
-                            <td>{{ props.item.carbs }}</td>
-                            <td>{{ props.item.carbs }}</td>
+                            <td>{{ props.item.tryout.name }}</td>
+                            <td>{{ props.item.created_at }}</td>
+                            <td>{{ props.item.score }}</td>
+                            <td>{{ props.item.result_status }}</td>
                             <td> 
-                                <router-link :to="{name: 'result_detail', params:{id:'1'}}">Detail</router-link> | 
-                                <router-link :to="{name: 'result_detail', params:{id:'1'}}">Lihat Pembahasan</router-link>
+                                <router-link :to="{name: 'result_detail', params:{data: props.item, act:0}}">Detail</router-link> | 
+                                <router-link :to="{name: 'result_detail', params:{data: props.item, act:1}}">Lihat Pembahasan</router-link>
                             </td>
                         </template>
+                        
                         </v-data-table>
                     </v-card>
                 </v-flex>
-                <!-- /leader board -->
+                <!-- /results -->
+
+                <!-- {{results}} -->
             </v-layout>
         </v-container>
         <!-- /sub content -->
@@ -46,6 +47,7 @@
 
 <script>
     import SideBar from '../../components/cereout-component/SideBar'
+    import axios from 'axios';
 
     export default {
     name: 'dashboard',
@@ -53,46 +55,31 @@
             SideBar,
     },
     data () {
-      return {
-        headers: [
-            { text: 'No',value: 'no'},
-            { text: 'Exam Name', value: 'calories' },
-            { text: 'Attempt Date', value: 'fat' },
-            { text: 'Marks Scored/Max.Marks', value: 'carbs' },
-            { text: 'Percentage', value: 'carbs' },
-            { text: 'Result', value: 'carbs' },
-            { text: 'Action', value: 'carbs' }
-        ],
-        desserts: [
-            {
-                no: 1,
-                name: 'Frozen Yogurt',
-                calories: 159,
-                fat: 6.0,
-                carbs: 24,
-                protein: 4.0,
-                iron: '1%'
-            },
-            {
-                no: 2,
-                name: 'Ice cream sandwich',
-                calories: 237,
-                fat: 9.0,
-                carbs: 37,
-                protein: 4.3,
-                iron: '1%'
-            },
-            {
-                no: 3,
-                name: 'Eclair',
-                calories: 262,
-                fat: 16.0,
-                carbs: 23,
-                protein: 6.0,
-                iron: '7%'
-            }
-        ]
+        return {
+            load_data:true,
+
+            headers: [
+                { text: 'Exam Name', value:'name'},
+                { text: 'Attempt Date', value: 'attempt_data'},
+                { text: 'Score', value: 'score'},
+                { text: 'Result', value: 'result_status'},
+                { text: 'Action', value: 'action'}
+            ],
+            
+            results : []
       }
+    },
+
+    mounted(){
+        axios.get('/cereouts/result/'+this.$store.state.dataUser)
+        .then(response => {
+            console.log(response.data)
+            this.results = response.data.data
+        })
+        .catch(error => {
+            console.log(error)
+        })
     }
+
   }
 </script>

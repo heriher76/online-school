@@ -50,6 +50,7 @@
                     <td><b>Pilihan Ketiga</b></td><td>{{ datas.data.option3.department_name }} - {{ datas.data.option3.university_name }}</td>
                 </tr> -->
             </table>
+            <!-- {{dataUser}} -->
         </v-flex>
     </v-layout>
 </template>

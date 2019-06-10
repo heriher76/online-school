@@ -1,7 +1,9 @@
 <template>
   <v-app>
     <!-- header -->
-    <Header/>
+    <nav>
+      <Header/>
+    </nav>
     <!-- /header -->
 
     <!-- content -->

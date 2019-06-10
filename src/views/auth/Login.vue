@@ -41,9 +41,9 @@
           <v-btn @click="login" :loading="btn_load" round large block>SIGN IN</v-btn>  
         </form>
 
-        <div class="list">
-            <hr><label>OR</label><hr>
-            <div class="clear"></div>
+        <div style="text-align:center; margin-top:25px">
+          <div style="background:#ffffff; width:100%; height:1.5px"></div>
+          <span style="padding:8px; background:#7e88a0; position:relative;top:-11px"><label>OR</label></span>
         </div>
 
         
@@ -58,14 +58,23 @@
         <hr style="margin-bottom:15px">
         <label>Not a member yet? <router-link to="/register" style="color:white">Register now</router-link></label>
       </div>
+      
+      <LoadingScreen2 :loading="loadLogin"></LoadingScreen2>
     </div>
 </template>
 
 <script>
 import axios from "axios"
+import LoadingScreen2 from'../../components/loading-screen/Loading2'
+
   export default {
+    components:{ 
+      LoadingScreen2
+    },
+
     data () {
       return {
+        loadLogin: false,
         btn_load: false,
         
         checkbox: '',
@@ -91,40 +100,36 @@ import axios from "axios"
     methods:{
       login(){      
         this.btn_load = true
+        this.loadLogin = true
         this.$store.dispatch('retrieveToken', {
           email: this.email,
           password: this.password
         })
         .then(response => {
           this.btn_load = false
-          this.$router.push({path: '/'})
+          this.loadLogin = false
+          
+          window.location.href = "/"
+          // this.$router.push({path: '/'})
         })
         .catch(error => {
           this.btn_load = false
-          this.$swal('Oopps', 'Your email or password is invalid', 'warning')
+          this.loadLogin = false
+          this.$swal('Oops', 'Your email or password is invalid', 'warning')
         })
       },
 
       googleLogin(){
-        return window.open("http://api.ceredinas.id/login/google",'_blank')                  
+        // return window.open("https://api.ceredinas.id/login/google",'_blank')   
+        axios.get('https://api.ceredinas.id/login/google')
+        .then(response => {
+          console.log(response.data)
+        })         
+        .catch(error => {
+          console.log(error)
+        })
       }
 
-      // login(e) {
-      //   e.preventDefault();
-      //   axios
-      //   .post('http://api.ceredinas.id/api/auth/login',{
-      //       email: this.email, // 'rifardian@gmail.com',
-      //       password: this.password //'123456',
-      //   })
-      //   .then(response => {
-      //     console.log(response.data)
-      //     // this.$router.push({path:'/'})
-      //   })
-      //   .catch(error => {
-      //     // console.log(error.response)
-      //     this.$swal('Sorry', 'Your email or password is invalid', 'warning')
-      //   })
-      // }
     }
   }
 </script>
@@ -160,21 +165,16 @@ import axios from "axios"
         text-align:center;
     }
 
+    
+    @media only screen and (max-width: 650px) {
+      .panel-auth {
+        width: 100%;
+      }
+    }
+
     .text-banner h1,h5{
         font-family:'Arial';
         color:white;
-    }
-
-    .list hr {
-        float:left;
-        width:184px;
-        margin-top: 11px;
-        background:white
-    }
-
-    .list label{
-        float:left; 
-        margin: 2px 10px;
     }
 
     .label-forgot{

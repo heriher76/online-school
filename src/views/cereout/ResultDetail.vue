@@ -14,7 +14,12 @@
                 <!-- leader board -->
                 <v-flex md9 sm12 xs12>
                     <v-card>
-                        <v-card-text class="px-0"><h6 class="title" style="color:black;margin:4px 20px">Result Detail For SAINTEK 2 (BIO) TO Mei</h6></v-card-text>
+                        <div style="float:left; margin-top:9px">
+                            <v-btn color="primary" @click="$router.go(-1)" icon small dark>
+                                <v-icon>keyboard_arrow_left</v-icon>
+                            </v-btn>
+                        </div>
+                        <v-card-text class="px-0"><h6 class="title" style="color:black;margin:4px 20px; text-transform:capitalize">Result Detail For {{data.tryout.name}}</h6></v-card-text>
                     </v-card>
                     <hr>
                     <v-card>
@@ -26,32 +31,17 @@
                             <v-tab-item>
                                 <v-card flat>
                                 <v-card-text>Tab 1</v-card-text>
+                                {{data}}
                                 </v-card>
                             </v-tab-item>
 
                             <v-tab-item>
                                 <v-card flat>
                                 <v-card-text>Tab 2</v-card-text>
+                                {{detail}}
                                 </v-card>
                             </v-tab-item>
 
-                            <v-tab-item>
-                                <v-card flat>
-                                <v-card-text>Tab 3</v-card-text>
-                                </v-card>
-                            </v-tab-item>
-
-                            <v-tab-item>
-                                <v-card flat>
-                                <v-card-text>Tab 4</v-card-text>
-                                </v-card>
-                            </v-tab-item>
-
-                            <v-tab-item>
-                                <v-card flat>
-                                <v-card-text>Tab 5</v-card-text>
-                                </v-card>
-                            </v-tab-item>
                         </v-tabs>
                     </v-card>
                 </v-flex>
@@ -65,22 +55,21 @@
 
 <script>
 import SideBar from "../../components/cereout-component/SideBar"
+import Axios from 'axios';
 
 export default {
     name: 'result-detail',
+    props:['data', 'act'],
     components: {
         SideBar
     },
     data () {
         return {
-            active: 0,
+            detail :[],
+            active: this.act,
             name_tab : [
-                'Score Card' , 
-                'Subject Report',
-                'Time Management' ,
-                'Question Report',
-                'Solution' ,
-                'Compare Report'          
+                'Detail', 
+                'Pembahasan'        
             ]
         }
     },
@@ -89,6 +78,19 @@ export default {
             const active = parseInt(this.active)
             this.active = (active < 2 ? active + 1 : 0)
         }
+    },
+
+    mounted(){
+        
+        Axios.get('/cereouts/result/detail/'+this.data.id)
+        .then(response => {
+            this.detail = response.data.data
+            console.log(response.data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
     }
+
 }
 </script>

@@ -8,8 +8,49 @@
                             <v-flex md9 style="padding-top:22px;padding-left:35px">                        
                                <h6 class="title">Mata Pelajaran </h6>
                             </v-flex>
-                            <v-flex md3>
-                                <Timer/>
+                            <v-flex md3>             
+                                <!-- timer -->
+                                <!-- <Timer :time="time"/> -->
+                                <div style="width:180px;float:right; color:red" v-if="hours <= '00' && minutes <= '00' && seconds <= '00'">
+                                    <!-- dialog time out -->
+                                    <v-dialog v-model="dialog" persistent max-width="290">
+                                    <v-card>
+                                        <v-card-title class="headline">Waktu Habis</v-card-title>
+                                        <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+                                        <v-card-actions>
+                                        <v-btn color="green darken-1" flat @click="dialog = false" block>OK</v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                    </v-dialog>
+                                    <!-- /dialog time out -->
+
+                                    <h6 class="subheading" style="float:left">Timer :</h6>
+                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px">
+                                        <span>00</span>
+                                    </div>
+                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px">
+                                        <span>00</span>
+                                    </div>
+                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px">
+                                        <span>00</span>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+
+                                <div style="width:180px;float:right;" v-else>
+                                    <h6 class="subheading" style="float:left">Timer :</h6> 
+                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;">
+                                        <span>{{ hours }}</span>
+                                    </div>
+                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px;">
+                                        <span>{{ minutes }}</span>
+                                    </div>
+                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;">
+                                        <span> {{ seconds }}</span>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <!-- timer -->
                             </v-flex>
                         </v-layout>
                     </v-card>
@@ -31,7 +72,7 @@
                             <p style="font-size:16px">{{quest}}</p>
                             <div style="float:left">
                                 <label class="container" v-for="(n,key,index) in options" :key="n.index">
-                                <input type="radio" :value="n.option" v-model="tmpanswer[hal]" name="opt">
+                                <input type="radio" :value="key" v-model="tmpanswer[hal]" name="opt">
                                 <span class="checkmark"><p>{{n.option}} </p></span>
                                 </label>   
                             </div>
@@ -41,10 +82,14 @@
                     <v-card>
                         <v-btn @click="previous(hal)" small> <v-icon left dark>keyboard_arrow_left</v-icon> Soal Sebelumnya</v-btn>
                         <v-btn @click="next(hal)" small>soal Berikutnya <v-icon right dark>keyboard_arrow_right</v-icon></v-btn>  
-                        
-                        <v-btn @click="mark(hal)" small>Tandai</v-btn>
+                        <v-btn v-if="hal == markanswer[hal]" @click="delMark(hal)" dark color="orange" small>Hapus Tanda</v-btn>
+                        <v-btn v-else @click="mark(hal)" small>Tandai</v-btn>
+
+                        mark:{{markanswer[hal]}}, hal:{{hal}}, an: {{markanswer}}
+
                         
                     </v-card>
+
                 </v-flex>
     
                 <v-flex md3>
@@ -58,7 +103,6 @@
                                 v-for="(item, key, index) in questions" :key="item.id" 
                                 @click="viewQuestion(key)"
                             >  
-                            
                                 <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
                                 <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
 
@@ -68,8 +112,7 @@
                                 <span v-else-if="key+1 < 10 && tmpanswer[key]!=null" style="background:#8BC34A;padding:10px 14.6px">{{key+1}}</span>
                                 <span v-else-if="key+1 >= 10 && tmpanswer[key]!=null" style="background:#8BC34A;padding:10px 10.6px">{{key+1}}</span>  
 
-                                <!-- <span v-else-if="key+1 < 10 && markanswer[key]!=key" style="background:orange;padding:10px 14.6px">{{key+1}} </span>
-                                <span v-else-if="key+1 >= 10 && markanswer[key]!=key" style="background:orange;padding:10px 10.6px">{{key+1}}</span>                                                      -->
+                                <span v-else-if="key+1 < 10 && markanswer[key]!=null" style="background:orange;padding:10px 14.6px">{{key+1}} </span>                                                    
                             </a>
                             <div class="clear"></div>
                             
@@ -101,24 +144,211 @@
                                     </div>
 
                                 </v-flex>
-                            </v-layout>
-
+                            </v-layout>          
                         </div>     
                         <v-divider></v-divider>
-                        <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn>
+                        <!-- <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn> -->                
+                        <v-btn block color="red" dark @click="submit">Akhiri</v-btn>
                     </v-card>
                 </v-flex>
-            {{ answer }}
+
+            <!-- my_time : {{ myTime }}
+            answers : {{ answer }}   -->
+
             <!-- {{questions}} -->
             <!-- {{tmpanswer}} -->
 
-            <!-- {{ markanswer }} -->
+            {{ markanswer }}
         
             </v-layout>
         </v-container>
     </div>
 </template>
 
+<script>
+    import Timer from "../cereout-component/Timer"    
+    import axios from 'axios';
+
+    export default {
+        props:["cereoutId", "time", "attemptId"],
+
+        components:{
+            Timer
+        },
+        
+        data () {
+            return {
+                dialog:true,
+                timer: null,
+                totalTime: this.time * 60,//konversi ke detik
+
+                load_data: true,
+                dialog: false,
+
+                hal: 0,
+                questions: [],       
+                quest: "",
+                options: [],
+
+                myTime: '',
+                answer: [],
+
+                tmpanswer: [],
+                markanswer: []
+            }
+        },
+
+
+        methods:{
+            alertDisplay() {
+                this.$swal({
+                    title: 'Are you sure?',
+                    text: 'You can\'t revert your action',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes Submit!',
+                    cancelButtonText: 'No, Keep it!',
+                    showCloseButton: true,
+                    showLoaderOnConfirm: true
+                }).then((result) => {
+                    if(result.value) { 
+                        return this.submit()
+                    } else {
+                        this.$swal('Cancelled', 'Your file is still intact', 'info')
+                    }
+                })
+            },
+
+            submit() {
+                var ans = ''
+                var n = ''
+                // this.myTime = [this.hours, this.minutes, this.seconds]
+                
+                this.myTime = this.minutes
+                for(var i=0; i < this.questions.length; i++){
+                    if(this.tmpanswer[i] == 0){
+                        ans = 'A'
+                    }else if(this.tmpanswer[i] == 1){
+                        ans = 'B'
+                    }else if(this.tmpanswer[i] == 2){
+                        ans = 'C'
+                    }else if(this.tmpanswer[i] == 3){
+                        ans = 'D'
+                    }else if(this.tmpanswer[i] == 4){
+                        ans = 'E'
+                    }else if(this.tmpanswer[i] == 5){
+                        ans = 'F'
+                    }
+
+                    if(ans==this.questions[i].correct_answer){
+                        n = 1
+                    }else{
+                        n = 0
+                    }
+                    
+                    var tmp = {
+                        question_id: this.questions[i].id,                
+                        answer: ans,
+                        mark: n
+                    }              
+                    this.answer.push(tmp)
+                }
+
+                axios.post('/cereouts/'+this.cereoutId+'/attempts/'+this.attemptId+'/valuation', {
+                    my_time: this.myTime,
+                    answers: this.answer
+                })
+                .then(response => {
+                    console.log(response.data)
+                })
+                .catch(error => {
+                    console.log(error.response)
+                })
+            },
+
+            viewQuestion(index) {   
+                this.hal   = index 
+                this.quest = this.questions[index].question
+                this.options = this.questions[index].option
+            },
+
+            previous(hal){
+                if(hal > 0){
+                    hal--
+                    this.hal   = hal
+                    this.quest = this.questions[hal].question
+                    this.options = this.questions[hal].option
+                }
+            },
+
+            next(hal){
+                if(hal < this.questions.length-1){
+                    hal++
+                    this.hal   = hal
+                    this.quest = this.questions[hal].question
+                    this.options = this.questions[hal].option
+                }
+            },
+
+            mark(hal){
+                this.markanswer.push(hal)
+            },
+
+            delMark(hal){
+                const index = this.markanswer.indexOf(hal) //mencari index
+                this.markanswer.splice(index, 1)
+            },
+
+            //function timer
+            startTimer: function() {
+                this.timer = setInterval(() => this.countdown(), 1000); //1000ms = 1 second
+            },
+            
+            padTime: function(time){
+                return (time < 10 ? '0' : '') + time;
+            },
+            countdown: function() {
+                this.totalTime--;
+            }
+            //function timer
+        },
+
+        computed: {
+            //function timer
+            hours: function() {        
+                const hours = Math.trunc(this.totalTime / 60 /60) % 24;
+                return this.padTime(hours);
+            },
+            minutes: function(){
+                const minutes = Math.trunc(this.totalTime / 60) % 60;
+                return this.padTime(minutes);
+            },
+            seconds: function() {
+                const seconds = Math.trunc(this.totalTime - this.minutes) % 60;
+                return this.padTime(seconds);
+            }
+            //function timer
+        },
+
+        mounted(){
+            // axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+            axios.get('/cereouts/question/' + this.cereoutId)
+            .then(response => {
+                this.load_data = false
+                this.questions = response.data.data
+                
+                this.startTimer()
+
+                this.quest     = this.questions[0].question
+                this.options   = this.questions[0].option;
+                // console.log(response.data)
+            })
+            .catch(error =>{
+                console.log(error)
+            })
+        }
+    }
+</script>
 
 <style>
     a.btn-num{
@@ -187,113 +417,3 @@
         background: white;
     }
 </style>
-
-<script>
-    import Timer from "../cereout-component/Timer"
-    
-    import axios from 'axios';
-
-    export default {
-        props:{
-            idQuestion: String
-        },
-
-        components:{
-            Timer
-        },
-        
-        data: () => ({
-            load_data: true,
-            dialog: false,
-
-            hal: 0,
-            questions: [],       
-            quest: "",
-            options: [],
-
-            answer: [],
-            tmpanswer: [],
-
-            markanswer: []
-        }),
-
-
-        methods:{
-            alertDisplay() {
-                this.$swal({
-                    title: 'Are you sure?',
-                    text: 'You can\'t revert your action',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes Delete it!',
-                    cancelButtonText: 'No, Keep it!',
-                    showCloseButton: true,
-                    showLoaderOnConfirm: true
-                }).then((result) => {
-                    if(result.value) { 
-                        this.submit()
-                    } else {
-                        this.$swal('Cancelled', 'Your file is still intact', 'info')
-                    }
-                })
-            },
-
-            submit() {
-                for(var i=0; i < this.questions.length; i++){
-                    var tmp = {
-                        question_id: this.questions[i].id,
-                        answer: this.tmpanswer[i],
-                    }              
-                    this.answer.push(tmp)
-                }
-            },
-
-            viewQuestion(index) {   
-                this.hal   = index 
-                this.quest = this.questions[index].question
-                this.options = this.questions[index].option
-            },
-
-            previous(hal){
-                if(hal > 0){
-                    hal--
-                    this.hal   = hal
-                    this.quest = this.questions[hal].question
-                    this.options = this.questions[hal].option
-                }
-            },
-
-            next(hal){
-                if(hal < this.questions.length-1){
-                    hal++
-                    this.hal   = hal
-                    this.quest = this.questions[hal].question
-                    this.options = this.questions[hal].option
-                }
-            },
-
-            mark(hal){
-                this.markanswer.push(hal)
-            }
-        },
-
-        mounted(){
-            // axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-            axios.get('/cereouts/question/' + this.idQuestion)
-            .then(response => {
-                this.load_data = false
-                this.questions = response.data.data
-
-                this.quest     = this.questions[0].question
-                this.options   = this.questions[0].option;
-                // console.log(response.data)
-            })
-            .catch(error =>{
-                console.log(error)
-            })
-
-            
-            
-        }
-    }
-</script>

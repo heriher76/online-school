@@ -109,11 +109,11 @@ export default new Router({
     },
 
     {
-      path: "/cereout/exams/start/:id",
+      path: "/cereout/exams/start/:id/:durasi/:attemptId",
       name: 'exam_page',
       meta: {layout: "exam"},
       component: () => import("./views/cereout/exams/ExamPage.vue"),
-      // props:true
+      props:true
     },
 
     {
@@ -123,9 +123,10 @@ export default new Router({
     },
 
     {
-      path: "/cereout/results/detail/:id",
+      path: "/cereout/results/detail",
       name: 'result_detail',
-      component: () => import("./views/cereout/ResultDetail.vue")
+      component: () => import("./views/cereout/ResultDetail.vue"),
+      props: true
     },
 
     // -----------------------------cerecall-----------------------------
@@ -133,6 +134,12 @@ export default new Router({
       path: "/cerecall",
       name: 'cerecall',
       component: () => import("./views/cerecall/Index.vue")
+    },
+
+    {
+      path: "/cerecall/ulasan/:guruId",
+      name: 'cerecall_ulasan',
+      component: () => import("./views/cerecall/Ulasan.vue")
     },
 
     {
