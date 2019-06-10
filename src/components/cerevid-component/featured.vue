@@ -1,13 +1,38 @@
 	<template>
 		<div>
-			<div class="subheading">(Berdasarkan Pelajaran)</div>
-		    <h4 class="font-weight-light"><v-icon>keyboard_arrow_right</v-icon>{{datas.data[0].lesson.name}}</h4>
+			<v-container grid-list-md>
+				<v-layout row wrap>
+				    <v-flex xs12 sm6 md6>
+					    <v-select
+					        :items="dataClass.data"
+					        label="Kelas"
+							name="kelas"
+							v-model="kelas"
+							item-text="name"
+							item-value="id"
+					        outline
+					    ></v-select>
+					</v-flex>
+				    <v-flex xs12 sm6 md6>
+					    <v-select
+					        :items="dataLesson"
+					        label="Pelajaran"
+					  		name="pelajaran"
+							v-model="pelajaran"
+							item-text="name"
+							item-value="id"
+							@change="getDataPelajaranbyLesson"
+					        outline
+					    ></v-select>
+					</v-flex>
+				</v-layout>
+			</v-container>
 		    <v-container
 		      fluid
 		      grid-list-md
 		    >
 				<v-data-iterator
-					:items="datas.data"
+					:items="dataDaftarPelajaranbyLesson.data"
 					:rows-per-page-items="rowsPerPageItems"
 					content-class="layout row wrap"
 					:expand="expand"
@@ -21,9 +46,18 @@
 										height="200px"
 									>
 										<v-flex offset-xs9 align-end flexbox>
-											<v-btn fab dark small color="pink" style="opacity:0.85;">
-												<v-icon dark>favorite</v-icon>
-											</v-btn>
+						                  	<div v-for="datas in dataFavoritbyUser.data">
+							                  	<div v-if="props.item.title==datas.course.title">
+							                    	<v-btn fab dark small color="pink" style="opacity:0.85;">
+							                      		<v-icon dark>favorite</v-icon>
+							                    	</v-btn>
+							                    </div>
+							                  	<div v-else>
+							                    	<v-btn fab dark small style="opacity:0.85;">
+							                      		<v-icon dark>favorite</v-icon>
+							                    	</v-btn>
+							                    </div>
+							                </div>
 										</v-flex>
 									</v-img>
 
@@ -76,11 +110,75 @@
 		</div>
 	</template>
 <script>
+  import LoadingScreen from'../../components/loading-screen/LoadingCerevid'
   export default {
-    props: ['datas'],
-    data: () => ({
-      expand: true,
-      rowsPerPageItems: [4],
-    }),
+    data(){
+    	return{
+	      expand: true,
+	      rowsPerPageItems: [4],
+	      kelas: '',
+	      pelajaran: '',
+	      dataPelajaran: [],
+	      is_load: false
+	    }
+    },
+    components:{
+    	LoadingScreen
+    },
+    methods:{
+    	async getDataClass(){
+	        this.$store.dispatch('getDataClass')
+	        .then(response => {
+	          console.log("telah load data..")
+	        })
+    	},
+		async getDataPelajaranbyLesson(){
+	        this.$store.dispatch('getDataPelajaranbyLesson',{
+	        	id: this.pelajaran
+	        })
+	        .then(response => {
+	        })
+            .catch(error =>{
+                console.log(error)
+            })
+	    },
+	        async getDataFavoritbyUser(){
+	          this.$store.dispatch('getDataFavoritbyUser')
+	          .then(response => {
+	            console.log("telah load data..")
+	          })
+	        },
+	    loadData(){
+	    	this.getDataPelajaranbyLesson();
+	    }
+    },
+    created(){
+    	this.getDataClass()
+    	this.getDataFavoritbyUser()
+    },
+    computed: {
+    	dataClass(){
+    		return this.$store.state.dataClass || {}
+    	},
+		dataDaftarPelajaranbyLesson(){
+			return this.$store.state.dataPelajaranbyLesson || {}
+		},
+		dataFavoritbyUser(){
+			return this.$store.state.dataFavoritbyUser || {}
+		},
+    	dataLesson(){
+    		var data = []
+    		for(var i=0;i<this.dataClass.data.length;i++){
+    			if(this.dataClass.data[i].id == this.kelas){
+    				data = this.dataClass.data[i].lessons
+    			}
+    		}
+    		return data
+    	},
+    }
   }
 </script>
+<style lang="stylus" scoped>
+  .v-progress-circular
+    margin: 1rem
+</style>

@@ -13,8 +13,6 @@ export default new Vuex.Store({
     dataUser : localStorage.getItem('getDataUser') || null,
     dataGuru : localStorage.getItem('getDataGuru') || null,
     info: [],
-    dataProfileUser: [],
-    dataProfileGuru: [],
     dataPelajaran: [],
     dataDetailPelajaran: [],
     dataPelajaranbyLesson: [],
@@ -66,6 +64,14 @@ export default new Vuex.Store({
       state.dataPelajaran = dataPelajaran
     },
 
+    getDataClass(state, dataClass){
+      state.dataClass = dataClass
+    },
+
+    getDataLesson(state, dataLesson){
+      state.dataLesson = dataLesson
+    },
+
     getDataPelajaranbyLesson(state, dataPelajaranbyLesson){
       state.dataPelajaranbyLesson = dataPelajaranbyLesson
     },
@@ -110,7 +116,7 @@ export default new Vuex.Store({
     pushDataDetailForum(state, dataForum){
       state.dataDetailForum.data.push(dataForum.data)
     }
-    
+
   },
 
 //------------------------------------------cerelisasi-------------------------------------------
@@ -205,9 +211,31 @@ export default new Vuex.Store({
       })
     },
 
-    getDataPelajaranbyLesson(context){
+    getDataClass(context){
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-      axios.get('/courses/lesson/1')
+      axios.get('/master/class')
+      .then(response => {
+        context.commit('getDataClass', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    getDataLesson(context){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/master/lesson')
+      .then(response => {
+        context.commit('getDataLesson', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    getDataPelajaranbyLesson(context,data){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/courses/lesson/'+data.id)
       .then(response => {
         context.commit('getDataPelajaranbyLesson', response.data)
       })

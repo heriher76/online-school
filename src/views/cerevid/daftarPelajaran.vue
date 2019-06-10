@@ -39,9 +39,18 @@
 		                  height="200px"
 		                >
 		                  <v-flex offset-xs9 align-end flexbox>
-		                    <v-btn fab dark small color="pink" style="opacity:0.85;">
-		                      <v-icon dark>favorite</v-icon>
-		                    </v-btn>
+		                  	<div v-for="datas in dataFavoritbyUser.data">
+			                  	<div v-if="props.item.title==datas.course.title">
+			                    	<v-btn fab dark small color="pink" style="opacity:0.85;">
+			                      		<v-icon dark>favorite</v-icon>
+			                    	</v-btn>
+			                    </div>
+			                  	<div v-else>
+			                    	<v-btn fab dark small style="opacity:0.85;">
+			                      		<v-icon dark>favorite</v-icon>
+			                    	</v-btn>
+			                    </div>
+			                </div>
 		                  </v-flex>
 		                </v-img>
 
@@ -100,14 +109,24 @@
 	            console.log("telah load data..")
 	          })
 	        },
+	        async getDataFavoritbyUser(){
+	          this.$store.dispatch('getDataFavoritbyUser')
+	          .then(response => {
+	            console.log("telah load data..")
+	          })
+	        },
 
 	    },
 	    created(){
 	     this.getDataPelajaranbyUser()
+	     this.getDataFavoritbyUser()
 	    },
 	    computed: {
 	      dataPelajaranbyUser(){
 	        return this.$store.state.dataPelajaranbyUser || {}
+	      },
+	      dataFavoritbyUser(){
+	        return this.$store.state.dataFavoritbyUser || {}
 	      },
 	      userId(){
 	        return this.$store.state.dataUser || {}
