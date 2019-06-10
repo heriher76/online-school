@@ -16,29 +16,20 @@
                 color="#353b48" 
                 dark
               >
-                <v-toolbar-title>Submit a post</v-toolbar-title>
+                <v-toolbar-title>Edit Pelajaran</v-toolbar-title>
               </v-toolbar>
 
               <form>
                 <v-card-text style="background-color:#fff">
-                  <v-text-field box v-model="title" label="Judul Pelajaran" value=""></v-text-field>
+                  <v-text-field box v-model="dataDetailPelajaran.data.title" label="Judul Pelajaran" value=""></v-text-field>
 
                   <v-textarea
                     box
                     label="Ikhtisar"
-                    v-model="description"
+                    v-model="dataDetailPelajaran.data.description"
                   ></v-textarea>
 
-                  <v-text-field v-model="curriculum" box label="Kurikulum" value=""></v-text-field>
-
-                  <v-select
-                    :items="this.lessons"
-                    item-text="name"
-                    item-value="id"
-                    v-model="lesson_id"
-                    box
-                    label="Pilih Mata Pelajaran"
-                  ></v-select>
+                  <v-text-field v-model="dataDetailPelajaran.data.curriculum" box label="Kurikulum" value=""></v-text-field>
                   
                   <input type="file" ref="file" style="display: none" v-on:change="handleFileUpload()">
                   <v-btn style="margin-left:-1px" @click="$refs.file.click()" small>Upload Cover</v-btn>
@@ -68,7 +59,7 @@
 <script>
 	import subNavbarGuru from '../../components/cerevid-component/subNavbarGuru'
 	import sidebarGuru from '../../components/cerevid-component/sidebarGuru'
-  import axios from 'axios'
+	import axios from 'axios'
 
 	export default {
 		name:"tambah-pelajaran",
@@ -91,8 +82,15 @@
         right: null,
         btn_load: false
       }
-	  },
+	},
+    computed: {
+      dataDetailPelajaran(){
+        return this.$store.state.dataDetailPelajaran || {}
+      },
+    },
     created() {
+      this.getDataDetailPelajaran();
+
       axios.get('http://api.ceredinas.id/api/master/lesson')
         .then(response => {
           this.lessons = response.data.data
@@ -101,7 +99,13 @@
           console.log(error)
         })
     },
-		methods: {
+	methods: {
+		async getDataDetailPelajaran(){
+          this.$store.dispatch('getDataDetailPelajaran')
+          .then(response => {
+            console.log("telah load data..")
+          })
+        },
         handleFileUpload(){
           this.cover = this.$refs.file.files[0];
         },
@@ -109,17 +113,18 @@
           this.btn_load = true;
 
           let data = new FormData();
-          data.append('cover', this.cover);
-          data.set('title', this.title);
-          data.set('description', this.description);
-          data.set('curriculum', this.curriculum);
-          data.set('lesson_id', this.lesson_id);
+          data.append('cover', this.dataDetailPelajaran.data.cover);
+          data.set('title', this.dataDetailPelajaran.data.title);
+          data.set('description', this.dataDetailPelajaran.data.description);
+          data.set('curriculum', this.dataDetailPelajaran.data.curriculum);
+          data.set('lesson_id', this.dataDetailPelajaran.data.lesson_id);
+          data.set('user_id', this.dataDetailPelajaran.data.dataUser);
 
           axios.defaults.headers = {  
             'Content-Type': 'multipart/form-data',  
             'Authorization': 'Bearer ' + this.$store.state.token 
           }
-          axios.post('http://api.ceredinas.id/api/courses/create', data)
+          axios.put('http://api.ceredinas.id/api/courses/'+this.$route.params.id, data)
           .then(response => {
             this.btn_load = false;
             console.log(response.data)
@@ -128,13 +133,7 @@
             this.btn_load = false;
             console.log(error)
           })
-        },
-		    daftarPelajaran(){
-		      return this.$router.push({path:'/cerevid/guru/daftar-pelajaran'})
-				},
-				tambahPelajaran(){
-		      return this.$router.push({path:'/cerevid/guru/tambah-pelajaran'})
-				},
-		},
+        }
+    }
   }
 </script>

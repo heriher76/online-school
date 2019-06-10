@@ -1,7 +1,6 @@
 <template>
     <div>
         <ExamAction :cereoutId="$route.params.id" :time="durasi" :attemptId="attemptId"/>
-        <!-- durasi{{durasi}} -->
     </div>
 </template>
 

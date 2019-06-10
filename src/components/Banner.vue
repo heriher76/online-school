@@ -73,5 +73,12 @@
       width: 100%;
       height: auto;
     }
+    .banner-home{
+      height:400px;
+    }
+    .text-banner{
+      top:60px;
+    }
+
   }
 </style>

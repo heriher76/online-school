@@ -5,40 +5,8 @@
                 <img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg" width="100%" height="100%" alt="">
             </div>
             <div v-show="edit_prof">
-                <v-btn 
-                    @click.stop="dialog = true" style="margin-left:-1px" small>Change</v-btn>
-
-                    <v-dialog v-model="dialog" max-width="290">
-                    <v-card>
-                        <v-card-title class="headline">Ganti Foto Profile</v-card-title>
-
-                        <v-card-text>
-                            <label for="foto">Upload Foto:</label>
-                            <input id="foto" type="file">
-                        </v-card-text>
-
-                        <v-card-actions>
-                        <v-spacer></v-spacer>
-
-                        <v-btn
-                            color="blue"
-                            flat="flat"
-                            @click="dialog = false"
-                        >
-                            Batal
-                        </v-btn>
-
-                        <v-btn
-                            color="blue"
-                            flat="flat"
-                            @click="dialog = false"
-                        >
-                            Update
-                        </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                    </v-dialog>
-
+                <input type="file" ref="file" style="display: none" v-on:change="handleFileUpload()">
+                <v-btn style="margin-left:-1px" @click="$refs.file.click()" small>Change</v-btn>
                 <hr style="width:85%">
                 <a @click="changePass">Change Password </a>
             </div>
@@ -64,7 +32,6 @@
                     <v-btn @click="submit" :loading="btn_load" dark>Update</v-btn>  
                 </form>
             </div>
-            <!-- {{dataUser}} -->
             <!--  -->
             <ChangePassword v-show="chg_pass" :idUser="this.datas.data.id"/>
         </v-flex>
@@ -72,7 +39,7 @@
 </template>
 
 <script>
-    import ChangePassword from "../siswa/ChangePassword"
+    import ChangePassword from "./ChangePassword"
     export default {
         props: ['datas'],
         data: () => ({
