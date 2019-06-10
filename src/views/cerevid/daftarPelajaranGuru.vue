@@ -1,7 +1,7 @@
 <template>
 	<div class="daftar-pelajaranku-guru">
 		<!-- sub - navbar -->
-		<subNavbarGuru />
+		<subNavbarGuru :datas="dataPelajaranbyTeacher.data" />
 		<!-- end sub - navbar -->
 		<!-- content -->
 		<v-container fluid>
@@ -32,68 +32,36 @@
 						      fluid
 						      grid-list-md
 						      >
-						      <v-layout row wrap fill-height ma-3>
-						        <v-flex xs12 sm6 md4>
-						          <v-card>
-						            <v-img
-						              src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-						              height="200px"
-						            	>
-						                <v-flex offset-xs9 align-end flexbox>
-						                  <v-btn fab dark small color="pink" style="opacity:0.85;">
-						                    <v-icon dark>favorite</v-icon>
-						                  </v-btn>
-						                </v-flex>
-						            </v-img>
+						      	<v-data-iterator
+						        :items="dataPelajaranbyTeacher.data"
+						        :rows-per-page-items="rowsPerPageItems"
+						        content-class="layout row wrap"
+						        :expand="expand"
+						        :hide-actions="true"
+						        >
+							        <template v-slot:item="props">
+							      <!-- <v-layout row wrap fill-height ma-3> -->
+							        <v-flex xs12 sm6 md4>
+							          <v-card>
+							            <v-img
+							              v-bind:src="'http://admin.ceredinas.id/public/cover/' + props.item.cover"
+							              height="200px"
+							            	>
+							                <v-flex offset-xs9 align-end flexbox>
+							                  <v-btn fab dark small color="pink" style="opacity:0.85;">
+							                    <v-icon dark>favorite</v-icon>
+							                  </v-btn>
+							                </v-flex>
+							            </v-img>
 
-						            <v-card-title primary-title>
-						              <div>
-						                <div class="headline">
-						                	<router-link to="/guru/cerevid/detail-pelajaran" style="text-decoration: none;">Ilmu Hukum</router-link>
-						                </div>
-						                <span class="grey--text">John Doe, Ph.D</span>
-						              </div>
-						            </v-card-title>
-									<div class="text-xs-center mt-1">
-										<v-rating
-											v-model="rating"
-											color="yellow darken-3"
-											background-color="grey darken-1"
-											half-increments
-											readonly
-											>
-										</v-rating>
-										<span class="caption mr-2">
-											{{rating}} (30)
-										</span>
-									</div>
-									<v-spacer></v-spacer>
-						            <v-card-actions class="ma-2">
-						              <v-icon color="success">check</v-icon>
-						              <span class="text-uppercase pa-1">Sudah ditampilkan</span>
-						            </v-card-actions>
-						          </v-card>
-						        </v-flex>
-								<v-flex xs12 sm6 md4>
-									<v-card>
-										<v-img
-											src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-											height="200px"
-											>
-											<v-flex offset-xs9 align-end flexbox>
-												<v-btn fab dark small color="pink" style="opacity:0.85;">
-													<v-icon dark>favorite</v-icon>
-												</v-btn>
-											</v-flex>
-										</v-img>
-										<v-card-title primary-title>
-											<div>
-												<div class="headline">
-													<router-link to="/cerevid/guru/detail-pelajaran" style="text-decoration: none;">Ilmu Hukum</router-link>
-												</div>
-												<span class="grey--text">John Doe, Ph.D</span>
-											</div>
-										</v-card-title>
+							            <v-card-title primary-title>
+							              <div>
+							                <div class="headline">
+							                	<router-link v-bind:to="'/guru/cerevid/detail-pelajaran/'+props.item.id" style="text-decoration: none;">{{props.item.title}}</router-link>
+							                </div>
+							                <span class="grey--text">{{props.item.teacher.name}}</span>
+							              </div>
+							            </v-card-title>
 										<div class="text-xs-center mt-1">
 											<v-rating
 												v-model="rating"
@@ -101,20 +69,23 @@
 												background-color="grey darken-1"
 												half-increments
 												readonly
-											>
+												>
 											</v-rating>
 											<span class="caption mr-2">
 												{{rating}} (30)
 											</span>
 										</div>
 										<v-spacer></v-spacer>
-										<v-card-actions class="ma-2">
-											<v-icon color="red">close</v-icon>
-											<div class="text-uppercase pa-1">Data Belum terisi</div>
-										</v-card-actions>
-									</v-card>
-								</v-flex>
-						    	</v-layout>
+							            <v-card-actions class="ma-2">
+							              <v-icon color="success">check</v-icon>
+							              <span class="text-uppercase pa-1">Sudah ditampilkan</span>
+							            </v-card-actions>
+							          </v-card>
+							        </v-flex>
+									
+							    	<!-- </v-layout> -->
+							    	</template>
+						    	</v-data-iterator>
 								<br/>
 							</v-container>
 						</v-card>
@@ -133,13 +104,34 @@
 			subNavbarGuru,
 			sidebarGuru
 		},
+		data: () => ({
+		      expand: true,
+		      rowsPerPageItems: [4],
+		}),
 		methods: {
 		    daftarPelajaran(){
 		      return this.$router.push({path:'/cerevid/guru/daftar-pelajaran'})
 				},
-				tambahPelajaran(){
+			tambahPelajaran(){
 		      return this.$router.push({path:'/cerevid/guru/tambah-pelajaran'})
 				},
+			async getDataPelajaranbyTeacher(){
+	          this.$store.dispatch('getDataPelajaranbyTeacher')
+	          .then(response => {
+	            console.log("telah load data..")
+	          })
+	        },
 		},
+		created(){
+	     this.getDataPelajaranbyTeacher()
+	    },
+	    computed: {
+	      dataPelajaranbyTeacher(){
+	        return this.$store.state.dataPelajaranbyTeacher || {}
+	      },
+	      userId(){
+	        return this.$store.state.dataUser || {}
+	      },
+		}
 	}
 </script>
