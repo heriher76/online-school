@@ -4,7 +4,7 @@
 				<v-layout row wrap>
 				    <v-flex xs12 sm6 md6>
 					    <v-select
-					        :items="dataClass.data"
+					        :items="datas.data"
 					        label="Kelas"
 							name="kelas"
 							v-model="kelas"
@@ -112,6 +112,7 @@
 <script>
   import LoadingScreen from'../../components/loading-screen/LoadingCerevid'
   export default {
+		props: ['datas'],
     data(){
     	return{
 	      expand: true,
@@ -126,12 +127,6 @@
     	LoadingScreen
     },
     methods:{
-    	async getDataClass(){
-	        this.$store.dispatch('getDataClass')
-	        .then(response => {
-	          console.log("telah load data..")
-	        })
-    	},
 		async getDataPelajaranbyLesson(){
 	        this.$store.dispatch('getDataPelajaranbyLesson',{
 	        	id: this.pelajaran
@@ -153,26 +148,24 @@
 	    }
     },
     created(){
-    	this.getDataClass()
     	this.getDataFavoritbyUser()
     },
     computed: {
-    	dataClass(){
-    		return this.$store.state.dataClass || {}
-    	},
-		dataDaftarPelajaranbyLesson(){
-			return this.$store.state.dataPelajaranbyLesson || {}
-		},
-		dataFavoritbyUser(){
-			return this.$store.state.dataFavoritbyUser || {}
-		},
+			dataDaftarPelajaranbyLesson(){
+				return this.$store.state.dataPelajaranbyLesson || {}
+			},
+			dataFavoritbyUser(){
+				return this.$store.state.dataFavoritbyUser || {}
+			},
     	dataLesson(){
     		var data = []
-    		for(var i=0;i<this.dataClass.data.length;i++){
-    			if(this.dataClass.data[i].id == this.kelas){
-    				data = this.dataClass.data[i].lessons
-    			}
-    		}
+				if(this.datas.data){
+	    		for(var i=0;i<this.datas.data.length;i++){
+	    			if(this.datas.data[i].id == this.kelas){
+	    				data = this.datas.data[i].lessons
+	    			}
+	    		}
+				}
     		return data
     	},
     }

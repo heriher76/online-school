@@ -13,6 +13,7 @@ export default new Vuex.Store({
     dataUser : localStorage.getItem('getDataUser') || null,
     dataGuru : localStorage.getItem('getDataGuru') || null,
     info: [],
+    dataClass: [],
     dataPelajaran: [],
     dataDetailPelajaran: [],
     dataPelajaranbyLesson: [],
@@ -87,6 +88,16 @@ export default new Vuex.Store({
     getDataFavoritbyUser(state, dataFavoritbyUser){
       state.dataFavoritbyUser = dataFavoritbyUser
     },
+
+    pushDataFavorit(state, dataFavorit){
+      state.dataFavoritbyUser.data.push(dataFavorit.data)
+    },
+
+    delDataFavorit(state, id){
+     var index = state.dataFavoritbyUser.data.findIndex(cek => cek.id == id)
+     console.log('berhasil menghapus '+state.dataFavoritbyUser.data[index].course.title+' dari favorit')
+     state.dataFavoritbyUser.data.splice(index, 1)
+   },
 
     getDataDetailPelajaran(state, dataDetailPelajaran){
       state.dataDetailPelajaran = dataDetailPelajaran
@@ -212,7 +223,6 @@ export default new Vuex.Store({
     },
 
     getDataClass(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
       axios.get('/master/class')
       .then(response => {
         context.commit('getDataClass', response.data)
@@ -343,6 +353,25 @@ export default new Vuex.Store({
       })
     },
 
+    //Simpan Favorit
+    pushDataFavorit(context, credentials){
+      return new Promise((resolve, reject) => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.post('/courses/'+credentials.course_id+'/favorites/create',{
+          user_id: credentials.user_id
+        })
+        .then(response => {
+          context.commit('pushDataFavorit', response.data)
+          console.log(response.data)
+          resolve(response)
+        })
+        .catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+
     pushDataForum(context, credentials){
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
@@ -362,7 +391,26 @@ export default new Vuex.Store({
         })
       })
     },
-
+  //--------------------------------cerevid Delete--------------------------------
+    //Simpan Favorit
+    delDataFavorit(context, credentials){
+      return new Promise((resolve, reject) => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.delete('/courses/'+credentials.course_id+'/favorites/'+credentials.favorit_id,{
+          user_id: credentials.user_id
+        },)
+        .then(response => {
+          context.commit('delDataFavorit', credentials.favorit_id)
+          console.log(response.data)
+          resolve(response)
+        })
+        .catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+//----------------------------------------------------------------------------------------------------------
     // -----------------------------SISWA
     // get profile
     getProfileUser(context){
