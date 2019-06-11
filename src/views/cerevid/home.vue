@@ -9,7 +9,7 @@
 		      Featured
 		    </p>
 			<LoadingScreen :loading="is_load"></LoadingScreen>
-			<featured />
+			<featured :datas="dataClass" />
 	  </v-container>
 	  <v-container>
 		<p class="display-1 text-uppercase font-weight-light">
@@ -44,6 +44,9 @@
   		is_load :false,
   	}),
   	computed: {
+    dataClass(){
+    	return this.$store.state.dataClass || {}
+  	},
 		dataDaftarPelajaran(){
 			if(!this.$store.state.dataPelajaran.length){
 				this.is_load = !this.is_load
@@ -52,6 +55,12 @@
 		},
 	},
 	methods: {
+			async getDataClass(){
+					this.$store.dispatch('getDataClass')
+					.then(response => {
+						console.log("telah load data..")
+					})
+			},
       async getDataPelajaran(){
         this.$store.dispatch('getDataPelajaran')
         .then(response => {
@@ -60,6 +69,7 @@
       },
 	},
 	created(){
+		this.getDataClass()
 		this.getDataPelajaran()
 	},
 
