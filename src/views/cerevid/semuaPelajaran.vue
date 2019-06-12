@@ -2,13 +2,13 @@
   <v-container fluid grid-list-md class="cerevid_semua_pelajaran">
     <p class="display-1 text-uppercase font-weight-light">
       <v-layout row wrap>
-
         <v-flex xs8 sm8 md8>
           Daftar Pelajaran
         </v-flex>
       </v-layout>
       <v-card>{{expand}}</v-card>
     </p>
+    <LoadingScreen :loading="is_load"></LoadingScreen>
     <v-data-iterator
       :items="dataDaftarPelajaran.data"
       :rows-per-page-items="[5, 10]"
@@ -82,13 +82,18 @@
   </v-container>
 </template>
 <script>
+  import LoadingScreen from'../../components/loading-screen/LoadingCerevid'
   export default {
     name:"cerevid_semua_pelajaran",
     data: () => ({
+      is_load: false,
       pagination: {
         rowsPerPage: 10
       },
     }),
+    components: {
+      LoadingScreen
+    },
     methods: {
       async getDataPelajaran(){
         this.$store.dispatch('getDataPelajaran')
@@ -102,7 +107,10 @@
     },
     computed: {
       dataDaftarPelajaran(){
-        return this.$store.state.dataPelajaran
+        if(!this.$store.state.dataPelajaran.length){
+          this.is_load = !this.is_load
+        }
+        return this.$store.state.dataPelajaran || {}
       },
     },
   }

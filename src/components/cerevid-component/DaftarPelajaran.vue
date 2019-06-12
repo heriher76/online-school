@@ -6,6 +6,7 @@
       <v-data-iterator
         :items="datas.data"
         :rows-per-page-items="rowsPerPageItems"
+        :pagination.sync="pagination"
         content-class="layout row wrap"
         :expand="expand"
         :hide-actions="true"
@@ -18,9 +19,16 @@
                   height="200px"
                 >
                   <v-flex offset-xs9 align-end flexbox>
-                    <v-btn fab dark small color="pink" style="opacity:0.85;">
-                      <v-icon dark>favorite</v-icon>
-                    </v-btn>
+                        <div v-for="datas in dataFavoritbyUser.data">
+                          <div v-if="props.item.title==datas.course.title">
+                            <v-btn fab dark small color="pink" style="opacity:0.85;" @click="hapusFavorit(props.item.id, datas.id)">
+                                <v-icon dark>favorite</v-icon>
+                            </v-btn>
+                          </div>
+                      </div>
+                        <v-btn fab dark small style="opacity:0.85;" @click="simpanFavorit(props.item.id)">
+                            <v-icon dark>favorite</v-icon>
+                        </v-btn>
                   </v-flex>
                 </v-img>
 
@@ -81,6 +89,52 @@
     data: () => ({
       expand: true,
       rowsPerPageItems: [4],
+      pagination: {
+        rowsPerPage: 4
+      },
     }),
+      methods: {
+          async getDataFavoritbyUser(){
+            this.$store.dispatch('getDataFavoritbyUser')
+            .then(response => {
+              console.log("telah load data..")
+            })
+          },
+		      simpanFavorit(id){
+		        this.$store.dispatch('pushDataFavorit', {
+		          user_id: this.userId,
+			        course_id: id,
+		        })
+		        .then(response =>{
+		        })
+		        .catch(error => {
+		          this.$swal('Oopps', 'Gagal Menyimpan ke Favorit...', 'warning')
+		        })
+		      },
+		      hapusFavorit(id, favorit_id){
+		        this.$store.dispatch('delDataFavorit', {
+		          user_id: this.userId,
+			        course_id: id,
+			        favorit_id: favorit_id,
+		        })
+		        .then(response =>{
+		        })
+		        .catch(error => {
+		          this.$swal('Oopps', 'Gagal Menghapus Favorit...', 'warning')
+		        })
+		      }
+
+      },
+      created(){
+       this.getDataFavoritbyUser()
+      },
+      computed: {
+        dataFavoritbyUser(){
+          return this.$store.state.dataFavoritbyUser || {}
+        },
+	      userId(){
+	        return this.$store.state.dataUser || {}
+	      },
+    }
   }
 </script>

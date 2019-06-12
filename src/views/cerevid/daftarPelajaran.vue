@@ -33,15 +33,29 @@
 		        >
 		        <template v-slot:item="props">
 		          <v-flex xs12 sm6 md3>
+								{{dataFavoritbyUser.data}}
 		              <v-card>
 		                <v-img
 		                  v-bind:src="'http://admin.ceredinas.id/public/cover/'+ props.item.cover"
 		                  height="200px"
 		                >
 		                  <v-flex offset-xs9 align-end flexbox>
-		                    <v-btn fab dark small color="pink" style="opacity:0.85;">
-		                      <v-icon dark>favorite</v-icon>
-		                    </v-btn>
+		                  	<div v-for="datas in dataFavoritbyUser.data">
+			                  	<div v-if="props.item.title==datas.course.title">
+														{{props.item.id}}
+			                    	<v-btn fab dark small color="pink" style="opacity:0.85;">
+			                      		<v-icon dark >favorite</v-icon>
+			                    	</v-btn>
+			                    </div>
+													<div v-else>
+													</div>
+			                	</div>
+												<div>
+													{{props.item.course_id}}
+			                    	<v-btn fab dark small style="opacity:0.85;" @click="simpanFavorit(props.item.course_id)">
+			                      		<v-icon dark>favorite</v-icon>
+			                    	</v-btn>
+												</div>
 		                  </v-flex>
 		                </v-img>
 
@@ -100,14 +114,35 @@
 	            console.log("telah load data..")
 	          })
 	        },
+	        async getDataFavoritbyUser(){
+	          this.$store.dispatch('getDataFavoritbyUser')
+	          .then(response => {
+	            console.log("telah load data..")
+	          })
+	        },
+		      simpanFavorit(id){
+		        this.$store.dispatch('pushDataFavorit', {
+		          user_id: this.userId,
+			        course_id: id,
+		        })
+		        .then(response =>{
+		        })
+		        .catch(error => {
+		          this.$swal('Oopps', 'Gagal Menyimpan ke Favorit...', 'warning')
+		        })
+		      }
 
 	    },
 	    created(){
 	     this.getDataPelajaranbyUser()
+	     this.getDataFavoritbyUser()
 	    },
 	    computed: {
 	      dataPelajaranbyUser(){
 	        return this.$store.state.dataPelajaranbyUser || {}
+	      },
+	      dataFavoritbyUser(){
+	        return this.$store.state.dataFavoritbyUser || {}
 	      },
 	      userId(){
 	        return this.$store.state.dataUser || {}

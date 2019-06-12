@@ -5,18 +5,21 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-axios.defaults.baseURL = 'https://api.ceredinas.id/api'
+axios.defaults.baseURL = 'https://api.ceredinas.id/api';
 
 export default new Vuex.Store({
   state: {
     token: localStorage.getItem('access_token') || null, //get token,
     dataUser : localStorage.getItem('getDataUser') || null,
+    dataGuru : localStorage.getItem('getDataGuru') || null,
     info: [],
+    dataClass: [],
     dataPelajaran: [],
     dataDetailPelajaran: [],
     dataPelajaranbyLesson: [],
     dataFavoritbyUser: [],
     dataPelajaranbyUser: [],
+    dataPelajaranbyTeacher: [],
     dataDetailMateri: [],
     dataQuiz: [],
     dataDetailForum: [],
@@ -37,12 +40,20 @@ export default new Vuex.Store({
       state.dataUser = dataUser
     },
 
+    retrieveDataGuru(state,dataGuru){
+      state.dataGuru = dataGuru
+    },
+
     destroyToken(state) {
       state.token = null
     },
 
     destroydataUser(state) {
       state.dataUser = null
+    },
+
+    destroydataGuru(state) {
+      state.dataGuru = null
     },
 
 //----------------------------------------informasi---------------------------------------------
@@ -54,6 +65,14 @@ export default new Vuex.Store({
       state.dataPelajaran = dataPelajaran
     },
 
+    getDataClass(state, dataClass){
+      state.dataClass = dataClass
+    },
+
+    getDataLesson(state, dataLesson){
+      state.dataLesson = dataLesson
+    },
+
     getDataPelajaranbyLesson(state, dataPelajaranbyLesson){
       state.dataPelajaranbyLesson = dataPelajaranbyLesson
     },
@@ -62,9 +81,23 @@ export default new Vuex.Store({
       state.dataPelajaranbyUser = dataPelajaranbyUser
     },
 
+    getDataPelajaranbyTeacher(state, dataPelajaranbyTeacher){
+      state.dataPelajaranbyTeacher = dataPelajaranbyTeacher
+    },
+
     getDataFavoritbyUser(state, dataFavoritbyUser){
       state.dataFavoritbyUser = dataFavoritbyUser
     },
+
+    pushDataFavorit(state, dataFavorit){
+      state.dataFavoritbyUser.data.push(dataFavorit.data)
+    },
+
+    delDataFavorit(state, id){
+     var index = state.dataFavoritbyUser.data.findIndex(cek => cek.id == id)
+     console.log('berhasil menghapus '+state.dataFavoritbyUser.data[index].course.title+' dari favorit')
+     state.dataFavoritbyUser.data.splice(index, 1)
+   },
 
     getDataDetailPelajaran(state, dataDetailPelajaran){
       state.dataDetailPelajaran = dataDetailPelajaran
@@ -82,9 +115,19 @@ export default new Vuex.Store({
       state.dataDetailForum = dataDetailForum
     },
 
+    //-----------------------------------Profile Siswa-------------------------
+    getProfileUser(state, dataProfileUser){
+      state.dataProfileUser = dataProfileUser
+    },
+
+    //-----------------------------------Profile Siswa-------------------------
+    getProfileGuru(state, dataProfileGuru){
+      state.dataProfileGuru = dataProfileGuru
+    },
     pushDataDetailForum(state, dataForum){
       state.dataDetailForum.data.push(dataForum.data)
     }
+
   },
 
 //------------------------------------------cerelisasi-------------------------------------------
@@ -179,9 +222,30 @@ export default new Vuex.Store({
       })
     },
 
-    getDataPelajaranbyLesson(context){
+    getDataClass(context){
+      axios.get('/master/class')
+      .then(response => {
+        context.commit('getDataClass', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    getDataLesson(context){
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-      axios.get('/courses/lesson/1')
+      axios.get('/master/lesson')
+      .then(response => {
+        context.commit('getDataLesson', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    getDataPelajaranbyLesson(context,data){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/courses/lesson/'+data.id)
       .then(response => {
         context.commit('getDataPelajaranbyLesson', response.data)
       })
@@ -195,6 +259,17 @@ export default new Vuex.Store({
       axios.get('/courses/'+this.state.dataUser+'/learned')
       .then(response => {
         context.commit('getDataPelajaranbyUser', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    getDataPelajaranbyTeacher(context){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/courses/teacher/'+this.state.dataUser)
+      .then(response => {
+        context.commit('getDataPelajaranbyTeacher', response.data)
       })
       .catch(error => {
         console.log(error)
@@ -216,6 +291,7 @@ export default new Vuex.Store({
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
       axios.get('/courses/'+router.currentRoute.params.id)
       .then(response => {
+        console.log(response.data)
         context.commit('getDataDetailPelajaran', response.data)
       })
       .catch(error => {
@@ -277,6 +353,25 @@ export default new Vuex.Store({
       })
     },
 
+    //Simpan Favorit
+    pushDataFavorit(context, credentials){
+      return new Promise((resolve, reject) => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.post('/courses/'+credentials.course_id+'/favorites/create',{
+          user_id: credentials.user_id
+        })
+        .then(response => {
+          context.commit('pushDataFavorit', response.data)
+          console.log(response.data)
+          resolve(response)
+        })
+        .catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+
     pushDataForum(context, credentials){
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
@@ -295,6 +390,109 @@ export default new Vuex.Store({
           reject(error)
         })
       })
+    },
+  //--------------------------------cerevid Delete--------------------------------
+    //Simpan Favorit
+    delDataFavorit(context, credentials){
+      return new Promise((resolve, reject) => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.delete('/courses/'+credentials.course_id+'/favorites/'+credentials.favorit_id,{
+          user_id: credentials.user_id
+        },)
+        .then(response => {
+          context.commit('delDataFavorit', credentials.favorit_id)
+          console.log(response.data)
+          resolve(response)
+        })
+        .catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+//----------------------------------------------------------------------------------------------------------
+    // -----------------------------SISWA
+    // get profile
+    getProfileUser(context){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/auth/user')
+      .then(response => {
+        context.commit('getProfileUser', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    // get profile
+    getProfileGuru(context){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/auth/user')
+      .then(response => {
+        context.commit('getProfileGuru', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    // edit profile function
+    editProfileUser(context, credentials){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+
+      if(context.getters.loggedIn) {
+          const data = {
+            name: credentials.name,
+            gender: credentials.gender,
+            phone: credentials.phone,
+            birth_place: credentials.birth_place,
+            birth_date: credentials.birth_date,
+            parrent_name: credentials.parrent_name,
+            parrent_phone: credentials.parrent_phone,
+            address: credentials.address,
+            file: credentials.file
+          }
+          // return new Promise((resolve, reject) => {
+          axios.put('/auth/user/'+this.state.dataUser, data)
+          .then(response => {
+
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(response.data)
+            // reject(error)
+          })
+        // })
+      }
+    },
+
+    editProfileGuru(context, credentials){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+
+      if(context.getters.loggedIn) {
+          const data = {
+            name: credentials.name,
+            gender: credentials.gender,
+            phone: credentials.phone,
+            birth_place: credentials.birth_place,
+            birth_date: credentials.birth_date,
+            parrent_name: credentials.parrent_name,
+            parrent_phone: credentials.parrent_phone,
+            address: credentials.address,
+            file: credentials.file
+          }
+          // return new Promise((resolve, reject) => {
+          axios.put('/auth/teacher/'+this.state.dataUser, data)
+          .then(response => {
+
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(response.data)
+            // reject(error)
+          })
+        // })
+      }
     },
   }
 });
