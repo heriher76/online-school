@@ -1,6 +1,6 @@
 <template>
   <div class="materi">
-  <v-container fluid>
+  <v-container fluid v-if="dataDetailMateri.data">
     <v-layout row wrap>
       <v-flex xs12 sm12 md8>
         <v-card-text style="padding-top: 0">
@@ -10,8 +10,22 @@
           <div  v-else-if="tipeMateri == 'text'">
             <materiText :datas="dataDetailMateri.data"/>
           </div>
-          <div  v-else>
+          <div  v-else-if="tipeMateri == 'quiz'">
             <materiQuiz :datas="dataDetailMateri.data"/>
+          </div>
+          <div  v-else>
+            <v-layout justify-center style="position: relative;background-color:#fff;width:100%;height:0;padding-bottom: 56.25%;">
+              <div style="position: absolute;top: 0;left: 0;width: 100%;height: 100%; overflow: auto">
+                <v-container>
+                  <div class="headline my-4">
+                    Not Found :(
+                  </div>
+                  <p>
+                    Materi tidak ditemukan.
+                  </p>
+                </v-container>
+              </div>
+            </v-layout>
           </div>
         </v-card-text>
       </v-flex>
@@ -34,7 +48,7 @@
                 <v-list-tile
                   avatar
                   @click="tipeMateri = 'video'"
-                  :href="'#'+materi.id"
+                  :href="'#1-'+materi.id"
                 >
                   <v-list-tile-avatar>
                     <v-icon class="mt-3">videocam</v-icon>
@@ -50,7 +64,7 @@
                   <v-list-tile
                     avatar
                     @click="tipeMateri = 'text'"
-                    :href="'#'+materi.id"
+                    :href="'#2-'+materi.id"
                   >
                     <v-list-tile-avatar>
                       <v-icon class="mt-3">assignment</v-icon>
@@ -66,7 +80,7 @@
                     <v-list-tile
                       avatar
                       @click="tipeMateri = 'quiz'"
-                      :href="'#'+materi.section_id+'-'+materi.id"
+                      :href="'#3-'+materi.section_id+'-'+materi.id"
                     >
                       <v-list-tile-avatar>
                         <v-icon class="mt-3">create</v-icon>
@@ -238,37 +252,48 @@
         async getDataDetailMateri(){
           this.$store.dispatch('getDataDetailMateri')
           .then(response => {
-            console.log("telah load data..")
           })
         },
         async getDataDetailForum(){
           this.$store.dispatch('getDataDetailForum')
           .then(response => {
-            console.log("telah load data..")
           })
         },
-      kirimPertanyaan(){
-        this.is_load = true
-        this.$store.dispatch('pushDataForum', {
-          course_id: this.$route.params.id,
-          isi: this.body,
-          user_id: this.userId,
-        })
-        .then(response =>{
-          this.is_load = false
-          this.body = ''
-        })
-        .catch(error => {
-          this.is_load = false
-          this.body = ''
-          this.$swal('Oopps', 'Gagal Mengirim Pertanyaan...', 'warning')
-        })
-      }
-
+        cekMateri(){
+            if(this.$route.hash.split('-')[0].substring(1)==1){
+              this.tipeMateri = 'video'
+            }else if(this.$route.hash.split('-')[0].substring(1)==2){
+              this.tipeMateri = 'text'
+            }else if(this.$route.hash.split('-')[0].substring(1)==3){
+              this.tipeMateri = 'quiz'
+            }else if(!this.$route.hash.length){
+              this.tipeMateri = 'video'
+            }else{
+              this.tipeMateri = 'not found'
+            }
+        },
+        kirimPertanyaan(){
+          this.is_load = true
+          this.$store.dispatch('pushDataForum', {
+            course_id: this.$route.params.id,
+            isi: this.body,
+            user_id: this.userId,
+          })
+          .then(response =>{
+            this.is_load = false
+            this.body = ''
+          })
+          .catch(error => {
+            this.is_load = false
+            this.body = ''
+            this.$swal('Oopps', 'Gagal Mengirim Pertanyaan...', 'warning')
+          })
+        }
     },
     created(){
       this.getDataDetailMateri()
       this.getDataDetailForum()
+      this.cekMateri()
     },
     computed: {
       dataDetailMateri(){

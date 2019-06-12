@@ -5,7 +5,7 @@
           align-center
           pa-5
         >
-          <v-layout row wrap class="headline white--text">
+          <v-layout row wrap class="headline white--text" v-if="datas.data">
             <v-flex class="display-1" md6 sm10 style="font-weight:normal;">
               {{datas.data.title}}
             </v-flex>

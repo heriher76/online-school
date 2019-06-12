@@ -3,7 +3,7 @@
 
         <div v-if="!ambilId.length">
           <v-layout justify-center style="position: relative;width:100%;height:0;padding-bottom: 45%;">
-            <iframe :src="'https://www.youtube.com/embed/'+datas[0].videos[0].video_url" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>  
+            <iframe :src="'https://www.youtube.com/embed/'+datas[0].videos[0].video_url" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </v-layout>
           <div class="pt-4">
             <v-chip color="#34495e" text-color="white" class="subheading">
@@ -38,7 +38,7 @@
     }),
     computed:{
       ambilId(){
-        return this.$route.hash.substring(1) || {}
+        return this.$route.hash.split('-')[1] || {}
       }
     }
   }
