@@ -12,13 +12,13 @@
                                 <!-- timer -->
                                 <!-- <Timer :time="time"/> -->
                                 <div style="width:180px;float:right; color:red" v-if="hours <= '00' && minutes <= '00' && seconds <= '00'">
-                                    <!-- dialog time out -->
-                                    <v-dialog v-model="dialog" persistent max-width="290">
+                                   <!-- dialog time out -->
+                                    <v-dialog v-model="timeoutDialog" persistent max-width="290">
                                     <v-card>
                                         <v-card-title class="headline">Waktu Habis</v-card-title>
                                         <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
                                         <v-card-actions>
-                                        <v-btn color="green darken-1" flat @click="dialog = false" block>OK</v-btn>
+                                        <v-btn block color="green darken-1" flat dark @click="submit">OK</v-btn>
                                         </v-card-actions>
                                     </v-card>
                                     </v-dialog>
@@ -78,6 +78,10 @@
                             </div>
                         </v-container>                    
                     </v-card>
+                        <label class="container">
+                            <input type="radio" :value="1" v-model="markanswer[hal]" name="opt">
+                            <span class="checkmark"><p>cek </p></span>
+                        </label>  
 
                     <v-card>
                         <v-btn @click="previous(hal)" small> <v-icon left dark>keyboard_arrow_left</v-icon> Soal Sebelumnya</v-btn>
@@ -121,34 +125,18 @@
                             </v-card>
                             <v-layout>
                                 <v-flex md5>
-                                    <div>
-                                        <span style="width:15px;height:15px;background:#8BC34A; margin:2.6px; float:left"></span> 
-                                       <span>Terjawab</span>
-                                    </div>
-
-                                    <div>
-                                        <span style="width:15px;height:15px;background:orange; margin:2.6px; float:left"></span> 
-                                       <span>Ditandai</span>
-                                    </div>
-                            
+                                    <div><span style="width:15px;height:15px;background:#8BC34A; margin:2.6px; float:left"></span><span>Terjawab</span></div>
+                                    <div><span style="width:15px;height:15px;background:orange; margin:2.6px; float:left"></span><span>Ditandai</span></div>
                                 </v-flex>
                                 <v-flex md7>
-                                    <div>
-                                        <span style="width:15px;height:15px;background:#BDBDBD; margin:2.6px; float:left"></span> 
-                                       <span>Belum Terjawab</span>
-                                    </div>
-
-                                    <div>
-                                        <span style="width:15px;height:15px;background:#03A9F4; margin:2.6px; float:left"></span> 
-                                       <span>Aktif</span>
-                                    </div>
-
+                                    <div><span style="width:15px;height:15px;background:#BDBDBD; margin:2.6px; float:left"></span><span>Belum Terjawab</span></div>
+                                    <div><span style="width:15px;height:15px;background:#03A9F4; margin:2.6px; float:left"></span><span>Aktif</span></div>
                                 </v-flex>
                             </v-layout>          
                         </div>     
                         <v-divider></v-divider>
-                        <!-- <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn> -->                
-                        <v-btn block color="red" dark @click="submit">Akhiri</v-btn>
+                        <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn>                
+                        <!-- <v-btn block color="red" dark @click="submit">Akhiri</v-btn> -->
                     </v-card>
                 </v-flex>
 
@@ -156,34 +144,37 @@
             answers : {{ answer }}   -->
 
             <!-- {{questions}} -->
-            <!-- {{tmpanswer}} -->
+            {{ tmpanswer }}
 
             {{ markanswer }}
-        
+            
             </v-layout>
         </v-container>
+        <LoadingScreen3 :loading="loadSubmit"></LoadingScreen3>
     </div>
 </template>
 
 <script>
     import Timer from "../cereout-component/Timer"    
+    import LoadingScreen3 from'../../components/loading-screen/Loading3'
     import axios from 'axios';
 
     export default {
         props:["cereoutId", "time", "attemptId"],
 
         components:{
-            Timer
+            Timer,
+            LoadingScreen3
         },
         
         data () {
             return {
-                dialog:true,
+                loadSubmit: false,
+                timeoutDialog:true,
                 timer: null,
                 totalTime: this.time * 60,//konversi ke detik
 
                 load_data: true,
-                dialog: false,
 
                 hal: 0,
                 questions: [],       
@@ -213,17 +204,16 @@
                 }).then((result) => {
                     if(result.value) { 
                         return this.submit()
-                    } else {
-                        this.$swal('Cancelled', 'Your file is still intact', 'info')
                     }
                 })
             },
 
             submit() {
+                this.loadSubmit = true
                 var ans = ''
                 var n = ''
-                // this.myTime = [this.hours, this.minutes, this.seconds]
                 
+                // this.myTime = this.hours +""+ this.minutes +"Menit"+ this.seconds +"Detik"
                 this.myTime = this.minutes
                 for(var i=0; i < this.questions.length; i++){
                     if(this.tmpanswer[i] == 0){
@@ -259,7 +249,9 @@
                     answers: this.answer
                 })
                 .then(response => {
+                    this.loadSubmit = false
                     console.log(response.data)
+                    this.$router.push({name: 'exam_result', params:{id: this.attemptId, data: response.data.data, act:0}})
                 })
                 .catch(error => {
                     console.log(error.response)
@@ -292,6 +284,8 @@
 
             mark(hal){
                 this.markanswer.push(hal)
+
+                console.log(hal)
             },
 
             delMark(hal){
@@ -344,7 +338,7 @@
                 // console.log(response.data)
             })
             .catch(error =>{
-                console.log(error)
+                console.log(error.response)
             })
         }
     }
