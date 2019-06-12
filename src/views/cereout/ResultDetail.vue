@@ -23,7 +23,7 @@
                     </v-card>
                     <hr>
                     <v-card>
-                        <v-tabs v-model="active" color="deep-orange" dark slider-color="blue">
+                        <v-tabs v-model="active" color="#B71C1C" dark slider-color="blue">
                             <v-tab v-for="n in name_tab" :key="n" ripple>
                                 {{ n }}
                             </v-tab>
@@ -61,7 +61,7 @@
 
                             <v-tab-item>
                                 <v-card flat>
-                                    <DetailResult :detail="detail"/>
+                                    <DetailResult :id="id"/>
                                 </v-card>
                             </v-tab-item>
                         </v-tabs>
@@ -90,7 +90,6 @@ export default {
     },
     data () {
         return {
-            detail :[],
             active: this.act,
             name_tab : [
                 'Detail', 
@@ -105,16 +104,10 @@ export default {
         }
     },
 
-    mounted(){   
-        Axios.get('/cereouts/result/detail/'+this.id)
-        .then(response => {
-            this.detail = response.data.data
-            console.log(response.data)
-        })
-        .catch(error => {
-            console.log(error)
-        })
+    mounted(){
+        if(this.data==null){
+            return this.$router.push({name: 'my_results'})
+        }
     }
-
 }
 </script>

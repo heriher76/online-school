@@ -11,7 +11,13 @@
 
       <!-- header actions -->
       <div class="nav-action">
-        <v-menu v-model="menu" :close-on-content-click="false" :width="200" offset-x>
+          <template>
+            <v-list-tile>
+              <v-icon>account_circle</v-icon>&nbsp;{{user.name}}
+              </v-list-tile>
+          </template>
+
+        <!-- <v-menu v-model="menu" :close-on-content-click="false" :width="200" offset-x>
           <template v-slot:activator="{ on }">
             <v-list-tile v-on="on">
               <v-icon>account_circle</v-icon>  {{user.name}}
@@ -36,7 +42,7 @@
               <v-btn color="primary" flat to="/logout">Sign Out</v-btn>
               </v-card-actions>
           </v-card>
-        </v-menu>
+        </v-menu> -->
     </div>
     </v-toolbar>
     <!-- /header -->

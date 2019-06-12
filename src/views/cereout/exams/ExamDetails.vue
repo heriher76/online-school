@@ -1,7 +1,7 @@
 <template>
     <div class="my_exams">
         <v-container>
-            <v-toolbar color="orange darken-1" dark>
+            <v-toolbar color="#B71C1C" dark>
                 <v-toolbar-title>Exam Details</v-toolbar-title>
             </v-toolbar>
             <v-container>
@@ -99,47 +99,6 @@
                   </v-card>
                 </v-dialog>
                 <!-- /loading -->
-
-                <!-- <v-dialog v-model="dialog" width="500">
-                  <template v-slot:activator="{ on }">
-                    <v-btn dark color="info" v-on="on">
-                      Attempt Now
-                      <v-icon right dark>launch</v-icon>
-                    </v-btn>
-                    
-                    <v-btn @click="$router.go(-1)">Cancel</v-btn>
-                  </template>
-
-                  <v-card>
-                    <v-card-title class="headline grey lighten-2" primary-title>
-                      Anda Belum Menjadi Member
-                    </v-card-title>
-
-                    <v-card-text>
-                      <p>Syarat &amp; Ketentuan</p> 
-                      <p>Ujian ini khusus untuk member cerebrum. Poin yang anda miliki akan dipotong secara otomotis untuk memulai ujian. Apakah anda bersedia?</p>
-                    </v-card-text>
-
-                    <v-divider></v-divider>
-
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                  
-                      <v-btn flat :disabled="loading" :loading="loading" color="primary" @click="">
-                      I accept &amp; start the exam
-                      </v-btn>
-
-                      <v-dialog v-model="loading" hide-overlay persistent width="300">
-                        <v-card color="primary" dark>
-                          <v-card-text>
-                            Please stand by
-                            <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
-                          </v-card-text>
-                        </v-card>
-                      </v-dialog>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog> -->
                 </v-card>
             </v-container>
         </v-container>
@@ -174,7 +133,6 @@
       action(data) {
         this.loading = true
         if(this.user.membership == 1){
-          // axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
           axios.post('/cereouts/' + data.id + '/attempts', {
             user_id: this.$store.state.dataUser
           })
@@ -183,7 +141,7 @@
             console.log(response.data)
           
             if(response.data.status == true){ //cek user member atau bukan
-              let routeData = this.$router.resolve({name: 'exam_page', params:{id:data.id, durasi:data.duration, attemptId:response.data.data.id}});
+              let routeData = this.$router.resolve({name: 'exam_page', params:{id:data.id, name: data.name, durasi:data.duration, attemptId:response.data.data.id}});
               window.open(routeData.href,
                           'my_window', 
                           'width=1600, height=620, resizable=no',
@@ -191,7 +149,6 @@
                           )
             }
             else{
-              // return this.dialog = true
               return this.$swal('Opps', response.data.message, 'warning')
             }
 
@@ -201,6 +158,7 @@
           })
         }
         else{
+          this.loading = false
           return this.$swal({
               title: 'Anda belum menjadi member',
               text: 'apakah anda ingin menjadi member?',
@@ -216,7 +174,7 @@
               }
             })
         }
-      }
+      },
     },
 
   }

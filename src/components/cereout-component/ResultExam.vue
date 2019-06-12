@@ -116,7 +116,7 @@
                             <hr>
                             <div>
                                 <b>Video Penjelasan:</b>
-                                <div style="width:100%;height:300px">
+                                <div style="width:100%;height:400px">
                                     <iframe :src="'https://www.youtube.com/embed/V1Pl8CzNzCw'" style="width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 </div>
                             </div>
@@ -157,23 +157,20 @@
                         <v-card style="padding:2px 5px">
                             <b>Navigasi Soal</b>
                         </v-card><br>
-                        <div class="navigasi">
-                            <a
-                                class="btn-num"
-                                v-for="(item, key, index) in detail" :key="item.id" 
-                                @click="viewQuestion(key)"
-                            >  
-                                <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
-                                <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
+                        <a
+                            class="btn-num"
+                            v-for="(item, key, index) in detail" :key="item.id" 
+                            @click="viewQuestion(key)"
+                        >  
+                            <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
+                            <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
 
-                                <span v-else-if="key+1 < 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
-                                <span v-else-if="key+1 >= 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
-                            </a>
-                            <div class="clear"></div>
-                        </div>     
+                            <span v-else-if="key+1 < 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
+                            <span v-else-if="key+1 >= 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
+                        </a>
+                        <div class="clear"></div>
                     </v-card>
                 </v-flex>
-        
             </v-layout>
         </v-container>
     </div>
@@ -194,9 +191,9 @@
 
                 quest: "",
                 options: [],
+
             }
         },
-
 
         methods:{
             viewQuestion(index) {   
@@ -250,11 +247,10 @@
         width:142px; 
         margin:0px auto
     }
-  
+
     @media only screen and (max-width: 650px) {
         .navigasi {
             width:100%; 
         }
     }
-
 </style>

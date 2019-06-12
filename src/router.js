@@ -115,7 +115,7 @@ export default new Router({
     },
 
     {
-      path: "/cereout/exams/start/:id/:durasi/:attemptId",
+      path: "/cereout/exams/start/:id/:name/:durasi/:attemptId",
       name: 'exam_page',
       meta: {layout: "exam"},
       component: () => import("./views/cereout/exams/ExamPage.vue"),

@@ -12,8 +12,8 @@
                 
                 <!-- sub content -->
                 <v-flex md9 sm12 xs12>
-                    <v-card style="margin-bottom:8px">
-                        <v-card-text class="px-0"><h6 class="title" style="color:black;margin:4px 20px">My Exams</h6></v-card-text>
+                    <v-card color="#B71C1C" dark style="margin-bottom:8px">
+                        <v-card-text class="px-0"><h6 class="title" style="margin:4px 20px">My Exams</h6></v-card-text>
                     </v-card>                   
                     <v-layout row wrap>
                         <v-flex md2 sm12 xs12 class="hidden-sm-and-down">
@@ -27,7 +27,7 @@
 
                                     <v-list-tile @click="changeList(2)" active-class="false">
                                         <v-list-tile-content>
-                                        <v-list-tile-title>Tryout Dibeli</v-list-tile-title>
+                                        <v-list-tile-title>Tryout Diambil</v-list-tile-title>
                                         </v-list-tile-content>
                                     </v-list-tile>
 
@@ -52,11 +52,11 @@
                                     indeterminate
                                     ></v-progress-circular>
                                 </div>
+                                
                                 <v-card 
                                     v-for="item in items"
                                     :key="item.id"
-                                    >
-
+                                >
                                     <v-list-tile v-if="ListName == 'Tryout Kadaluarsa'" class="list">
                                         <v-list-tile-content>
                                             <div><span style="color:#039BE5;font-size:15px; text-transform:capitalize">{{item.name}} | {{item.lesson}}</span><br>
@@ -72,6 +72,10 @@
                                     </v-list-tile>
                                 </v-card>
                                 
+                                <div v-show="note" v-if="items == 0" style="text-align:center;color:#757575">
+                                    <span>Tidak Ada Data</span>
+                                </div>
+
                             </v-list>
                         </v-flex>  
                     </v-layout>           
@@ -98,6 +102,8 @@
         },
         data: () => ({
             load_data:true,
+            note:false,
+
             items: [],
             detail: '',
             ListName: 'Daftar Tryout',
@@ -137,6 +143,7 @@
                     .then(response => {
                         this.load_data = false
                         this.items = response.data.data
+                        console.log(response.data)
                     })
                     .catch(error =>{
                         this.load_data = false
@@ -155,7 +162,8 @@
             axios.get('/cereouts')
             .then(response => {
                 this.load_data = false
-                this.items = response.data.data
+                this.note      = true
+                this.items     = response.data.data
             })
             .catch(error =>{
                 console.log(error)
