@@ -115,6 +115,7 @@ import LoadingScreen2 from'../../components/loading-screen/Loading2'
         .catch(error => {
           this.btn_load = false
           this.loadLogin = false
+          console.log(error.response)
           this.$swal('Oops', 'Your email or password is invalid', 'warning')
         })
       },

@@ -154,6 +154,7 @@
 
     data () {
       return {
+        user: [],
         loading: false,
         dialog: false
       }
@@ -163,37 +164,58 @@
       if(this.detail==null){
         return this.$router.push({name: 'my_exams'})
       }
+
+      axios.get('/auth/user')
+      .then(response => {this.user = response.data.data})
+      .catch(error => {console.log(error)})
     },
 
     methods: {
       action(data) {
         this.loading = true
+        if(this.user.membership == 1){
+          // axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+          axios.post('/cereouts/' + data.id + '/attempts', {
+            user_id: this.$store.state.dataUser
+          })
+          .then(response => {
+            this.loading = false
+            console.log(response.data)
+          
+            if(response.data.status == true){ //cek user member atau bukan
+              let routeData = this.$router.resolve({name: 'exam_page', params:{id:data.id, durasi:data.duration, attemptId:response.data.data.id}});
+              window.open(routeData.href,
+                          'my_window', 
+                          'width=1600, height=620, resizable=no',
+                          '_blank'
+                          )
+            }
+            else{
+              // return this.dialog = true
+              return this.$swal('Opps', response.data.message, 'warning')
+            }
 
-        // axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-        axios.post('/cereouts/' + data.id + '/attempts', {
-          user_id: this.$store.state.dataUser
-        })
-        .then(response => {
-          this.loading = false
-          console.log(response)
-        
-          if(response.data.status == true){ //cek user member atau bukan
-            let routeData = this.$router.resolve({name: 'exam_page', params:{id:data.id, durasi:data.duration, attemptId:response.data.data.id}});
-            window.open(routeData.href,
-                        'my_window', 
-                        'width=1600, height=620, resizable=no',
-                        '_blank'
-                        )
-          }else{
-            // return this.dialog = true
-            return this.$swal('Oopps', response.data.message, 'warning')
-          }
-
-        })
-        .catch(error =>{
-            console.log(error)
-        })
-
+          })
+          .catch(error =>{
+              console.log(error)
+          })
+        }
+        else{
+          return this.$swal({
+              title: 'Anda belum menjadi member',
+              text: 'apakah anda ingin menjadi member?',
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Ya',
+              cancelButtonText: 'Tidak',
+              showCloseButton: true,
+              showLoaderOnConfirm: true
+            }).then((result) => {
+              if(result.value) { 
+                return this.$router.push({name: 'membership'})
+              }
+            })
+        }
       }
     },
 

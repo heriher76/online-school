@@ -55,6 +55,12 @@ export default new Router({
       name: 'reset_pass',
       component: () => import("./views/auth/ResetPassword.vue")
     },
+    
+    {
+      path: '/membership',
+      name: 'membership',
+      component: () => import("./views/siswa/Membership.vue")
+    },
 
     // -----------------------------poin saldo-----------------------------
     {
@@ -117,13 +123,21 @@ export default new Router({
     },
 
     {
+      path: "/cereout/exam result",
+      name: 'exam_result',
+      meta: {layout: "exam"},
+      component: () => import("./views/cereout/exams/ExamResult.vue"),
+      props:true
+    },
+
+    {
       path: "/cereout/results",
       name: 'my_results',
       component: () => import("./views/cereout/Results.vue")
     },
 
     {
-      path: "/cereout/results/detail",
+      path: "/cereout/results/detail/:id",
       name: 'result_detail',
       component: () => import("./views/cereout/ResultDetail.vue"),
       props: true

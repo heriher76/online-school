@@ -30,18 +30,40 @@
                             
                             <v-tab-item>
                                 <v-card flat>
-                                <v-card-text>Tab 1</v-card-text>
-                                {{data}}
+                                <v-card-text style="text-transform:capitalize;font-size:15px">
+                                    <v-layout>
+                                        <v-flex md6>
+                                            <table>
+                                                <tr><td width="200"><b>Nama Tryout</b></td><td>{{data.tryout.name}}</td></tr>
+                                                <tr><td><b>Durasi</b></td><td>{{data.my_time}} Menit</td></tr>
+                                                <tr><td><b>Skor</b></td><td>{{data.score}}</td></tr>
+                                                <tr><td><b>Total Soal Terjawab</b></td><td>{{data.total_answer}}</td></tr>
+                                            </table>
+                                        </v-flex>
+                                        <v-flex md6>
+                                            <table>
+                                                <tr><td width="200"><b>Jawaban Benar</b></td><td>{{data.correct_answered}}</td></tr>
+                                                <tr><td><b>Jawaban Salah</b></td><td>{{data.incorrect_answered}}</td></tr>
+                                                <tr><td><b>left_answered</b></td><td>{{data.left_answered}}</td></tr>
+                                                <tr><td><b>Status Hasil</b></td>
+                                                    <td>
+                                                        <label v-if="data.result_status=='Lulus'" style="color:#0091EA">{{data.result_status}}</label>
+                                                        <label v-else style="color:red">{{data.result_status}}</label>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-card-text>
+
                                 </v-card>
                             </v-tab-item>
 
                             <v-tab-item>
                                 <v-card flat>
-                                <v-card-text>Tab 2</v-card-text>
-                                {{detail}}
+                                    <DetailResult :detail="detail"/>
                                 </v-card>
                             </v-tab-item>
-
                         </v-tabs>
                     </v-card>
                 </v-flex>
@@ -55,13 +77,16 @@
 
 <script>
 import SideBar from "../../components/cereout-component/SideBar"
+import DetailResult from "../../components/cereout-component/DetailResult"
+
 import Axios from 'axios';
 
 export default {
     name: 'result-detail',
-    props:['data', 'act'],
+    props:['id','data', 'act'],
     components: {
-        SideBar
+        SideBar,
+        DetailResult
     },
     data () {
         return {
@@ -80,9 +105,8 @@ export default {
         }
     },
 
-    mounted(){
-        
-        Axios.get('/cereouts/result/detail/'+this.data.id)
+    mounted(){   
+        Axios.get('/cereouts/result/detail/'+this.id)
         .then(response => {
             this.detail = response.data.data
             console.log(response.data)

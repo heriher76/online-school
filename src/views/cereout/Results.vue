@@ -28,8 +28,8 @@
                             <td>{{ props.item.score }}</td>
                             <td>{{ props.item.result_status }}</td>
                             <td> 
-                                <router-link :to="{name: 'result_detail', params:{data: props.item, act:0}}">Detail</router-link> | 
-                                <router-link :to="{name: 'result_detail', params:{data: props.item, act:1}}">Lihat Pembahasan</router-link>
+                                <router-link :to="{name: 'result_detail', params:{id: props.item.id, data: props.item, act:0}}">Detail</router-link> | 
+                                <router-link :to="{name: 'result_detail', params:{id: props.item.id, data: props.item, act:1}}">Lihat Pembahasan</router-link>
                             </td>
                         </template>
                         

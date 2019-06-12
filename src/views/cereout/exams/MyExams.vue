@@ -16,7 +16,7 @@
                         <v-card-text class="px-0"><h6 class="title" style="color:black;margin:4px 20px">My Exams</h6></v-card-text>
                     </v-card>                   
                     <v-layout row wrap>
-                        <v-flex md2 sm12 xs12>
+                        <v-flex md2 sm12 xs12 class="hidden-sm-and-down">
                             <v-navigation-drawer class="grey lighten-5">          
                                 <v-list dense class="pt-0">
                                     <v-list-tile @click="changeList(1)" active-class="false">

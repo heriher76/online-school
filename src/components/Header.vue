@@ -136,25 +136,25 @@
         </v-toolbar-title>
       </v-toolbar>
       <v-divider></v-divider>
-      <v-toolbar flat v-if="loggedIn" style="padding:20px 0px" class="transparent">
+      <v-toolbar flat v-if="loggedIn" style="padding:30px 0px" class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar>
-            <v-list-tile-avatar style="margin-top:-20px">
+            <v-list-tile-avatar style="margin-top:-50px">
               <img src="https://randomuser.me/api/portraits/men/85.jpg">
             </v-list-tile-avatar>
 
-            <v-list-tile-content style="height:70px;">
-              <v-list-tile-title>{{user.name}}
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on }">
-                    <a @click="linkAkun">
-                    <v-icon color="blue" v-on="on">edit</v-icon>
-                    </a>
-                </template>
-                <span>My Account</span>
-              </v-tooltip>
-              
+            <v-list-tile-content style="height:100px;">
+              <v-list-tile-title @click="linkAkun">{{user.name}}
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                      <a @click="linkAkun">
+                      <v-icon color="blue" v-on="on">edit</v-icon>
+                      </a>
+                  </template>
+                  <span>My Account</span>
+                </v-tooltip>
               </v-list-tile-title>
+
               <v-list-tile-sub-title>{{user.email}}</v-list-tile-sub-title>
             
               <v-list-tile-sub-title>
@@ -187,8 +187,25 @@
                   <span>Pesan</span>
                   </v-tooltip>
                 </div>  
-
               </v-list-tile-sub-title>
+
+              <v-list-tile-sub-title>
+                <div class="nav-bal">
+                    <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                        <router-link to="/my poin">
+                        <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                        </router-link>
+                    </template>
+                    <span>Top up</span>
+                    </v-tooltip>
+
+                    <b>Poin : {{user.balance}} </b>
+
+                    <div class="clear"></div>
+                </div>
+              </v-list-tile-sub-title>
+
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
