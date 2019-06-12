@@ -27,7 +27,7 @@
                     ></v-progress-circular>
                 </div>
                 
-                <v-card v-for="nom in nominals" :key="nom.id" @click="alertTopUp(nom)" style="float:left; text-align:center; padding:15px 25px; margin:11px">
+                <v-card v-for="nom in nominals" :key="nom.id" @click="alertTopUp(nom)" style="float:left; text-align:center; cursor:pointer; padding:15px 25px; margin:11px">
                     <h6 class="title" >{{nom.nominal}} poin</h6>
                     <span style="font-size:12px">Rp. {{formatPrice(nom.harga)}}</span>
                 </v-card>
@@ -37,7 +37,7 @@
         <LoadingScreen4 :loading="loadingSubmit"></LoadingScreen4>
         <!-- <v-btn @click="payButton">Pay!</v-btn> -->
 
-        <div id="result-json"></div>
+        <div id="result-json" style="color:red"></div>
      
         </v-card>
     </div>

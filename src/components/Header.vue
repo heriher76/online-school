@@ -119,8 +119,6 @@
                 </v-card-actions>
             </v-card>
             </v-menu>
-            
-            <LoadingScreen1 :loading="loadLogout"></LoadingScreen1>
         </div>
     </div>
     <!-- header actions -->      
@@ -263,6 +261,7 @@
     </v-navigation-drawer>
     <!-- /navigation-drawer -->
 
+    <LoadingScreen1 :loading="loadLogout"></LoadingScreen1>
   </div>
 </template>
 

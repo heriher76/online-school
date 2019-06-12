@@ -6,7 +6,7 @@
                     <v-card>
                         <v-layout row wrap>
                             <v-flex md9 style="padding-top:22px;padding-left:35px">                        
-                               <h6 class="title">Mata Pelajaran </h6>
+                               <h6 class="title">{{name}}</h6>
                             </v-flex>
                             <v-flex md3>             
                                 <!-- timer -->
@@ -73,7 +73,7 @@
                             <div style="float:left">
                                 <label class="container" v-for="(n,key,index) in options" :key="n.index">
                                 <input type="radio" :value="key" v-model="tmpanswer[hal]" name="opt">
-                                <span class="checkmark"><p>{{n.option}} </p></span>
+                                <span class="checkmark"><span v-html="n.option"></span></span>
                                 </label>   
                             </div>
                         </v-container>                    
@@ -148,6 +148,7 @@
 
             {{ markanswer }}
             
+            
             </v-layout>
         </v-container>
         <LoadingScreen3 :loading="loadSubmit"></LoadingScreen3>
@@ -160,7 +161,7 @@
     import axios from 'axios';
 
     export default {
-        props:["cereoutId", "time", "attemptId"],
+        props:["name","cereoutId", "time", "attemptId"],
 
         components:{
             Timer,
@@ -325,7 +326,6 @@
         },
 
         mounted(){
-            // axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
             axios.get('/cereouts/question/' + this.cereoutId)
             .then(response => {
                 this.load_data = false
