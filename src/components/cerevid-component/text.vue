@@ -27,7 +27,7 @@
     }),
     computed:{
       ambilId(){
-        return this.$route.hash.substring(1) || {}
+        return this.$route.hash.split('-')[1] || {}
       }
     }
   }

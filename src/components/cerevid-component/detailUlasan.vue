@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="datas.data">
     <div class="headline">
 		    <div>Ulasan Pengguna</div>
     </div>
@@ -177,6 +177,11 @@
 			},
     },
     methods: {
+      async getDataDetailPelajaran() {
+          this.$store.dispatch('getDataDetailPelajaran')
+            .then(response => {
+            })
+      },
       kirimUlasan(){
         console.log(1)
         this.$store.dispatch('pushDataRating', {
@@ -187,9 +192,10 @@
         })
         .then(response => {
           this.dialog = false
+          this.getDataDetailPelajaran()
         })
         .catch(error => {
-          console.log(this.$route.params.id+' '+this.kasihRating+' '+this.body)
+          this.dialog = false
           console.log(error)
         })
       }

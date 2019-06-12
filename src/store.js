@@ -291,7 +291,6 @@ export default new Vuex.Store({
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
       axios.get('/courses/'+router.currentRoute.params.id)
       .then(response => {
-        console.log(response.data)
         context.commit('getDataDetailPelajaran', response.data)
       })
       .catch(error => {
@@ -332,26 +331,6 @@ export default new Vuex.Store({
       })
     },
   //--------------------------------cerevid post--------------------------------
-    //Input Ulasan & Rating
-    pushDataRating(context, credentials){
-      return new Promise((resolve, reject) => {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-        axios.post('/courses/'+router.currentRoute.params.id+'/reviews/create',{
-          course_id: credentials.course_id,
-          star: credentials.star,
-          body: credentials.isi,
-          user_id: credentials.user_id
-        })
-        .then(response => {
-          console.log(response.data)
-          resolve(response)
-        })
-        .catch(error => {
-          console.log(error)
-          reject(error)
-        })
-      })
-    },
 
     //Simpan Favorit
     pushDataFavorit(context, credentials){
@@ -372,6 +351,45 @@ export default new Vuex.Store({
       })
     },
 
+    //Simpan Learned
+    pushDataLearned(context, credentials){
+      return new Promise((resolve, reject) => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.post('/courses/'+credentials.user_id+'/learned/',{
+          user_id: credentials.user_id,
+          course_id: credentials.course_id,
+        })
+        .then(response => {
+          console.log(response.data)
+          resolve(response)
+        })
+        .catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+
+    //Input Ulasan & Rating
+    pushDataRating(context, credentials){
+      return new Promise((resolve, reject) => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.post('/courses/'+router.currentRoute.params.id+'/reviews/create',{
+          course_id: credentials.course_id,
+          star: credentials.star,
+          body: credentials.isi,
+          user_id: credentials.user_id
+        })
+        .then(response => {
+          resolve(response)
+        })
+        .catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+
     pushDataForum(context, credentials){
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
@@ -382,7 +400,6 @@ export default new Vuex.Store({
         },)
         .then(response => {
           context.commit('pushDataDetailForum', response.data)
-          console.log(response.data)
           resolve(response)
         })
         .catch(error => {
@@ -396,12 +413,11 @@ export default new Vuex.Store({
     delDataFavorit(context, credentials){
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-        axios.delete('/courses/'+credentials.course_id+'/favorites/'+credentials.favorit_id,{
+        axios.delete('/courses/'+credentials.user_id+'/favorites/'+credentials.favorit_id,{
           user_id: credentials.user_id
         },)
         .then(response => {
           context.commit('delDataFavorit', credentials.favorit_id)
-          console.log(response.data)
           resolve(response)
         })
         .catch(error => {

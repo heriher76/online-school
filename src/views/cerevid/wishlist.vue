@@ -39,17 +39,25 @@
 		                  height="200px"
 		                >
 		                  <v-flex offset-xs9 align-end flexbox>
-		                    <v-btn fab dark small color="pink" style="opacity:0.85;">
-		                      <v-icon dark>favorite</v-icon>
-		                    </v-btn>
+												<div v-for="datas in dataDaftarPelajaran.data">
+													<div v-if="datas.title==props.item.course.title">
+				                     <v-btn fab dark small color="pink" style="opacity:0.85;" @click="hapusFavorit(props.item.id)">
+				                     		<v-icon dark>favorite</v-icon>
+				                     </v-btn>
+													 </div>
+											  </div>
 		                  </v-flex>
 		                </v-img>
 
 		                <v-card-title primary-title>
 		                  <div>
 		                    <div class="headline">
-		                      <router-link v-bind:to="'/cerevid/detail-pelajaran/'+props.item.id" style="text-decoration: none;">{{props.item.course.title}}</router-link>
-		                    </div>
+													<div v-for="datas in dataDaftarPelajaran.data">
+														<div v-if="datas.title==props.item.course.title">
+		                      		<router-link v-bind:to="'/cerevid/detail-pelajaran/'+datas.id" style="text-decoration: none;">{{props.item.course.title}}</router-link>
+														</div>
+													</div>
+												</div>
 		                    <span class="grey--text">{{props.item.course.teacher.name}}</span>
 		                  </div>
 		                </v-card-title>
@@ -92,18 +100,37 @@
 		      rowsPerPageItems: [4],
 		}),
 	  	methods: {
+		      async getDataPelajaran(){
+		        this.$store.dispatch('getDataPelajaran')
+		        .then(response => {
+		        })
+		      },
 	        async getDataFavoritbyUser(){
 	          this.$store.dispatch('getDataFavoritbyUser')
 	          .then(response => {
-	            console.log("telah load data..")
 	          })
 	        },
+		      hapusFavorit(favorit_id){
+		        this.$store.dispatch('delDataFavorit', {
+		          user_id: this.userId,
+		          favorit_id: favorit_id,
+		        })
+		        .then(response =>{
+		        })
+		        .catch(error => {
+		          this.$swal('Oopps', 'Gagal Menghapus Favorit...', 'warning')
+		        })
+		      }
 
 	    },
 	    created(){
+	     this.getDataPelajaran()
 	     this.getDataFavoritbyUser()
 	    },
 	    computed: {
+	      dataDaftarPelajaran(){
+	        return this.$store.state.dataPelajaran || {}
+	      },
 	      dataFavoritbyUser(){
 	        return this.$store.state.dataFavoritbyUser || {}
 	      },
