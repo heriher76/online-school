@@ -14,7 +14,7 @@
                 <v-list-tile-sub-title>Materi | {{materi.title}}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
-                <v-btn color="green">
+                <v-btn color="green" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#1-'+section.id+'-'+materi.id">
                   <v-icon color="white--text">visibility</v-icon>
                   <span class="pa-1 white--text">Lihat</span>
                 </v-btn>
@@ -28,7 +28,7 @@
                 <v-list-tile-sub-title>Materi | {{materi.title}}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
-                <v-btn  color="green">
+                <v-btn  color="green" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#2-'+section.id+'-'+materi.id">
                   <v-icon color="white--text">visibility</v-icon>
                   <span class="pa-1 white--text">Lihat</span>
                 </v-btn>
@@ -42,7 +42,7 @@
                 <v-list-tile-sub-title>Materi | {{materi.title}}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
-                <v-btn  color="green">
+                <v-btn  color="green" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#3-'+materi.section_id+'-'+materi.id">
                   <v-icon color="white--text">visibility</v-icon>
                   <span class="pa-1 white--text">Lihat</span>
                 </v-btn>
@@ -71,8 +71,11 @@
 		},
 		computed: {
 			dataDetailMateri(){
-				return this.$store.state.dataDetailMateri
+				return this.$store.state.dataDetailMateri || {}
 			},
+      courseId() {
+        return this.$route.params.id || {}
+      },
 		},
   }
 </script>

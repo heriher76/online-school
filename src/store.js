@@ -22,6 +22,8 @@ export default new Vuex.Store({
     dataPelajaranbyUser: [],
     dataPelajaranbyTeacher: [],
     dataDetailMateri: [],
+    dataVideo: [],
+    dataText: [],
     dataQuiz: [],
     dataDetailForum: [],
   },
@@ -104,7 +106,6 @@ export default new Vuex.Store({
 
     delDataFavorit(state, id){
      var index = state.dataFavoritbyUser.data.findIndex(cek => cek.id == id)
-     console.log('berhasil menghapus '+state.dataFavoritbyUser.data[index].course.title+' dari favorit')
      state.dataFavoritbyUser.data.splice(index, 1)
    },
 
@@ -114,6 +115,14 @@ export default new Vuex.Store({
 
     getDataDetailMateri(state, dataDetailMateri){
       state.dataDetailMateri = dataDetailMateri
+    },
+
+    getDataVideo(state, dataVideo){
+      state.dataVideo = dataVideo
+    },
+
+    getDataText(state, dataText){
+      state.dataText = dataText
     },
 
     getDataQuiz(state, dataQuiz){
@@ -314,6 +323,17 @@ export default new Vuex.Store({
       })
     },
 
+    getDataProgress(context, credentials){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/courses/'+credentials.id+'/sections')
+      .then(response => {
+        context.commit('getDataDetailMateri', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
     getDataDetailMateri(context){
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
       axios.get('/courses/'+router.currentRoute.params.id+'/sections')
@@ -325,10 +345,56 @@ export default new Vuex.Store({
       })
     },
 
+    getDataVideo(context, data){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/sections/'+data.section_id+'/videos/'+data.id)
+      .then(response => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.get('/courses/'+router.currentRoute.params.id+'/sections')
+        .then(response => {
+          context.commit('getDataDetailMateri', response.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        context.commit('getDataVideo', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    getDataText(context, data){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.get('/sections/'+data.section_id+'/texts/'+data.id)
+      .then(response => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.get('/courses/'+router.currentRoute.params.id+'/sections')
+        .then(response => {
+          context.commit('getDataDetailMateri', response.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        context.commit('getDataText', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
     getDataQuiz(context, data){
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
       axios.get('/sections/'+data.section_id+'/quiz/'+data.id)
       .then(response => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.get('/courses/'+router.currentRoute.params.id+'/sections')
+        .then(response => {
+          context.commit('getDataDetailMateri', response.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
         context.commit('getDataQuiz', response.data)
       })
       .catch(error => {
@@ -357,7 +423,6 @@ export default new Vuex.Store({
         })
         .then(response => {
           context.commit('pushDataFavorit', response.data)
-          console.log(response.data)
           resolve(response)
         })
         .catch(error => {
@@ -371,12 +436,11 @@ export default new Vuex.Store({
     pushDataLearned(context, credentials){
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-        axios.post('/courses/'+credentials.user_id+'/learned/',{
+        axios.post('/courses/'+credentials.user_id+'/learned',{
           user_id: credentials.user_id,
           course_id: credentials.course_id,
         })
         .then(response => {
-          console.log(response.data)
           resolve(response)
         })
         .catch(error => {

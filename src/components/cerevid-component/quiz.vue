@@ -11,8 +11,7 @@
                       Quiz
                       <v-divider></v-divider>
                     </div>
-                    <div v-for="(quiz, index) in dataQuiz">
-                      <v-container v-for="(questions, index) in quiz.question">
+                      <v-container v-for="(questions, index) in materi.question">
                         <p class="subheading">
                           {{(index+1)+'. '+questions.question}}
                         </p>
@@ -46,7 +45,7 @@
                            <v-card-title class="headline">Hasil Pengisian</v-card-title>
                            <v-divider></v-divider>
                            <v-card-text>
-                             <div v-for="(answer, index) in quiz.question">
+                             <div v-for="(answer, index) in materi.question">
                                <p>Soal no.{{index+1}}</p>
                                <p>Jawaban Anda = {{jawaban[index]}}</p>
                                <p>Jawaban yang Benar = {{answer.correct_answer}}</p>
@@ -77,7 +76,6 @@
                            </v-card-actions>
                          </v-card>
                       </v-dialog>
-                    </div>
                   </v-container>
                 </div>
               </v-layout>

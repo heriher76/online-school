@@ -12,22 +12,15 @@
   </v-container>
   <v-layout class="justify-center">
     <div v-if="dataPelajaranbyUser.data">
-      <div v-if="!dataPelajaranbyUser.data.length">
-        <v-btn color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+this.$route.params.id+'/materi'" @click="postLearned">Mulai Belajar</v-btn>
-      </div>
-      <div v-else>
-        <div v-for="d in dataPelajaranbyUser.data">
-          <div v-if="d.course_id==this.$route.params.id">
-            <v-btn color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+this.$route.params.id+'/materi'">Lanjutkan Belajar</v-btn>
+          <div v-if="cekLearned()">
+            <v-btn color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi'">Lanjutkan Belajar</v-btn>
           </div>
           <div v-else>
-            <v-btn color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+this.$route.params.id+'/materi'" @click="postLearned">Mulai Belajar</v-btn>
+            <v-btn color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi'" @click="postLearned">Mulai Belajar</v-btn>
           </div>
-        </div>
-      </div>
     </div>
     <div v-else>
-      <v-btn color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+this.$route.params.id+'/materi'" @click="postLearned">Mulai Belajar</v-btn>
+      <v-btn color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi'" @click="postLearned">Mulai Belajar</v-btn>
     </div>
   </v-layout>
 </div>
@@ -43,7 +36,7 @@ export default {
   methods: {
     postLearned() {
       this.$store.dispatch('pushDataLearned', {
-          course_id: this.$route.params.id,
+          course_id: this.courseId,
           user_id: this.userId,
         })
         .then(response => {
@@ -56,9 +49,22 @@ export default {
         .then(response => {
         })
     },
+    cekLearned() {
+      if(this.dataPelajaranbyUser.data){
+        for(var i=0;i<this.dataPelajaranbyUser.data.length;i++){
+          if(this.dataPelajaranbyUser.data[i].course_id==this.courseId){
+            return true
+            break;
+          }
+        }
+      }
+    },
   },
   created(){
    this.getDataPelajaranbyUser()
+  },
+  beforeMount(){
+   this.cekLearned()
   },
   computed: {
     dataPelajaranbyUser(){
@@ -66,6 +72,9 @@ export default {
     },
     userId() {
       return this.$store.state.dataUser || {}
+    },
+    courseId() {
+      return this.$route.params.id || {}
     },
   }
 }
