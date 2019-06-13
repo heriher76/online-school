@@ -138,6 +138,27 @@
                                 </v-list-tile-action>
                               </v-list-tile>
 
+                              <v-list-tile>
+                                <v-list-tile-content>
+                                  <v-list-tile-sub-title>
+                                    <center>
+                                    <v-btn color="orange" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/'+item.id+'/tambah-video'">
+                                      <v-icon color="white--text">visibility</v-icon>
+                                      <span class="pa-1 white--text">Tambah Video</span>
+                                    </v-btn>
+                                    <v-btn color="green" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/'+item.id+'/tambah-text'">
+                                      <v-icon color="white--text">visibility</v-icon>
+                                      <span class="pa-1 white--text">Tambah Text</span>
+                                    </v-btn>
+                                    <v-btn color="blue" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/quiz'">
+                                      <v-icon color="white--text">visibility</v-icon>
+                                      <span class="pa-1 white--text">Tambah Quiz</span>
+                                    </v-btn>
+                                    </center>
+                                  </v-list-tile-sub-title>
+                                </v-list-tile-content>
+                              </v-list-tile>
+
                             </v-card>
                           </v-expansion-panel-content>
                         </v-expansion-panel>
@@ -169,31 +190,7 @@
                                         </v-card-actions>
                                       </v-card>
                                     </v-dialog>
-                                    <v-dialog v-model="tambahMateri" persistent max-width="600px">
-                                      <template v-slot:activator="{ on }">
-                                        <v-btn color="primary" dark v-on="on">Tambah Materi</v-btn>
-                                      </template>
-                                      <v-card>
-                                        <v-card-title>
-                                          <span class="headline">Tambah Materi</span>
-                                        </v-card-title>
-                                        <v-card-text>
-                                          <v-container grid-list-md>
-                                            <v-layout wrap>
-                                              <v-flex xs12 sm6 md12>
-                                                <v-text-field label="Nama" required></v-text-field>
-                                              </v-flex>
-                                            </v-layout>
-                                          </v-container>
-                                          <small>*indicates required field</small>
-                                        </v-card-text>
-                                        <v-card-actions>
-                                          <v-spacer></v-spacer>
-                                          <v-btn color="blue darken-1" flat @click="tambahMateri = false">Tutup</v-btn>
-                                          <v-btn color="blue darken-1" flat @click="tambahMateri = false">Tambah</v-btn>
-                                        </v-card-actions>
-                                      </v-card>
-                                    </v-dialog>
+                                    
                                   </v-layout>
                                 </v-container>
                             </v-layout>
