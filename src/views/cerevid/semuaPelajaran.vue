@@ -6,7 +6,6 @@
           Daftar Pelajaran
         </v-flex>
       </v-layout>
-      <v-card>{{expand}}</v-card>
     </p>
     <LoadingScreen :loading="is_load"></LoadingScreen>
     <v-data-iterator
@@ -14,7 +13,7 @@
       :rows-per-page-items="[4, 8]"
       :pagination.sync="pagination"
       content-class="layout row wrap"
-      :expand="true"
+      :expand="expand"
       >
       <template v-slot:item="props">
         <v-flex
@@ -29,16 +28,22 @@
               height="200px"
             >
               <v-flex offset-xs9 align-end flexbox>
-                    <div v-for="datas in dataFavoritbyUser.data">
-                      <div v-if="props.item.title==datas.course.title">
-                        <v-btn fab dark small color="pink" style="opacity:0.85;" @click="hapusFavorit(datas.id)">
-                            <v-icon dark>favorite</v-icon>
-                        </v-btn>
+                      <div v-if="props.item">
+                        <div v-if="cekFavorit(props.item.id)">
+                          <div v-for="fav in dataFavoritbyUser.data">
+                            <div v-if="fav.course.course_id==props.item.id">
+                            <v-btn fab dark small color="pink" style="opacity:0.85;" @click="hapusFavorit(fav.id)">
+                              <v-icon dark >favorite</v-icon>
+                            </v-btn>
+                          </div>
+                        </div>
+                        </div>
+                        <div v-else>
+                            <v-btn fab dark small style="opacity:0.85;" @click="simpanFavorit(props.item.id)">
+                              <v-icon dark>favorite</v-icon>
+                            </v-btn>
+                        </div>
                       </div>
-                  </div>
-                    <v-btn fab dark small style="opacity:0.85;" @click="simpanFavorit(props.item.id)">
-                        <v-icon dark>favorite</v-icon>
-                    </v-btn>
               </v-flex>
             </v-img>
             <v-card-title primary-title>
@@ -94,6 +99,7 @@
     name:"cerevid_semua_pelajaran",
     data: () => ({
       is_load: false,
+      expand: true,
       pagination: {
         rowsPerPage: 8
       },
@@ -134,7 +140,17 @@
         .catch(error => {
           this.$swal('Oopps', 'Gagal Menghapus Favorit...', 'warning')
         })
-      }
+      },
+      cekFavorit(id) {
+        if(this.dataFavoritbyUser.data){
+        for(var i=0;i<this.dataFavoritbyUser.data.length;i++){
+              if(this.dataFavoritbyUser.data[i].course.course_id==id){
+            return true
+              break;
+          }
+            }
+        }
+      },
     },
     created(){
       this.getDataPelajaran()

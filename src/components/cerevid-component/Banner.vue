@@ -26,14 +26,35 @@ background: linear-gradient(90deg, rgba(97,94,94,1) 0%, rgba(29,65,106,1) 73%);
               row
               wrap
             >
-              <v-flex md10 sm12 xs12 class="hidden-sm-and-down">
-                <v-text-field
-                    box
-                    label="Cari Pelajaran..."
-                    append-icon="search"
-                    background-color="#fff"
-                  >
-                </v-text-field>
+              <v-flex md10 sm12 xs12 class="hidden-sm-and-down">     
+      <v-autocomplete
+        v-model="select"
+        :loading="loading"
+        :items="dataDaftarPelajaran.data"
+        cache-items
+        class="mx-3"
+        flat
+        label="Cari Pelajaran..."
+        solo
+        clearable
+        append-icon="search"
+        background-color="white"
+        item-text="title"
+      >
+              <template v-slot:item="data">
+                <template>
+                  <v-list-tile @click="cariDetailPelajaran(data.item.id)">
+                    <v-list-tile-avatar>
+                      <img :src="'http://admin.ceredinas.id/public/cover/'+ data.item.cover">
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                      <v-list-tile-title v-html="data.item.title"></v-list-tile-title>
+                      <v-list-tile-sub-title v-html="data.item.teacher.name"></v-list-tile-sub-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                </template>
+              </template>
+      </v-autocomplete>
               </v-flex>
             </v-layout>
           </v-container>
@@ -97,3 +118,36 @@ background: linear-gradient(90deg, rgba(97,94,94,1) 0%, rgba(29,65,106,1) 73%);
     </v-card>
   </div>
 </template>
+
+<script>
+  export default {
+    data () {
+      return {
+        select: false,
+        loading: false
+      }
+    },
+
+    methods: {
+      querySelections (v) {
+      },
+      getDataPelajaran(){
+        this.$store.dispatch('getDataPelajaran')
+        .then(response => {
+        })
+      },
+      cariDetailPelajaran(id){
+        this.$router.push({path:'/cerevid/detail-pelajaran/'+id})
+      },
+
+    },
+    created(){
+      this.getDataPelajaran()
+    },
+    computed: {
+      dataDaftarPelajaran(){
+        return this.$store.state.dataPelajaran || {}
+      },
+    },
+  }
+</script>

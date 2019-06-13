@@ -8,7 +8,6 @@
 		    <p class="display-1 text-uppercase font-weight-light">
 		      Featured
 		    </p>
-			<LoadingScreen :loading="is_load"></LoadingScreen>
 			<featured :datas="dataClass" />
 	  </v-container>
 	  <v-container>
@@ -19,7 +18,6 @@
 		        </v-flex>
 		    </v-layout>
 		</p>
-		<LoadingScreen :loading="is_load"></LoadingScreen>
 	  	<daftarPelajaran :datas="dataDaftarPelajaran" />
 	  </v-container>
 
