@@ -6,6 +6,7 @@
                 <v-flex md3 sm12 xs12>
                     <v-card>
                         <SideBar class="hidden-sm-and-down" style="float:left;"/>
+                        <Navbar class="hidden-md-and-up" />
                     </v-card>
                 </v-flex>
                 <!-- /sidebar -->
@@ -90,6 +91,7 @@
 
 <script>
     import SideBar from '../../../components/cereout-component/SideBar'
+    import Navbar from '../../../components/cereout-component/Navbar'
     import ExamDetail from '../exams/ExamDetails'
 
     import axios from 'axios'
@@ -98,6 +100,7 @@
         name: 'dashboard',
         components: {
             SideBar,
+            Navbar,
             ExamDetail
         },
         data: () => ({
@@ -127,7 +130,7 @@
                         console.log(error)
                     })
                 }else if(list==2){
-                    this.ListName = "Tryout Dibeli"
+                    this.ListName = "Tryout Diambil"
                     axios.get('/cereouts/attempttryout/'+this.idTryout)
                     .then(response => {
                         this.load_data = false
