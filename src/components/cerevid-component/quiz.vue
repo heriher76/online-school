@@ -44,8 +44,10 @@
                          </template>
                          <v-card>
                            <v-card-title class="headline">Hasil Pengisian</v-card-title>
+                           <v-divider></v-divider>
                            <v-card-text>
                              <div v-for="(answer, index) in quiz.question">
+                               <p>Soal no.{{index+1}}</p>
                                <p>Jawaban Anda = {{jawaban[index]}}</p>
                                <p>Jawaban yang Benar = {{answer.correct_answer}}</p>
                                <div v-if="jawaban[index++]==answer.correct_answer">
@@ -64,7 +66,9 @@
                                   Salah
                                 </v-chip>
                                </div>
+                               <br/>
                                <v-divider></v-divider>
+                               <br/>
                              </div>
                            </v-card-text>
                            <v-card-actions>
@@ -125,10 +129,10 @@
     },
     computed:{
       ambilSectionId(){
-        return this.$route.hash.split('-')[0].substring(1) || {}
+        return this.$route.hash.split('-')[1] || {}
       },
       ambilId(){
-        return this.$route.hash.split('-')[1] || {}
+        return this.$route.hash.split('-')[2] || {}
       },
       dataQuiz(){
         return this.$store.state.dataQuiz || {}

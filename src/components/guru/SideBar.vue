@@ -25,7 +25,7 @@
                 </v-list-tile-content>
             </v-list-tile>
 
-            <v-list-tile to="/guru/account/edit">
+            <!-- <v-list-tile to="/guru/account">
                 <v-list-tile-action>
                 <v-icon>trending_up</v-icon>
                 </v-list-tile-action>
@@ -33,9 +33,9 @@
                 <v-list-tile-content>
                 <v-list-tile-title>Edit Akun</v-list-tile-title>
                 </v-list-tile-content>
-            </v-list-tile>
+            </v-list-tile> -->
 
-            <v-list-tile to="/guru/profile/edit">
+            <v-list-tile to="/guru/profile">
                 <v-list-tile-action>
                 <v-icon>assessment</v-icon>
                 </v-list-tile-action>

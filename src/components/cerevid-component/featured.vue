@@ -4,7 +4,7 @@
 				<v-layout row wrap>
 				    <v-flex xs12 sm6 md6>
 					    <v-select
-					        :items="dataClass.data"
+					        :items="datas.data"
 					        label="Kelas"
 							name="kelas"
 							v-model="kelas"
@@ -45,22 +45,19 @@
 										v-bind:src="'http://admin.ceredinas.id/public/cover/'+ props.item.cover"
 										height="200px"
 									>
-										<v-flex offset-xs9 align-end flexbox>
-						                  	<div v-for="datas in dataFavoritbyUser.data">
-							                  	<div v-if="props.item.title==datas.course.title">
-							                    	<v-btn fab dark small color="pink" style="opacity:0.85;">
-							                      		<v-icon dark>favorite</v-icon>
-							                    	</v-btn>
-							                    </div>
-							                  	<div v-else>
-							                    	<v-btn fab dark small style="opacity:0.85;">
-							                      		<v-icon dark>favorite</v-icon>
-							                    	</v-btn>
-							                    </div>
-							                </div>
-										</v-flex>
+	                  <v-flex offset-xs9 align-end flexbox>
+	                        <div v-for="datas in dataFavoritbyUser.data">
+	                          <div v-if="props.item.title==datas.course.title">
+	                            <v-btn fab dark small color="pink" style="opacity:0.85;" @click="hapusFavorit(datas.id)">
+	                                <v-icon dark>favorite</v-icon>
+	                            </v-btn>
+	                          </div>
+	                      </div>
+	                        <v-btn fab dark small style="opacity:0.85;" @click="simpanFavorit(props.item.id)">
+	                            <v-icon dark>favorite</v-icon>
+	                        </v-btn>
+	                  </v-flex>
 									</v-img>
-
 									<v-card-title primary-title>
 										<div>
 											<div class="headline">
@@ -110,73 +107,83 @@
 		</div>
 	</template>
 <script>
-  import LoadingScreen from'../../components/loading-screen/LoadingCerevid'
-  export default {
-    data(){
-    	return{
-	      expand: true,
-	      rowsPerPageItems: [4],
-	      kelas: '',
-	      pelajaran: '',
-	      dataPelajaran: [],
-	      is_load: false
-	    }
-    },
-    components:{
-    	LoadingScreen
-    },
-    methods:{
-    	async getDataClass(){
-	        this.$store.dispatch('getDataClass')
-	        .then(response => {
-	          console.log("telah load data..")
-	        })
-    	},
-		async getDataPelajaranbyLesson(){
-	        this.$store.dispatch('getDataPelajaranbyLesson',{
-	        	id: this.pelajaran
-	        })
-	        .then(response => {
-	        })
-            .catch(error =>{
-                console.log(error)
-            })
-	    },
-	        async getDataFavoritbyUser(){
-	          this.$store.dispatch('getDataFavoritbyUser')
-	          .then(response => {
-	            console.log("telah load data..")
-	          })
-	        },
-	    loadData(){
-	    	this.getDataPelajaranbyLesson();
-	    }
-    },
-    created(){
-    	this.getDataClass()
-    	this.getDataFavoritbyUser()
-    },
-    computed: {
-    	dataClass(){
-    		return this.$store.state.dataClass || {}
-    	},
-		dataDaftarPelajaranbyLesson(){
-			return this.$store.state.dataPelajaranbyLesson || {}
-		},
-		dataFavoritbyUser(){
-			return this.$store.state.dataFavoritbyUser || {}
-		},
-    	dataLesson(){
-    		var data = []
-    		for(var i=0;i<this.dataClass.data.length;i++){
-    			if(this.dataClass.data[i].id == this.kelas){
-    				data = this.dataClass.data[i].lessons
-    			}
-    		}
-    		return data
-    	},
+import LoadingScreen from '../../components/loading-screen/LoadingCerevid'
+export default {
+  props: ['datas'],
+  data() {
+    return {
+      expand: true,
+      rowsPerPageItems: [4],
+      kelas: '',
+      pelajaran: '',
+      dataPelajaran: [],
+      is_load: false
     }
+  },
+  components: {
+    LoadingScreen
+  },
+  methods: {
+    async getDataPelajaranbyLesson() {
+      this.$store.dispatch('getDataPelajaranbyLesson', {
+          id: this.pelajaran
+        })
+        .then(response => {})
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    async getDataFavoritbyUser() {
+      this.$store.dispatch('getDataFavoritbyUser')
+        .then(response => {})
+    },
+    loadData() {
+      this.getDataPelajaranbyLesson();
+    },
+    simpanFavorit(id) {
+      this.$store.dispatch('pushDataFavorit', {
+          user_id: this.userId,
+          course_id: id,
+        })
+        .then(response => {})
+        .catch(error => {
+          this.$swal('Oopps', 'Gagal Menyimpan ke Favorit...', 'warning')
+        })
+    },
+    hapusFavorit(favorit_id) {
+      this.$store.dispatch('delDataFavorit', {
+          user_id: this.userId,
+          favorit_id: favorit_id,
+        })
+        .then(response => {})
+        .catch(error => {
+          this.$swal('Oopps', 'Gagal Menghapus Favorit...', 'warning')
+        })
+    }
+  },
+  created() {
+    this.getDataFavoritbyUser()
+  },
+  computed: {
+    dataDaftarPelajaranbyLesson() {
+      return this.$store.state.dataPelajaranbyLesson || {}
+    },
+    dataFavoritbyUser() {
+      return this.$store.state.dataFavoritbyUser || {}
+    },
+    dataLesson() {
+      var data = []
+      if (this.datas.data) {
+        for (var i = 0; i < this.datas.data.length; i++) {
+          if (this.datas.data[i].id == this.kelas) {
+            data = this.datas.data[i].lessons
+          }
+        }
+      }
+      return data
+    },
   }
+}
 </script>
 <style lang="stylus" scoped>
   .v-progress-circular

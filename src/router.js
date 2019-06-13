@@ -55,6 +55,12 @@ export default new Router({
       name: 'reset_pass',
       component: () => import("./views/auth/ResetPassword.vue")
     },
+    
+    {
+      path: '/membership',
+      name: 'membership',
+      component: () => import("./views/siswa/Membership.vue")
+    },
 
     // -----------------------------poin saldo-----------------------------
     {
@@ -109,10 +115,18 @@ export default new Router({
     },
 
     {
-      path: "/cereout/exams/start/:id/:durasi/:attemptId",
+      path: "/cereout/exams/start/:id/:name/:durasi/:attemptId",
       name: 'exam_page',
       meta: {layout: "exam"},
       component: () => import("./views/cereout/exams/ExamPage.vue"),
+      props:true
+    },
+
+    {
+      path: "/cereout/exam result",
+      name: 'exam_result',
+      meta: {layout: "exam"},
+      component: () => import("./views/cereout/exams/ExamResult.vue"),
       props:true
     },
 
@@ -123,7 +137,7 @@ export default new Router({
     },
 
     {
-      path: "/cereout/results/detail",
+      path: "/cereout/results/detail/:id",
       name: 'result_detail',
       component: () => import("./views/cereout/ResultDetail.vue"),
       props: true
@@ -236,10 +250,10 @@ export default new Router({
       component: () => import("./views/guru/Login.vue")
     },
     {
-      path: "/guru/forget",
-      name: 'forget_guru',
+      path: "/guru/forgot-password",
+      name: 'forgot_guru',
       meta: {layout: "guru"},
-      component: () => import("./views/guru/Forget.vue")
+      component: () => import("./views/guru/ForgotPassword.vue")
     },
     {
       path: "/guru/pusat-bantuan",
@@ -260,13 +274,13 @@ export default new Router({
       component: () => import("./views/guru/cerecall/ChatPage.vue")
     },
     {
-      path: "/guru/profile/edit",
+      path: "/guru/profile",
       name: 'profile_guru',
       meta: {layout: "guru"},
-      component: () => import("./views/guru/dashboard/ProfileEdit.vue")
+      component: () => import("./views/guru/dashboard/MyProfile.vue")
     },
     {
-      path: "/guru/account/edit",
+      path: "/guru/account",
       name: 'account_guru',
       meta: {layout: "guru"},
       component: () => import("./views/guru/dashboard/AccountEdit.vue")
@@ -284,10 +298,15 @@ export default new Router({
       component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
     },
     {
-      path: "/guru/cerevid/detail-pelajaran",
+      path: "/guru/cerevid/detail-pelajaran/:id",
       name: "cerevid_detail_pelajaran_guru",
       meta: {layout: "guru"},
       component: () => import("./views/cerevid/detailPelajaranGuru.vue")
+    },
+    {
+      path: "/guru/cerevid/detail-pelajaran/:id/edit",
+      name: "cerevid_edit_pelajaran_guru",
+      component: () => import("./views/cerevid/editPelajaranGuru.vue")
     },
     {
       path: "/guru/cerevid/tambah-pelajaran",
