@@ -58,13 +58,11 @@
 			async getDataClass(){
 					this.$store.dispatch('getDataClass')
 					.then(response => {
-						console.log("telah load data..")
 					})
 			},
       async getDataPelajaran(){
         this.$store.dispatch('getDataPelajaran')
         .then(response => {
-          console.log("telah load data..")
         })
       },
 	},

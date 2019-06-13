@@ -21,7 +21,7 @@
                   <v-flex offset-xs9 align-end flexbox>
                         <div v-for="datas in dataFavoritbyUser.data">
                           <div v-if="props.item.title==datas.course.title">
-                            <v-btn fab dark small color="pink" style="opacity:0.85;" @click="hapusFavorit(props.item.id, datas.id)">
+                            <v-btn fab dark small color="pink" style="opacity:0.85;" @click="hapusFavorit(datas.id)">
                                 <v-icon dark>favorite</v-icon>
                             </v-btn>
                           </div>
@@ -97,7 +97,6 @@
           async getDataFavoritbyUser(){
             this.$store.dispatch('getDataFavoritbyUser')
             .then(response => {
-              console.log("telah load data..")
             })
           },
 		      simpanFavorit(id){
@@ -111,10 +110,9 @@
 		          this.$swal('Oopps', 'Gagal Menyimpan ke Favorit...', 'warning')
 		        })
 		      },
-		      hapusFavorit(id, favorit_id){
+		      hapusFavorit(favorit_id){
 		        this.$store.dispatch('delDataFavorit', {
 		          user_id: this.userId,
-			        course_id: id,
 			        favorit_id: favorit_id,
 		        })
 		        .then(response =>{

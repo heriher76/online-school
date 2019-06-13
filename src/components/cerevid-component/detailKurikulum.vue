@@ -63,7 +63,6 @@
       async getDataDetailMateri(){
         this.$store.dispatch('getDataDetailMateri')
         .then(response => {
-          console.log("telah load data..")
         })
       },
 		},
