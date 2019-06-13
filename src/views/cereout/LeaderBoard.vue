@@ -21,22 +21,10 @@
                     <v-card>
                         <!-- select -->
                         <v-layout style="padding:0px 50px">
-                          <v-flex md6 sm12 xs12>
-                            <v-select
-                                :items="classs.data"
-                                label="Pilih Kelas"
-                                name="kelas"
-                                v-model="kelas"
-                                item-text="name"
-                                item-value="id"
-                                data-foo=""
-                                @change="byClass"
-                            ></v-select>
-                          </v-flex>
-                          <v-flex md6 sm12 xs12>
+                          <v-flex md12>
                               <v-select
                                   :items="dataLesson"
-                                  label="Pilih Pelajaran"
+                                  label="Lihat di Pelajaran"
                                   name="pelajaran"
                                   v-model="pelajaran"
                                   item-text="name"
@@ -58,25 +46,18 @@
                         <!-- /loading -->
 
                         <div v-show="tabl" style="padding:0px 50px 30px 50px">
-                          <table border="1" style="font-size:16px">
-                            <thead>
-                              <tr>
-                                <th width="40px">No</th>
-                                <th width="85%">Nama</th>
-                                <th width="80px">Skor</th>
-                              </tr>
-                            </thead>
-                            <tbody style="text-align:center">
-                              <tr v-for="(item,index) in leader" :key="item.id">
-                                <td>{{index+1}}</td>
-                                <td>{{item.name}}</td>
-                                <td>{{item.score}}</td>
-                              </tr>
-                              <tr v-if="leader == 0">
-                                <td colspan="3"><span style="color:#757575">Data tidak ditemukan</span></td>
-                              </tr>
-                            </tbody>
-                          </table>
+                          <v-data-table
+                            :headers="headers"
+                            :items="leader"
+                            disable-initial-sort
+                          >
+                            <template v-slot:items="props">
+                                <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.name}}</b></td>
+                                <td v-else>{{props.item.name}}</td>
+                                <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.score}}</b></td>
+                                <td v-else>{{props.item.score}}</td>
+                            </template>
+                          </v-data-table>
                         </div>
                     </v-card>
                 </v-flex>
@@ -100,12 +81,18 @@
     },
     data () {
       return {
-        cek: '',
-
         load_data: true,
         tabl: false,
-        text_judul: '',
+        text_judul: "In My Class",
+
+        user: [],
+
+        headers: [
+          { text: 'Name', value: 'name' },
+          { text: 'Score', value: 'score' }
+        ],
         leader: [],
+        
         classs: [],
 	      kelas: '',
 	      pelajaran: ''
@@ -123,23 +110,6 @@
         this.byLesson()
       },
          
-      //get leaderboard by class id
-      byClass(val){
-        this.load_data = true
-        this.tabl      = false
-        Axios.get('/cereouts/leaderboard/'+this.kelas)//get by class id
-        .then(response => {
-          this.load_data = false
-          this.tabl      = true
-          this.text_judul= 'In Class '+this.kelas
-          this.leader = response.data.data
-          console.log(response.data)
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
-      },
-
       //get leaderboard by lesson id
       byLesson(){
         console.log('by lesson id')
@@ -166,7 +136,7 @@
     		var data = []
 				if(this.classs.data){
           for(var i=0;i<this.classs.data.length;i++){
-              if(this.classs.data[i].id == this.kelas){
+              if(this.classs.data[i].id == this.$store.state.classId){
                   data = this.classs.data[i].lessons
               }
           }
@@ -176,6 +146,15 @@
     },
 
     mounted(){
+      // get user
+      Axios.get('/auth/user')
+      .then(response => {
+          this.user = response.data.data
+      })
+      .catch(error => {
+          console.log(error)
+      })
+
       Axios.get('/cereouts/leaderboard/'+this.$store.state.classId)//get by class_id user
       .then(response => {
         this.load_data = false
@@ -192,9 +171,7 @@
         this.classs = response.data
         console.log(response.data)
       })
-      .catch(error => {
-        console.log(error.response)
-      })
+      .catch(error => {console.log(error.response)})
 
     }
   }

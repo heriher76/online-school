@@ -59,6 +59,7 @@ import Axios from 'axios';
 
     methods:{
       showList(val){
+        // console.log(val)
         if(val.status != 1){
           snap.show()
           snap.pay(val.snap_token, {
