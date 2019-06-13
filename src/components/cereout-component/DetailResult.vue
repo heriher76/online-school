@@ -33,11 +33,16 @@
                 </v-flex>
                 
                 <v-flex md9 sm12 xs12>
-                    <v-card style="padding:5px;font-size:18px">
-                        <span style="margin:18px;f"><b>Soal No. {{hal+1}}</b>
+                    <v-card style="padding:5px;">
+                        <span style="margin:18px;font-size:18px"><b>Soal No. {{hal+1}}</b>
                            <span v-if="discuss.mark== 1">&nbsp;<v-icon color="green">done</v-icon></span>
                            <span v-else>&nbsp;<v-icon color="red">clear</v-icon></span> 
                         </span>
+
+                        <div style="float:right; padding:2px 10px 0px 0px;color:#64B5F6">
+                            <span>Jawaban Benar: {{discuss.discussion.correct_answer}}</span> &nbsp;|&nbsp;
+                            <span>Jawaban Anda: {{discuss.answer}}</span>
+                        </div>
                     </v-card>
                     
                     <v-card style="min-height:347px">
@@ -52,7 +57,7 @@
                         <v-container style="padding-left:25px">
                             <!-- pertanyaan -->
                             <b>Pertanyaan:</b>
-                            <p style="font-size:16px">{{discuss.discussion.question}}</p>        
+                            <p style="font-size:16px" v-html="discuss.discussion.question"></p>        
                             <div v-if="discuss.discussion.option_a!=null">
                                 <b style="float:left">A.&nbsp;</b>
                                 <span style="float:left" v-html="discuss.discussion.option_a"></span>
@@ -146,7 +151,7 @@
                     <hr>
                     
                     <v-card style="padding:0px 18px">
-                        <v-btn @click="previous(hal)" small> <v-icon left dark>keyboard_arrow_left</v-icon>Sebelumnya</v-btn>
+                        <v-btn v-if="hal!=0" @click="previous(hal)" small> <v-icon left dark>keyboard_arrow_left</v-icon>Sebelumnya</v-btn>
                         <v-btn @click="next(hal)" small>Berikutnya <v-icon right dark>keyboard_arrow_right</v-icon></v-btn>  
                     </v-card>
 
@@ -191,9 +196,6 @@
                 load_data: true,
                 hal: 0,
                 discuss: [],
-
-                quest: "",
-                options: [],
             }
         },
 
@@ -227,6 +229,7 @@
                 this.detail    = response.data.data            
                 this.load_data = false
                 this.discuss   = this.detail[0]
+                console.log(response.data)
             })
             .catch(error => {
                 console.log(error.response)

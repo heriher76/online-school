@@ -12,6 +12,7 @@ export default new Vuex.Store({
     token: localStorage.getItem('access_token') || null, //get token,
     dataUser : localStorage.getItem('getDataUser') || null,
     dataGuru : localStorage.getItem('getDataGuru') || null,
+    classId : localStorage.getItem('getDataClassId') || null,
     info: [],
     dataClass: [],
     dataPelajaran: [],
@@ -35,6 +36,10 @@ export default new Vuex.Store({
     retrieveToken(state, token){
       state.token = token
     },
+    
+    retrieveClassId(state,classId){
+      state.classId = classId
+    },
 
     retrieveDataUser(state,dataUser){
       state.dataUser = dataUser
@@ -46,6 +51,10 @@ export default new Vuex.Store({
 
     destroyToken(state) {
       state.token = null
+    },
+
+    destroyDataClassId(state) {
+      state.classId = null
     },
 
     destroydataUser(state) {
@@ -162,10 +171,13 @@ export default new Vuex.Store({
         .then(response => {
           const token    = response.data.access_token
           const dataUser = response.data.data.id
+          const classId  = response.data.data.class_id
           localStorage.setItem('access_token', token)
           localStorage.setItem('getDataUser', dataUser)
+          localStorage.setItem('getDataClassId', classId)
           context.commit('retrieveToken', token)
           context.commit('retrieveDataUser', dataUser)
+          context.commit('retrieveClassId', classId)
           resolve(response)
           // console.log(response.data)
         })
@@ -186,6 +198,8 @@ export default new Vuex.Store({
           .then(response => {
             localStorage.removeItem('getDataUser')
             localStorage.removeItem('access_token')
+            localStorage.removeItem('getDataClassId')
+            context.commit('destroyDataClassId')
             context.commit('destroyToken')
             context.commit('destroydataUser')
             // resolve(response)
@@ -194,6 +208,8 @@ export default new Vuex.Store({
           .catch(error => {
             localStorage.removeItem('getDataUser')
             localStorage.removeItem('access_token')
+            localStorage.removeItem('getDataClassId')
+            context.commit('destroyDataClassId')
             context.commit('destroyToken')
             context.commit('destroydataUser')
             // reject(error)

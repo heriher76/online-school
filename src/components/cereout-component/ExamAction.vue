@@ -5,7 +5,7 @@
                 <v-flex md12>
                     <v-card>
                         <v-layout row wrap>
-                            <v-flex md9 style="padding-top:22px;padding-left:35px">                        
+                            <v-flex md9 style="padding-top:22px;padding-left:35px;text-transform:capitalize">                        
                                <h6 class="title">{{name}}</h6>
                             </v-flex>
                             <v-flex md3>             
@@ -16,7 +16,7 @@
                                     <v-dialog v-model="timeoutDialog" persistent max-width="290">
                                     <v-card>
                                         <v-card-title class="headline">Waktu Habis</v-card-title>
-                                        <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+                                        <v-card-text>Waktu pengerjaan telah habis</v-card-text>
                                         <v-card-actions>
                                         <v-btn block color="green darken-1" flat dark @click="submit">OK</v-btn>
                                         </v-card-actions>
@@ -38,7 +38,7 @@
                                 </div>
 
                                 <div style="width:180px;float:right;" v-else>
-                                    <h6 class="subheading" style="float:left">Timer :</h6> 
+                                    <h6 class="subheading" style="float:left">Timer:&nbsp;</h6> 
                                     <div style="border:1px solid #BDBDBD;float:left;padding:8px;">
                                         <span>{{ hours }}</span>
                                     </div>
@@ -69,7 +69,7 @@
                             ></v-progress-circular>
                         </div>
                         <v-container>
-                            <p style="font-size:16px">{{quest}}</p>
+                            <p style="font-size:16px" v-html="quest"></p>
                             <div style="float:left">
                                 <label class="container" v-for="(n,key,index) in options" :key="n.index">
                                 <input type="radio" :value="key" v-model="tmpanswer[hal]" name="opt">
@@ -78,18 +78,18 @@
                             </div>
                         </v-container>                    
                     </v-card>
-                        <label class="container">
+                        <!-- <label class="container">
                             <input type="radio" :value="1" v-model="markanswer[hal]" name="opt">
                             <span class="checkmark"><p>cek </p></span>
-                        </label>  
+                        </label>   -->
 
                     <v-card>
-                        <v-btn @click="previous(hal)" small> <v-icon left dark>keyboard_arrow_left</v-icon> Soal Sebelumnya</v-btn>
+                        <v-btn v-if="hal!=0" @click="previous(hal)" small> <v-icon left dark>keyboard_arrow_left</v-icon> Soal Sebelumnya</v-btn>
                         <v-btn @click="next(hal)" small>soal Berikutnya <v-icon right dark>keyboard_arrow_right</v-icon></v-btn>  
                         <v-btn v-if="hal == markanswer[hal]" @click="delMark(hal)" dark color="orange" small>Hapus Tanda</v-btn>
                         <v-btn v-else @click="mark(hal)" small>Tandai</v-btn>
 
-                        mark:{{markanswer[hal]}}, hal:{{hal}}, an: {{markanswer}}
+                        <!-- mark:{{markanswer[hal]}}, hal:{{hal}}, an: {{markanswer}} -->
 
                         
                     </v-card>
@@ -97,8 +97,8 @@
                 </v-flex>
     
                 <v-flex md3>
-                    <v-card style="padding:15px;"> 
-                        <div style="min-height:325px;">
+                    <v-card style="padding:15px;height:100%"> 
+                        <div style="min-height:90%;">
                             <v-card style="padding:2px 5px">
                                 <b>Navigasi Soal</b>
                             </v-card><br>
@@ -144,10 +144,10 @@
             answers : {{ answer }}   -->
 
             <!-- {{questions}} -->
-            {{ tmpanswer }}
+            <!-- {{ tmpanswer }}
 
             {{ markanswer }}
-            
+             -->
             
             </v-layout>
         </v-container>

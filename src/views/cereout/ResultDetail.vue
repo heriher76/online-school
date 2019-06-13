@@ -7,6 +7,7 @@
                 <v-flex md3 sm12 xs12>
                     <v-card>
                         <SideBar class="hidden-sm-and-down" style="float:left;"/>
+                        <Navbar class="hidden-md-and-up" />
                     </v-card>
                 </v-flex>
                 <!-- /sidebar -->
@@ -77,6 +78,7 @@
 
 <script>
 import SideBar from "../../components/cereout-component/SideBar"
+import Navbar from "../../components/cereout-component/Navbar"
 import DetailResult from "../../components/cereout-component/DetailResult"
 
 import Axios from 'axios';
@@ -86,6 +88,7 @@ export default {
     props:['id','data', 'act'],
     components: {
         SideBar,
+        Navbar,
         DetailResult
     },
     data () {
