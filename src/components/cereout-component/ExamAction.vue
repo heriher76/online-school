@@ -231,7 +231,7 @@
                         ans = 'F'
                     }
 
-                    if(ans==this.questions[i].correct_answer){
+                    if(ans == this.questions[i].correct_answer){
                         n = 1
                     }else{
                         n = 0
