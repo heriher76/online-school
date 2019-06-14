@@ -11,7 +11,7 @@
         </a>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-sm-and-down" style="min-width:750px">  
+      <v-toolbar-items class="hidden-sm-and-down">  
         <v-menu v-if="loggedIn" :nudge-width="100">
           <template v-slot:activator="{ on }">
               <v-btn v-on="on" flat>Cerelink Guru<v-icon>arrow_drop_down</v-icon></v-btn>
@@ -187,6 +187,7 @@
     mounted(){      
       axios.get('/auth/user')
       .then(response => {
+        console.log(response)
         this.user = response.data.data
       })
       .catch(error => {
@@ -201,7 +202,7 @@
         return this.$router.push({path:'/guru/cerecall'})
       },
       linkLogin(){
-        this.$router.push({path:'/login'})
+        this.$router.push({path:'/guru/login'})
       },
 
       linkLogout(){
@@ -217,7 +218,7 @@
 
       linkAkun(){
         this.menu = false
-        this.$router.push({path:'/my account'})
+        this.$router.push({path:'/guru/profile'})
       }
     }
   }
