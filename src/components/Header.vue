@@ -3,10 +3,10 @@
     <v-toolbar app height="90">
       <v-toolbar-side-icon class="grey--text hidden-md-and-up" style="margin-right:-10px" @click="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>
-        <router-link to="/">
+        <a href="/">
           <v-img :src="require('../assets/images/logo_final2.png')" class="hidden-sm-and-down" width="200px"></v-img>
           <v-img :src="require('../assets/images/logo_final2.png')" class="hidden-md-and-up" style="margin-left:-10px" width="200px"></v-img>
-        </router-link>
+        </a>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down" style="min-width:750px">  
@@ -119,8 +119,6 @@
                 </v-card-actions>
             </v-card>
             </v-menu>
-            
-            <LoadingScreen1 :loading="loadLogout"></LoadingScreen1>
         </div>
     </div>
     <!-- header actions -->      
@@ -136,25 +134,25 @@
         </v-toolbar-title>
       </v-toolbar>
       <v-divider></v-divider>
-      <v-toolbar flat v-if="loggedIn" style="padding:20px 0px" class="transparent">
+      <v-toolbar flat v-if="loggedIn" style="padding:30px 0px" class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar>
-            <v-list-tile-avatar style="margin-top:-20px">
+            <v-list-tile-avatar style="margin-top:-50px">
               <img src="https://randomuser.me/api/portraits/men/85.jpg">
             </v-list-tile-avatar>
 
-            <v-list-tile-content style="height:70px;">
-              <v-list-tile-title>{{user.name}}
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on }">
-                    <a @click="linkAkun">
-                    <v-icon color="blue" v-on="on">edit</v-icon>
-                    </a>
-                </template>
-                <span>My Account</span>
-              </v-tooltip>
-              
+            <v-list-tile-content style="height:100px;">
+              <v-list-tile-title @click="linkAkun">{{user.name}}
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                      <a @click="linkAkun">
+                      <v-icon color="blue" v-on="on">edit</v-icon>
+                      </a>
+                  </template>
+                  <span>My Account</span>
+                </v-tooltip>
               </v-list-tile-title>
+
               <v-list-tile-sub-title>{{user.email}}</v-list-tile-sub-title>
             
               <v-list-tile-sub-title>
@@ -187,8 +185,25 @@
                   <span>Pesan</span>
                   </v-tooltip>
                 </div>  
-
               </v-list-tile-sub-title>
+
+              <v-list-tile-sub-title>
+                <div class="nav-bal">
+                    <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                        <router-link to="/my poin">
+                        <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                        </router-link>
+                    </template>
+                    <span>Top up</span>
+                    </v-tooltip>
+
+                    <b>Poin : {{user.balance}} </b>
+
+                    <div class="clear"></div>
+                </div>
+              </v-list-tile-sub-title>
+
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -246,6 +261,7 @@
     </v-navigation-drawer>
     <!-- /navigation-drawer -->
 
+    <LoadingScreen1 :loading="loadLogout"></LoadingScreen1>
   </div>
 </template>
 

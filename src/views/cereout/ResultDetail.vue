@@ -7,6 +7,7 @@
                 <v-flex md3 sm12 xs12>
                     <v-card>
                         <SideBar class="hidden-sm-and-down" style="float:left;"/>
+                        <Navbar class="hidden-md-and-up" />
                     </v-card>
                 </v-flex>
                 <!-- /sidebar -->
@@ -23,25 +24,47 @@
                     </v-card>
                     <hr>
                     <v-card>
-                        <v-tabs v-model="active" color="deep-orange" dark slider-color="blue">
+                        <v-tabs v-model="active" color="#B71C1C" dark slider-color="blue">
                             <v-tab v-for="n in name_tab" :key="n" ripple>
                                 {{ n }}
                             </v-tab>
                             
                             <v-tab-item>
                                 <v-card flat>
-                                <v-card-text>Tab 1</v-card-text>
-                                {{data}}
+                                <v-card-text style="text-transform:capitalize;font-size:15px">
+                                    <v-layout>
+                                        <v-flex md6>
+                                            <table>
+                                                <tr><td width="200"><b>Nama Tryout</b></td><td>{{data.tryout.name}}</td></tr>
+                                                <tr><td><b>Durasi</b></td><td>{{data.my_time}} Menit</td></tr>
+                                                <tr><td><b>Skor</b></td><td>{{data.score}}</td></tr>
+                                                <tr><td><b>Total Soal Terjawab</b></td><td>{{data.total_answer}}</td></tr>
+                                            </table>
+                                        </v-flex>
+                                        <v-flex md6>
+                                            <table>
+                                                <tr><td width="200"><b>Jawaban Benar</b></td><td>{{data.correct_answered}}</td></tr>
+                                                <tr><td><b>Jawaban Salah</b></td><td>{{data.incorrect_answered}}</td></tr>
+                                                <tr><td><b>left_answered</b></td><td>{{data.left_answered}}</td></tr>
+                                                <tr><td><b>Status Hasil</b></td>
+                                                    <td>
+                                                        <label v-if="data.result_status=='Lulus'" style="color:#0091EA">{{data.result_status}}</label>
+                                                        <label v-else style="color:red">{{data.result_status}}</label>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-card-text>
+
                                 </v-card>
                             </v-tab-item>
 
                             <v-tab-item>
                                 <v-card flat>
-                                <v-card-text>Tab 2</v-card-text>
-                                {{detail}}
+                                    <DetailResult :id="id"/>
                                 </v-card>
                             </v-tab-item>
-
                         </v-tabs>
                     </v-card>
                 </v-flex>
@@ -55,17 +78,21 @@
 
 <script>
 import SideBar from "../../components/cereout-component/SideBar"
+import Navbar from "../../components/cereout-component/Navbar"
+import DetailResult from "../../components/cereout-component/DetailResult"
+
 import Axios from 'axios';
 
 export default {
     name: 'result-detail',
-    props:['data', 'act'],
+    props:['id','data', 'act'],
     components: {
-        SideBar
+        SideBar,
+        Navbar,
+        DetailResult
     },
     data () {
         return {
-            detail :[],
             active: this.act,
             name_tab : [
                 'Detail', 
@@ -81,16 +108,9 @@ export default {
     },
 
     mounted(){
-        
-        Axios.get('/cereouts/result/detail/'+this.data.id)
-        .then(response => {
-            this.detail = response.data.data
-            console.log(response.data)
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        if(this.data==null){
+            return this.$router.push({name: 'my_results'})
+        }
     }
-
 }
 </script>

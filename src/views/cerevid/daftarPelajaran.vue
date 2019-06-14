@@ -29,7 +29,6 @@
 		        :rows-per-page-items="rowsPerPageItems"
 		        content-class="layout row wrap"
 		        :expand="expand"
-		        :hide-actions="true"
 		        >
 		        <template v-slot:item="props">
 		          <v-flex xs12 sm6 md3>
@@ -39,19 +38,45 @@
 		                  height="200px"
 		                >
 		                  <v-flex offset-xs9 align-end flexbox>
-		                    <v-btn fab dark small color="pink" style="opacity:0.85;">
-		                      <v-icon dark>favorite</v-icon>
-		                    </v-btn>
+			                <div v-if="dataPelajaranbyUser.data">
+			                  <div v-if="cekFavorit(props.item.course_id)">
+			                  	<div v-for="fav in dataFavoritbyUser.data">
+			                  	  <div v-if="fav.course.course_id==props.item.course_id">
+				                   	<v-btn fab dark small color="pink" style="opacity:0.85;" @click="hapusFavorit(fav.id)">
+				                  		<v-icon dark >favorite</v-icon>
+				                   	</v-btn>
+				                  </div>
+				                </div>
+			                  </div>
+			                	<div v-else>
+				                   	<v-btn fab dark small style="opacity:0.85;" @click="simpanFavorit(props.item.course_id)">
+				                   		<v-icon dark>favorite</v-icon>
+				                  	</v-btn>
+			                	</div>
+			                </div>
+							<div v-else>
+			                   	<v-btn fab dark small style="opacity:0.85;" @click="simpanFavorit(props.item.course_id)">
+			                   		<v-icon dark>favorite</v-icon>
+			                  	</v-btn>
+							</div>
 		                  </v-flex>
 		                </v-img>
 
 		                <v-card-title primary-title>
 		                  <div>
 		                    <div class="headline">
-		                      <router-link v-bind:to="'/cerevid/detail-pelajaran/'+props.item.id" style="text-decoration: none;">{{props.item.title}}</router-link>
+		                      <router-link v-bind:to="'/cerevid/detail-pelajaran/'+props.item.course_id" style="text-decoration: none;">{{props.item.title}}</router-link>
 		                    </div>
 		                    <span class="grey--text">{{props.item.teacher}}</span>
 		                  </div>
+			                  <v-progress-linear
+							      color="success"
+							      height="5"
+							      value="30"
+							  >
+			                  <p>Progress Pembelajaran</p>
+							  	
+							  </v-progress-linear>
 		                </v-card-title>
 		                <v-spacer></v-spacer>
 		                <v-card-actions>
@@ -69,8 +94,6 @@
 		                <v-slide-y-transition>
 		                  <v-card-text v-if="props.expanded">
 		                    {{props.item.description}}
-		                    <div class="subheading my-3">Kurikulum<v-divider></v-divider></div>
-		                    {{props.item.curriculum}}
 		                  </v-card-text>
 		                </v-slide-y-transition>
 		              </v-card>
@@ -92,22 +115,62 @@
 		data: () => ({
 		      expand: true,
 		      rowsPerPageItems: [4],
+		      progress: []
 		}),
 	  	methods: {
 	        async getDataPelajaranbyUser(){
 	          this.$store.dispatch('getDataPelajaranbyUser')
 	          .then(response => {
-	            console.log("telah load data..")
 	          })
 	        },
-
+	        async getDataFavoritbyUser(){
+	          this.$store.dispatch('getDataFavoritbyUser')
+	          .then(response => {
+	          })
+	        },
+		      simpanFavorit(id){
+		        this.$store.dispatch('pushDataFavorit', {
+		          user_id: this.userId,
+			        course_id: id,
+		        })
+		        .then(response =>{
+		        })
+		        .catch(error => {
+		          this.$swal('Oopps', 'Gagal Menyimpan ke Favorit...', 'warning')
+		        })
+		      },
+		      hapusFavorit(favorit_id){
+		        this.$store.dispatch('delDataFavorit', {
+		          user_id: this.userId,
+			        favorit_id: favorit_id,
+		        })
+		        .then(response =>{
+		        })
+		        .catch(error => {
+		          this.$swal('Oopps', 'Gagal Menghapus Favorit...', 'warning')
+		        })
+		      },
+		    cekFavorit(id) {
+		      if(this.dataFavoritbyUser.data){
+		        for(var i=0;i<this.dataFavoritbyUser.data.length;i++){
+		          if(this.dataFavoritbyUser.data[i].course.course_id==id){
+		            return true
+		            break;
+		          }
+		        }
+		      }
+		    },
 	    },
 	    created(){
 	     this.getDataPelajaranbyUser()
+	     this.getDataFavoritbyUser()
 	    },
 	    computed: {
 	      dataPelajaranbyUser(){
 	        return this.$store.state.dataPelajaranbyUser || {}
+	      },
+	      dataFavoritbyUser(){
+	        return this.$store.state.dataFavoritbyUser || {}
 	      },
 	      userId(){
 	        return this.$store.state.dataUser || {}

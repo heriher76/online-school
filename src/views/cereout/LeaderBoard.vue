@@ -1,5 +1,5 @@
 <template>
-    <div class="leader_board">
+    <div class="leaderboard">
         <!-- sub content -->
         <v-container fluid grid-list-md>
             <v-layout row wrap>
@@ -7,44 +7,58 @@
                 <v-flex md3 sm12 xs12>
                     <v-card>
                         <SideBar class="hidden-sm-and-down" style="float:left;"/>
+                        <Navbar class="hidden-md-and-up" />
                     </v-card>
                 </v-flex>
                 <!-- /sidebar -->
-                
+
                 <!-- leader board -->
                 <v-flex md9 sm12 xs12>
-                    <v-card>
-                        <v-card-text class="px-0"><h6 class="title" style="color:black;margin:4px 20px">Leader Board</h6></v-card-text>
+                    <v-card color="#B71C1C" dark>
+                        <v-card-text class="px-0"><h6 class="title" style="margin:4px 20px">Leaderboard {{text_judul}}</h6></v-card-text>
                     </v-card>
                     <br>
                     <v-card>
-                        <v-card-title>
-                            <v-text-field
-                                v-model="search"
-                                append-icon="search"
-                                label="Search"
-                                single-line
-                                hide-details
-                            ></v-text-field>
-                        </v-card-title>
-                        
-                        <v-data-table
-                        :headers="headers"
-                        :items="desserts"
-                        :search="search"
-                        >
-                        <template v-slot:items="props">
-                            <td>{{ props.item.calories }}</td>
-                            <td>{{ props.item.name }}</td>
-                            <td>{{ props.item.fat }}</td>
-                            <td>{{ props.item.carbs }}</td>
-                        </template>
-                        <template v-slot:no-results>
-                            <v-alert :value="true" color="error" icon="warning">
-                            Your search for "{{ search }}" found no results.
-                            </v-alert>
-                        </template>
-                        </v-data-table>
+                        <!-- select -->
+                        <v-layout style="padding:0px 50px">
+                          <v-flex md12>
+                              <v-select
+                                  :items="dataLesson"
+                                  label="Lihat di Pelajaran"
+                                  name="pelajaran"
+                                  v-model="pelajaran"
+                                  item-text="name"
+                                  item-value="id"
+                                  @change="getDataPelajaranbyLesson"
+                              ></v-select>
+                          </v-flex>
+                        </v-layout>
+                        <!-- /select -->
+
+                        <!-- loading -->
+                        <div v-show="load_data" style="margin:0px auto; padding:40px; width:5%;">
+                            <v-progress-circular
+                            :size="40"
+                            color="primary"
+                            indeterminate
+                            ></v-progress-circular>
+                        </div>
+                        <!-- /loading -->
+
+                        <div v-show="tabl" style="padding:0px 50px 30px 50px">
+                          <v-data-table
+                            :headers="headers"
+                            :items="leader"
+                            disable-initial-sort
+                          >
+                            <template v-slot:items="props">
+                                <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.name}}</b></td>
+                                <td v-else>{{props.item.name}}</td>
+                                <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.score}}</b></td>
+                                <td v-else>{{props.item.score}}</td>
+                            </template>
+                          </v-data-table>
+                        </div>
                     </v-card>
                 </v-flex>
                 <!-- /leader board -->
@@ -56,109 +70,109 @@
 
 <script>
     import SideBar from '../../components/cereout-component/SideBar'
+    import Navbar from '../../components/cereout-component/Navbar'
+    import Axios from 'axios';
 
     export default {
-    name: 'dashboard',
-        components: {
-            SideBar,
+    name: 'leaderboard',
+    components: {
+      SideBar,
+      Navbar,
     },
     data () {
       return {
-        search: '',
+        load_data: true,
+        tabl: false,
+        text_judul: "In My Class",
+
+        user: [],
+
         headers: [
-          {
-            text: 'Rank',
-            align: 'left',
-            sortable: true,
-            value: 'name'
-          },
-          { text: 'Name', value: 'calories' },
-          { text: 'Average Percentage', value: 'fat' },
-          { text: 'Exam Given', value: 'carbs' }
+          { text: 'Name', value: 'name' },
+          { text: 'Score', value: 'score' }
         ],
-        desserts: [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1%'
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1%'
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: '7%'
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: '8%'
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: '16%'
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            iron: '0%'
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            iron: '2%'
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            iron: '45%'
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            iron: '22%'
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            iron: '6%'
-          }
-        ]
+        leader: [],
+        
+        classs: [],
+	      kelas: '',
+	      pelajaran: ''
       }
+    },
+
+    methods:{       
+      async getDataPelajaranbyLesson(){
+        this.$store.dispatch('getDataPelajaranbyLesson',{
+          id: this.pelajaran
+        })
+        .then(response => {console.log('load data..')})
+        .catch(error =>{console.log(error)})
+        
+        this.byLesson()
+      },
+         
+      //get leaderboard by lesson id
+      byLesson(){
+        console.log('by lesson id')
+        this.load_data = true
+        this.tabl      = false
+        Axios.get('/cereouts/leaderboard/lesson/'+this.pelajaran)//get by lesson id
+        .then(response => {
+          this.load_data = false
+          this.tabl      = true
+          this.text_judul= 'In Lesson '+this.pelajaran
+          this.leader = response.data.data
+          console.log(response.data)
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+      },
+
+
+    },
+
+    computed: {		
+    	dataLesson(){
+    		var data = []
+				if(this.classs.data){
+          for(var i=0;i<this.classs.data.length;i++){
+              if(this.classs.data[i].id == this.$store.state.classId){
+                  data = this.classs.data[i].lessons
+              }
+          }
+				}
+    		return data
+    	},
+    },
+
+    mounted(){
+      // get user
+      Axios.get('/auth/user')
+      .then(response => {
+          this.user = response.data.data
+      })
+      .catch(error => {
+          console.log(error)
+      })
+
+      Axios.get('/cereouts/leaderboard/'+this.$store.state.classId)//get by class_id user
+      .then(response => {
+        this.load_data = false
+        this.tabl      = true
+        this.leader    = response.data.data
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.log(error.response)
+      })
+
+      Axios.get('/master/class')//get class
+      .then(response => {
+        this.classs = response.data
+        console.log(response.data)
+      })
+      .catch(error => {console.log(error.response)})
+
     }
   }
 </script>

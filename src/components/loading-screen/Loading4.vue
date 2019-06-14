@@ -1,6 +1,6 @@
 <template>
     <div class="loading">
-        <div v-show="loading" style="z-index:0; position:absolute; top:0; height:100%; width:100%; background: rgba(0, 0, 0, 0.3);padding-top:150px">
+        <div v-show="loading" style="z-index:0; position:absolute; top:0; height:100%; width:100%; background: rgba(0, 0, 0, 0.3);padding-top:20px">
             <v-container>
                 <v-layout column justify-center align-center>
                     <swapping-squares-spinner

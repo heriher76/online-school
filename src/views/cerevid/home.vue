@@ -8,8 +8,7 @@
 		    <p class="display-1 text-uppercase font-weight-light">
 		      Featured
 		    </p>
-			<LoadingScreen1 :loading="is_load1"></LoadingScreen1>
-			<featured :datas="dataDaftarPelajaranbyLesson" />
+			<featured :datas="dataClass" />
 	  </v-container>
 	  <v-container>
 		<p class="display-1 text-uppercase font-weight-light">
@@ -19,7 +18,6 @@
 		        </v-flex>
 		    </v-layout>
 		</p>
-		<LoadingScreen2 :loading="is_load2"></LoadingScreen2>
 	  	<daftarPelajaran :datas="dataDaftarPelajaran" />
 	  </v-container>
 
@@ -30,8 +28,7 @@
   import banner from '../../components/cerevid-component/Banner'
   import featured from '../../components/cerevid-component/featured'
   import daftarPelajaran from '../../components/cerevid-component/DaftarPelajaran'
-  import LoadingScreen1 from'../../components/loading-screen/LoadingCerevid'
-  import LoadingScreen2 from'../../components/loading-screen/LoadingCerevid'
+  import LoadingScreen from'../../components/loading-screen/LoadingCerevid'
 
   export default {
   	name:"cerevid_home",
@@ -39,43 +36,36 @@
   		banner,
   		featured,
   		daftarPelajaran,
-  		LoadingScreen1,
-  		LoadingScreen2
+  		LoadingScreen
   	},
   	data: () => ({
-  		is_load1 :false,
-  		is_load2 :false,
+  		is_load :false,
   	}),
   	computed: {
-		dataDaftarPelajaranbyLesson(){
-			if(!this.$store.state.dataPelajaranbyLesson.length){
-				this.is_load1 = !this.is_load1
-			}
-			return this.$store.state.dataPelajaranbyLesson || {}
-		},
+    dataClass(){
+    	return this.$store.state.dataClass || {}
+  	},
 		dataDaftarPelajaran(){
 			if(!this.$store.state.dataPelajaran.length){
-				this.is_load2 = !this.is_load2
+				this.is_load = !this.is_load
 			}
 			return this.$store.state.dataPelajaran || {}
 		},
 	},
 	methods: {
+			async getDataClass(){
+					this.$store.dispatch('getDataClass')
+					.then(response => {
+					})
+			},
       async getDataPelajaran(){
         this.$store.dispatch('getDataPelajaran')
         .then(response => {
-          console.log("telah load data..")
-        })
-      },
-	  async getDataPelajaranbyLesson(){
-        this.$store.dispatch('getDataPelajaranbyLesson')
-        .then(response => {
-          console.log("telah load data..")
         })
       },
 	},
 	created(){
-		this.getDataPelajaranbyLesson()
+		this.getDataClass()
 		this.getDataPelajaran()
 	},
 
