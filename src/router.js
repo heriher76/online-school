@@ -141,9 +141,9 @@ export default new Router({
       meta: {layout: "exam"},
       component: () => import("./views/cereout/exams/ExamPage.vue"),
       props:true,
-      meta: {
-        requiresAuth: true
-      }
+      // meta: {
+      //   requiresAuth: true
+      // }
     },
 
     {
@@ -152,9 +152,9 @@ export default new Router({
       meta: {layout: "exam"},
       component: () => import("./views/cereout/exams/ExamResult.vue"),
       props:true,
-      meta: {
-        requiresAuth: true
-      }
+      // meta: {
+      //   requiresAuth: true
+      // }
     },
 
     {

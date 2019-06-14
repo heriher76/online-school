@@ -21,10 +21,22 @@
                     <v-card>
                         <!-- select -->
                         <v-layout style="padding:0px 50px">
-                          <v-flex md12>
+                          <v-flex md6 sm12 xs12>
+                            <v-select
+                                :items="classs.data"
+                                label="Pilih Kelas"
+                                name="kelas"
+                                v-model="kelas"
+                                item-text="name"
+                                item-value="id"
+                                data-foo=""
+                                @change="byClass"
+                            ></v-select>
+                          </v-flex>
+                          <v-flex md6 sm12 xs12>
                               <v-select
                                   :items="dataLesson"
-                                  label="Lihat di Pelajaran"
+                                  label="Pilih Pelajaran"
                                   name="pelajaran"
                                   v-model="pelajaran"
                                   item-text="name"
@@ -34,6 +46,7 @@
                           </v-flex>
                         </v-layout>
                         <!-- /select -->
+
 
                         <!-- loading -->
                         <div v-show="load_data" style="margin:0px auto; padding:40px; width:5%;">
@@ -109,6 +122,23 @@
         
         this.byLesson()
       },
+
+      //get leaderboard by class id
+      byClass(val){
+        this.load_data = true
+        this.tabl      = false
+        Axios.get('/cereouts/leaderboard/'+this.kelas)//get by class id
+        .then(response => {
+          this.load_data = false
+          this.tabl      = true
+          this.text_judul= 'In Class '//+this.kelas
+          this.leader = response.data.data
+          console.log(response.data)
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+      },
          
       //get leaderboard by lesson id
       byLesson(){
@@ -136,7 +166,7 @@
     		var data = []
 				if(this.classs.data){
           for(var i=0;i<this.classs.data.length;i++){
-              if(this.classs.data[i].id == this.$store.state.classId){
+              if(this.classs.data[i].id == this.$store.state.classId || this.classs.data[i].id == this.kelas){
                   data = this.classs.data[i].lessons
               }
           }

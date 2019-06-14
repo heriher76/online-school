@@ -26,7 +26,7 @@
                                     </div>
 
                                     <h6 class="subheading"><b>{{user.name}}</b></h6>
-                                    <p style="font-size:12px">SAINTEK</p>
+                                    <p style="font-size:12px;text-transform: uppercase;">{{userClass.name_class}}</p>
                                 </div>
                                 <div style="border-top:0.5px solid #E0E0E0; color:red; border-bottom:0.5px solid #E0E0E0; padding:10px">
                                     <div style="text-align:center;width:50%;float:right">
@@ -50,7 +50,7 @@
                             <v-card color="#546E7A" style="height:333px">
                                 <div>
                                     <h4 class="headline" style="padding:15px;float:left;color:white;margin-bottom:-18px;">Grafik Skor Tryout</h4>
-                                    <h6 class="subheading" style="float:right; margin:20px 20px 0px 0px;color:white">{{ moment(cek).format('MMMM - YYYY')}} </h6>
+                                    <h6 class="subheading" style="float:right; margin:20px 20px 0px 0px;color:white">{{ moment(monthNow).format('MMMM - YYYY')}} </h6>
                                     <div class="clear"></div>
                                 </div>
 
@@ -101,7 +101,7 @@
                         <!-- My Exam Stats -->
                         <v-flex md4 sm12 xs12 class="hidden-sm-and-down">
                             <v-card style="height:333px">
-                                <v-card-text style="background:#B71C1C;color:white;font-size:20px">Profile Saya</v-card-text>
+                                <v-card-text style="background:#B71C1C;color:white;font-size:20px">Profil Saya</v-card-text>
                                 <hr>
                                 <div style="text-align:center;color:red">
                                     <div style="width:120px;height:120px;margin:8px auto">
@@ -109,7 +109,7 @@
                                     </div>
 
                                     <h6 class="subheading"><b>{{user.name}}</b></h6>
-                                    <p style="font-size:12px">SAINTEK</p>
+                                    <p style="font-size:12px;text-transform: uppercase;">{{userClass.name_class}}</p>
                                 </div>
                                 <div style="border-top:0.5px solid #E0E0E0; color:red; border-bottom:0.5px solid #E0E0E0; padding:10px">
                                     <div style="text-align:center;width:50%;float:right">
@@ -128,9 +128,9 @@
                         </v-flex>
                         <!-- /My Exam Stats -->
 
-                        <v-flex md12>
-                             <v-card color="#546E7A">
-                                <h4 class="headline" style="padding:15px;color:white;margin-bottom:-18px;">Papan Peringkat Kelas</h4>
+                        <v-flex md9 sm12 xs12>
+                             <v-card color="#B71C1C">
+                                <h4 class="headline" style="padding:15px;color:white;margin-bottom:-18px;text-transform:capitalize">papan peringkat kelas {{userClass.name_class}}</h4>
 
                                 <v-card-text>
                                     <div style="background:white;">
@@ -161,6 +161,34 @@
                                 </v-card-text>
                             </v-card>   
                         </v-flex>
+
+                        <v-flex md3 sm12 xs12>
+                            <v-card color="#B71C1C">
+                                <h4 class="headline" style="padding:15px;color:white;margin-bottom:-18px;">Top Tryout</h4>
+                                <v-card-text>
+                                    <div style="background:white;padding:5px">
+                                        <!-- loading -->
+                                        <div v-show="load_data" style="margin:0px auto; padding:20px;text-align:center">
+                                            <v-progress-circular
+                                            :size="40"
+                                            color="primary"
+                                            indeterminate
+                                            ></v-progress-circular>
+                                        </div>
+                                        <!-- /loading -->
+                                        <v-card
+                                            style="padding:6px"
+                                            v-for="n in topTryout" :key="n"
+                                            elevation="12"    
+                                        >
+                                            <span style="float:left;text-transform:uppercase;padding:2px"><b>{{n.name}}</b></span>
+                                            <span style="float:right;border-left:1px solid black; padding:2px"><b>{{n.attempt}}</b> Percobaan</span>
+                                            <div class="clear"></div>
+                                        </v-card>
+                                    </div>
+                                </v-card-text>
+                             </v-card>
+                        </v-flex>
                     </v-layout>
                 </v-flex>
             </v-layout>
@@ -185,12 +213,16 @@
 
         data () {
             return {    
-                cek: new Date().toISOString(),
+                monthNow: new Date().toISOString(),
 
+                topTryout:[],
+                
                 load_data: true,
                 tabl: false,
 
                 user: [], 
+                userClass: [],
+
                 attempt: [],    
                 ranking: '',  
                
@@ -213,7 +245,8 @@
             // get user
             axios.get('/auth/user')
             .then(response => {
-                this.user = response.data.data
+                this.user      = response.data.data
+                this.userClass = response.data.data.class
             })
             .catch(error => {
                 console.log(error)
@@ -245,6 +278,16 @@
                 this.tabl      = true
                 this.leader    = response.data.data
                 // console.log(response.data)
+            })
+            .catch(error => {
+                console.log(error.response)
+            })
+
+            // get top tryout
+            axios.get('/cereouts/leaderboard/toptryout/'+this.$store.state.classId)//get by class_id user
+            .then(response => {
+                this.topTryout = response.data.data
+                console.log(response.data)
             })
             .catch(error => {
                 console.log(error.response)
