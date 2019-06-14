@@ -45,7 +45,7 @@
                         </div>
                         <!-- /loading -->
 
-                        <div v-show="tabl" style="padding:0px 50px 30px 50px">
+                        <div v-show="tabl" class="tabl">
                           <v-data-table
                             :headers="headers"
                             :items="leader"
@@ -119,7 +119,7 @@
         .then(response => {
           this.load_data = false
           this.tabl      = true
-          this.text_judul= 'In Lesson '+this.pelajaran
+          this.text_judul= 'In Lesson '//+this.pelajaran
           this.leader = response.data.data
           console.log(response.data)
         })
@@ -176,3 +176,14 @@
     }
   }
 </script>
+
+<style>
+  .tabl{
+    padding:0px 50px 30px 50px
+  }
+  @media only screen and (max-width: 1080px) {
+    .tabl{
+      padding:0px
+    }
+  }
+</style>

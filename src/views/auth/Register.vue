@@ -21,7 +21,7 @@
         <h2 class="display-1">Welcome</h2>
         <p>Register a new account</p>    
           
-        <!-- <form @submit.prevent="signUp"> -->
+        <form @submit.prevent="signUp" @keyup.enter="signUp">
           <v-text-field 
             label="Name"
             dark
@@ -67,10 +67,10 @@
               counter
               @click:append="show_pass_conf = !show_pass_conf"
           ></v-text-field>
-          <!-- <v-btn round large block>SIGN UP</v-btn>
-        </form> -->
+          <v-btn round large block>SIGN UP</v-btn>
+        </form>
 
-        <v-btn round large block @click="signUp">SIGN UP</v-btn>
+        <!-- <v-btn round large block @click="signUp">SIGN UP</v-btn> -->
               
         <hr style="margin-bottom:15px">
         <label>Are you a member? <router-link to="/login" style="color:white">Login now</router-link></label>

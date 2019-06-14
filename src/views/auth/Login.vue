@@ -7,7 +7,7 @@
         <h2 class="display-1">Welcome</h2>
         <p>Login with your site account</p>
         
-        <form @submit.prevent="login">
+        <form @submit.prevent="login" @keyup.enter="login">
           <v-text-field
             dark
             color="white"
@@ -51,7 +51,7 @@
           SIGN IN WITH GOOGLE
         </v-btn>
 
-        <v-btn block round color="primary" dark large href="http://api.ceredinas.id/login/facebook">
+        <v-btn block round color="primary" dark large href="https://api.ceredinas.id/login/facebook">
           SIGN IN WITH FACEBOOK
         </v-btn>
 

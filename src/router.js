@@ -53,13 +53,19 @@ export default new Router({
     {
       path: "/reset password",
       name: 'reset_pass',
-      component: () => import("./views/auth/ResetPassword.vue")
+      component: () => import("./views/auth/ResetPassword.vue"),
+      meta: {
+        requiresVisitor:true
+      }
     },
     
     {
       path: '/membership',
       name: 'membership',
-      component: () => import("./views/siswa/Membership.vue")
+      component: () => import("./views/siswa/Membership.vue"),
+      meta: {
+        requiresAuth:true
+      }
     },
 
     // -----------------------------poin saldo-----------------------------
@@ -76,14 +82,20 @@ export default new Router({
     {
       path: "/informasi",
       name: 'informasi',
-      component: () => import("./views/informasi/Index.vue")
+      component: () => import("./views/informasi/Index.vue"),
+      // meta: {
+      //   requiresVisitor:true
+      // }
     },
 
     {
       path: "/informasi/detail",
       name: 'detail_informasi',
       props: true,
-      component: () => import("./views/informasi/ReadMore.vue")
+      component: () => import("./views/informasi/ReadMore.vue"),
+      // meta: {
+      //   requiresVisitor:true
+      // }
     },
 
     // -----------------------------cereout-----------------------------
@@ -98,20 +110,29 @@ export default new Router({
     {
       path: "/cereout/leader board",
       name: 'leader_board',
-      component: () => import("./views/cereout/LeaderBoard.vue")
+      component: () => import("./views/cereout/LeaderBoard.vue"),
+      meta: {
+        requiresAuth: true
+      }
     },
 
     {
       path: "/cereout/exams",
       name: 'my_exams',
-      component: () => import("./views/cereout/exams/MyExams.vue")
+      component: () => import("./views/cereout/exams/MyExams.vue"),
+      meta: {
+        requiresAuth: true
+      }
     },
 
     {
       path: "/cereout/exams/detail",
       name: 'details_exams',
       component: () => import("./views/cereout/exams/ExamDetails.vue"),
-      props:true
+      props:true,
+      meta: {
+        requiresAuth: true
+      }
     },
 
     {
@@ -119,7 +140,10 @@ export default new Router({
       name: 'exam_page',
       meta: {layout: "exam"},
       component: () => import("./views/cereout/exams/ExamPage.vue"),
-      props:true
+      props:true,
+      meta: {
+        requiresAuth: true
+      }
     },
 
     {
@@ -127,27 +151,39 @@ export default new Router({
       name: 'exam_result',
       meta: {layout: "exam"},
       component: () => import("./views/cereout/exams/ExamResult.vue"),
-      props:true
+      props:true,
+      meta: {
+        requiresAuth: true
+      }
     },
 
     {
       path: "/cereout/results",
       name: 'my_results',
-      component: () => import("./views/cereout/Results.vue")
+      component: () => import("./views/cereout/Results.vue"),
+      meta: {
+        requiresAuth: true
+      }
     },
 
     {
       path: "/cereout/results/detail/:id",
       name: 'result_detail',
       component: () => import("./views/cereout/ResultDetail.vue"),
-      props: true
+      props: true,
+      meta: {
+        requiresAuth: true
+      }
     },
 
     // -----------------------------cerecall-----------------------------
     {
       path: "/cerecall",
       name: 'cerecall',
-      component: () => import("./views/cerecall/Index.vue")
+      component: () => import("./views/cerecall/Index.vue"),
+      meta: {
+        requiresAuth: true
+      }
     },
 
     {
