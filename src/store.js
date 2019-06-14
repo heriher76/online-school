@@ -510,7 +510,9 @@ export default new Vuex.Store({
     // -----------------------------SISWA
     // get profile
     getProfileUser(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token
+      }
       axios.get('/auth/user')
       .then(response => {
         console.log(response.data)
