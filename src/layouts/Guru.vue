@@ -139,6 +139,26 @@
         </v-list-group>
         
       </v-list>
+      <v-divider></v-divider>
+
+      <v-list-tile to="/guru">
+        <v-list-tile-content style="margin-left:20px">
+          <v-list-tile-title>DASHBOARD</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+
+      <v-list-tile to="/guru/profile">
+        <v-list-tile-content style="margin-left:20px">
+          <v-list-tile-title>MY PROFILE</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+
+      <v-list-tile to="/guru/pusat-bantuan">
+        <v-list-tile-content style="margin-left:20px">
+          <v-list-tile-title>PUSAT BANTUAN</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+
     </v-navigation-drawer>
     <!-- /navigation-drawer -->
 

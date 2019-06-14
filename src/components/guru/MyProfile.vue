@@ -75,6 +75,9 @@
         option3_department: this.datas.data.option3.department_name,
         option3_university: this.datas.data.option3.university_name,
         photo: this.image
-    })
+    }),
+    created() {
+        console.log(this.props)
+    }
   }
 </script>
