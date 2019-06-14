@@ -75,29 +75,25 @@
     },
 	methods: {
         submit(){
-          // this.btn_load = true;
+          this.btn_load = true;
 
-          // let data = new FormData();
-          // data.append('cover', this.dataDetailPelajaran.data.cover);
-          // data.set('title', this.dataDetailPelajaran.data.title);
-          // data.set('description', this.dataDetailPelajaran.data.description);
-          // data.set('curriculum', this.dataDetailPelajaran.data.curriculum);
-          // data.set('lesson_id', this.dataDetailPelajaran.data.lesson_id);
-          // data.set('user_id', this.dataDetailPelajaran.data.dataUser);
-
-          // axios.defaults.headers = {  
-          //   'Content-Type': 'multipart/form-data',  
-          //   'Authorization': 'Bearer ' + this.$store.state.token 
-          // }
-          // axios.put('http://api.ceredinas.id/api/courses/'+this.$route.params.id, data)
-          // .then(response => {
-          //   this.btn_load = false;
-          //   console.log(response.data)
-          // })
-          // .catch(error => {
-          //   this.btn_load = false;
-          //   console.log(error)
-          // })
+          axios.defaults.headers = {  
+            'Authorization': 'Bearer ' + this.$store.state.token 
+          }
+          axios.put('http://api.ceredinas.id/api/sections/'+this.$route.params.idSection+'/videos/'+this.$route.params.idVideo, {
+            title: this.title,
+            video_url: this.link
+          })
+          .then(response => {
+            this.btn_load = false;
+            this.$swal('Sukses', 'Berhasil Mengedit Video!', 'success')
+            console.log(response.data)
+          })
+          .catch(error => {
+            this.btn_load = false;
+            this.$swal('Oops', 'Gagal Mengedit Video!', 'warning')
+            console.log(error)
+          })
         }
     }
   }
