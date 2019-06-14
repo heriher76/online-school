@@ -17,7 +17,7 @@
                 <v-card>
                     <v-card-title>
                         <!-- detail -->
-                        <MyProfile v-show="my_profile" :datas="dataProfileUser"/>
+                        <MyProfile v-show="my_profile" :datas="dataProfileUser" :image="this.pp"/>
                         <EditProfile v-show="edit_profile" :datas="dataProfileUser"/>
                         <!-- /detail -->
                     </v-card-title>   
@@ -38,7 +38,8 @@
             return {
                 user: [],
                 my_profile: true,
-                edit_profile: false
+                edit_profile: false,
+                pp: ''
             }
         },
 
@@ -53,22 +54,38 @@
                 this.my_profile   = false
             },
             async getProfileUser(){
-              this.$store.dispatch('getProfileUser')
-              .then(response => {
-                console.log("telah load data..")
-              })
+                this.$store.dispatch('getProfileUser')
+                .then(response => {
+                    console.log("telah load data..")
+                })
             }
         },
         created(){
-         this.getProfileUser()
+            this.getProfileUser()
+
+            // get photoprofile
+            axios.defaults.headers = {  
+                'Content-Type': 'image/jpeg',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Authorization': 'Bearer ' + this.$store.state.token
+            }
+
+            axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser)
+            .then(response => {
+                console.log(response)
+                this.pp = 'data:image/jpg;base64,'.concat(this.pp.concat(response.data))
+            })
+            .catch(error => {
+                console.log(error)
+            })
         },
         computed: {
-          dataProfileUser(){
-            return this.$store.state.dataProfileUser || {}
-          },
-          userId(){
-            return this.$store.state.dataUser || {}
-          },
+            dataProfileUser(){
+                return this.$store.state.dataProfileUser || {}
+            },
+            userId(){
+                return this.$store.state.dataUser || {}
+            }
         }
     }
 </script>

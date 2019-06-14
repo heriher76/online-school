@@ -58,22 +58,33 @@
                 this.my_profile   = false
             },
             async getProfileGuru(){
-              this.$store.dispatch('getProfileGuru')
-              .then(response => {
-                console.log("telah load data..")
-              })
+                this.$store.dispatch('getProfileGuru')
+                .then(response => {
+                    console.log("telah load data..")
+                })
             }
         },
         created(){
-         this.getProfileGuru()
+            this.getProfileGuru()
+            
+            // get photoprofile
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+            axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser)
+            .then(response => {
+                console.log(response.data)
+                this.pp = response.data.data
+            })
+            .catch(error => {
+                console.log(error)
+            })
         },
         computed: {
-          dataProfileGuru(){
-            return this.$store.state.dataProfileGuru || {}
-          },
-          userId(){
-            return this.$store.state.dataGuru || {}
-          },
+            dataProfileGuru(){
+                return this.$store.state.dataProfileGuru || {}
+            },
+            userId(){
+                return this.$store.state.dataGuru || {}
+            }
         }
     }
 </script>

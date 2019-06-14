@@ -28,9 +28,11 @@
 							      </v-layout>
 							    </p>
 							</v-card-text>
+							<LoadingScreen1 :loading="is_load1"></LoadingScreen1>
 						    <v-container
 						      fluid
 						      grid-list-md
+						      v-show='showPelajaran'
 						      >
 						      	<v-data-iterator
 						        :items="dataPelajaranbyTeacher.data"
@@ -47,11 +49,11 @@
 							              v-bind:src="'http://admin.ceredinas.id/public/cover/' + props.item.cover"
 							              height="200px"
 							            	>
-							                <v-flex offset-xs9 align-end flexbox>
+							                <!-- <v-flex offset-xs9 align-end flexbox>
 							                  <v-btn fab dark small color="pink" style="opacity:0.85;">
 							                    <v-icon dark>favorite</v-icon>
 							                  </v-btn>
-							                </v-flex>
+							                </v-flex> -->
 							            </v-img>
 
 							            <v-card-title primary-title>
@@ -64,22 +66,19 @@
 							            </v-card-title>
 										<div class="text-xs-center mt-1">
 											<v-rating
-												v-model="rating"
+												v-model="props.item.rating"
 												color="yellow darken-3"
 												background-color="grey darken-1"
 												half-increments
 												readonly
 												>
 											</v-rating>
-											<span class="caption mr-2">
-												{{rating}} (30)
-											</span>
 										</div>
-										<v-spacer></v-spacer>
+										<!-- <v-spacer></v-spacer>
 							            <v-card-actions class="ma-2">
 							              <v-icon color="success">check</v-icon>
 							              <span class="text-uppercase pa-1">Sudah ditampilkan</span>
-							            </v-card-actions>
+							            </v-card-actions> -->
 							          </v-card>
 							        </v-flex>
 									
@@ -98,14 +97,18 @@
 <script>
 	import subNavbarGuru from '../../components/cerevid-component/subNavbarGuru'
 	import sidebarGuru from '../../components/cerevid-component/sidebarGuru'
+    import LoadingScreen1 from'../../components/loading-screen/LoadingCerevid'
 	export default {
 		name:"tambah-pelajaran",
 		components:{
 			subNavbarGuru,
-			sidebarGuru
+			sidebarGuru,
+			LoadingScreen1
 		},
 		data: () => ({
 		      expand: true,
+		      showPelajaran: false,
+              is_load1 :true,
 		      rowsPerPageItems: [4],
 		}),
 		methods: {
@@ -127,6 +130,10 @@
 	    },
 	    computed: {
 	      dataPelajaranbyTeacher(){
+	      	if(typeof this.$store.state.dataPelajaranbyTeacher.data !== "undefined"){
+				this.is_load1 = !this.is_load1
+				this.showPelajaran = !this.showPelajaran
+			}
 	        return this.$store.state.dataPelajaranbyTeacher || {}
 	      },
 	      userId(){

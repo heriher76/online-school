@@ -127,10 +127,12 @@
           axios.put('http://api.ceredinas.id/api/courses/'+this.$route.params.id, data)
           .then(response => {
             this.btn_load = false;
+            this.$swal('Sukses', 'Berhasil Mengedit Pelajaran!', 'success')
             console.log(response.data)
           })
           .catch(error => {
             this.btn_load = false;
+            this.$swal('Oops', 'Gagal Mengedit Pelajaran!', 'warning')
             console.log(error)
           })
         }
