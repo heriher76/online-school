@@ -61,13 +61,15 @@
     import moment from 'moment'
 
     export default {
-    name: 'dashboard',
-        components: {
-            SideBar,
-            Navbar
+    name: 'results',
+    components: {
+        SideBar,
+        Navbar
     },
     data () {
-        return {
+        return { 
+            cek: new Date().toISOString(), //.toISOString().slice(0,10),
+                
             load_data:true,
             tabl: false,
 

@@ -1,6 +1,6 @@
 <template>
-    <div class="navbar-cereout" style="padding:10px;">
-        <ul class="nav-cereout">
+    <div class="navbar-cereout" style="padding:12px 5px;">
+        <ul class="nav-cereout" style="padding:0px">
             <li><router-link to="/cereout/dashboard">Dashboard</router-link></li>
             <li><router-link to="/cereout/leader board">Leaderboard</router-link></li>
             <li><router-link to="/cereout/exams">My Exams</router-link></li>
