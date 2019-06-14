@@ -102,6 +102,12 @@
                                     <span class="pa-1 white--text">Lihat</span>
                                   </v-btn>
                                 </v-list-tile-action>
+                                <v-list-tile-action>
+                                  <v-btn color="red">
+                                    <v-icon color="white--text">delete</v-icon>
+                                    <span class="pa-1 white--text">Hapus</span>
+                                  </v-btn>
+                                </v-list-tile-action>
                               </v-list-tile>
                               
                               <v-divider style="margin:0"></v-divider>
@@ -119,6 +125,12 @@
                                     <span class="pa-1 white--text">Lihat</span>
                                   </v-btn>
                                 </v-list-tile-action>
+                                <v-list-tile-action>
+                                  <v-btn color="red">
+                                    <v-icon color="white--text">delete</v-icon>
+                                    <span class="pa-1 white--text">Hapus</span>
+                                  </v-btn>
+                                </v-list-tile-action>
                               </v-list-tile>
 
                               <v-divider style="margin:0"></v-divider>
@@ -134,6 +146,12 @@
                                   <v-btn color="green" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/section/'+item.id+'/quiz/'+quiz_item.id">
                                     <v-icon color="white--text">visibility</v-icon>
                                     <span class="pa-1 white--text">Lihat</span>
+                                  </v-btn>
+                                </v-list-tile-action>
+                                <v-list-tile-action>
+                                  <v-btn color="red">
+                                    <v-icon color="white--text">delete</v-icon>
+                                    <span class="pa-1 white--text">Hapus</span>
                                   </v-btn>
                                 </v-list-tile-action>
                               </v-list-tile>

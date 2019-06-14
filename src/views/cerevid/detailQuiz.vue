@@ -48,7 +48,7 @@
 	import axios from 'axios'
 
 	export default {
-		name:"cerevid_detail_video",
+		name:"cerevid_detail_quiz",
 		components:{
 			sidebarGuru
 		},

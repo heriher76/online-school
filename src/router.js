@@ -330,6 +330,11 @@ export default new Router({
       component: () => import("./views/cerevid/listPertanyaan.vue")
     },
     {
+      path: "/guru/cerevid/detail-pelajaran/:id/quiz/:idQuiz/question/:idQuestion",
+      name: "cerevid_detail_pertanyaan",
+      component: () => import("./views/cerevid/detailPertanyaan.vue")
+    },
+    {
       path: "/guru/cerevid/tambah-pelajaran",
       name: "cerevid_tambah_pelajaran",
       meta: {layout: "guru"},

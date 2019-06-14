@@ -34,7 +34,6 @@
                     >
                       Simpan
                     </v-btn>
-                    <h1>asdfsfd</h1>
                   </v-card-actions>
                 </v-card-text>
               </form>
@@ -71,7 +70,7 @@
           axios.defaults.headers = {  
             'Authorization': 'Bearer ' + this.$store.state.token 
           }
-          axios.put('http://api.ceredinas.id/api/sections/'+this.$route.params.idSection+'/text/create', {
+          axios.put('http://api.ceredinas.id/api/sections/'+this.$route.params.idSection+'/texts/create', {
             title: this.title,
             content: this.konten
           })

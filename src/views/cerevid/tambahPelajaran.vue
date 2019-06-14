@@ -16,7 +16,7 @@
                 color="#353b48" 
                 dark
               >
-                <v-toolbar-title>Submit a post</v-toolbar-title>
+                <v-toolbar-title>Tambah Pelajaran</v-toolbar-title>
               </v-toolbar>
 
               <form>
@@ -122,10 +122,12 @@
           axios.post('http://api.ceredinas.id/api/courses/create', data)
           .then(response => {
             this.btn_load = false;
+            this.$swal('Sukses', 'Berhasil Menambah Pelajaran!', 'success')
             console.log(response.data)
           })
           .catch(error => {
             this.btn_load = false;
+            this.$swal('Oops', 'Gagal Menambah Pelajaran!', 'warning')
             console.log(error)
           })
         },

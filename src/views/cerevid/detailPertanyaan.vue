@@ -13,14 +13,20 @@
                 color="#353b48" 
                 dark
               >
-                <v-toolbar-title>Edit Text</v-toolbar-title>
+                <v-toolbar-title>Edit Pertanyaan</v-toolbar-title>
               </v-toolbar>
 
               <form>
                 <v-card-text style="background-color:#fff">
-                  <v-text-field box v-model="title" label="Judul Teks" value=""></v-text-field>
-
-                  <v-text-field v-model="content" box label="Konten Teks" value=""></v-text-field>
+                  <v-text-field box v-model="question" label="Pertanyaan *" required></v-text-field>
+                  <v-text-field box v-model="a" label="Opsi A *" required></v-text-field>
+                  <v-text-field box v-model="b" label="Opsi B *" required></v-text-field>
+                  <v-text-field box v-model="c" label="Opsi C *" required></v-text-field>
+                  <v-text-field box v-model="d" label="Opsi D *" required></v-text-field>
+                  <v-select box v-model="answer"
+		            :items="corrects"
+		            label="Jawaban Benar *"
+		          ></v-select>
                   
                   <v-divider></v-divider>
                   <v-card-actions style="background-color:#fff">
@@ -50,27 +56,34 @@
 	import axios from 'axios'
 
 	export default {
-		name:"cerevid_detail_text",
+		name:"cerevid_detail_pertanyaan",
 		components:{
 			sidebarGuru
 		},
     data () {
       return {
-        title: '',
-        content: '',
+        question: '',
+        a: '',
+        b: '',
+        c: '',
+        d: '',
+        answer: '',
+        corrects: ['A', 'B', 'C', 'D'],
         right: null,
         btn_load: false
       }
 	},
     created() {
-      axios.get('http://api.ceredinas.id/api/sections/'+this.$route.params.idSection+'/texts/'+this.$route.params.idText)
-        .then(response => {
-          this.title = response.data.data.title,
-          this.content = response.data.data.content
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      // axios.get('http://api.ceredinas.id/api/sections/'+this.$route.params.idSection+'/quiz/'+this.$route.params.idQuiz)
+      //   .then(response => {
+      //     console.log(response.data)
+      //     this.title = response.data.data.title,
+      //     this.questions = response.data.data.question
+      //     console.log(this.questions)
+      //   })
+      //   .catch(error => {
+      //     console.log(error)
+      //   })
     },
 	methods: {
         submit(){

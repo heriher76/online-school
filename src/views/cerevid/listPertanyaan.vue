@@ -66,7 +66,7 @@
                     <td>{{ props.item.jawaban }}</td>
                     <td>{{ props.item.quiz }}</td>
                     <td>
-                    	<v-btn color="blue" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/quiz/'+props.item.no">
+                    	<v-btn color="blue" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/quiz/'+props.item.no+'/question/'+2">
                           <v-icon color="white--text">visibility</v-icon>
                           <span class="pa-1 white--text">Lihat</span>
                         </v-btn>
