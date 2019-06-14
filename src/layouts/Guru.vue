@@ -36,13 +36,14 @@
             <v-menu
               v-model="menu"
               :close-on-content-click="false"
-              :nudge-width="200"
               offset-x
             >
             <template v-slot:activator="{ on }">
-                <a v-on="on">
-                <v-icon>account_circle</v-icon>{{user.name}}<v-icon>arrow_drop_down</v-icon>
-                </a>
+              <v-list-tile v-on="on">
+                <v-icon>account_circle</v-icon>
+                {{user.name}}
+                <v-icon>arrow_drop_down</v-icon>
+                </v-list-tile>
             </template>
 
             <v-card>
