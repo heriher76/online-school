@@ -284,6 +284,21 @@ export default new Router({
       component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
     },
     {
+      path: "/guru/cerevid/detail-pelajaran/:id/section/:idSection/video/:idVideo",
+      name: "cerevid_detail_video",
+      component: () => import("./views/cerevid/detailVideo.vue")
+    },
+    {
+      path: "/guru/cerevid/detail-pelajaran/:id/section/:idSection/quiz/:idQuiz",
+      name: "cerevid_detail_quiz",
+      component: () => import("./views/cerevid/detailQuiz.vue")
+    },
+    {
+      path: "/guru/cerevid/detail-pelajaran/:id/section/:idSection/text/:idText",
+      name: "cerevid_detail_text",
+      component: () => import("./views/cerevid/detailText.vue")
+    },
+    {
       path: "/guru/cerevid/detail-pelajaran/:id",
       name: "cerevid_detail_pelajaran_guru",
       meta: {layout: "guru"},

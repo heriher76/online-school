@@ -5,8 +5,40 @@
                 <img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg" width="100%" height="100%" alt="">
             </div>
             <div v-show="edit_prof">
-                <input type="file" ref="file" style="display: none" v-on:change="handleFileUpload()">
-                <v-btn style="margin-left:-1px" @click="$refs.file.click()" small>Change</v-btn>
+                <v-btn 
+                    @click.stop="dialog = true" style="margin-left:-1px" small>Change</v-btn>
+
+                    <v-dialog v-model="dialog" max-width="290">
+                    <v-card>
+                        <v-card-title class="headline">Ganti Foto Profile</v-card-title>
+
+                        <v-card-text>
+                            <label for="foto">Upload Foto:</label>
+                            <input id="foto" ref="file" type="file" @change="this.handleFileUpload">
+                        </v-card-text>
+
+                        <v-card-actions>
+                        <v-spacer></v-spacer>
+
+                        <v-btn
+                            color="blue"
+                            flat="flat"
+                            @click="dialog = false"
+                        >
+                            Batal
+                        </v-btn>
+
+                        <v-btn
+                            color="blue"
+                            flat="flat"
+                            @click="this.submitPhoto"
+                        >
+                            Update
+                        </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                    </v-dialog>
+
                 <hr style="width:85%">
                 <a @click="changePass">Change Password </a>
             </div>
@@ -40,12 +72,15 @@
 
 <script>
     import ChangePassword from "./ChangePassword"
+    import axios from 'axios'
+    
     export default {
         props: ['datas'],
         data: () => ({
             chg_pass:false,
             edit_prof:true,
             btn_load: false,
+            dialog: false,
             name: '',
             gender: '',
             phone: '',
@@ -70,6 +105,22 @@
             },
             handleFileUpload(){
                 this.file = this.$refs.file.files[0];
+            },
+            submitPhoto (event) {
+                console.log(this.file)
+                this.dialog = false
+                this.btn_load = true
+                
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+                axios.post('http://api.ceredinas.id/api/auth/changePhotoProfile/'+this.$store.state.dataUser,{
+                  photo: this.file
+                })
+                .then(response => {
+                  console.log(response.data)
+                })
+                .catch(error => {
+                  console.log(error)
+                })
             },
             submit (event) {
                 this.btn_load = true

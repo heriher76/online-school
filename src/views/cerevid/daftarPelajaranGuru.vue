@@ -64,16 +64,13 @@
 							            </v-card-title>
 										<div class="text-xs-center mt-1">
 											<v-rating
-												v-model="rating"
+												v-model="props.item.rating"
 												color="yellow darken-3"
 												background-color="grey darken-1"
 												half-increments
 												readonly
 												>
 											</v-rating>
-											<span class="caption mr-2">
-												{{rating}} (30)
-											</span>
 										</div>
 										<v-spacer></v-spacer>
 							            <v-card-actions class="ma-2">

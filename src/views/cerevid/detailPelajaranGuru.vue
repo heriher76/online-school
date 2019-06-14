@@ -215,10 +215,10 @@
 								            		<v-layout row wrap>
 								            			<v-flex xs12 sm4 md3>
 											            	<v-card flat class="text-xs-center mt-4">
-											            		<div class="display-3 text-xs-center font-weight-normal">{{this.reviews[0].star}}</div>
+											            		<div class="display-3 text-xs-center font-weight-normal">{{dataDetailPelajaran.data.rating}}</div>
 													                <v-card-text style="padding-top: 0">
 													                <v-rating
-													                  v-model="this.reviews[0].star"
+													                  v-model="dataDetailPelajaran.data.rating"
 													                  dense
 													                  color="yellow darken-3"
 													                  background-color="grey darken-1"

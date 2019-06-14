@@ -109,7 +109,8 @@ export default new Vuex.Store({
     },
     pushDataDetailForum(state, dataForum){
       state.dataDetailForum.data.push(dataForum.data)
-    },
+    }
+  },
 
 //------------------------------------------cerelisasi-------------------------------------------
   actions: {
@@ -339,6 +340,7 @@ export default new Vuex.Store({
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
       axios.get('/auth/user')
       .then(response => {
+        console.log(response.data)
         context.commit('getProfileUser', response.data)
       })
       .catch(error => {
@@ -360,7 +362,6 @@ export default new Vuex.Store({
 
     // edit profile function
     editProfileUser(context, credentials){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
 
       if(context.getters.loggedIn) {
           const data = {
@@ -371,13 +372,14 @@ export default new Vuex.Store({
             birth_date: credentials.birth_date,
             parrent_name: credentials.parrent_name,
             parrent_phone: credentials.parrent_phone,
-            address: credentials.address,
-            file: credentials.file
+            address: credentials.address
           }
           // return new Promise((resolve, reject) => {
+          axios.defaults.headers = {  
+              'Authorization': 'Bearer ' + context.state.token
+          }
           axios.put('/auth/user/'+this.state.dataUser, data)
           .then(response => {
-
             console.log(response.data)
           })
           .catch(error => {
@@ -389,8 +391,6 @@ export default new Vuex.Store({
     },
 
     editProfileGuru(context, credentials){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-
       if(context.getters.loggedIn) {
           const data = {
             name: credentials.name,
@@ -404,6 +404,9 @@ export default new Vuex.Store({
             file: credentials.file
           }
           // return new Promise((resolve, reject) => {
+          axios.defaults.headers = {  
+            'Authorization': 'Bearer ' + context.state.token
+          }
           axios.put('/auth/teacher/'+this.state.dataUser, data)
           .then(response => {
 
