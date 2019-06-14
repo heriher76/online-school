@@ -183,7 +183,6 @@
             })
       },
       kirimUlasan(){
-        console.log(1)
         this.$store.dispatch('pushDataRating', {
           course_id: this.$route.params.id,
           star: this.kasihRating,
@@ -192,7 +191,6 @@
         })
         .then(response => {
           this.dialog = false
-          this.getDataDetailPelajaran()
         })
         .catch(error => {
           this.dialog = false
