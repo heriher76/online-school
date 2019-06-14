@@ -48,7 +48,7 @@
                 <v-list-tile
                   avatar
                   @click="tipeMateri = 'video'"
-                  :href="'#1-'+materi.id"
+                  :href="'#1-'+item.id+'-'+materi.id"
                 >
                   <v-list-tile-avatar>
                     <v-icon class="mt-3">videocam</v-icon>
@@ -58,13 +58,20 @@
                     <v-list-tile-title v-html="materi.title"></v-list-tile-title>
                     <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
                   </v-list-tile-content>
+
+                  <v-spacer></v-spacer>
+                  <div v-if="materi.last_seen!=null">
+                  <v-list-tile-avatar>
+                    <v-icon class="mt-3" color="green">done</v-icon>
+                  </v-list-tile-avatar>
+                  </div>
                 </v-list-tile>
               </div>
               <div v-for="materi in item.texts">
                   <v-list-tile
                     avatar
                     @click="tipeMateri = 'text'"
-                    :href="'#2-'+materi.id"
+                    :href="'#2-'+item.id+'-'+materi.id"
                   >
                     <v-list-tile-avatar>
                       <v-icon class="mt-3">assignment</v-icon>
@@ -74,6 +81,13 @@
                       <v-list-tile-title v-html="materi.title"></v-list-tile-title>
                       <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
                     </v-list-tile-content>
+
+                    <v-spacer></v-spacer>
+                    <div v-if="materi.last_seen!=null">
+                    <v-list-tile-avatar>
+                      <v-icon class="mt-3" color="green">done</v-icon>
+                    </v-list-tile-avatar>
+                    </div>
                   </v-list-tile>
               </div>
               <div v-for="materi in item.quiz">
@@ -90,6 +104,13 @@
                         <v-list-tile-title v-html="materi.title"></v-list-tile-title>
                         <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
                       </v-list-tile-content>
+
+                      <v-spacer></v-spacer>
+                      <div v-if="materi.last_seen!=null">
+                      <v-list-tile-avatar>
+                        <v-icon class="mt-3" color="green">done</v-icon>
+                      </v-list-tile-avatar>
+                      </div>
                     </v-list-tile>
               </div>
             </template>
@@ -119,13 +140,6 @@
           >
             Forum Diskusi
           </v-tab>
-          <v-tab
-            :href="'#share'"
-            style="text-decoration:none;"
-          >
-            Share
-          </v-tab>
-
           <v-tabs-items>
             <v-tab-item
               :value="'materi'"
@@ -195,30 +209,6 @@
                   </v-container>
                 </v-card>
               </v-tab-item>
-                <v-tab-item
-                  :value="'share'"
-                >
-                  <v-card>
-                    <v-container fluid>
-                      <v-flex  class="mx-4">
-                        <v-container grid-list-md>
-                          <v-layout row wrap>
-                              <div>
-                                  <v-container>
-                                    <v-layout>
-                                      <v-flex>
-                                        <div class="headline">Bagikan post ini :</div>
-                                        <v-icon>twitter</v-icon>
-                                      </v-flex>
-                                    </v-layout>
-                                  </v-container>
-                              </div>
-                          </v-layout>
-                        </v-container>
-                      </v-flex>
-                    </v-container>
-                  </v-card>
-                </v-tab-item>
           </v-tabs-items>
         </v-tabs>
         </v-flex>

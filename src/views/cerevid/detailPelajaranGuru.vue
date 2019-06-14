@@ -13,7 +13,9 @@
 					</v-flex>
 					<v-flex xs12 sm12 md9>
             <div class="px-3">
+              <center><LoadingScreen1 :loading="is_load1"></LoadingScreen1></center>
               <v-tabs
+                v-show="showTab"
                 color="#f5f5f5"
                 next-icon="mdi-arrow-right-bold-box-outline"
                 prev-icon="mdi-arrow-left-bold-box-outline"
@@ -97,9 +99,15 @@
                                   <v-list-tile-sub-title>{{ video.title }}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                                 <v-list-tile-action>
-                                  <v-btn  color="green">
+                                  <v-btn color="green" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/section/'+item.id+'/video/'+video.id">
                                     <v-icon color="white--text">visibility</v-icon>
                                     <span class="pa-1 white--text">Lihat</span>
+                                  </v-btn>
+                                </v-list-tile-action>
+                                <v-list-tile-action>
+                                  <v-btn color="red">
+                                    <v-icon color="white--text">delete</v-icon>
+                                    <span class="pa-1 white--text">Hapus</span>
                                   </v-btn>
                                 </v-list-tile-action>
                               </v-list-tile>
@@ -114,9 +122,15 @@
                                   <v-list-tile-sub-title>{{ text.title }}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                                 <v-list-tile-action>
-                                  <v-btn color="green">
+                                  <v-btn color="green" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/section/'+item.id+'/text/'+text.id">
                                     <v-icon color="white--text">visibility</v-icon>
                                     <span class="pa-1 white--text">Lihat</span>
+                                  </v-btn>
+                                </v-list-tile-action>
+                                <v-list-tile-action>
+                                  <v-btn color="red">
+                                    <v-icon color="white--text">delete</v-icon>
+                                    <span class="pa-1 white--text">Hapus</span>
                                   </v-btn>
                                 </v-list-tile-action>
                               </v-list-tile>
@@ -131,11 +145,38 @@
                                   <v-list-tile-sub-title>{{ quiz_item.title }}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                                 <v-list-tile-action>
-                                  <v-btn color="green">
+                                  <v-btn color="green" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/section/'+item.id+'/quiz/'+quiz_item.id">
                                     <v-icon color="white--text">visibility</v-icon>
                                     <span class="pa-1 white--text">Lihat</span>
                                   </v-btn>
                                 </v-list-tile-action>
+                                <v-list-tile-action>
+                                  <v-btn color="red">
+                                    <v-icon color="white--text">delete</v-icon>
+                                    <span class="pa-1 white--text">Hapus</span>
+                                  </v-btn>
+                                </v-list-tile-action>
+                              </v-list-tile>
+
+                              <v-list-tile>
+                                <v-list-tile-content>
+                                  <v-list-tile-sub-title>
+                                    <center>
+                                    <v-btn color="orange" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/'+item.id+'/tambah-video'">
+                                      <v-icon color="white--text">visibility</v-icon>
+                                      <span class="pa-1 white--text">Tambah Video</span>
+                                    </v-btn>
+                                    <v-btn color="green" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/'+item.id+'/tambah-text'">
+                                      <v-icon color="white--text">visibility</v-icon>
+                                      <span class="pa-1 white--text">Tambah Text</span>
+                                    </v-btn>
+                                    <v-btn color="blue" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/quiz'">
+                                      <v-icon color="white--text">visibility</v-icon>
+                                      <span class="pa-1 white--text">Tambah Quiz</span>
+                                    </v-btn>
+                                    </center>
+                                  </v-list-tile-sub-title>
+                                </v-list-tile-content>
                               </v-list-tile>
 
                             </v-card>
@@ -169,31 +210,7 @@
                                         </v-card-actions>
                                       </v-card>
                                     </v-dialog>
-                                    <v-dialog v-model="tambahMateri" persistent max-width="600px">
-                                      <template v-slot:activator="{ on }">
-                                        <v-btn color="primary" dark v-on="on">Tambah Materi</v-btn>
-                                      </template>
-                                      <v-card>
-                                        <v-card-title>
-                                          <span class="headline">Tambah Materi</span>
-                                        </v-card-title>
-                                        <v-card-text>
-                                          <v-container grid-list-md>
-                                            <v-layout wrap>
-                                              <v-flex xs12 sm6 md12>
-                                                <v-text-field label="Nama" required></v-text-field>
-                                              </v-flex>
-                                            </v-layout>
-                                          </v-container>
-                                          <small>*indicates required field</small>
-                                        </v-card-text>
-                                        <v-card-actions>
-                                          <v-spacer></v-spacer>
-                                          <v-btn color="blue darken-1" flat @click="tambahMateri = false">Tutup</v-btn>
-                                          <v-btn color="blue darken-1" flat @click="tambahMateri = false">Tambah</v-btn>
-                                        </v-card-actions>
-                                      </v-card>
-                                    </v-dialog>
+                                    
                                   </v-layout>
                                 </v-container>
                             </v-layout>
@@ -215,10 +232,10 @@
 								            		<v-layout row wrap>
 								            			<v-flex xs12 sm4 md3>
 											            	<v-card flat class="text-xs-center mt-4">
-											            		<div class="display-3 text-xs-center font-weight-normal">{{this.reviews[0].star}}</div>
+											            		<div class="display-3 text-xs-center font-weight-normal">{{dataDetailPelajaran.data.rating}}</div>
 													                <v-card-text style="padding-top: 0">
 													                <v-rating
-													                  v-model="this.reviews[0].star"
+													                  v-model="dataDetailPelajaran.data.rating"
 													                  dense
 													                  color="yellow darken-3"
 													                  background-color="grey darken-1"
@@ -420,6 +437,7 @@
 <script>
   import subNavbarGuru from '../../components/cerevid-component/subNavbarGuru'
   import sidebarGuru from '../../components/cerevid-component/sidebarGuru'
+  import LoadingScreen1 from'../../components/loading-screen/LoadingCerevid'
   import axios from 'axios'
 	export default {
 		name:"detail-pelajaran-guru",
@@ -430,7 +448,9 @@
       body: '',
       dialog:false,
       tambahBab: false,
-      tambahMateri: false
+      tambahMateri: false,
+      is_load1: true,
+      showTab: false
     }),
     methods: {
         async getDataDetailPelajaran(){
@@ -440,7 +460,9 @@
           })
         },
         kirimForum(){
-          axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+          axios.defaults.headers = {  
+              'Authorization': 'Bearer ' + this.$store.state.token
+          }
           axios.post('courses/'+this.$route.params.id+'/forums/create', {
             course_id: this.$route.params.id,
             body: this.body,
@@ -457,7 +479,9 @@
     created(){
       this.getDataDetailPelajaran()
       // get sections of course
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+      axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + this.$store.state.token
+      }
       axios.get('/courses/'+this.$route.params.id+'/sections')
       .then(response => {
         this.sections = response.data.data
@@ -467,7 +491,9 @@
       })
 
       // get reviews of course
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+      axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + this.$store.state.token
+      }
       axios.get('/courses/'+this.$route.params.id+'/reviews')
       .then(response => {
         console.log(response.data.data)
@@ -478,7 +504,9 @@
       })
 
       // get forums of course
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+      axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + this.$store.state.token
+      }
       axios.get('/courses/'+this.$route.params.id+'/forums')
       .then(response => {
         console.log(response.data.data)
@@ -490,12 +518,17 @@
     },
     computed: {
       dataDetailPelajaran(){
+        if(typeof this.$store.state.dataDetailPelajaran.data !== "undefined"){
+          this.is_load1 = !this.is_load1
+          this.showTab = !this.showTab
+        }
         return this.$store.state.dataDetailPelajaran || {}
       },
     },
 		components:{
 			subNavbarGuru,
-      sidebarGuru
+      sidebarGuru,
+      LoadingScreen1
     },
 	}
 </script>

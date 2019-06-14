@@ -334,6 +334,21 @@ export default new Router({
       component: () => import("./views/cerevid/daftarPelajaranGuru.vue")
     },
     {
+      path: "/guru/cerevid/detail-pelajaran/:id/section/:idSection/video/:idVideo",
+      name: "cerevid_detail_video",
+      component: () => import("./views/cerevid/detailVideo.vue")
+    },
+    {
+      path: "/guru/cerevid/detail-pelajaran/:id/section/:idSection/quiz/:idQuiz",
+      name: "cerevid_detail_quiz",
+      component: () => import("./views/cerevid/detailQuiz.vue")
+    },
+    {
+      path: "/guru/cerevid/detail-pelajaran/:id/section/:idSection/text/:idText",
+      name: "cerevid_detail_text",
+      component: () => import("./views/cerevid/detailText.vue")
+    },
+    {
       path: "/guru/cerevid/detail-pelajaran/:id",
       name: "cerevid_detail_pelajaran_guru",
       meta: {layout: "guru"},
@@ -343,6 +358,31 @@ export default new Router({
       path: "/guru/cerevid/detail-pelajaran/:id/edit",
       name: "cerevid_edit_pelajaran_guru",
       component: () => import("./views/cerevid/editPelajaranGuru.vue")
+    },
+    {
+      path: "/guru/cerevid/detail-pelajaran/:id/:idSection/tambah-video",
+      name: "cerevid_tambah_video",
+      component: () => import("./views/cerevid/tambahVideo.vue")
+    },
+    {
+      path: "/guru/cerevid/detail-pelajaran/:id/:idSection/tambah-text",
+      name: "cerevid_tambah_text",
+      component: () => import("./views/cerevid/tambahText.vue")
+    },
+    {
+      path: "/guru/cerevid/detail-pelajaran/:id/quiz",
+      name: "cerevid_list_quiz",
+      component: () => import("./views/cerevid/listQuiz.vue")
+    },
+    {
+      path: "/guru/cerevid/detail-pelajaran/:id/quiz/:idQuiz",
+      name: "cerevid_list_pertanyaan",
+      component: () => import("./views/cerevid/listPertanyaan.vue")
+    },
+    {
+      path: "/guru/cerevid/detail-pelajaran/:id/quiz/:idQuiz/question/:idQuestion",
+      name: "cerevid_detail_pertanyaan",
+      component: () => import("./views/cerevid/detailPertanyaan.vue")
     },
     {
       path: "/guru/cerevid/tambah-pelajaran",

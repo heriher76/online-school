@@ -29,7 +29,6 @@
 		        :rows-per-page-items="rowsPerPageItems"
 		        content-class="layout row wrap"
 		        :expand="expand"
-		        :hide-actions="true"
 		        >
 		        <template v-slot:item="props">
 		          <v-flex xs12 sm6 md3>
