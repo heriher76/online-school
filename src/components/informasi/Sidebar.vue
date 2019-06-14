@@ -21,7 +21,7 @@
             </ul>
         </div>
 
-        <div style="margin:50px 15px">
+        <!-- <div style="margin:50px 15px">
             <div style="margin:10px 22px">
                 <h6 class="title">PENGUMUMAN</h6>
             </div>
@@ -40,7 +40,7 @@
                     <v-divider></v-divider>
                 </li>
             </ul>
-        </div>
+        </div> -->
     </div>
 </template>
 

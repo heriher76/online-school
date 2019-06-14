@@ -40,7 +40,7 @@
                         </span>
 
                         <div style="float:right; padding:2px 10px 0px 0px;color:#64B5F6">
-                            <span>Jawaban Benar: {{discuss.discussion.correct_answer}}</span> &nbsp;|&nbsp;
+                            <span>Jawaban Benar: {{discussion.correct_answer}}</span> &nbsp;|&nbsp;
                             <span>Jawaban Anda: {{discuss.answer}}</span>
                         </div>
                     </v-card>
@@ -57,58 +57,58 @@
                         <v-container style="padding-left:25px">
                             <!-- pertanyaan -->
                             <b>Pertanyaan:</b>
-                            <p style="font-size:16px" v-html="discuss.discussion.question"></p>        
-                            <div v-if="discuss.discussion.option_a!=null">
+                            <p style="font-size:16px" v-html="discussion.question"></p>        
+                            <div v-if="discussion.option_a!=null">
                                 <b style="float:left">A.&nbsp;</b>
-                                <span style="float:left" v-html="discuss.discussion.option_a"></span>
-                                <span v-if="discuss.answer!= 'A' && discuss.discussion.correct_answer== 'A'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
-                                <span v-if="discuss.answer== 'A' && discuss.discussion.correct_answer== 'A'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
-                                <span v-if="discuss.answer== 'A' && discuss.discussion.correct_answer!= 'A'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
+                                <span style="float:left" v-html="discussion.option_a"></span>
+                                <span v-if="discuss.answer!= 'A' && discussion.correct_answer== 'A'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
+                                <span v-if="discuss.answer== 'A' && discussion.correct_answer== 'A'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
+                                <span v-if="discuss.answer== 'A' && discussion.correct_answer!= 'A'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
                                 <div class="clear"></div>
                             </div>
 
-                            <div v-if="discuss.discussion.option_b!=null">
+                            <div v-if="discussion.option_b!=null">
                                 <b style="float:left">B.&nbsp;</b>
-                                <span style="float:left" v-html="discuss.discussion.option_b"></span>
-                                <span v-if="discuss.answer!= 'B' && discuss.discussion.correct_answer== 'B'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
-                                <span v-if="discuss.answer== 'B' && discuss.discussion.correct_answer== 'B'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
-                                <span v-if="discuss.answer== 'B' && discuss.discussion.correct_answer!= 'B'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
+                                <span style="float:left" v-html="discussion.option_b"></span>
+                                <span v-if="discuss.answer!= 'B' && discussion.correct_answer== 'B'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
+                                <span v-if="discuss.answer== 'B' && discussion.correct_answer== 'B'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
+                                <span v-if="discuss.answer== 'B' && discussion.correct_answer!= 'B'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
                                 <div class="clear"></div>
                             </div>
 
-                            <div v-if="discuss.discussion.option_c!=null">
+                            <div v-if="discussion.option_c!=null">
                                 <b style="float:left">C.&nbsp;</b>
-                                <span style="float:left" v-html="discuss.discussion.option_c"></span>
-                                <span v-if="discuss.answer!= 'C' && discuss.discussion.correct_answer== 'C'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
-                                <span v-if="discuss.answer== 'C' && discuss.discussion.correct_answer== 'C'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
-                                <span v-if="discuss.answer== 'C' && discuss.discussion.correct_answer!= 'C'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
+                                <span style="float:left" v-html="discussion.option_c"></span>
+                                <span v-if="discuss.answer!= 'C' && discussion.correct_answer== 'C'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
+                                <span v-if="discuss.answer== 'C' && discussion.correct_answer== 'C'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
+                                <span v-if="discuss.answer== 'C' && discussion.correct_answer!= 'C'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
                                 <div class="clear"></div>
                             </div>
 
-                            <div v-if="discuss.discussion.option_c!=null">
+                            <div v-if="discussion.option_c!=null">
                                 <b style="float:left">D.&nbsp;</b>
-                                <span style="float:left" v-html="discuss.discussion.option_c"></span>
-                                <span v-if="discuss.answer!= 'D' && discuss.discussion.correct_answer== 'D'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
-                                <span v-if="discuss.answer== 'D' && discuss.discussion.correct_answer== 'D'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
-                                <span v-if="discuss.answer== 'D' && discuss.discussion.correct_answer!= 'D'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
+                                <span style="float:left" v-html="discussion.option_c"></span>
+                                <span v-if="discuss.answer!= 'D' && discussion.correct_answer== 'D'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
+                                <span v-if="discuss.answer== 'D' && discussion.correct_answer== 'D'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
+                                <span v-if="discuss.answer== 'D' && discussion.correct_answer!= 'D'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
                                 <div class="clear"></div>
                             </div>
 
-                            <div v-if="discuss.discussion.option_e!=null">
+                            <div v-if="discussion.option_e!=null">
                                 <b style="float:left">E.&nbsp;</b>
-                                <span style="float:left" v-html="discuss.discussion.option_e"></span>
-                                <span v-if="discuss.answer!= 'E' && discuss.discussion.correct_answer== 'E'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
-                                <span v-if="discuss.answer== 'E' && discuss.discussion.correct_answer== 'E'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
-                                <span v-if="discuss.answer== 'E' && discuss.discussion.correct_answer!= 'E'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
+                                <span style="float:left" v-html="discussion.option_e"></span>
+                                <span v-if="discuss.answer!= 'E' && discussion.correct_answer== 'E'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
+                                <span v-if="discuss.answer== 'E' && discussion.correct_answer== 'E'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
+                                <span v-if="discuss.answer== 'E' && discussion.correct_answer!= 'E'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
                                 <div class="clear"></div>
                             </div>
 
-                            <div v-if="discuss.discussion.option_f!=null">
+                            <div v-if="discussion.option_f!=null">
                                 <b style="float:left">F.&nbsp;</b>
-                                <span style="float:left" v-html="discuss.discussion.option_f"></span>
-                                <span v-if="discuss.answer!= 'F' && discuss.discussion.correct_answer== 'F'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
-                                <span v-if="discuss.answer== 'F' && discuss.discussion.correct_answer== 'F'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
-                                <span v-if="discuss.answer== 'F' && discuss.discussion.correct_answer!= 'F'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
+                                <span style="float:left" v-html="discussion.option_f"></span>
+                                <span v-if="discuss.answer!= 'F' && discussion.correct_answer== 'F'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
+                                <span v-if="discuss.answer== 'F' && discussion.correct_answer== 'F'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
+                                <span v-if="discuss.answer== 'F' && discussion.correct_answer!= 'F'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
                                 <div class="clear"></div>
                             </div>
                             <!-- /pertanyaan -->
@@ -116,7 +116,7 @@
                             <!-- penjelasan -->
                             <div>
                                 <b>Penjelasan:</b>
-                                <span v-html="discuss.discussion.explanation"></span>
+                                <span v-html="discussion.explanation"></span>
                             </div>
                             <hr>
                             <div>
@@ -178,7 +178,7 @@
                         </div>     
                     </v-card>
                 </v-flex>
-        
+       
             </v-layout>
         </v-container>
     </div>
@@ -196,29 +196,33 @@
                 load_data: true,
                 hal: 0,
                 discuss: [],
+                discussion: []
             }
         },
 
 
         methods:{
             viewQuestion(index) {   
-                this.hal     = index 
-                this.discuss = this.detail[index]
+                this.hal        = index 
+                this.discuss    = this.detail[index]
+                this.discussion = this.detail[index].discussion
             },
 
             previous(hal){
                 if(hal > 0){
                     hal--
-                    this.hal     = hal
-                    this.discuss = this.detail[hal]
+                    this.hal        = hal
+                    this.discuss    = this.detail[hal]
+                    this.discussion = this.detail[hal].discussion
                 }
             },
 
             next(hal){
                 if(hal < this.detail.length-1){
                     hal++
-                    this.hal     = hal
-                    this.discuss = this.detail[hal]
+                    this.hal        = hal
+                    this.discuss    = this.detail[hal]
+                    this.discussion = this.detail[hal].discussion
                 }
             },  
         },
@@ -226,9 +230,10 @@
         mounted(){
             axios.get('/cereouts/result/detail/'+this.id)
             .then(response => {
-                this.detail    = response.data.data            
-                this.load_data = false
-                this.discuss   = this.detail[0]
+                this.detail     = response.data.data            
+                this.load_data  = false
+                this.discuss    = this.detail[0]
+                this.discussion = this.detail[0].discussion
                 console.log(response.data)
             })
             .catch(error => {
