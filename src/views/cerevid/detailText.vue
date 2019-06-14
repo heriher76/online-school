@@ -1,8 +1,5 @@
 <template>
   <div class="kelola-pelajaran">
-    	<!-- sub - navbar -->
-		<subNavbarGuru />
-		<!-- end sub - navbar -->
 		<!-- content -->
 		<v-container fluid>
 				<v-layout row wrap>
@@ -21,9 +18,9 @@
 
               <form>
                 <v-card-text style="background-color:#fff">
-                  <v-text-field box v-model="title" label="Judul Video" value=""></v-text-field>
+                  <v-text-field box v-model="title" label="Judul Teks" value=""></v-text-field>
 
-                  <v-text-field v-model="lesson_id" box label="Link Video" value=""></v-text-field>
+                  <v-text-field v-model="content" box label="Konten Teks" value=""></v-text-field>
                   
                   <v-divider></v-divider>
                   <v-card-actions style="background-color:#fff">
@@ -49,7 +46,6 @@
 </template>
 
 <script>
-	import subNavbarGuru from '../../components/cerevid-component/subNavbarGuru'
 	import sidebarGuru from '../../components/cerevid-component/sidebarGuru'
 	import axios from 'axios'
 
@@ -61,23 +57,20 @@
     data () {
       return {
         title: '',
-        lesson_id: '',
-        curriculum: '',
-        description: '',
-        lessons: [],
-        cover: '',
+        content: '',
         right: null,
         btn_load: false
       }
 	},
     created() {
-      // axios.get('http://api.ceredinas.id/api/master/lesson')
-      //   .then(response => {
-      //     this.lessons = response.data.data
-      //   })
-      //   .catch(error => {
-      //     console.log(error)
-      //   })
+      axios.get('http://api.ceredinas.id/api/sections/'+this.$route.params.idSection+'/texts/'+this.$route.params.idText)
+        .then(response => {
+          this.title = response.data.data.title,
+          this.content = response.data.data.content
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
 	methods: {
         submit(){

@@ -97,7 +97,7 @@
                                   <v-list-tile-sub-title>{{ video.title }}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                                 <v-list-tile-action>
-                                  <v-btn  color="green">
+                                  <v-btn color="green" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/section/'+item.id+'/video/'+video.id">
                                     <v-icon color="white--text">visibility</v-icon>
                                     <span class="pa-1 white--text">Lihat</span>
                                   </v-btn>
@@ -114,7 +114,7 @@
                                   <v-list-tile-sub-title>{{ text.title }}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                                 <v-list-tile-action>
-                                  <v-btn color="green">
+                                  <v-btn color="green" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/section/'+item.id+'/text/'+text.id">
                                     <v-icon color="white--text">visibility</v-icon>
                                     <span class="pa-1 white--text">Lihat</span>
                                   </v-btn>
@@ -131,7 +131,7 @@
                                   <v-list-tile-sub-title>{{ quiz_item.title }}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                                 <v-list-tile-action>
-                                  <v-btn color="green">
+                                  <v-btn color="green" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/section/'+item.id+'/quiz/'+quiz_item.id">
                                     <v-icon color="white--text">visibility</v-icon>
                                     <span class="pa-1 white--text">Lihat</span>
                                   </v-btn>
