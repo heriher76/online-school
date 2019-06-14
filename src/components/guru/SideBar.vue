@@ -14,16 +14,6 @@
                 <v-list-tile-title>Dashboard</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
-			
-			<v-list-tile to="/guru/cerecall">
-                <v-list-tile-action>
-                <v-icon>assessment</v-icon>
-                </v-list-tile-action>
-
-                <v-list-tile-content>
-                <v-list-tile-title>Cerecall</v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
 
             <!-- <v-list-tile to="/guru/account">
                 <v-list-tile-action>
@@ -37,7 +27,7 @@
 
             <v-list-tile to="/guru/profile">
                 <v-list-tile-action>
-                <v-icon>assessment</v-icon>
+                <v-icon>create</v-icon>
                 </v-list-tile-action>
 
                 <v-list-tile-content>

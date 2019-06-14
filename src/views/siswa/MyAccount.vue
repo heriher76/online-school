@@ -17,7 +17,7 @@
                 <v-card>
                     <v-card-title>
                         <!-- detail -->
-                        <MyProfile v-show="my_profile" :datas="dataProfileUser" :image="this.pp"/>
+                        <MyProfile v-show="my_profile" :datas="dataProfileUser"/>
                         <EditProfile v-show="edit_profile" :datas="dataProfileUser"/>
                         <!-- /detail -->
                     </v-card-title>   
@@ -53,7 +53,7 @@
                 this.edit_profile = true
                 this.my_profile   = false
             },
-            async getProfileUser(){
+            getProfileUser(){
                 this.$store.dispatch('getProfileUser')
                 .then(response => {
                     console.log("telah load data..")
@@ -81,6 +81,7 @@
         },
         computed: {
             dataProfileUser(){
+                console.log(this.$store.state.dataProfileUser)
                 return this.$store.state.dataProfileUser || {}
             },
             userId(){
