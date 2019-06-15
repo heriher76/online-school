@@ -77,7 +77,7 @@
         image: ''
     }),
     created() {
-        console.log(this.datas)
+        console.log(props)
     }
   }
 </script>
