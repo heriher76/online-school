@@ -36,37 +36,76 @@
                                     ></v-progress-circular>
                                 </div>
                                 
+                                    
+                                
                                 <div v-for="info in infos" :key="info.id">
                                     <v-layout row wrap="" style="border-bottom:1px solid grey; padding:10px 0px">
-                                        <v-flex md4>
+                                        <v-flex md5 sm12 xs12>
                                             <div class="image_info">
-                                                <img :src="info.url" width="100%" height="100%" alt="">
+                                                <v-img
+                                                    :src="info.url"
+                                                    height="180"
+                                                    class="grey darken-4"
+                                                ></v-img>
                                             </div>
                                         </v-flex>
 
-                                        <v-flex md8>
+                                        <v-flex md7 sm12 xs12>
                                             <div style="margin: 0px 25px">
-                                                <h5 style="color:black" class="headline">{{info.title}}</h5>
-                                                <span> 
-                                                    {{info.caption}}
-                                                </span> <br>
+                                                <h5 style="color:black;text-transform:capitalize" class="headline">{{info.title}}</h5>
+                                                <p v-if="info.caption.length<350">{{info.caption}}</p>
+                                                <p v-else>{{info.caption.substring(0,350)+"..."}}</p>
                                                 <router-link :to="{name: 'detail_informasi', params: {data: info} }">Read more >></router-link>
                                             </div>
                                         </v-flex>                      
                                     </v-layout>
                                 </div>
-                                
                             </v-flex>
                         </v-layout>
                 </v-flex>
-
+                
                 <v-flex md4 sm12 xs12>
                         <SideBar/>
                 </v-flex>
             </v-layout>
         </v-container>
+        
     </div>
 </template>
+
+<script>
+    import SideBar from "../../components/informasi/Sidebar"
+    import axios from 'axios'
+
+    export default {
+        components: {
+            SideBar
+        },
+
+        data() {
+            return{
+                load_data:true,    
+                sliders:[],
+                infos: []
+            }
+        },
+
+        mounted(){
+            axios.get('/master/information')
+            .then(response => {
+                this.load_data = false
+                // if(response.data.data.category = 'sliders'){
+                this.sliders = response.data.data
+                // }
+                this.infos = response.data.data
+            })
+            .catch(error =>{
+                console.log(error)
+            })
+        }
+        
+    }
+</script>
 
 <style>
     /* .image-info{
@@ -83,42 +122,3 @@
     } */
 
 </style>
-
-
-<script>
-    import SideBar from "../../components/informasi/Sidebar"
-
-    import axios from 'axios'
-
-    export default {
-        components: {
-            SideBar
-        },
-
-        data() {
-            return{
-                load_data:true,
-
-                sliders:[],
-                infos: []
-            }
-        },
-
-        mounted(){
-        //  axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-
-            axios.get('/master/information')
-            .then(response => {
-                this.load_data = false
-                // if(response.data.data.category = 'sliders'){
-                this.sliders = response.data.data
-                // }
-                this.infos = response.data.data
-            })
-            .catch(error =>{
-                console.log(error)
-            })
-        }
-        
-    }
-</script>

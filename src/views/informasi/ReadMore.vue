@@ -4,11 +4,12 @@
             <v-layout row wrap>
                 <v-flex md8 sm12 xs12>
                         <div style="width:90%; margin:0px auto">
-                            <div style="width:100%;height:400px">
-                                <img :src="data.url" width="100%" height="100%" alt="">
-                            </div>
+                            <v-img
+                                :src="data.url"
+                                class="grey darken-4"
+                            ></v-img>
                             <div>
-                                <h5 style="color:black; margin:10px 0px" class="headline">{{data.title}}</h5>
+                                <h5 style="color:black; margin:10px 0px;text-transform:capitalize" class="headline">{{data.title}}</h5>
                                 <p style="color:#757575;font-size:12px">posted: {{data.created_at}}</p>
                                 <p>{{data.caption}}</p>
                             </div>
@@ -34,6 +35,12 @@
         },
         data: () => ({
             
-        })
+        }),
+
+        mounted(){
+            if(this.data == null){
+                return this.$router.push({name: 'informasi'})
+            }
+        }
     }
 </script>

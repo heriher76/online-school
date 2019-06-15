@@ -178,11 +178,11 @@
                                         <!-- /loading -->
                                         <v-card
                                             style="padding:6px"
-                                            v-for="n in topTryout" :key="n"
+                                            v-for="n in topTryout" :key="n.id"
                                             elevation="12"    
                                         >
-                                            <span style="float:left;text-transform:uppercase;padding:2px"><b>{{n.name}}</b></span>
-                                            <span style="float:right;border-left:1px solid black; padding:2px"><b>{{n.attempt}}</b> Percobaan</span>
+                                            <p style="text-transform:uppercase;padding:2px;color:red"><b>{{n.name}}</b></p>
+                                            <span style="float:right;border-left:1px solid #607D8B; padding:2px 0px 0px 10px"><b style="color:red">{{n.attempt}}</b>&nbsp;<b style="color:green">Percobaan</b></span>
                                             <div class="clear"></div>
                                         </v-card>
                                     </div>
