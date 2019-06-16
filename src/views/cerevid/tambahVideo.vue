@@ -19,9 +19,9 @@
 
               <form>
                 <v-card-text style="background-color:#fff">
-                  <v-text-field box v-model="this.title" label="Judul Video"></v-text-field>
+                  <v-text-field box v-model="title" label="Judul Video"></v-text-field>
 
-                  <v-text-field v-model="this.link" box label="Link Video"></v-text-field>
+                  <v-text-field v-model="link" box label="Link Video"></v-text-field>
                   
                   <v-divider></v-divider>
                   <v-card-actions style="background-color:#fff">
@@ -70,16 +70,18 @@
           axios.defaults.headers = {  
             'Authorization': 'Bearer ' + this.$store.state.token 
           }
-          axios.put('http://api.ceredinas.id/api/sections/'+this.$route.params.idSection+'/videos/create', {
+          axios.post('/sections/'+this.$route.params.idSection+'/videos/create', {
             title: this.title,
             video_url: this.link
           })
           .then(response => {
             this.btn_load = false;
+            this.$swal('Sukses', 'Berhasil Menambahkan Video!', 'success')
             console.log(response.data)
           })
           .catch(error => {
             this.btn_load = false;
+            this.$swal('Oops', 'Gagal Menambahkan Video!', 'warning')
             console.log(error)
           })
         }

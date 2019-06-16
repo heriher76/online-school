@@ -17,8 +17,8 @@
                 <v-card>
                     <v-card-title>
                         <!-- detail -->
-                        <MyProfile v-show="my_profile" :datas="dataProfileUser"/>
-                        <EditProfile v-show="edit_profile" :datas="dataProfileUser"/>
+                        <MyProfile v-show="my_profile" :datas="this.dataProfileUser" :photo="this.photo"/>
+                        <EditProfile v-show="edit_profile" @canceled="showMyProfile" :datas="this.dataProfileUser" :photo="this.photo"/>
                         <!-- /detail -->
                     </v-card-title>   
                 </v-card>
@@ -39,7 +39,8 @@
                 user: [],
                 my_profile: true,
                 edit_profile: false,
-                pp: ''
+                photo: '',
+                dataProfileUser: null
             }
         },
 
@@ -49,44 +50,42 @@
         },
 
         methods: {
+            showMyProfile() {
+                this.edit_profile = false
+                this.my_profile   = true
+            },
             pg_edit() {
                 this.edit_profile = true
                 this.my_profile   = false
-            },
-            getProfileUser(){
-                this.$store.dispatch('getProfileUser')
-                .then(response => {
-                    console.log("telah load data..")
-                })
             }
         },
         created(){
-            this.getProfileUser()
-
-            // get photoprofile
+            //get profile
             axios.defaults.headers = {  
-                'Content-Type': 'image/jpeg',
-                'X-Requested-With': 'XMLHttpRequest',
-                'Authorization': 'Bearer ' + this.$store.state.token
+              'Authorization': 'Bearer ' + this.$store.state.token
             }
-
-            axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser)
+            axios.get('/auth/user')
             .then(response => {
-                console.log(response)
-                this.pp = 'data:image/jpg;base64,'.concat(this.pp.concat(response.data))
+                this.dataProfileUser= response.data
             })
             .catch(error => {
                 console.log(error)
             })
-        },
-        computed: {
-            dataProfileUser(){
-                console.log(this.$store.state.dataProfileUser)
-                return this.$store.state.dataProfileUser || {}
-            },
-            userId(){
-                return this.$store.state.dataUser || {}
+
+            // get photoprofile
+            axios.defaults.headers = {  
+                'Authorization': 'Bearer ' + this.$store.state.token
             }
+
+            axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
+            .then(response => {
+                let imageNode = document.getElementById('myprofile');
+                let imgUrl = URL.createObjectURL(response.data)
+                this.photo = imgUrl
+            })
+            .catch(error => {
+                console.log(error)
+            })
         }
     }
 </script>

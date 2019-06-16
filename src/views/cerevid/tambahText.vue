@@ -19,9 +19,9 @@
 
               <form>
                 <v-card-text style="background-color:#fff">
-                  <v-text-field box v-model="this.title" label="Judul Teks"></v-text-field>
+                  <v-text-field box v-model="title" label="Judul Teks"></v-text-field>
 
-                  <v-text-field v-model="this.konten" box label="Konten Teks"></v-text-field>
+                  <v-text-field v-model="konten" box label="Konten Teks"></v-text-field>
                   
                   <v-divider></v-divider>
                   <v-card-actions style="background-color:#fff">
@@ -70,16 +70,18 @@
           axios.defaults.headers = {  
             'Authorization': 'Bearer ' + this.$store.state.token 
           }
-          axios.put('http://api.ceredinas.id/api/sections/'+this.$route.params.idSection+'/texts/create', {
+          axios.post('/sections/'+this.$route.params.idSection+'/texts/create', {
             title: this.title,
             content: this.konten
           })
           .then(response => {
             this.btn_load = false;
+            this.$swal('Sukses', 'Berhasil Menambahkan Text!', 'success')
             console.log(response.data)
           })
           .catch(error => {
             this.btn_load = false;
+            this.$swal('Oops', 'Gagal Menambahkan Text!', 'warning')
             console.log(error)
           })
         }
