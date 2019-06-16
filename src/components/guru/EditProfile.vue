@@ -69,7 +69,7 @@
                 </form>
             </div>
             <!--  -->
-            <ChangePassword v-show="chg_pass" :idUser="this.datas.data.id"/>
+            <ChangePassword v-show="chg_pass" @canceled="showEditProfile" :idUser="this.datas.data.id"/>
         </v-flex>
     </v-layout>
 </template>
@@ -109,7 +109,10 @@
         },
         methods:{
             cancel() {
-                this.edit_prof = false
+                this.$emit('canceled', 'true')
+            },
+            showEditProfile() {
+                this.edit_prof = true
                 this.chg_pass  = false
             },
             changePass() {

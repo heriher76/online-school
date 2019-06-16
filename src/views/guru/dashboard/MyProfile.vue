@@ -27,7 +27,7 @@
                         <MyProfile v-show="my_profile" :datas="this.dataProfileUser" :photo="this.photo"/>
                         <!-- end of myprofile -->
 
-                        <EditProfile v-show="edit_profile" :datas="this.dataProfileUser" :photo="this.photo"/>
+                        <EditProfile v-show="edit_profile" @canceled="showMyProfile" :datas="this.dataProfileUser" :photo="this.photo"/>
                         <!-- /detail -->
                     </v-card-title>   
                 </v-card>
@@ -64,6 +64,10 @@
         }),
 
         methods: {
+            showMyProfile() {
+                this.edit_profile = false
+                this.my_profile   = true
+            },
             pg_edit() {
                 this.edit_profile = true
                 this.my_profile   = false

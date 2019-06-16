@@ -65,12 +65,13 @@
                     <v-text-field style="height:60px" v-if="datas.data.option2" v-model="datas.data.option2" label="Pilihan Kedua" placeholder="pilihan kedua"></v-text-field>
                     <v-text-field style="height:60px" v-if="datas.data.option3" v-model="datas.data.option3" label="Pilihan Ketiga" placeholder="pilihan ketiga"></v-text-field>
                     <v-divider></v-divider>
-                    <v-btn @click="submit" :loading="btn_load" dark>Update</v-btn>  
+                    <v-btn @click="submit" :loading="btn_load" dark>Update</v-btn>   
+                    <v-btn @click="cancel" dark>Cancel</v-btn>  
                 </form>
             </div>
             <!-- {{dataUser}} -->
             <!--  -->
-            <ChangePassword v-show="chg_pass" :idUser="this.datas.data.id"/>
+            <ChangePassword v-show="chg_pass" @canceled="showEditProfile" :idUser="this.datas.data.id"/>
         </v-flex>
     </v-layout>
 </template>
@@ -109,6 +110,13 @@
             LoadingScreen1
         },
         methods:{
+            cancel() {
+                this.$emit('canceled', 'true')
+            },
+            showEditProfile() {
+                this.edit_prof = true
+                this.chg_pass  = false
+            },
             changePass() {
                 this.edit_prof = false
                 this.chg_pass  = true
