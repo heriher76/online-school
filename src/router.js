@@ -58,7 +58,7 @@ export default new Router({
         requiresVisitor:true
       }
     },
-    
+
     {
       path: '/membership',
       name: 'membership',
@@ -211,8 +211,8 @@ export default new Router({
       component: () => import("./views/cerevid/semuaPelajaran.vue")
     },
     {
-      path: "/cerevid/wishlist",
-      name: "cerevid_wishlist",
+      path: "/cerevid/favorit",
+      name: "cerevid_favorit",
       component: () => import("./views/cerevid/wishlist.vue")
     },
     {
