@@ -183,13 +183,17 @@
                                 <v-list-tile-action-text>
                                   {{ item.posted }}
                                 </v-list-tile-action-text>
+                                <v-list-tile-action-text>
+                                  <a @click="balasForm=!balasForm">Balas</a>
+                                </v-list-tile-action-text>
                               </v-list-tile-action>
+                              <div v-if="balasForm">tampil</div>
               								 </v-list-tile>
                                 <v-divider></v-divider>
               							</template>
               	        </v-list>
                         <v-container class="text-xs-center">
-                          <form @submit.prevent="kirimPertanyaan">
+                          <v-form @submit.prevent="kirimPertanyaan" ref="form">
                             <v-textarea
                               name="input-7-1"
                               v-model="body"
@@ -200,8 +204,7 @@
                             <div class="justify-end">
                     		       <v-btn color="#2c3e50" class="white--text" @click="kirimPertanyaan">Kirim Pertanyaan</v-btn>
                             </div>
-                            <LoadingScreen :loading="is_load"></LoadingScreen>
-                          </form>
+                          </v-form>
                         </v-container>
         			      	<v-layout class="justify-center">
           		    		</v-layout>
@@ -220,7 +223,6 @@
 	import materiVideo from '../../components/cerevid-component/video'
   import materiText from '../../components/cerevid-component/text'
   import materiQuiz from '../../components/cerevid-component/quiz'
-  import LoadingScreen from'../../components/loading-screen/Loading2'
 
   export default {
     name: "materi",
@@ -228,16 +230,16 @@
       materiVideo,
       materiText,
       materiQuiz,
-      LoadingScreen
     },
-    data: () => ({
+    data() {
+    return {
       tipeMateri: 'video',
       body: "",
-      is_load: false,
       rules_body: {
         required: value => !!value || 'Required.',
       },
-    }),
+      balasForm: false
+    }},
   	methods: {
         async getDataDetailMateri(){
           this.$store.dispatch('getDataDetailMateri')
@@ -263,19 +265,16 @@
             }
         },
         kirimPertanyaan(){
-          this.is_load = true
           this.$store.dispatch('pushDataForum', {
             course_id: this.$route.params.id,
             isi: this.body,
             user_id: this.userId,
           })
           .then(response =>{
-            this.is_load = false
-            this.body = ''
+            this.$refs.form.reset()
           })
           .catch(error => {
-            this.is_load = false
-            this.body = ''
+            this.$refs.form.reset()
             this.$swal('Oopps', 'Gagal Mengirim Pertanyaan...', 'warning')
           })
         }
