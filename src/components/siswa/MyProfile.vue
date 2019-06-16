@@ -2,7 +2,7 @@
     <v-layout row wrap="">
         <v-flex md3>
             <div style="height:100px;width:85px;">
-                <img :src="image" width="100%" height="100%" alt="">
+                <img :src="photo" width="100%" height="100%" alt="">
             </div>
         </v-flex>
         <v-flex md9 style="font-size:14px">
@@ -55,7 +55,7 @@
 </template>
 <script>
   export default {
-    props: ['datas'],
+    props: ['datas', 'photo'],
     data: () => ({
         name: this.datas.data.name,
         email: this.datas.data.email,

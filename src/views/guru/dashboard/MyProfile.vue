@@ -23,9 +23,11 @@
 
                 <v-card>
                     <v-card-title>
-                        <!-- detail -->
-                        <MyProfile v-show="my_profile" :datas="dataProfileGuru"/>
-                        <EditProfile v-show="edit_profile" :datas="dataProfileGuru"/>
+                        <!-- detail myprofile -->
+                        <MyProfile v-show="my_profile" :datas="this.dataProfileUser" :photo="this.photo"/>
+                        <!-- end of myprofile -->
+
+                        <EditProfile v-show="edit_profile" :datas="this.dataProfileUser" :photo="this.photo"/>
                         <!-- /detail -->
                     </v-card-title>   
                 </v-card>
@@ -40,51 +42,64 @@
     import EditProfile from "../../../components/guru/EditProfile"
     import SideBar from '../../../components/guru/SideBar'
 
+    import axios from 'axios'
+
     export default {
         data: () => ({
             my_profile: true,
-            edit_profile: false
+            edit_profile: false,
+            name: '',
+            email: '',
+            phone: '',
+            address: '',
+            birth_date: '',
+            birth_place: '',
+            gender: '',
+            parrent_name: '',
+            parrent_phone: '',
+            membership: '',
+            name_class: '',
+            photo: '',
+            dataProfileUser: null
         }),
-
-        components:{
-            MyProfile,
-            EditProfile,
-            SideBar
-        },
 
         methods: {
             pg_edit() {
                 this.edit_profile = true
                 this.my_profile   = false
-            },
-            async getProfileGuru(){
-                this.$store.dispatch('getProfileGuru')
-                .then(response => {
-                    console.log("telah load data..")
-                })
             }
         },
         created(){
-            this.getProfileGuru()
-            
-            // get photoprofile
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
-            axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser)
+            //get profile
+            axios.defaults.headers = {  
+              'Authorization': 'Bearer ' + this.$store.state.token
+            }
+            axios.get('/auth/user')
             .then(response => {
-                console.log(response.data)
-                this.pp = response.data.data
+                this.dataProfileUser= response.data
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+            // get photoprofile
+            axios.defaults.headers = {  
+              'Authorization': 'Bearer ' + this.$store.state.token
+            }
+            axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
+            .then(response => {
+                let imageNode = document.getElementById('myprofile');
+                let imgUrl = URL.createObjectURL(response.data)
+                this.photo = imgUrl
             })
             .catch(error => {
                 console.log(error)
             })
         },
-        computed: {
-            dataProfileGuru(){
-                return this.$store.state.dataProfileGuru || {}
-            },
-            userId(){
-                return this.$store.state.dataGuru || {}
-            }
-        }
+        components:{
+            MyProfile,
+            EditProfile,
+            SideBar
+        },
     }
 </script>

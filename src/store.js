@@ -11,7 +11,6 @@ export default new Vuex.Store({
   state: {
     token: localStorage.getItem('access_token') || null, //get token,
     dataUser : localStorage.getItem('getDataUser') || null,
-    dataGuru : localStorage.getItem('getDataGuru') || null,
     classId : localStorage.getItem('getDataClassId') || null,
     info: [],
     dataClass: [],
@@ -47,10 +46,6 @@ export default new Vuex.Store({
       state.dataUser = dataUser
     },
 
-    retrieveDataGuru(state,dataGuru){
-      state.dataGuru = dataGuru
-    },
-
     destroyToken(state) {
       state.token = null
     },
@@ -61,10 +56,6 @@ export default new Vuex.Store({
 
     destroydataUser(state) {
       state.dataUser = null
-    },
-
-    destroydataGuru(state) {
-      state.dataGuru = null
     },
 
 //----------------------------------------informasi---------------------------------------------
@@ -138,10 +129,6 @@ export default new Vuex.Store({
       state.dataProfileUser = dataProfileUser
     },
 
-    //-----------------------------------Profile Siswa-------------------------
-    getProfileGuru(state, dataProfileGuru){
-      state.dataProfileGuru = dataProfileGuru
-    },
     pushDataDetailForum(state, dataForum){
       state.dataDetailForum.data.push(dataForum.data)
     }
@@ -517,18 +504,6 @@ export default new Vuex.Store({
       .then(response => {
         console.log(response.data)
         context.commit('getProfileUser', response.data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    },
-
-    // get profile
-    getProfileGuru(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-      axios.get('/auth/user')
-      .then(response => {
-        context.commit('getProfileGuru', response.data)
       })
       .catch(error => {
         console.log(error)

@@ -2,7 +2,7 @@
     <v-layout row wrap="">
         <v-flex md3>
             <div style="height:100px;width:85px;">
-                <img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg" width="100%" height="100%" alt="" v-show='showImage'>
+                <img :src="photo" width="100%" height="100%" alt="" v-show='showImage'>
                 <LoadingScreen1 :loading="is_load1"></LoadingScreen1>
             </div>
 
@@ -81,7 +81,7 @@
     import LoadingScreen1 from'../../components/loading-screen/LoadingCerevid'
     
     export default {
-        props: ['datas'],
+        props: ['datas', 'photo'],
         data: () => ({
             chg_pass:false,
             edit_prof:true,
