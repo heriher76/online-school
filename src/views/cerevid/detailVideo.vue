@@ -19,9 +19,9 @@
 
               <form>
                 <v-card-text style="background-color:#fff">
-                  <v-text-field box v-model="this.title" label="Judul Video" value=""></v-text-field>
+                  <v-text-field box v-model="title" label="Judul Video" value=""></v-text-field>
 
-                  <v-text-field v-model="this.link" box label="Link Video" value=""></v-text-field>
+                  <v-text-field v-model="link" box label="Link Video" value=""></v-text-field>
                   
                   <v-divider></v-divider>
                   <v-card-actions style="background-color:#fff">
@@ -64,10 +64,10 @@
       }
 	},
     created() {
-      axios.get('http://api.ceredinas.id/api/sections/'+this.$route.params.idSection+'/videos/'+this.$route.params.idVideo)
+      axios.get('/sections/'+this.$route.params.idSection+'/videos/'+this.$route.params.idVideo)
         .then(response => {
           this.title = response.data.data.title,
-          this.link = 'https://www.youtube.com/watch?v='+response.data.data.video_url
+          this.link = response.data.data.video_url
         })
         .catch(error => {
           console.log(error)
@@ -80,7 +80,7 @@
           axios.defaults.headers = {  
             'Authorization': 'Bearer ' + this.$store.state.token 
           }
-          axios.put('http://api.ceredinas.id/api/sections/'+this.$route.params.idSection+'/videos/'+this.$route.params.idVideo, {
+          axios.put('/sections/'+this.$route.params.idSection+'/videos/'+this.$route.params.idVideo, {
             title: this.title,
             video_url: this.link
           })
