@@ -94,6 +94,7 @@ export default {
       rowsPerPage: 8
     },
     search: '',
+    rowsPerPageItems: [4],
   }),
   components: {
     LoadingScreen
