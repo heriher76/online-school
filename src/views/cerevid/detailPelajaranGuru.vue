@@ -341,16 +341,23 @@
                           <v-container grid-list-md>
                               <v-layout row wrap>
                                 <div class="headline">
-                                  <div>Forum</div>
+                                  <!-- <div>Forum</div> -->
                                 </div>
+                                
                                 <v-layout row wrap>
-                                  
                                   <v-flex xs12 sm12 md12>
                                     <v-list three-line expand="true">
+                                        <v-btn
+                                          dark color="#2c3e50"
+                                          @click.stop="dialog = true"
+                                        >
+                                          Posting Forum
+                                        </v-btn>
+                                        <v-divider></v-divider>
                                         <template v-for="(forum, index) in forums">
                                           <v-subheader
                                             v-if="forum.header"
-                                            :key="forum.header"
+                                            :key="index"
                                           >
                                           </v-subheader>
 
@@ -362,7 +369,7 @@
 
                                           <v-list-tile
                                             v-else
-                                            :key="forum.user"
+                                            :key="index"
                                             avatar
                                           >
                                             <v-list-tile-avatar size="50">
@@ -372,21 +379,15 @@
                                             <v-list-tile-content>
                                               <v-list-tile-title v-html="forum.user">
                                               </v-list-tile-title>
+                                              <h4>{{forum.body}}</h4>
                                               
-                                              <v-list-tile-sub-title v-html="forum.body"></v-list-tile-sub-title>
+                                              <v-list-tile-sub-title v-html="forum.posted"></v-list-tile-sub-title>
                                             </v-list-tile-content>
                                           </v-list-tile>
                                           
                                           <v-divider style="margin:0"></v-divider>
 
                                         </template>
-                                        
-                                        <v-btn
-                                          dark color="#2c3e50"
-                                          @click.stop="dialog = true"
-                                        >
-                                          Posting Forum
-                                        </v-btn>
 
                                         <v-dialog
                                           v-model="dialog"
@@ -479,6 +480,8 @@
           })
         },
         kirimForum(){
+          this.dialog = false
+
           axios.defaults.headers = {  
               'Authorization': 'Bearer ' + this.$store.state.token
           }
