@@ -8,6 +8,18 @@ background: linear-gradient(90deg, rgba(97,94,94,1) 0%, rgba(29,65,106,1) 73%);
         fill-height
         align-center
         pa-3
+        white--text
+      >
+        <v-flex md12>
+          <h1 class="display-3 text-uppercase font-weight-light hidden-md-and-up" style="text-align:center">
+            Cerevid
+          </h1>
+        </v-flex>
+      </v-layout>
+      <v-layout
+        fill-height
+        align-center
+        pa-3
       >
         <v-flex
           white--text
@@ -16,7 +28,7 @@ background: linear-gradient(90deg, rgba(97,94,94,1) 0%, rgba(29,65,106,1) 73%);
           offset-md1
         >
         <v-container>
-          <h1 class="display-3 text-uppercase font-weight-light">
+          <h1 class="display-3 text-uppercase font-weight-light hidden-sm-and-down">
             Cerevid
           </h1>
           <div class="subheading text-uppercase pl-2 mb-4">
@@ -26,35 +38,35 @@ background: linear-gradient(90deg, rgba(97,94,94,1) 0%, rgba(29,65,106,1) 73%);
               row
               wrap
             >
-              <v-flex md10 sm12 xs12 class="hidden-sm-and-down">     
-      <v-autocomplete
-        v-model="select"
-        :loading="loading"
-        :items="dataDaftarPelajaran.data"
-        cache-items
-        class="mx-3"
-        flat
-        label="Cari Pelajaran..."
-        solo
-        clearable
-        append-icon="search"
-        background-color="white"
-        item-text="title"
-      >
-              <template v-slot:item="data">
-                <template>
-                  <v-list-tile @click="cariDetailPelajaran(data.item.id)">
-                    <v-list-tile-avatar>
-                      <img :src="'http://admin.ceredinas.id/public/cover/'+ data.item.cover">
-                    </v-list-tile-avatar>
-                    <v-list-tile-content>
-                      <v-list-tile-title v-html="data.item.title"></v-list-tile-title>
-                      <v-list-tile-sub-title v-html="data.item.teacher.name"></v-list-tile-sub-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                </template>
-              </template>
-      </v-autocomplete>
+              <v-flex md10 sm12 xs12 class="hidden-sm-and-down">
+                <v-autocomplete
+                  v-model="select"
+                  :loading="loading"
+                  :items="dataDaftarPelajaran.data"
+                  cache-items
+                  class="mx-3"
+                  flat
+                  label="Cari Pelajaran..."
+                  solo
+                  clearable
+                  append-icon="search"
+                  background-color="white"
+                  item-text="title"
+                >
+                        <template v-slot:item="data">
+                          <template>
+                            <v-list-tile @click="cariDetailPelajaran(data.item.id)">
+                              <v-list-tile-avatar>
+                                <img :src="'http://admin.ceredinas.id/public/cover/'+ data.item.cover">
+                              </v-list-tile-avatar>
+                              <v-list-tile-content>
+                                <v-list-tile-title v-html="data.item.title"></v-list-tile-title>
+                                <v-list-tile-sub-title v-html="data.item.teacher.name"></v-list-tile-sub-title>
+                              </v-list-tile-content>
+                            </v-list-tile>
+                          </template>
+                        </template>
+                </v-autocomplete>
               </v-flex>
             </v-layout>
           </v-container>
@@ -66,13 +78,34 @@ background: linear-gradient(90deg, rgba(97,94,94,1) 0%, rgba(29,65,106,1) 73%);
         />
       </v-layout>
         <v-container class="hidden-md-and-up">
-          <v-text-field
-            box
+          <v-autocomplete
+            v-model="select"
+            :loading="loading"
+            :items="dataDaftarPelajaran.data"
+            cache-items
+            class="mx-3"
+            flat
             label="Cari Pelajaran..."
+            solo
+            clearable
             append-icon="search"
-            background-color="#fff"
+            background-color="white"
+            item-text="title"
           >
-          </v-text-field>
+                  <template v-slot:item="data">
+                    <template>
+                      <v-list-tile @click="cariDetailPelajaran(data.item.id)">
+                        <v-list-tile-avatar>
+                          <img :src="'http://admin.ceredinas.id/public/cover/'+ data.item.cover">
+                        </v-list-tile-avatar>
+                        <v-list-tile-content>
+                          <v-list-tile-title v-html="data.item.title"></v-list-tile-title>
+                          <v-list-tile-sub-title v-html="data.item.teacher.name"></v-list-tile-sub-title>
+                        </v-list-tile-content>
+                      </v-list-tile>
+                    </template>
+                  </template>
+          </v-autocomplete>
         </v-container>
     </v-card>
     <v-card color="pink" hidden-sm-and-down>
@@ -82,7 +115,7 @@ background: linear-gradient(90deg, rgba(97,94,94,1) 0%, rgba(29,65,106,1) 73%);
       >
         <v-layout
           pa-4
-        > 
+        >
             <v-flex
               md4
             >

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="datas.data">
+  <div v-if="countStar">
     <div class="headline">
 		    <div>Ulasan Pengguna</div>
     </div>
@@ -26,40 +26,34 @@
 			  <v-flex xs12 sm7 md9>
 			    <v-layout row wrap>
 				    <v-flex md10>
-					    <v-progress-linear
+      				<v-progress-linear
+        				color="yellow darken-3"
+        				height="18"
+        				:value="100*(star5/totalStar)"
+        				>
+              </v-progress-linear>
+              <v-progress-linear
 						    color="yellow darken-3"
 								height="18"
-								value="75"
+								:value="100*(star4/totalStar)"
 								>
               </v-progress-linear>
               <v-progress-linear
 						    color="yellow darken-3"
 								height="18"
-								value="75"
+								:value="100*(star3/totalStar)"
 								>
               </v-progress-linear>
               <v-progress-linear
 						    color="yellow darken-3"
 								height="18"
-								value="75"
+								:value="100*(star2/totalStar)"
 								>
               </v-progress-linear>
               <v-progress-linear
 						    color="yellow darken-3"
 								height="18"
-								value="75"
-								>
-              </v-progress-linear>
-              <v-progress-linear
-						    color="yellow darken-3"
-								height="18"
-								value="75"
-								>
-              </v-progress-linear>
-              <v-progress-linear
-						    color="yellow darken-3"
-								height="18"
-								value="75"
+								:value="100*(star1/totalStar)"
 								>
               </v-progress-linear>
               <v-spacer/>
@@ -130,12 +124,14 @@
                                v-model="kasihRating"
                                color="yellow darken-3"
                                background-color="grey darken-1"
+                               :rules="[rules_rating.required]"
                              >
                              </v-rating>
                              <p class="text-xs-center">{{kasihRating}}</p>
                              <v-textarea
                                label="Isi Ulasan"
                                v-model="body"
+                               :rules="[rules_review.required]"
                              ></v-textarea>
                            </v-card-text>
 
@@ -146,6 +142,7 @@
                                color="green darken-1"
                                flat="flat"
                                @click="kirimUlasan"
+                               :disabled="!formIsValid"
                              >
                                Kirim
                              </v-btn>
@@ -168,10 +165,49 @@
     props: ['datas'],
     data: () => ({
       dialog:false,
-      kasihRating: 0,
+      kasihRating: 1,
+      star1: 0,
+      star2: 0,
+      star3: 0,
+      star4: 0,
+      star5: 0,
+      totalStar: 0,
       body: "",
+      rules_rating: {
+        required: value => !!value || 'Wajib Diisi',
+      },
+      rules_review: {
+        required: value => !!value || 'Wajib Diisi.',
+      },
     }),
     computed:{
+      countStar(){
+        if(this.datas.data){
+          console.log('data ditemukan')
+          for(var i=0;i<this.datas.data.reviews.length;i++){
+            if(this.datas.data.reviews[i].star==1){
+              this.star1+=1
+            }else if(this.datas.data.reviews[i].star==2){
+              this.star2+=1
+            }else if(this.datas.data.reviews[i].star==3){
+              this.star3+=1
+            }else if(this.datas.data.reviews[i].star==4){
+              this.star4+=1
+            }else if(this.datas.data.reviews[i].star==5){
+              this.star5+=1
+            }
+            this.totalStar+=1
+          }
+          console.log(this.totalStar+' '+(100*(this.star5/this.totalStar))+" "+(100*(this.star4/this.totalStar))+" "+(100*(this.star3/this.totalStar))+" "+(100*(this.star2/this.totalStar)))
+          return true
+        }
+      },
+      formIsValid() {
+        return (
+          this.kasihRating,
+          this.body
+        )
+      },
 			userId(){
 				return this.$store.state.dataUser || {}
 			},

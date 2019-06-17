@@ -64,11 +64,26 @@
                   </div>
                   <span class="grey--text">{{props.item.teacher}}</span>
                 </div>
-                <v-progress-linear color="success" height="5" value="30">
-                  <p>Progress Pembelajaran</p>
-
-                </v-progress-linear>
               </v-card-title>
+              <v-card-text>
+                <p class="caption">Progress Pembelajaran ({{props.item.progress}}%)</p>
+                <div v-if="props.item.progress==100">
+                  <v-progress-linear color="success" height="7" :value="props.item.progress">
+                  </v-progress-linear>
+                </div>
+                <div v-else-if="props.item.progress>=60">
+                  <v-progress-linear color="primary" height="7" :value="props.item.progress">
+                  </v-progress-linear>
+                </div>
+                <div v-else-if="props.item.progress>=20">
+                  <v-progress-linear color="yellow" height="7" :value="props.item.progress">
+                  </v-progress-linear>
+                </div>
+                <div v-else-if="props.item.progress>=0">
+                  <v-progress-linear color="red" height="7" :value="props.item.progress">
+                  </v-progress-linear>
+                </div>
+              </v-card-text>
               <v-spacer></v-spacer>
               <v-card-actions>
                 <v-spacer></v-spacer>
