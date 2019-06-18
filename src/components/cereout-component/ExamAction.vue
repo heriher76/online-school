@@ -151,6 +151,7 @@
             </v-layout>
         </v-container>
         <LoadingScreen3 :loading="loadSubmit"></LoadingScreen3>
+        <!-- {{answer}} -->
     </div>
 </template>
 
@@ -233,6 +234,8 @@
                         ans = 'E'
                     }else if(this.tmpanswer[i] == 5){
                         ans = 'F'
+                    }else{
+                        ans = ''
                     }
 
                     if(this.markanswer[i]==null){

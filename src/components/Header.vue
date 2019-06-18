@@ -82,7 +82,7 @@
                 <v-list>
                 <v-list-tile avatar>
                     <v-list-tile-avatar>
-                    <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
+                    <img :src="userPhoto" alt="John">
                     </v-list-tile-avatar>
                     <v-list-tile-content>
                     <v-list-tile-title>{{user.name}}</v-list-tile-title>
@@ -123,7 +123,7 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar style="margin-top:-50px">
-              <img src="https://randomuser.me/api/portraits/men/85.jpg">
+              <img :src="userPhoto">
             </v-list-tile-avatar>
 
             <v-list-tile-content style="height:100px;">
@@ -252,7 +252,8 @@ export default {
       drawer: false,
       loadLogout: false,
       menu: false,
-      user: []
+      user: [],
+      userPhoto: ''
     }
   },
 
@@ -270,6 +271,16 @@ export default {
     })
     .catch(error => {
       console.log(error)
+    })
+
+    axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
+    .then(response => {
+        // let imageNode = document.getElementById('myprofile');
+        let imgUrl     = URL.createObjectURL(response.data)
+        this.userPhoto = imgUrl
+    })
+    .catch(error => {
+        console.log(error)
     })
   },
 
