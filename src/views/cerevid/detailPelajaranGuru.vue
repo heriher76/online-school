@@ -197,7 +197,7 @@
                                           <v-container grid-list-md>
                                             <v-layout wrap>
                                               <v-flex xs12 sm6 md12>
-                                                <v-text-field label="Nama Sub Judul*" required></v-text-field>
+                                                <v-text-field v-model="title" label="Nama Sub Judul*" required></v-text-field>
                                               </v-flex>
                                             </v-layout>
                                           </v-container>
@@ -206,7 +206,7 @@
                                         <v-card-actions>
                                           <v-spacer></v-spacer>
                                           <v-btn color="blue darken-1" flat @click="tambahBab = false">Tutup</v-btn>
-                                          <v-btn color="blue darken-1" flat @click="tambahBab = false">Tambah</v-btn>
+                                          <v-btn color="blue darken-1" flat @click="this.submitSection">Tambah</v-btn>
                                         </v-card-actions>
                                       </v-card>
                                     </v-dialog>
@@ -446,6 +446,7 @@
 			reviews: '',
       forums: '',
       body: '',
+      title: '',
       dialog:false,
       tambahBab: false,
       tambahMateri: false,
@@ -459,19 +460,38 @@
             console.log("telah load data..")
           })
         },
+        submitSection() {
+          this.tambahBab = false
+          axios.defaults.headers = {  
+              'Authorization': 'Bearer ' + this.$store.state.token
+          }
+          axios.post('/courses/'+this.$route.params.id+'/sections/create', {
+            course_id: this.$route.params.id,
+            title: this.title
+          })
+          .then(response => {
+            this.$swal('Sukses', 'Berhasil Menambahkan Section!', 'success')
+            console.log(response.data)
+          })
+          .catch(error => {
+            this.$swal('Oops', 'Gagal Menambahkan Section!', 'warning')
+            console.log(error)
+          })
+        },
         kirimForum(){
           axios.defaults.headers = {  
               'Authorization': 'Bearer ' + this.$store.state.token
           }
           axios.post('courses/'+this.$route.params.id+'/forums/create', {
             course_id: this.$route.params.id,
-            body: this.body,
-            user_id: this.$store.state.dataUser
+            body: this.body
           })
           .then(response => {
+            this.$swal('Sukses', 'Berhasil Menambahkan Komentar!', 'success')
             console.log(response.data)
           })
           .catch(error => {
+            this.$swal('Oops', 'Gagal Menambahkan Komentar!', 'warning')
             console.log(error)
           })
         }

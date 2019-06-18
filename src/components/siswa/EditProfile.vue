@@ -2,7 +2,7 @@
     <v-layout row wrap="">
         <v-flex md3>
             <div style="height:100px;width:85px;">
-                <img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg" width="100%" height="100%" alt="" v-show='showImage'>
+                <img :src="photo" width="100%" height="100%" alt="" v-show='showImage'>
                 <LoadingScreen1 :loading="is_load1"></LoadingScreen1>
             </div>
 
@@ -65,12 +65,13 @@
                     <v-text-field style="height:60px" v-if="datas.data.option2" v-model="datas.data.option2" label="Pilihan Kedua" placeholder="pilihan kedua"></v-text-field>
                     <v-text-field style="height:60px" v-if="datas.data.option3" v-model="datas.data.option3" label="Pilihan Ketiga" placeholder="pilihan ketiga"></v-text-field>
                     <v-divider></v-divider>
-                    <v-btn @click="submit" :loading="btn_load" dark>Update</v-btn>  
+                    <v-btn @click="submit" :loading="btn_load" dark>Update</v-btn>   
+                    <v-btn @click="cancel" dark>Cancel</v-btn>  
                 </form>
             </div>
             <!-- {{dataUser}} -->
             <!--  -->
-            <ChangePassword v-show="chg_pass" :idUser="this.datas.data.id"/>
+            <ChangePassword v-show="chg_pass" @canceled="showEditProfile" :idUser="this.datas.data.id"/>
         </v-flex>
     </v-layout>
 </template>
@@ -81,7 +82,7 @@
     import LoadingScreen1 from'../../components/loading-screen/LoadingCerevid'
     
     export default {
-        props: ['datas'],
+        props: ['datas', 'photo'],
         data: () => ({
             chg_pass:false,
             edit_prof:true,
@@ -109,6 +110,13 @@
             LoadingScreen1
         },
         methods:{
+            cancel() {
+                this.$emit('canceled', 'true')
+            },
+            showEditProfile() {
+                this.edit_prof = true
+                this.chg_pass  = false
+            },
             changePass() {
                 this.edit_prof = false
                 this.chg_pass  = true

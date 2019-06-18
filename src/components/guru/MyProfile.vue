@@ -2,7 +2,7 @@
     <v-layout row wrap="">
         <v-flex md3>
             <div style="height:100px;width:85px;">
-                <img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg" width="100%" height="100%" alt="">
+                <img :src="photo" width="100%" height="100%" alt="">
             </div>
         </v-flex>
         <v-flex md9 style="font-size:14px">
@@ -40,41 +40,12 @@
                 <tr height="30">
                     <td><b>Class</b></td><td v-if="datas.data.class">{{ datas.data.class.name_class }}</td>
                 </tr>
-                <!-- <tr height="30">
-                    <td><b>Pilihan Pertama</b></td><td v-if="datas.data.option1 !== null">{{ datas.data.option1.department_name }} - {{ datas.data.option1.university_name }}</td>
-                </tr>
-                <tr height="30">
-                    <td><b>Pilihan Kedua</b></td><td v-if="datas.data.option2 !== null">{{ datas.data.option2.department_name }} - {{ datas.data.option2.university_name }}</td>
-                </tr>
-                <tr height="30">
-                    <td><b>Pilihan Ketiga</b></td><td v-if="datas.data.option3 !== null">{{ datas.data.option3.department_name }} - {{ datas.data.option3.university_name }}</td>
-                </tr> -->
             </table>
         </v-flex>
     </v-layout>
 </template>
 <script>
   export default {
-    props: ['datas'],
-    data: () => ({
-        name: this.datas.data.name,
-        email: this.datas.data.email,
-        phone: this.datas.data.phone,
-        address: this.datas.data.address,
-        birth_date: this.datas.data.birth_date,
-        birth_place: this.datas.data.birth_place,
-        gender: this.datas.data.gender,
-        parrent_name: this.datas.data.parrent_name,
-        parrent_phone: this.datas.data.parrent_phone,
-        membership: this.datas.data.membership,
-        class: this.datas.data.class.name_class,
-        option1_department: this.datas.data.option1.department_name,
-        option1_university: this.datas.data.option1.university_name,
-        option2_department: this.datas.data.option2.department_name,
-        option2_university: this.datas.data.option2.university_name,
-        option3_department: this.datas.data.option3.department_name,
-        option3_university: this.datas.data.option3.university_name,
-        photo: this.image
-    })
+    props: ['datas', 'photo']
   }
 </script>

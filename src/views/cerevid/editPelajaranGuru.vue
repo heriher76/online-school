@@ -119,12 +119,13 @@
           data.set('curriculum', this.dataDetailPelajaran.data.curriculum);
           data.set('lesson_id', this.dataDetailPelajaran.data.lesson_id);
           data.set('user_id', this.dataDetailPelajaran.data.dataUser);
+          data.set('_method', 'PUT');
 
           axios.defaults.headers = {  
             'Content-Type': 'multipart/form-data',  
             'Authorization': 'Bearer ' + this.$store.state.token 
           }
-          axios.put('http://api.ceredinas.id/api/courses/'+this.$route.params.id, data)
+          axios.post('http://api.ceredinas.id/api/courses/'+this.$route.params.id, data)
           .then(response => {
             this.btn_load = false;
             this.$swal('Sukses', 'Berhasil Mengedit Pelajaran!', 'success')
