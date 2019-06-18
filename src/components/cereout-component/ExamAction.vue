@@ -72,12 +72,6 @@
                             </div>
                             <v-container>
                                 <p style="font-size:16px" v-html="quest"></p>
-                                <!-- <div style="float:left">
-                                    <label class="container" v-for="(n,key,index) in options" :key="n.index">
-                                    <input type="radio" :value="key" v-model="tmpanswer[hal]" name="opt">
-                                    <span class="checkmark"><span v-html="n.option"></span></span>
-                                    </label>   
-                                </div> -->
                                 <div v-for="(n,key,index) in options" :key="n.index">
                                     <label v-if="n.option!=null">
                                         <input type="radio" style="float:left;margin:4px" :value="key" v-model="tmpanswer[hal]" name="opt">
@@ -154,8 +148,6 @@
                         <!-- <v-btn block color="red" dark @click="submit">Akhiri</v-btn> -->
                     </v-card>
                 </v-flex>
-            <!-- {{ tmpanswer }} -->
-            <!-- {{markanswer}} -->
             </v-layout>
         </v-container>
         <LoadingScreen3 :loading="loadSubmit"></LoadingScreen3>
@@ -163,7 +155,7 @@
 </template>
 
 <script>
-    import Timer from "../cereout-component/Timer"    
+    // import Timer from "../cereout-component/Timer"    
     import LoadingScreen3 from'../../components/loading-screen/Loading3'
     import axios from 'axios';
 
@@ -171,7 +163,7 @@
         props:["name","cereoutId", "time", "attemptId"],
 
         components:{
-            Timer,
+            // Timer,
             LoadingScreen3
         },
         

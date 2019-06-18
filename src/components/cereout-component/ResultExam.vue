@@ -35,8 +35,8 @@
                 <v-flex md9 sm12 xs12>
                     <v-card style="padding:5px;">
                         <span style="margin:18px;font-size:18px"><b>Soal No. {{hal+1}}</b>
-                           <span v-if="discuss.mark== 1">&nbsp;<v-icon color="green">done</v-icon></span>
-                           <span v-else>&nbsp;<v-icon color="red">clear</v-icon></span> 
+                            <span v-if="discuss.answer == discussion.correct_answer" >&nbsp;<v-icon color="green">done</v-icon></span>
+                            <span v-else>&nbsp;<v-icon color="red">clear</v-icon></span> 
                         </span>
 
                         <div style="float:right; padding:2px 10px 0px 0px;color:#64B5F6">
@@ -169,9 +169,13 @@
                         >  
                             <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
                             <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
-
+                            
+                            <!-- <span v-else-if="key+1 < 10 && discuss[key].mark=='1'" style="background:orange;padding:10px 14.6px">{{key+1}} </span>       
+                            <span v-else-if="key+1 >= 10 && discuss[key].mark=='1'" style="background:orange;padding:10px 10.6px">{{key+1}}</span> -->
+                            
                             <span v-else-if="key+1 < 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
                             <span v-else-if="key+1 >= 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
+{{discuss[key].mark}}
                         </a>
                         <div class="clear"></div>
                     </v-card>
