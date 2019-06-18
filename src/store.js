@@ -278,7 +278,9 @@ export default new Vuex.Store({
     },
 
     getDataPelajaranbyTeacher(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+        'Authorization': 'Bearer ' + context.state.token 
+      }
       axios.get('/courses/teacher/'+this.state.dataUser)
       .then(response => {console.log(response.data)
         context.commit('getDataPelajaranbyTeacher', response.data)
@@ -300,7 +302,9 @@ export default new Vuex.Store({
     },
 
     getDataDetailPelajaran(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+        'Authorization': 'Bearer ' + context.state.token 
+      }
       axios.get('/courses/'+router.currentRoute.params.id)
       .then(response => {
         context.commit('getDataDetailPelajaran', response.data)

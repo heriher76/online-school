@@ -105,7 +105,7 @@
                                   </v-btn>
                                 </v-list-tile-action>
                                 <v-list-tile-action>
-                                  <v-btn color="red">
+                                  <v-btn color="red" @click="handleDeleteVideo(item.id, video.id)">
                                     <v-icon color="white--text">delete</v-icon>
                                     <span class="pa-1 white--text">Hapus</span>
                                   </v-btn>
@@ -128,7 +128,7 @@
                                   </v-btn>
                                 </v-list-tile-action>
                                 <v-list-tile-action>
-                                  <v-btn color="red">
+                                  <v-btn color="red" @click="handleDeleteText(item.id, text.id)">
                                     <v-icon color="white--text">delete</v-icon>
                                     <span class="pa-1 white--text">Hapus</span>
                                   </v-btn>
@@ -391,7 +391,7 @@
                                             <br>
                                             <i>{{forum.posted}}</i>
                                             <p>{{forum.body}}</p>
-                                            <v-btn color="blue" class="white--text" @click="replyUser(1)">Balas</v-btn>
+                                            <v-btn color="blue" class="white--text" @click="replyUser(forum.id)">Balas</v-btn>
                                             <v-btn color="red" class="white--text" @click="handleDelete">Hapus</v-btn>
                                             <br><br>
 
@@ -500,18 +500,28 @@
           this.showComment = true
         },
         replyUser(id) {
-          console.log(id)
           this.$swal({
             title: "Masukkan Komentar!",
             input: 'textarea',
             showCancelButton: true,
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true,
             animation: "slide-from-top",
             inputPlaceholder: "Write something"
           }).then((willReply) => {
             if (!willReply.dismiss) {
-              console.log('true')
+              axios.defaults.headers = {  
+                  'Authorization': 'Bearer ' + this.$store.state.token
+              }
+              axios.post('courses/'+this.$route.params.id+'/forums/create', {
+                forums_id: id,
+                body: willReply.value
+              })
+              .then(response => {
+                this.$swal('Sukses', 'Berhasil Menambahkan Komentar!', 'success')
+                // this.forums.unshift({body: this.body, posted: 'Just Now' , user: 'heri'});
+              })
+              .catch(error => {
+                this.$swal('Oops', 'Gagal Menambahkan Komentar!', 'warning')
+              })
             } else {
               console.log('false')
             }
@@ -532,6 +542,60 @@
               console.log('safe')
             }
           });
+        },
+        findNestedText (obj, parent, value, i) {
+            if (obj.id === value) {
+                parent.splice(i,1)
+            }
+            if (obj && obj.texts && obj.texts.length > 0) {
+                for (let j = 0; j < obj.texts.length; j++) {
+                    this.findNestedText(obj.texts[j], obj.texts, value, j);
+                }
+            }
+        },
+        handleDeleteText(idSection, id){
+          axios.defaults.headers = {  
+              'Authorization': 'Bearer ' + this.$store.state.token
+          }
+          axios.delete('/sections/'+this.$route.params.idSection+'/texts/'+id)
+          .then(response => {
+            this.$swal('Sukses', 'Berhasil Menghapus Materi Teks!', 'success')
+            
+            for (let i = 0; i < this.sections.length; i++) {
+                this.findNestedText(this.sections[i], this.sections, id, i); 
+            }
+            
+          })
+          .catch(error => {
+            this.$swal('Oops', 'Gagal Menghapus Materi Teks!', 'warning')
+          })
+        },
+        findNestedVideo (obj, parent, value, i) {
+            if (obj.id === value) {
+                parent.splice(i,1)
+            }
+            if (obj && obj.videos && obj.videos.length > 0) {
+                for (let j = 0; j < obj.videos.length; j++) {
+                    this.findNestedText(obj.videos[j], obj.videos, value, j);
+                }
+            }
+        },
+        handleDeleteVideo(idSection, id){
+          axios.defaults.headers = {  
+              'Authorization': 'Bearer ' + this.$store.state.token
+          }
+          axios.delete('/sections/'+this.$route.params.idSection+'/videos/'+id)
+          .then(response => {
+            this.$swal('Sukses', 'Berhasil Menghapus Materi Video!', 'success')
+            
+            for (let i = 0; i < this.sections.length; i++) {
+                this.findNestedVideo(this.sections[i], this.sections, id, i); 
+            }
+            
+          })
+          .catch(error => {
+            this.$swal('Oops', 'Gagal Menghapus Materi Video!', 'warning')
+          })
         },
         submitSection() {
           this.tambahBab = false
@@ -602,6 +666,7 @@
       axios.get('/courses/'+this.$route.params.id+'/forums')
       .then(response => {
         this.forums = response.data.data
+        console.log(response.data.data)
       })
       .catch(error => {
         console.log(error)
@@ -610,8 +675,8 @@
     computed: {
       dataDetailPelajaran(){
         if(typeof this.$store.state.dataDetailPelajaran.data !== "undefined"){
-          this.is_load1 = !this.is_load1
-          this.showTab = !this.showTab
+          this.is_load1 = false
+          this.showTab = true
         }
         return this.$store.state.dataDetailPelajaran || {}
       },
