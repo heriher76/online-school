@@ -384,17 +384,74 @@
                                       <div :key="index" style="margin: 10px; padding: 10px; border: 1px solid black">
                                         <v-layout row wrap>
                                           <v-flex xs12 sm12 md2>
-                                            asdfsdf
+                                            <img :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'" style="border-radius: 50%; height: 100px;">
                                           </v-flex>
                                           <v-flex xs12 sm12 md10>
                                             <b style="margin-bottom:0px;">{{forum.user}}</b>
-                                            <p>{{forum.body}}</p>
+                                            <br>
                                             <i>{{forum.posted}}</i>
+                                            <p>{{forum.body}}</p>
+                                            <v-btn color="blue" class="white--text" @click="replyUser(1)">Balas</v-btn>
+                                            <v-btn color="red" class="white--text" @click="handleDelete">Hapus</v-btn>
+                                            <br><br>
+
+                                            <v-expansion-panel popout>
+                                              <v-expansion-panel-content>
+                                                <template v-slot:header>
+                                                  <div>Tampilkan Komentar...</div>
+                                                </template>
+                                                <v-card>
+                                                  <v-card-text>
+                                                    <div>
+                                                      <v-layout row wrap>
+                                                        <v-flex xs12 sm12 md2>
+                                                          <img :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'" style="border-radius: 50%; height: 80px;">
+                                                        </v-flex>
+                                                        <v-flex xs12 sm12 md10>
+                                                          <b style="margin-bottom:0px;">asdfasdfsa</b>
+                                                          <br>
+                                                          <i>23 menit</i>
+                                                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                                          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                                          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                                          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                                          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                                          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                                        </v-flex>
+                                                      </v-layout>
+                                                    </div>
+                                                  </v-card-text>
+                                                </v-card>
+                                              </v-expansion-panel-content>
+                                            </v-expansion-panel>
+
+                                            <!-- <b style="cursor: pointer;" @click="handleShowComment">Tampilkan Komentar...</b> -->
+                                            <!-- komentar  -->
+                                            <div class="komentar" v-show="showComment">
+                                              <div style="margin: 10px; padding: 10px; border: 1px solid black">
+                                                <v-layout row wrap>
+                                                  <v-flex xs12 sm12 md2>
+                                                    <img :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'" style="border-radius: 50%; height: 80px;">
+                                                  </v-flex>
+                                                  <v-flex xs12 sm12 md10>
+                                                    <b style="margin-bottom:0px;">asdfasdfsa</b>
+                                                    <br>
+                                                    <i>23 menit</i>
+                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                                  </v-flex>
+                                                </v-layout>
+                                              </div>
+                                            </div>
+                                            <!-- end komentar -->
                                           </v-flex>
                                         </v-layout>
                                       </div>
                                     </div>
-
                                   </v-flex>
                                 </v-layout>
                               </v-layout>
@@ -429,7 +486,8 @@
       tambahBab: false,
       tambahMateri: false,
       is_load1: true,
-      showTab: false
+      showTab: false,
+      showComment: false
     }),
     methods: {
         async getDataDetailPelajaran(){
@@ -437,6 +495,43 @@
           .then(response => {
             console.log("telah load data..")
           })
+        },
+        handleShowComment() {
+          this.showComment = true
+        },
+        replyUser(id) {
+          console.log(id)
+          this.$swal({
+            title: "Masukkan Komentar!",
+            input: 'textarea',
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            animation: "slide-from-top",
+            inputPlaceholder: "Write something"
+          }).then((willReply) => {
+            if (!willReply.dismiss) {
+              console.log('true')
+            } else {
+              console.log('false')
+            }
+          });
+        },
+        handleDelete() {
+          this.$swal({
+            title: "Delete this comment?",
+            text: "Are you sure? You won't be able to revert this!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Yes, Delete it!"
+          }).then((willDelete) => {
+            if (willDelete.value) {
+              console.log('deleted')
+            } else {
+              console.log('safe')
+            }
+          });
         },
         submitSection() {
           this.tambahBab = false
@@ -449,11 +544,10 @@
           })
           .then(response => {
             this.$swal('Sukses', 'Berhasil Menambahkan Section!', 'success')
-            console.log(response.data)
+            this.sections.unshift({title: this.title, course_id: this.$route.params.id});
           })
           .catch(error => {
             this.$swal('Oops', 'Gagal Menambahkan Section!', 'warning')
-            console.log(error)
           })
         },
         kirimForum(){
@@ -468,11 +562,10 @@
           })
           .then(response => {
             this.$swal('Sukses', 'Berhasil Menambahkan Komentar!', 'success')
-            console.log(response.data)
+            this.forums.unshift({body: this.body, posted: 'Just Now' , user: 'heri'});
           })
           .catch(error => {
             this.$swal('Oops', 'Gagal Menambahkan Komentar!', 'warning')
-            console.log(error)
           })
         }
     },
@@ -496,7 +589,6 @@
       }
       axios.get('/courses/'+this.$route.params.id+'/reviews')
       .then(response => {
-        console.log(response.data.data)
         this.reviews = response.data.data
       })
       .catch(error => {
@@ -509,7 +601,6 @@
       }
       axios.get('/courses/'+this.$route.params.id+'/forums')
       .then(response => {
-        console.log(response.data.data)
         this.forums = response.data.data
       })
       .catch(error => {
