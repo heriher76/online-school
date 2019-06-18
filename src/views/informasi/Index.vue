@@ -5,25 +5,7 @@
                 <v-flex md8 sm12 xs12>
                         <v-layout row wrap>
                             <v-flex md12 sm12 xs12>
-                                <v-carousel style="height:400px;">
-                                    <div v-show="load_data" style="margin:130px auto; width:5%;">
-                                        <v-progress-circular
-                                        :size="40"
-                                        color="primary"
-                                        indeterminate
-                                        ></v-progress-circular>
-                                    </div>
-                                    <v-carousel-item
-                                    v-for="(item,i) in sliders"
-                                    :key="i"
-                                    :src="item.url"
-                                    >
-                                        <h5 style="color:white; padding:10px 20px; background:rgba(0,0,0,0.2)" class="headline">{{item.title}}</h5>
-                                    </v-carousel-item>
-                                </v-carousel>
-                            </v-flex>
-                            <v-flex md12 sm12 xs12>
-                                <v-card style="padding:10px 20px">
+                                <v-card style="padding:10px 20px;" color="#B71C1C" dark>
                                     <h6 class="title">INFO CEREBRUM</h6>
                                 </v-card>
                             </v-flex>
@@ -36,9 +18,7 @@
                                     ></v-progress-circular>
                                 </div>
                                 
-                                    
-                                
-                                <div v-for="info in infos" :key="info.id">
+                                <div v-for="info in datas" :key="info.id">
                                     <v-layout row wrap="" style="border-bottom:1px solid grey; padding:10px 0px">
                                         <v-flex md5 sm12 xs12>
                                             <div class="image_info">
@@ -85,8 +65,7 @@
         data() {
             return{
                 load_data:true,    
-                sliders:[],
-                infos: []
+                datas:[],
             }
         },
 
@@ -94,10 +73,7 @@
             axios.get('/master/information')
             .then(response => {
                 this.load_data = false
-                // if(response.data.data.category = 'sliders'){
-                this.sliders = response.data.data
-                // }
-                this.infos = response.data.data
+                this.datas = response.data.data
             })
             .catch(error =>{
                 console.log(error)

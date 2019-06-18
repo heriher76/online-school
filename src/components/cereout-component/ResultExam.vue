@@ -122,7 +122,7 @@
                             <div>
                                 <b>Video Penjelasan:</b>
                                 <div style="width:100%;height:380px">
-                                    <iframe :src="'https://www.youtube.com/embed/V1Pl8CzNzCw'" style="width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    <iframe :src="'https://www.youtube.com/embed/V1Pl8CzNzCw?modestbranding=1&rel=0&iv_load_policy=3&fs=0&disablekb=1&showinfo=0&autoplay=0'" style="width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 </div>
                             </div>
                             <!-- /penjelasan -->
@@ -132,13 +132,13 @@
                                 <v-card-text>
                                 <v-layout style="font-size:15px">
                                     <v-flex md4>
-                                        <b>User Right</b>&nbsp;:&nbsp;<b>{{discuss.user_right}}</b>
+                                        <b>Siswa yang menjawab benar</b>&nbsp;:&nbsp;<b>{{discuss.user_right}}</b>
                                     </v-flex>
                                     <v-flex md4>
-                                        <b>User Wrong</b>&nbsp;:&nbsp;<b>{{discuss.user_wrong}}</b>
+                                        <b>Siswa yang menjawab salah</b>&nbsp;:&nbsp;<b>{{discuss.user_wrong}}</b>
                                     </v-flex>
                                     <v-flex md4>
-                                        <b>Score</b>&nbsp;:&nbsp;<b>{{discuss.score}}</b>
+                                        <b>Nilai</b>&nbsp;:&nbsp;<b>{{discuss.score}}</b>
                                     </v-flex>
                                 </v-layout>
                                 </v-card-text>

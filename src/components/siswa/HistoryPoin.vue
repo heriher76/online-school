@@ -30,9 +30,12 @@
 
               <v-list-tile-action>
                 <v-list-tile-action-text>
-                  <v-chip color="success" v-if="item.status == 1" text-color="white">
+                  <v-chip color="info" v-if="item.status == 0" text-color="white">
+                    Belum Selesai
+                  </v-chip>
+                  <v-chip color="success" v-else-if="item.status == 1" text-color="white">
                     Sukses
-                  </v-chip> 
+                  </v-chip>
                   <v-chip v-else-if="item.status == 2" color="warning" text-color="white">
                     Tertunda
                   </v-chip> 
@@ -63,7 +66,7 @@ import Axios from 'axios';
     methods:{
       showList(val){
         // console.log(val)
-        if(val.status == 2){
+        if(val.status == 0 || val.status == 2){
           snap.show()
           snap.pay(val.snap_token, {
             onSuccess: function(result){console.log('success');console.log(result);},

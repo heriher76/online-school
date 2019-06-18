@@ -27,17 +27,19 @@
                     ></v-progress-circular>
                 </div>
                 
-                <v-card v-for="nom in nominals" :key="nom.id" @click="alertTopUp(nom)" style="float:left; text-align:center; cursor:pointer; padding:15px 25px; margin:11px">
-                    <h6 class="title" >{{nom.nominal}} poin</h6>
-                    <span style="font-size:12px">Rp. {{formatPrice(nom.harga)}}</span>
-                </v-card>
+                <div v-for="nom in nominals" :key="nom.id" class="card-border">
+                    <v-card @click="alertTopUp(nom)" style="cursor:pointer; padding:20px; text-align:center">
+                        <h6 class="title" >{{nom.nominal}} poin</h6>
+                        <span style="font-size:12px">Rp. {{formatPrice(nom.harga)}}</span>
+                    </v-card>
+                </div>
 
                 <div class="clear"></div>
+                
+                <div id="result-json" style="color:red"></div>
             </div>
         <LoadingScreen4 :loading="loadingSubmit"></LoadingScreen4>
         <!-- <v-btn @click="payButton">Pay!</v-btn> -->
-
-        <div id="result-json" style="color:red"></div>
      
         </v-card>
     </div>
@@ -119,7 +121,7 @@
                 this.loadingSubmit=true,
                 Axios.post('/payment/create',{
                     user_id: this.data.id,
-                    nominal: val.nominal,
+                    nominal: val.harga,
                     type: 2
                 })
                 .then(response => {
@@ -166,3 +168,21 @@
     }
 </script>
 
+<style>
+.card-border{
+    float:left; 
+    padding:10px; 
+    width:265px;
+}
+@media only screen and (max-width: 780px) {
+    .card-border{
+        width:159px;
+    }
+}
+
+@media only screen and (max-width: 620px) {
+    .card-border{
+        width:100%;
+    }
+}
+</style>
