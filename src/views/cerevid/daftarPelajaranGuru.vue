@@ -131,8 +131,8 @@
 	    computed: {
 	      dataPelajaranbyTeacher(){
 	      	if(typeof this.$store.state.dataPelajaranbyTeacher.data !== "undefined"){
-				this.is_load1 = !this.is_load1
-				this.showPelajaran = !this.showPelajaran
+				this.is_load1 = false
+				this.showPelajaran = true
 			}
 	        return this.$store.state.dataPelajaranbyTeacher || {}
 	      },

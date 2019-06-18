@@ -105,7 +105,7 @@
                                   </v-btn>
                                 </v-list-tile-action>
                                 <v-list-tile-action>
-                                  <v-btn color="red">
+                                  <v-btn color="red" @click="handleDeleteVideo(item.id, video.id)">
                                     <v-icon color="white--text">delete</v-icon>
                                     <span class="pa-1 white--text">Hapus</span>
                                   </v-btn>
@@ -128,7 +128,7 @@
                                   </v-btn>
                                 </v-list-tile-action>
                                 <v-list-tile-action>
-                                  <v-btn color="red">
+                                  <v-btn color="red" @click="handleDeleteText(item.id, text.id)">
                                     <v-icon color="white--text">delete</v-icon>
                                     <span class="pa-1 white--text">Hapus</span>
                                   </v-btn>
@@ -341,82 +341,117 @@
                           <v-container grid-list-md>
                               <v-layout row wrap>
                                 <div class="headline">
-                                  <div>Forum</div>
+                                  <!-- <div>Forum</div> -->
                                 </div>
+                                
                                 <v-layout row wrap>
-                                  
                                   <v-flex xs12 sm12 md12>
-                                    <v-list three-line expand="true">
-                                        <template v-for="(forum, index) in forums">
-                                          <v-subheader
-                                            v-if="forum.header"
-                                            :key="forum.header"
+                                    <v-btn
+                                      dark color="#2c3e50"
+                                      @click.stop="dialog = true"
+                                    >
+                                      Posting Forum
+                                    </v-btn>
+                                    <v-dialog
+                                      v-model="dialog"
+                                      max-width="450"
+                                    >
+                                      <v-card>
+                                        <v-card-title class="headline">Posting Forum</v-card-title>
+
+                                        <v-card-text justify-center>
+                                          <v-textarea
+                                            label="Isi Pesan"
+                                            v-model="body"
+                                          ></v-textarea>
+                                        </v-card-text>
+
+                                        <v-card-actions>
+                                          <v-spacer></v-spacer>
+
+                                          <v-btn
+                                            color="green darken-1"
+                                            flat="flat"
+                                            @click="kirimForum"
                                           >
-                                          </v-subheader>
+                                            Kirim
+                                          </v-btn>
+                                        </v-card-actions>
+                                      </v-card>
+                                    </v-dialog>
 
-                                          <v-divider
-                                            v-else-if="forum.divider"
-                                            :key="index"
-                                            :inset="forum.inset"
-                                          ></v-divider>
+                                    <div  v-for="(forum, index) in forums">
+                                      <div :key="index" style="margin: 10px; padding: 10px; border: 1px solid black">
+                                        <v-layout row wrap>
+                                          <v-flex xs12 sm12 md2>
+                                            <img :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'" style="border-radius: 50%; height: 100px;">
+                                          </v-flex>
+                                          <v-flex xs12 sm12 md10>
+                                            <b style="margin-bottom:0px;">{{forum.user}}</b>
+                                            <br>
+                                            <i>{{forum.posted}}</i>
+                                            <p>{{forum.body}}</p>
+                                            <v-btn color="blue" class="white--text" @click="replyUser(forum.id)">Balas</v-btn>
+                                            <v-btn color="red" class="white--text" @click="handleDelete">Hapus</v-btn>
+                                            <br><br>
 
-                                          <v-list-tile
-                                            v-else
-                                            :key="forum.user"
-                                            avatar
-                                          >
-                                            <v-list-tile-avatar size="50">
-                                              <img :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'">
-                                            </v-list-tile-avatar>
+                                            <v-expansion-panel popout>
+                                              <v-expansion-panel-content>
+                                                <template v-slot:header>
+                                                  <div>Tampilkan Komentar...</div>
+                                                </template>
+                                                <v-card>
+                                                  <v-card-text>
+                                                    <div>
+                                                      <v-layout row wrap>
+                                                        <v-flex xs12 sm12 md2>
+                                                          <img :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'" style="border-radius: 50%; height: 80px;">
+                                                        </v-flex>
+                                                        <v-flex xs12 sm12 md10>
+                                                          <b style="margin-bottom:0px;">asdfasdfsa</b>
+                                                          <br>
+                                                          <i>23 menit</i>
+                                                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                                          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                                          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                                          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                                          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                                          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                                        </v-flex>
+                                                      </v-layout>
+                                                    </div>
+                                                  </v-card-text>
+                                                </v-card>
+                                              </v-expansion-panel-content>
+                                            </v-expansion-panel>
 
-                                            <v-list-tile-content>
-                                              <v-list-tile-title v-html="forum.user">
-                                              </v-list-tile-title>
-                                              
-                                              <v-list-tile-sub-title v-html="forum.body"></v-list-tile-sub-title>
-                                            </v-list-tile-content>
-                                          </v-list-tile>
-                                          
-                                          <v-divider style="margin:0"></v-divider>
-
-                                        </template>
-                                        
-                                        <v-btn
-                                          dark color="#2c3e50"
-                                          @click.stop="dialog = true"
-                                        >
-                                          Posting Forum
-                                        </v-btn>
-
-                                        <v-dialog
-                                          v-model="dialog"
-                                          max-width="450"
-                                        >
-                                          <v-card>
-                                            <v-card-title class="headline">Posting Forum</v-card-title>
-
-                                            <v-card-text justify-center>
-                                              <v-textarea
-                                                label="Isi Pesan"
-                                                v-model="body"
-                                              ></v-textarea>
-                                            </v-card-text>
-
-                                            <v-card-actions>
-                                              <v-spacer></v-spacer>
-
-                                              <v-btn
-                                                color="green darken-1"
-                                                flat="flat"
-                                                @click="kirimForum"
-                                              >
-                                                Kirim
-                                              </v-btn>
-                                            </v-card-actions>
-                                          </v-card>
-                                        </v-dialog>
-
-                                    </v-list>
+                                            <!-- <b style="cursor: pointer;" @click="handleShowComment">Tampilkan Komentar...</b> -->
+                                            <!-- komentar  -->
+                                            <div class="komentar" v-show="showComment">
+                                              <div style="margin: 10px; padding: 10px; border: 1px solid black">
+                                                <v-layout row wrap>
+                                                  <v-flex xs12 sm12 md2>
+                                                    <img :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'" style="border-radius: 50%; height: 80px;">
+                                                  </v-flex>
+                                                  <v-flex xs12 sm12 md10>
+                                                    <b style="margin-bottom:0px;">asdfasdfsa</b>
+                                                    <br>
+                                                    <i>23 menit</i>
+                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                                  </v-flex>
+                                                </v-layout>
+                                              </div>
+                                            </div>
+                                            <!-- end komentar -->
+                                          </v-flex>
+                                        </v-layout>
+                                      </div>
+                                    </div>
                                   </v-flex>
                                 </v-layout>
                               </v-layout>
@@ -451,13 +486,115 @@
       tambahBab: false,
       tambahMateri: false,
       is_load1: true,
-      showTab: false
+      showTab: false,
+      showComment: false
     }),
     methods: {
         async getDataDetailPelajaran(){
           this.$store.dispatch('getDataDetailPelajaran')
           .then(response => {
             console.log("telah load data..")
+          })
+        },
+        handleShowComment() {
+          this.showComment = true
+        },
+        replyUser(id) {
+          this.$swal({
+            title: "Masukkan Komentar!",
+            input: 'textarea',
+            showCancelButton: true,
+            animation: "slide-from-top",
+            inputPlaceholder: "Write something"
+          }).then((willReply) => {
+            if (!willReply.dismiss) {
+              axios.defaults.headers = {  
+                  'Authorization': 'Bearer ' + this.$store.state.token
+              }
+              axios.post('courses/'+this.$route.params.id+'/forums/create', {
+                forums_id: id,
+                body: willReply.value
+              })
+              .then(response => {
+                this.$swal('Sukses', 'Berhasil Menambahkan Komentar!', 'success')
+                // this.forums.unshift({body: this.body, posted: 'Just Now' , user: 'heri'});
+              })
+              .catch(error => {
+                this.$swal('Oops', 'Gagal Menambahkan Komentar!', 'warning')
+              })
+            } else {
+              console.log('false')
+            }
+          });
+        },
+        handleDelete() {
+          this.$swal({
+            title: "Delete this comment?",
+            text: "Are you sure? You won't be able to revert this!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Yes, Delete it!"
+          }).then((willDelete) => {
+            if (willDelete.value) {
+              console.log('deleted')
+            } else {
+              console.log('safe')
+            }
+          });
+        },
+        findNestedText (obj, parent, value, i) {
+            if (obj.id === value) {
+                parent.splice(i,1)
+            }
+            if (obj && obj.texts && obj.texts.length > 0) {
+                for (let j = 0; j < obj.texts.length; j++) {
+                    this.findNestedText(obj.texts[j], obj.texts, value, j);
+                }
+            }
+        },
+        handleDeleteText(idSection, id){
+          axios.defaults.headers = {  
+              'Authorization': 'Bearer ' + this.$store.state.token
+          }
+          axios.delete('/sections/'+this.$route.params.idSection+'/texts/'+id)
+          .then(response => {
+            this.$swal('Sukses', 'Berhasil Menghapus Materi Teks!', 'success')
+            
+            for (let i = 0; i < this.sections.length; i++) {
+                this.findNestedText(this.sections[i], this.sections, id, i); 
+            }
+            
+          })
+          .catch(error => {
+            this.$swal('Oops', 'Gagal Menghapus Materi Teks!', 'warning')
+          })
+        },
+        findNestedVideo (obj, parent, value, i) {
+            if (obj.id === value) {
+                parent.splice(i,1)
+            }
+            if (obj && obj.videos && obj.videos.length > 0) {
+                for (let j = 0; j < obj.videos.length; j++) {
+                    this.findNestedText(obj.videos[j], obj.videos, value, j);
+                }
+            }
+        },
+        handleDeleteVideo(idSection, id){
+          axios.defaults.headers = {  
+              'Authorization': 'Bearer ' + this.$store.state.token
+          }
+          axios.delete('/sections/'+this.$route.params.idSection+'/videos/'+id)
+          .then(response => {
+            this.$swal('Sukses', 'Berhasil Menghapus Materi Video!', 'success')
+            
+            for (let i = 0; i < this.sections.length; i++) {
+                this.findNestedVideo(this.sections[i], this.sections, id, i); 
+            }
+            
+          })
+          .catch(error => {
+            this.$swal('Oops', 'Gagal Menghapus Materi Video!', 'warning')
           })
         },
         submitSection() {
@@ -471,14 +608,15 @@
           })
           .then(response => {
             this.$swal('Sukses', 'Berhasil Menambahkan Section!', 'success')
-            console.log(response.data)
+            this.sections.unshift({title: this.title, course_id: this.$route.params.id});
           })
           .catch(error => {
             this.$swal('Oops', 'Gagal Menambahkan Section!', 'warning')
-            console.log(error)
           })
         },
         kirimForum(){
+          this.dialog = false
+
           axios.defaults.headers = {  
               'Authorization': 'Bearer ' + this.$store.state.token
           }
@@ -488,11 +626,10 @@
           })
           .then(response => {
             this.$swal('Sukses', 'Berhasil Menambahkan Komentar!', 'success')
-            console.log(response.data)
+            this.forums.unshift({body: this.body, posted: 'Just Now' , user: 'heri'});
           })
           .catch(error => {
             this.$swal('Oops', 'Gagal Menambahkan Komentar!', 'warning')
-            console.log(error)
           })
         }
     },
@@ -516,7 +653,6 @@
       }
       axios.get('/courses/'+this.$route.params.id+'/reviews')
       .then(response => {
-        console.log(response.data.data)
         this.reviews = response.data.data
       })
       .catch(error => {
@@ -529,8 +665,8 @@
       }
       axios.get('/courses/'+this.$route.params.id+'/forums')
       .then(response => {
-        console.log(response.data.data)
         this.forums = response.data.data
+        console.log(response.data.data)
       })
       .catch(error => {
         console.log(error)
@@ -539,8 +675,8 @@
     computed: {
       dataDetailPelajaran(){
         if(typeof this.$store.state.dataDetailPelajaran.data !== "undefined"){
-          this.is_load1 = !this.is_load1
-          this.showTab = !this.showTab
+          this.is_load1 = false
+          this.showTab = true
         }
         return this.$store.state.dataDetailPelajaran || {}
       },
