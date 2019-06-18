@@ -3,7 +3,9 @@ import './plugins/vuetify';
 
 import VueSweetalert2 from 'vue-sweetalert2';
 
-import axios from 'axios'
+import axios from 'axios';
+
+import ReadMore from 'vue-read-more';
 
 import App from "./App.vue";
 import router from "./router";
@@ -14,6 +16,7 @@ import Exam from "./layouts/Exam.vue";
 import Guru from "./layouts/Guru.vue";
 
 Vue.use(VueSweetalert2);
+Vue.use(ReadMore);
 Vue.component('default-layout', Default);
 Vue.component('exam-layout', Exam);
 Vue.component('guru-layout', Guru);

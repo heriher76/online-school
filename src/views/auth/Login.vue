@@ -25,7 +25,7 @@
               :type="show_pass ? 'text' : 'password'"
               name="input-10-1"
               label="Password"
-              hint="At least 8 characters"
+              hint="At least 6 characters"
               counter
               @click:append="show_pass = !show_pass"
           ></v-text-field>
@@ -83,7 +83,7 @@ import LoadingScreen2 from'../../components/loading-screen/Loading2'
         password: '',
         rules_pass: {
           required: value => !!value || 'Required.',
-          min: v => v.length >= 8 || 'Min 8 characters'
+          min: v => v.length >= 6 || 'Min 6 characters'
         },
 
         email: '',

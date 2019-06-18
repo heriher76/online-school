@@ -4,6 +4,30 @@
     <Banner/>
     <!-- /banner -->
 
+    <!-- slider -->
+    <!-- <v-carousel
+    >
+        <div v-show="load_data" style="margin:150px auto; width:5%;">
+            <v-layout column justify-center align-center>
+                <hollow-dots-spinner
+                  :animation-duration="1000"
+                  :dot-size="15"
+                  :dots-num="3"
+                  color="#ff1d5e"
+                />
+            </v-layout>
+        </div>
+        <v-carousel-item
+            v-for="(item,i) in datas"
+            :key="i"
+            v-if="item.category=='sliders'"
+            :src="item.url"
+        >
+            <h5 style="color:white; padding:10px 20px; background:rgba(0,0,0,0.2)" class="headline">{{item.title}}</h5>
+        </v-carousel-item>
+    </v-carousel> -->
+    <!-- /slider -->
+
     <!-- content up -->
     <v-container>
       <div style="text-align:center;margin-top:50px">
@@ -85,20 +109,10 @@
       </v-layout>
     </v-container>
 
+    <!-- <hr>
+    <v-divider></v-divider> -->
 
-
-    <hr>
-    <v-divider></v-divider>
-
-    <!-- content down -->
-    <v-layout row wrap style="margin:20px">
-      
-      <v-flex xs6>
-        <h3 class="display-2">Testimonial</h3>
-        <blockquote class="blockquote">&quot;Lorem ipsum dolor sit amet, consectetur adipisicing elit.&quot;</blockquote>
-      </v-flex>
-    </v-layout>
-    <!-- /content down -->
+    
   </v-container>
 
     
@@ -107,10 +121,29 @@
 
 <script>
   import Banner from "../components/Banner"
+  import { HollowDotsSpinner } from 'epic-spinners'
+  import axios from 'axios'
   export default {
     name: 'home',
     components:{
-      Banner
+      Banner,
+      HollowDotsSpinner
+    },
+    data(){
+      return {
+        load_data:true,    
+        datas:[],
+      }
+    },
+    mounted(){
+      axios.get('/master/information')
+      .then(response => {
+          this.load_data = false
+          this.datas = response.data.data
+      })
+      .catch(error =>{
+          console.log(error)
+      })
     }
   }
 </script>

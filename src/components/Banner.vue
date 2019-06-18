@@ -12,7 +12,7 @@
       <div class="text-banner">
         <h3 class="display-2">Bimbel Online Gratis No. 1 di Indonesia</h3>
         <h5 class="subheading">Bimbel jadi gratis, bisa dimana saja dan kapan saja dengan video pembelajaran yang lengkap !</h5>
-        <v-btn to="/login">Let's Start</v-btn>
+        <v-btn v-if="!loggedIn" to="/login">Let's Start</v-btn>
       </div>
     </div>
 </template>
@@ -82,3 +82,15 @@
 
   }
 </style>
+
+
+<script>
+export default {
+  computed:{
+    loggedIn: function(){
+      this.menu = false
+      return this.$store.getters.loggedIn
+    }
+  },
+}
+</script>

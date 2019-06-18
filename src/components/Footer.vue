@@ -28,7 +28,7 @@
                             </ul>
                         </v-flex>
 
-                        <v-flex md2 class="med">
+                        <!-- <v-flex md2 class="med">
                             <h5 class="title" style="color:black">Ikuti Kami</h5>
                             
                             <ul class="link-cere">
@@ -42,7 +42,7 @@
                                 <v-icon size="24px">{{ icon }}</v-icon>
                                 </v-btn>
                             </ul>
-                        </v-flex>
+                        </v-flex> -->
 
 
                     </v-layout>
@@ -50,7 +50,7 @@
             </v-card-title>
 
             <v-card-actions class="blue justify-center">
-            &copy;2019 &nbsp; <strong>Tsamany Project</strong>
+            &copy;&nbsp;<strong> PT Cerebrum Media Tama Indonesia</strong>
             </v-card-actions>
       </v-card>
     </v-footer>

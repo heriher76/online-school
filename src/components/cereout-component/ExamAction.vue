@@ -61,39 +61,53 @@
                         <span style="margin:18px;font-size:18px"><b>Soal No. {{hal+1}}</b></span>
                     </v-card>
                     <v-card style="min-height:347px">
-                        <div v-show="load_data" style="margin:0px auto; padding-top:40px; width:5%;">
-                            <v-progress-circular
-                            :size="40"
-                            color="primary"
-                            indeterminate
-                            ></v-progress-circular>
-                        </div>
-                        <v-container>
-                            <p style="font-size:16px" v-html="quest"></p>
-                            <div style="float:left">
-                                <label class="container" v-for="(n,key,index) in options" :key="n.index">
-                                <input type="radio" :value="key" v-model="tmpanswer[hal]" name="opt">
-                                <span class="checkmark"><span v-html="n.option"></span></span>
-                                </label>   
+                        <div style="position: absolute;top: 0;left: 0;width: 100%;height: 100%; overflow: auto">
+                    
+                            <div v-show="load_data" style="margin:0px auto; padding-top:40px; width:5%;">
+                                <v-progress-circular
+                                :size="40"
+                                color="primary"
+                                indeterminate
+                                ></v-progress-circular>
                             </div>
-                        </v-container>                    
+                            <v-container>
+                                <p style="font-size:16px" v-html="quest"></p>
+                                <!-- <div style="float:left">
+                                    <label class="container" v-for="(n,key,index) in options" :key="n.index">
+                                    <input type="radio" :value="key" v-model="tmpanswer[hal]" name="opt">
+                                    <span class="checkmark"><span v-html="n.option"></span></span>
+                                    </label>   
+                                </div> -->
+                                <div v-for="(n,key,index) in options" :key="n.index">
+                                    <label v-if="n.option!=null">
+                                        <input type="radio" style="float:left;margin:4px" :value="key" v-model="tmpanswer[hal]" name="opt">
+                                        <span style="float:left;" v-html="n.option"></span>
+                                        <div class="clear"></div>
+                                    </label> 
+                                </div>
+                            </v-container>                    
+                        </div>
                     </v-card>
-                        <!-- <label class="container">
-                            <input type="radio" :value="1" v-model="markanswer[hal]" name="opt">
-                            <span class="checkmark"><p>cek </p></span>
-                        </label>   -->
-
+                
                     <v-card>
-                        <v-btn v-if="hal!=0" @click="previous(hal)" small> <v-icon left dark>keyboard_arrow_left</v-icon> Soal Sebelumnya</v-btn>
-                        <v-btn @click="next(hal)" small>soal Berikutnya <v-icon right dark>keyboard_arrow_right</v-icon></v-btn>  
-                        <v-btn v-if="hal == markanswer[hal]" @click="delMark(hal)" dark color="orange" small>Hapus Tanda</v-btn>
-                        <v-btn v-else @click="mark(hal)" small>Tandai</v-btn>
-
-                        <!-- mark:{{markanswer[hal]}}, hal:{{hal}}, an: {{markanswer}} -->
-
-                        
+                        <div style="float:left">
+                            <v-btn v-if="hal!=0" @click="previous(hal)" small> <v-icon left dark>keyboard_arrow_left</v-icon> Soal Sebelumnya</v-btn>
+                            <v-btn v-if="hal+1!=questions.length" @click="next(hal)" small>soal Berikutnya <v-icon right dark>keyboard_arrow_right</v-icon></v-btn>  
+                            
+                        </div>
+                        <div style="float:right;">
+                            <v-btn @click="uncheck(hal)" small>hapus jawaban</v-btn>
+                            <v-checkbox 
+                                color="warning"
+                                label="TANDAI SOAL" 
+                                style="margin:4px 10px -50px 0px;float:right;" 
+                                value="1" v-model="markanswer[hal]"
+                            ></v-checkbox> 
+                        </div>
+                        <!-- <v-btn v-if="hal == markanswer[hal]" @click="delMark(hal)" dark color="orange" small>Hapus Tanda</v-btn>
+                        <v-btn v-else @click="mark(hal)" small>Tandai</v-btn> -->
+                        <div class="clear"></div>
                     </v-card>
-
                 </v-flex>
     
                 <v-flex md3>
@@ -109,14 +123,15 @@
                             >  
                                 <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
                                 <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
-
+                                
+                                <span v-else-if="key+1 < 10 && markanswer[key]=='1'" style="background:orange;padding:10px 14.6px">{{key+1}} </span>       
+                                <span v-else-if="key+1 >= 10 && markanswer[key]=='1'" style="background:orange;padding:10px 10.6px">{{key+1}}</span>
+                                
                                 <span v-else-if="key+1 < 10 && tmpanswer[key]==null" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
                                 <span v-else-if="key+1 >= 10 && tmpanswer[key]==null" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
                                 
                                 <span v-else-if="key+1 < 10 && tmpanswer[key]!=null" style="background:#8BC34A;padding:10px 14.6px">{{key+1}}</span>
                                 <span v-else-if="key+1 >= 10 && tmpanswer[key]!=null" style="background:#8BC34A;padding:10px 10.6px">{{key+1}}</span>  
-
-                                <span v-else-if="key+1 < 10 && markanswer[key]!=null" style="background:orange;padding:10px 14.6px">{{key+1}} </span>                                                    
                             </a>
                             <div class="clear"></div>
                             
@@ -139,16 +154,8 @@
                         <!-- <v-btn block color="red" dark @click="submit">Akhiri</v-btn> -->
                     </v-card>
                 </v-flex>
-
-            <!-- my_time : {{ myTime }}
-            answers : {{ answer }}   -->
-
-            <!-- {{questions}} -->
-            <!-- {{ tmpanswer }}
-
-            {{ markanswer }}
-             -->
-            
+            <!-- {{ tmpanswer }} -->
+            <!-- {{markanswer}} -->
             </v-layout>
         </v-container>
         <LoadingScreen3 :loading="loadSubmit"></LoadingScreen3>
@@ -194,12 +201,12 @@
         methods:{
             alertDisplay() {
                 this.$swal({
-                    title: 'Are you sure?',
-                    text: 'You can\'t revert your action',
+                    title: 'Apakah anda yakin?',
+                    text: 'Silahkan batalkan, dan periksa kembali jawaban anda jika anda tidak yakin',
                     type: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Yes Submit!',
-                    cancelButtonText: 'No, Keep it!',
+                    confirmButtonText: 'Ya Lanjutkan!',
+                    cancelButtonText: 'Tidak, Batalkan!',
                     showCloseButton: true,
                     showLoaderOnConfirm: true
                 }).then((result) => {
@@ -207,6 +214,11 @@
                         return this.submit()
                     }
                 })
+            },
+
+            //uncheck mark
+            uncheck(val) {
+                this.tmpanswer[val] = false
             },
 
             submit() {
@@ -231,10 +243,10 @@
                         ans = 'F'
                     }
 
-                    if(ans == this.questions[i].correct_answer){
-                        n = 1
-                    }else{
+                    if(this.markanswer[i]==null){
                         n = 0
+                    }else{
+                        n = 1
                     }
                     
                     var tmp = {
@@ -283,16 +295,18 @@
                 }
             },
 
-            mark(hal){
-                this.markanswer.push(hal)
+            // mark(hal){
+            //     if(hal < this.questions.length-1){
+            //         this.markanswer[hal].push(1)
+            //     }
 
-                console.log(hal)
-            },
+            //     console.log(hal)
+            // },
 
-            delMark(hal){
-                const index = this.markanswer.indexOf(hal) //mencari index
-                this.markanswer.splice(index, 1)
-            },
+            // delMark(hal){
+            //     const index = this.markanswer.indexOf(hal) //mencari index
+            //     this.markanswer.splice(index, 1)
+            // },
 
             //function timer
             startTimer: function() {
@@ -355,7 +369,7 @@
         color: black
     }
 
-    .container {
+    /* .container {
         display: block;
         position: relative;
         margin-bottom:-20px;
@@ -409,5 +423,5 @@
         height: 8px;
         border-radius: 100%;
         background: white;
-    }
+    } */
 </style>

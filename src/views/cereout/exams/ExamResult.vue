@@ -27,15 +27,16 @@
                                         <v-layout>
                                             <v-flex md6>
                                                 <table>
-                                                    <tr><td width="200"><b>Skor</b></td><td>{{data.score}}</td></tr>
+                                                    <tr><td width="200"><b>Nilai</b></td><td>{{data.score}}</td></tr>
                                                     <tr><td><b>Jawaban Benar</b></td><td>{{data.correct_answered}}</td></tr>
                                                     <tr><td><b>Jawaban Salah</b></td><td>{{data.incorrect_answered}}</td></tr>
                                                 </table>
                                             </v-flex>
+                                            {{data}}
                                             <v-flex md6>
                                                 <table>
-                                                    <tr><td width="200"><b>left_answered</b></td><td>{{data.left_answered}}</td></tr>
-                                                    <tr><td><b>Status Hasil</b></td>
+                                                    <tr><td width="200"><b>Tidak Dijawab</b></td><td>{{data.left_answered}}</td></tr>
+                                                    <tr><td><b>Status</b></td>
                                                         <td>
                                                             <label v-if="data.result_status=='Lulus'" style="color:#0091EA">{{data.result_status}}</label>
                                                             <label v-else style="color:red">{{data.result_status}}</label>

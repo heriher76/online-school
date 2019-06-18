@@ -55,7 +55,7 @@
 
     <!-- footer -->
     <v-footer class="blue justify-center" dark height="auto">
-        &copy;2019 &nbsp; <strong>Tsamany Project</strong>
+      &copy;&nbsp;<strong> PT Cerebrum Media Tama Indonesia</strong>
     </v-footer>
     <!-- /footer -->
   </v-app>

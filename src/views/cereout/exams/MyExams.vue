@@ -110,14 +110,13 @@
             items: [],
             detail: '',
             ListName: 'Daftar Tryout',
-            idTryout:'',
         }),
         
         methods:{
             changeList(list){
                 this.items = null
                 this.load_data = true
-                axios.get('/auth/user').then(response => {this.idTryout = response.data.data.id})
+                
                 if(list==1){
                     this.ListName = "Daftar Tryout"
                     axios.get('/cereouts')
@@ -131,7 +130,7 @@
                     })
                 }else if(list==2){
                     this.ListName = "Tryout Diambil"
-                    axios.get('/cereouts/attempttryout/'+this.idTryout)
+                    axios.get('/cereouts/attempttryout/'+this.$store.state.dataUser)
                     .then(response => {
                         this.load_data = false
                         this.items = response.data.data
@@ -142,7 +141,7 @@
                     })
                 }else if(list==3){
                     this.ListName = "Tryout Kadaluarsa"
-                    axios.get('/cereouts/attempttryout/'+this.idTryout+'/expire')
+                    axios.get('/cereouts/attempttryout/'+this.$store.state.dataUser+'/expire')
                     .then(response => {
                         this.load_data = false
                         this.items = response.data.data
@@ -161,7 +160,6 @@
         },
 
         mounted(){
-            // axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
             axios.get('/cereouts')
             .then(response => {
                 this.load_data = false
@@ -171,7 +169,6 @@
             .catch(error =>{
                 console.log(error)
             })
-
         },
     }
 </script>
