@@ -35,13 +35,13 @@
                 <v-flex md9 sm12 xs12>
                     <v-card style="padding:5px;">
                         <span style="margin:18px;font-size:18px"><b>Soal No. {{hal+1}}</b>
-                           <span v-if="discuss.mark== 1">&nbsp;<v-icon color="green">done</v-icon></span>
-                           <span v-else>&nbsp;<v-icon color="red">clear</v-icon></span> 
+                            <span v-if="discuss.answer == discussion.correct_answer" >&nbsp;<v-icon color="green">done</v-icon></span>
+                            <span v-else>&nbsp;<v-icon color="red">clear</v-icon></span> 
                         </span>
 
                         <div style="float:right; padding:2px 10px 0px 0px;color:#64B5F6">
                             <span>Jawaban Benar: {{discussion.correct_answer}}</span> &nbsp;|&nbsp;
-                            <span>Jawaban Anda: {{discuss.answer}}</span>
+                            <span>Jawaban Anda: {{discuss.answer}}<span v-if="discuss.answer==null">-</span></span>
                         </div>
                     </v-card>
                     
@@ -54,6 +54,8 @@
                             ></v-progress-circular>
                         </div>
 
+                        <!-- <v-navigation-drawer permanent fixed style="margin-left:30px; top:113px; z-index:0;" height="280" width="250"> -->
+                        
                         <v-container style="padding-left:25px">
                             <!-- pertanyaan -->
                             <b>Pertanyaan:</b>
@@ -122,7 +124,7 @@
                             <div>
                                 <b>Video Penjelasan:</b>
                                 <div style="width:100%;height:300px">
-                                    <iframe :src="'https://www.youtube.com/embed/V1Pl8CzNzCw'" style="width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    <iframe :src="'https://www.youtube.com/embed/'+url_video" style="width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 </div>
                             </div>
                             <!-- /penjelasan -->
@@ -143,10 +145,10 @@
                                 </v-layout>
                                 </v-card-text>
                             </v-card>
+                        </v-container>    
 
-                            <!-- {{discuss}} -->
-
-                        </v-container>                    
+                        <!-- </v-navigation-drawer> -->
+                                                
                     </v-card>
                     <hr>
                     
@@ -164,34 +166,39 @@
                         </v-card><br>
                         <div class="navigasi">
                             <a
-                                class="btn-num"
-                                v-for="(item, key, index) in detail" :key="item.id" 
-                                @click="viewQuestion(key)"
-                            >  
-                                <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
-                                <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
-
-                                <span v-else-if="key+1 < 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
-                                <span v-else-if="key+1 >= 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
-                            </a>
+                            class="btn-num"
+                            v-for="(item, key, index) in detail" :key="item.id" 
+                            @click="viewQuestion(key)"
+                        >  
+                            <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
+                            <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
+                            
+                            <span v-else-if="key+1 < 10 && item.mark=='1'" style="background:orange;padding:10px 14.6px">{{key+1}} </span>       
+                            <span v-else-if="key+1 >= 10 && item.mark=='1'" style="background:orange;padding:10px 10.6px">{{key+1}}</span>
+                            
+                            <span v-else-if="key+1 < 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
+                            <span v-else-if="key+1 >= 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
+                        </a>
                             <div class="clear"></div>
                         </div>     
                     </v-card>
                 </v-flex>
-       
             </v-layout>
         </v-container>
     </div>
 </template>
 
 <script>
-    import axios from 'axios';
+    import axios from 'axios';    
+    import getVideoId from 'get-video-id'
+    import urlParser from "js-video-url-parser"
 
     export default {
         props:["id"],
         
         data () {
             return {
+                url_video: '',
                 detail: [],
                 load_data: true,
                 hal: 0,
@@ -206,6 +213,8 @@
                 this.hal        = index 
                 this.discuss    = this.detail[index]
                 this.discussion = this.detail[index].discussion
+                let url         = urlParser.parse(this.detail[index].discussion.url_explanation).id
+                this.url_video  = url
             },
 
             previous(hal){
@@ -214,6 +223,8 @@
                     this.hal        = hal
                     this.discuss    = this.detail[hal]
                     this.discussion = this.detail[hal].discussion
+                    let url         = urlParser.parse(this.detail[hal].discussion.url_explanation).id
+                    this.url_video  = url
                 }
             },
 
@@ -223,6 +234,8 @@
                     this.hal        = hal
                     this.discuss    = this.detail[hal]
                     this.discussion = this.detail[hal].discussion
+                    let url         = urlParser.parse(this.detail[hal].discussion.url_explanation).id
+                    this.url_video  = url
                 }
             },  
         },
@@ -234,11 +247,17 @@
                 this.load_data  = false
                 this.discuss    = this.detail[0]
                 this.discussion = this.detail[0].discussion
-                console.log(response.data)
+                let url         = urlParser.parse(this.detail[0].discussion.url_explanation).id
+                this.url_video  = url
             })
             .catch(error => {
                 console.log(error.response)
             })
+
+            // get id youtube
+            // console.log(this.discussion.url_explanation)
+            // let test = urlParser.parse('http://www.youtube.com/watch?v=HRb7B9fPhfA').id
+            // console.log(test)
         }
     }
 </script>

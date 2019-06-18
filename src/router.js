@@ -160,7 +160,17 @@ export default new Router({
     {
       path: "/cereout/results",
       name: 'my_results',
-      component: () => import("./views/cereout/Results.vue"),
+      component: () => import("./views/cereout/results/Results.vue"),
+      meta: {
+        requiresAuth: true
+      }
+    },
+
+    {
+      path: "/cereout/results view/:id/:name",
+      name: 'results_view',
+      component: () => import("./views/cereout/results/ResultsView.vue"),
+      props: true,
       meta: {
         requiresAuth: true
       }
@@ -169,7 +179,7 @@ export default new Router({
     {
       path: "/cereout/results/detail/:id",
       name: 'result_detail',
-      component: () => import("./views/cereout/ResultDetail.vue"),
+      component: () => import("./views/cereout/results/ResultDetail.vue"),
       props: true,
       meta: {
         requiresAuth: true

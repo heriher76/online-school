@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar">
-        <v-navigation-drawer permanent fixed style="margin-left:30px; top:113px; z-index:0;" height="220" width="250">
+        <v-navigation-drawer permanent fixed style="margin-left:30px; top:113px; z-index:0;" height="280" width="250">
             <v-toolbar height="50">
             <h5 class="headline" style="margin:0px 20px;color:black">Application</h5>
             </v-toolbar>
@@ -11,7 +11,7 @@
                     </v-list-tile-action>
 
                     <v-list-tile-content>
-                    <v-list-tile-title>Dashboard</v-list-tile-title>
+                    <v-list-tile-title>Beranda</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
 
@@ -21,7 +21,7 @@
                     </v-list-tile-action>
 
                     <v-list-tile-content>
-                    <v-list-tile-title>Leaderboard</v-list-tile-title>
+                    <v-list-tile-title>Papan Peringkat</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
 
@@ -31,7 +31,7 @@
                     </v-list-tile-action>
 
                     <v-list-tile-content>
-                    <v-list-tile-title>My Exams</v-list-tile-title>
+                    <v-list-tile-title>Tryout</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
 
@@ -41,7 +41,17 @@
                     </v-list-tile-action>
 
                     <v-list-tile-content>
-                    <v-list-tile-title>My Results</v-list-tile-title>
+                    <v-list-tile-title>Hasil Tryout</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+
+                <v-list-tile to="">
+                    <v-list-tile-action>
+                    <v-icon>phone</v-icon>
+                    </v-list-tile-action>
+
+                    <v-list-tile-content>
+                    <v-list-tile-title>Hubungi Kami</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list>

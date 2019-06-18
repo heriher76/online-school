@@ -57,7 +57,7 @@
                                 <hr>
                                 <div style="text-align:center;color:red;height:193px;">
                                     <div style="width:120px;height:120px;margin:8px auto">
-                                        <img src="https://cdn.vuetifyjs.com/images/john.jpg" style="border-radius:100%" alt="user profile" width="100%" height="100%">
+                                        <img :src="userPhoto" style="border-radius:100%" alt="user profile" width="100%" height="100%">
                                     </div>
                                     <h6 class="subheading"><b>{{user.name}}</b></h6>
                                     <p v-if="userClass != null" style="font-size:12px;text-transform: uppercase;">{{userClass.name_class}}</p>
@@ -69,7 +69,7 @@
                                         <h5 class="headline" style="color:red">{{attempt.length}}</h5>
                                     </div>
                                     <div style="text-align:center;width:50%;float:right">
-                                        <h6 class="title"><b>Ranking</b></h6>
+                                        <h6 class="title"><b>Peringkat</b></h6>
                                         <h5 class="headline" style="color:red">{{ranking.rank}}</h5>
                                     </div>
                                     <div class="clear"></div>
@@ -197,6 +197,7 @@
 
                 user: [], 
                 userClass: [],
+                userPhoto: '',
 
                 attempt: [],    
                 ranking: '',  
@@ -228,11 +229,11 @@
                 console.log(error)
             })
 
-            //get photo user
-            axios.get('/auth/photoProfile/'+this.$store.state.dataUser)
+            axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
             .then(response => {
-                //this.userPhoto = response.data.data
-                console.log(response.data)
+                // let imageNode = document.getElementById('myprofile');
+                let imgUrl = URL.createObjectURL(response.data)
+                this.userPhoto = imgUrl
             })
             .catch(error => {
                 console.log(error)

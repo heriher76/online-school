@@ -20,7 +20,7 @@
                                 <v-icon>keyboard_arrow_left</v-icon>
                             </v-btn>
                         </div>
-                        <v-card-text class="px-0"><h6 class="title" style="color:black;margin:4px 20px; text-transform:capitalize">Result Detail For {{data.tryout.name}}</h6></v-card-text>
+                        <v-card-text class="px-0"><h6 class="title" style="color:black;margin:4px 20px; text-transform:capitalize">Detail Hasil </h6></v-card-text>
                     </v-card>
                     <hr>
                     <v-card>
@@ -35,7 +35,7 @@
                                     <v-layout>
                                         <v-flex md6>
                                             <table>
-                                                <tr><td width="200"><b>Nama Tryout</b></td><td>{{data.tryout.name}}</td></tr>
+                                                <tr><td width="200"><b>Tanggal Percobaan</b></td><td>{{moment(data.created_at).format('DD/MM/YYYY hh:mm')}}</td></tr>
                                                 <tr><td><b>Durasi</b></td><td>{{data.my_time}} Menit</td></tr>
                                                 <tr><td><b>Skor</b></td><td>{{data.score}}</td></tr>
                                                 <tr><td><b>Total Soal Terjawab</b></td><td>{{data.total_answer}}</td></tr>
@@ -45,7 +45,7 @@
                                             <table>
                                                 <tr><td width="200"><b>Jawaban Benar</b></td><td>{{data.correct_answered}}</td></tr>
                                                 <tr><td><b>Jawaban Salah</b></td><td>{{data.incorrect_answered}}</td></tr>
-                                                <tr><td><b>left_answered</b></td><td>{{data.left_answered}}</td></tr>
+                                                <tr><td><b>Tidak Terjawab</b></td><td>{{data.left_answered}}</td></tr>
                                                 <tr><td><b>Status Hasil</b></td>
                                                     <td>
                                                         <label v-if="data.result_status=='Lulus'" style="color:#0091EA">{{data.result_status}}</label>
@@ -77,10 +77,10 @@
 
 
 <script>
-import SideBar from "../../components/cereout-component/SideBar"
-import Navbar from "../../components/cereout-component/Navbar"
-import DetailResult from "../../components/cereout-component/DetailResult"
-
+import SideBar from "../../../components/cereout-component/SideBar"
+import Navbar from "../../../components/cereout-component/Navbar"
+import DetailResult from "../../../components/cereout-component/DetailResult"
+import moment from 'moment'
 import Axios from 'axios';
 
 export default {
@@ -104,7 +104,9 @@ export default {
         next () {
             const active = parseInt(this.active)
             this.active = (active < 2 ? active + 1 : 0)
-        }
+        },
+
+        moment
     },
 
     mounted(){
