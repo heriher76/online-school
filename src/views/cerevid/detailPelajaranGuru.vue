@@ -346,78 +346,55 @@
                                 
                                 <v-layout row wrap>
                                   <v-flex xs12 sm12 md12>
-                                    <v-list three-line expand="true">
-                                        <v-btn
-                                          dark color="#2c3e50"
-                                          @click.stop="dialog = true"
-                                        >
-                                          Posting Forum
-                                        </v-btn>
-                                        <v-divider></v-divider>
-                                        <template v-for="(forum, index) in forums">
-                                          <v-subheader
-                                            v-if="forum.header"
-                                            :key="index"
+                                    <v-btn
+                                      dark color="#2c3e50"
+                                      @click.stop="dialog = true"
+                                    >
+                                      Posting Forum
+                                    </v-btn>
+                                    <v-dialog
+                                      v-model="dialog"
+                                      max-width="450"
+                                    >
+                                      <v-card>
+                                        <v-card-title class="headline">Posting Forum</v-card-title>
+
+                                        <v-card-text justify-center>
+                                          <v-textarea
+                                            label="Isi Pesan"
+                                            v-model="body"
+                                          ></v-textarea>
+                                        </v-card-text>
+
+                                        <v-card-actions>
+                                          <v-spacer></v-spacer>
+
+                                          <v-btn
+                                            color="green darken-1"
+                                            flat="flat"
+                                            @click="kirimForum"
                                           >
-                                          </v-subheader>
+                                            Kirim
+                                          </v-btn>
+                                        </v-card-actions>
+                                      </v-card>
+                                    </v-dialog>
 
-                                          <v-divider
-                                            v-else-if="forum.divider"
-                                            :key="index"
-                                            :inset="forum.inset"
-                                          ></v-divider>
+                                    <div  v-for="(forum, index) in forums">
+                                      <div :key="index" style="margin: 10px; padding: 10px; border: 1px solid black">
+                                        <v-layout row wrap>
+                                          <v-flex xs12 sm12 md2>
+                                            asdfsdf
+                                          </v-flex>
+                                          <v-flex xs12 sm12 md10>
+                                            <b style="margin-bottom:0px;">{{forum.user}}</b>
+                                            <p>{{forum.body}}</p>
+                                            <i>{{forum.posted}}</i>
+                                          </v-flex>
+                                        </v-layout>
+                                      </div>
+                                    </div>
 
-                                          <v-list-tile
-                                            v-else
-                                            :key="index"
-                                            avatar
-                                          >
-                                            <v-list-tile-avatar size="50">
-                                              <img :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'">
-                                            </v-list-tile-avatar>
-
-                                            <v-list-tile-content>
-                                              <v-list-tile-title v-html="forum.user">
-                                              </v-list-tile-title>
-                                              <h4>{{forum.body}}</h4>
-                                              
-                                              <v-list-tile-sub-title v-html="forum.posted"></v-list-tile-sub-title>
-                                            </v-list-tile-content>
-                                          </v-list-tile>
-                                          
-                                          <v-divider style="margin:0"></v-divider>
-
-                                        </template>
-
-                                        <v-dialog
-                                          v-model="dialog"
-                                          max-width="450"
-                                        >
-                                          <v-card>
-                                            <v-card-title class="headline">Posting Forum</v-card-title>
-
-                                            <v-card-text justify-center>
-                                              <v-textarea
-                                                label="Isi Pesan"
-                                                v-model="body"
-                                              ></v-textarea>
-                                            </v-card-text>
-
-                                            <v-card-actions>
-                                              <v-spacer></v-spacer>
-
-                                              <v-btn
-                                                color="green darken-1"
-                                                flat="flat"
-                                                @click="kirimForum"
-                                              >
-                                                Kirim
-                                              </v-btn>
-                                            </v-card-actions>
-                                          </v-card>
-                                        </v-dialog>
-
-                                    </v-list>
                                   </v-flex>
                                 </v-layout>
                               </v-layout>
