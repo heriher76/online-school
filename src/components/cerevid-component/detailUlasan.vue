@@ -29,31 +29,31 @@
       				<v-progress-linear
         				color="yellow darken-3"
         				height="18"
-        				:value="100*(star5/totalStar)"
+        				:value="star5"
         				>
               </v-progress-linear>
               <v-progress-linear
 						    color="yellow darken-3"
 								height="18"
-								:value="100*(star4/totalStar)"
+								:value="star4"
 								>
               </v-progress-linear>
               <v-progress-linear
 						    color="yellow darken-3"
 								height="18"
-								:value="100*(star3/totalStar)"
+								:value="star3"
 								>
               </v-progress-linear>
               <v-progress-linear
 						    color="yellow darken-3"
 								height="18"
-								:value="100*(star2/totalStar)"
+								:value="star2"
 								>
               </v-progress-linear>
               <v-progress-linear
 						    color="yellow darken-3"
 								height="18"
-								:value="100*(star1/totalStar)"
+								:value="star1"
 								>
               </v-progress-linear>
               <v-spacer/>
@@ -183,23 +183,36 @@
     computed:{
       countStar(){
         if(this.datas.data){
-          console.log('data ditemukan')
-          for(var i=0;i<this.datas.data.reviews.length;i++){
-            if(this.datas.data.reviews[i].star==1){
-              this.star1+=1
-            }else if(this.datas.data.reviews[i].star==2){
-              this.star2+=1
-            }else if(this.datas.data.reviews[i].star==3){
-              this.star3+=1
-            }else if(this.datas.data.reviews[i].star==4){
-              this.star4+=1
-            }else if(this.datas.data.reviews[i].star==5){
-              this.star5+=1
+          if(this.datas.data.reviews.length){
+            for(var i=0;i<this.datas.data.reviews.length;i++){
+              if(this.datas.data.reviews[i].star==1){
+                this.star1+=1
+              }else if(this.datas.data.reviews[i].star==2){
+                this.star2+=1
+              }else if(this.datas.data.reviews[i].star==3){
+                this.star3+=1
+              }else if(this.datas.data.reviews[i].star==4){
+                this.star4+=1
+              }else if(this.datas.data.reviews[i].star==5){
+                this.star5+=1
+              }
+              this.totalStar+=1
             }
-            this.totalStar+=1
+            this.star5 = 100*(this.star5/this.totalStar)
+            this.star4 = 100*(this.star4/this.totalStar)
+            this.star3 = 100*(this.star3/this.totalStar)
+            this.star2 = 100*(this.star2/this.totalStar)
+            this.star1 = 100*(this.star1/this.totalStar)
+            return true
+          }else{
+            this.star5 = 0
+            this.star4 = 0
+            this.star3 = 0
+            this.star2 = 0
+            this.star1 = 0
+            this.totalStar = 0
+            return true
           }
-          console.log(this.totalStar+' '+(100*(this.star5/this.totalStar))+" "+(100*(this.star4/this.totalStar))+" "+(100*(this.star3/this.totalStar))+" "+(100*(this.star2/this.totalStar)))
-          return true
         }
       },
       formIsValid() {
@@ -213,7 +226,43 @@
 			},
     },
     methods: {
-      async getDataDetailPelajaran() {
+      getCountStar(){
+        if(this.datas.data){
+          if(this.datas.data.reviews.length){
+            for(var i=0;i<this.datas.data.reviews.length;i++){
+              if(this.datas.data.reviews[i].star==1){
+                this.star1+=1
+              }else if(this.datas.data.reviews[i].star==2){
+                this.star2+=1
+              }else if(this.datas.data.reviews[i].star==3){
+                this.star3+=1
+              }else if(this.datas.data.reviews[i].star==4){
+                this.star4+=1
+              }else if(this.datas.data.reviews[i].star==5){
+                this.star5+=1
+              }
+              this.totalStar+=1
+            }
+            this.star5 = 100*(this.star5/this.totalStar)
+            this.star4 = 100*(this.star4/this.totalStar)
+            this.star3 = 100*(this.star3/this.totalStar)
+            this.star2 = 100*(this.star2/this.totalStar)
+            this.star1 = 100*(this.star1/this.totalStar)
+            console.log(this.star5+" "+this.star4+" "+this.star3+" "+this.star2+" "+this.star1)
+            return true
+          }else{
+            this.star5 = 0
+            this.star4 = 0
+            this.star3 = 0
+            this.star2 = 0
+            this.star1 = 0
+            this.totalStar = 0
+            console.log(this.star5+" "+this.star4+" "+this.star3+" "+this.star2+" "+this.star1)
+            return true
+          }
+        }
+      },
+      getDataDetailPelajaran() {
           this.$store.dispatch('getDataDetailPelajaran')
             .then(response => {
             })
@@ -226,6 +275,13 @@
           user_id: this.userId,
         })
         .then(response => {
+          this.star5 = 0
+          this.star4 = 0
+          this.star3 = 0
+          this.star2 = 0
+          this.star1 = 0
+          this.totalStar = 0
+          this.getCountStar()
           this.dialog = false
         })
         .catch(error => {

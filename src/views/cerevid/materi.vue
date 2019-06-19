@@ -138,14 +138,11 @@
             </v-tab-item>
             <v-tab-item :value="'forum-diskusi'">
               <v-card>
-                <v-container fluid>
+                <v-container style=" overflow:auto">
                   <v-flex class="mx-4">
                     <v-list three-line :expand="true">
                       <template v-for="item in dataDetailForum.data">
-                        <v-list-tile avatar>
-                          <v-list-tile-avatar size="50">
-                            <v-icon x-large class="mt-3">account_circle</v-icon>
-                          </v-list-tile-avatar>
+                        <v-list-tile>
                           <v-list-tile-content>
                             <v-list-tile-title v-html="item.user" class="ml-3"></v-list-tile-title>
                             <v-list-tile-sub-title v-html="item.body" class="ml-3"></v-list-tile-sub-title>
@@ -159,34 +156,33 @@
                             </v-list-tile-action-text>
                           </v-list-tile-action>
                         </v-list-tile>
-                        <div>
-                          <v-divider class="ml-4"></v-divider>
-                          <v-list-tile avatar class="ml-4">
-                            <v-list-tile-avatar size="50">
-                              <img src="https://cdn.vuetifyjs.com/images/john.jpg" class="mt-3" alt="John">
-                            </v-list-tile-avatar>
-                            <v-list-tile-content>
-                              <v-list-tile-title v-html="item.user" class="ml-3"></v-list-tile-title>
-                              <v-list-tile-sub-title v-html="item.body" class="ml-3"></v-list-tile-sub-title>
-                            </v-list-tile-content>
-                            <v-list-tile-action>
-                              <v-list-tile-action-text>
-                                {{ item.posted }}
-                              </v-list-tile-action-text>
-                              <v-list-tile-action-text>
-                                <a @click="tampilForm(item.id)">Balas</a>
-                              </v-list-tile-action-text>
-                            </v-list-tile-action>
-                          </v-list-tile>
-                          <v-container class="text-xs-center" v-if="forumId==item.id">
-                            <v-form @submit.prevent="kirimPertanyaan" ref="form">
-                              <v-textarea name="input-7-1" v-model="body" label="Tulis Pertanyaan" hint="Isi pertanyaan anda disini." :rules="[rules_body.required]"></v-textarea>
-                              <div class="justify-end">
-                                <v-btn color="#2c3e50" class="white--text" @click="kirimPertanyaan">Kirim Pertanyaan</v-btn>
-                              </div>
-                            </v-form>
-                          </v-container>
+                        <div v-if="item.comments.length">
+                          <div v-for="comments in item.comments">
+                            <v-divider class="ml-4"></v-divider>
+                            <v-list-tile class="ml-4">
+                              <v-list-tile-content>
+                                <v-list-tile-title v-html="comments.user" class="ml-3"></v-list-tile-title>
+                                <v-list-tile-sub-title v-html="comments.body" class="ml-3"></v-list-tile-sub-title>
+                              </v-list-tile-content>
+                              <v-list-tile-action>
+                                <v-list-tile-action-text>
+                                  {{ comments.posted }}
+                                </v-list-tile-action-text>
+                                <v-list-tile-action-text>
+                                  <a @click="tampilForm(item.id)">Balas</a>
+                                </v-list-tile-action-text>
+                              </v-list-tile-action>
+                            </v-list-tile>
+                          </div>
                         </div>
+                            <v-container class="text-xs-center" v-show="forumId==item.id">
+                              <v-form @submit.prevent="kirimKomentar" ref="formKomentar">
+                                <v-textarea name="input" v-model="body_balas" label="Tulis Balasan" hint="Isi balasan anda disini." :rules="[rules_body.required]"></v-textarea>
+                                <div class="justify-end">
+                                  <v-btn :disabled="!formIsValidBalas" color="#2c3e50" class="white--text" @click="kirimKomentar">Kirim Balasan</v-btn>
+                                </div>
+                              </v-form>
+                            </v-container>
                         <v-divider></v-divider>
                       </template>
                     </v-list>
@@ -227,6 +223,7 @@ export default {
     return {
       tipeMateri: 'video',
       body: "",
+      body_balas: "",
       rules_body: {
         required: value => !!value || 'Required.',
       },
@@ -236,6 +233,8 @@ export default {
   methods: {
     tampilForm(id){
       if(this.forumId==null){
+        this.forumId = id
+      }else if(this.forumId!=id){
         this.forumId = id
       }else{
           this.forumId = null
@@ -262,9 +261,22 @@ export default {
         this.tipeMateri = 'not found'
       }
     },
+    kirimKomentar() {
+      this.$store.dispatch('pushDataComment', {
+          forum_id: this.forumId,
+          isi: this.body_balas,
+          user_id: this.userId,
+        })
+        .then(response => {
+          this.$refs.formKomentar.reset()
+        })
+        .catch(error => {
+          this.$refs.formKomentar.reset()
+          this.$swal('Oopps', 'Gagal Mengirim Pertanyaan...', 'warning')
+        })
+    },
     kirimPertanyaan() {
       this.$store.dispatch('pushDataForum', {
-          course_id: this.$route.params.id,
           isi: this.body,
           user_id: this.userId,
         })
@@ -286,6 +298,11 @@ export default {
     formIsValid() {
       return (
         this.body
+      )
+    },
+    formIsValidBalas() {
+      return (
+        this.body_balas
       )
     },
     dataDetailMateri() {
