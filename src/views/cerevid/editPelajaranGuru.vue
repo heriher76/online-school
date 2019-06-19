@@ -111,31 +111,31 @@
         },
         submit(){
           this.btn_load = true;
-console.log(this.dataDetailPelajaran.data.lesson.id)
+console.log(this.dataDetailPelajaran.data)
 
-          let data = new FormData();
-          data.append('cover', this.dataDetailPelajaran.data.cover);
-          data.set('title', this.dataDetailPelajaran.data.title);
-          data.set('description', this.dataDetailPelajaran.data.description);
-          data.set('curriculum', this.dataDetailPelajaran.data.curriculum);
-          data.set('lesson_id', this.dataDetailPelajaran.data.lesson.id);
-          data.set('user_id', this.$store.state.dataUser);
-          data.set('_method', 'PUT')
-          axios.defaults.headers = {  
-            'Content-Type': 'multipart/form-data',  
-            'Authorization': 'Bearer ' + this.$store.state.token 
-          }
-          axios.post('http://api.ceredinas.id/api/courses/'+this.$route.params.id, data)
-          .then(response => {
-            this.btn_load = false;
-            this.$swal('Sukses', 'Berhasil Mengedit Pelajaran!', 'success')
-            console.log(response.data)
-          })
-          .catch(error => {
-            this.btn_load = false;
-            this.$swal('Oops', 'Gagal Mengedit Pelajaran!', 'warning')
-            console.log(error)
-          })
+          // let data = new FormData();
+          // data.append('cover', this.dataDetailPelajaran.data.cover);
+          // data.set('title', this.dataDetailPelajaran.data.title);
+          // data.set('description', this.dataDetailPelajaran.data.description);
+          // data.set('curriculum', this.dataDetailPelajaran.data.curriculum);
+          // data.set('lesson_id', this.dataDetailPelajaran.data.lesson.id);
+          // data.set('user_id', this.$store.state.dataUser);
+          // data.set('_method', 'PUT')
+          // axios.defaults.headers = {  
+          //   'Content-Type': 'multipart/form-data',  
+          //   'Authorization': 'Bearer ' + this.$store.state.token 
+          // }
+          // axios.post('http://api.ceredinas.id/api/courses/'+this.$route.params.id, data)
+          // .then(response => {
+          //   this.btn_load = false;
+          //   this.$swal('Sukses', 'Berhasil Mengedit Pelajaran!', 'success')
+          //   console.log(response.data)
+          // })
+          // .catch(error => {
+          //   this.btn_load = false;
+          //   this.$swal('Oops', 'Gagal Mengedit Pelajaran!', 'warning')
+          //   console.log(error)
+          // })
         }
     }
   }
