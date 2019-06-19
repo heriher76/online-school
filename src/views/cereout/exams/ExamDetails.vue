@@ -163,6 +163,7 @@
             console.log(response.data)
           
             if(response.data.status == true){ //cek user member atau bukan
+              this.$router.push({name: 'dashboard'})
               let routeData = this.$router.resolve({name: 'exam_page', params:{id:data.id, name: data.name, durasi:data.duration, attemptId:response.data.data.id}});
               window.open(routeData.href,
                           'my_window', 
@@ -171,7 +172,7 @@
                           )
             }
             else{
-              return this.$swal('Opps', response.data.message, 'warning')
+              return this.$swal('Mohon Maaf', 'Anda sudah mencapai batas maksimun percobaan', 'warning')
             }
 
           })

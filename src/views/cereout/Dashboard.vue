@@ -55,13 +55,15 @@
                             <v-card style="height:333px">
                                 <v-card-text style="background:#B71C1C;color:white;font-size:20px">Profil Saya</v-card-text>
                                 <hr>
-                                <div style="text-align:center;color:red;height:193px;">
-                                    <div style="width:120px;height:120px;margin:8px auto">
-                                        <img :src="userPhoto" style="border-radius:100%" alt="user profile" width="100%" height="100%">
+                                <div style="text-align:center;height:193px;">
+                                    <div style="width:120px;height:120px;margin:8px auto;border:1px solid #E0E0E0;border-radius:100%">
+                                        <img :src="userPhoto" style="border-radius:100%;" alt="not found" width="100%" height="100%">
                                     </div>
-                                    <h6 class="subheading"><b>{{user.name}}</b></h6>
-                                    <p v-if="userClass != null" style="font-size:12px;text-transform: uppercase;">{{userClass.name_class}}</p>
-                                    <p v-else style="font-size:12px;">belum ada kelas</p>
+                                    <div style="color:red;">
+                                        <h6 class="subheading"><b>{{user.name}}</b></h6>
+                                        <p v-if="userClass != null" style="font-size:12px;text-transform: uppercase;">{{userClass.name_class}}</p>
+                                        <p v-else style="font-size:12px;">belum ada kelas</p>
+                                    </div>
                                 </div>
                                 <div style="border-top:0.5px solid #E0E0E0; color:red; border-bottom:0.5px solid #E0E0E0; padding:10px">
                                     <div style="text-align:center;width:50%;float:right">
@@ -80,7 +82,7 @@
                         </v-flex>
                         <!-- /My Exam Stats -->
 
-                        <v-flex md9 sm12 xs12>
+                        <v-flex md8 sm12 xs12>
                             Grafik
                             <!-- <v-card color="#546E7A" style="height:333px">
                                 <div>
@@ -132,7 +134,7 @@
    
                         </v-flex>
 
-                        <v-flex md3 sm12 xs12>
+                        <v-flex md4 sm12 xs12>
                             <v-card color="#B71C1C">
                                 <h4 class="headline" style="padding:15px;color:white;margin-bottom:-18px;">Top Tryout</h4>
                                 <v-card-text>
@@ -204,7 +206,7 @@
                
                 headers: [
                     { text: 'Name', value: 'name' },
-                    { text: 'Score', value: 'score' }
+                    { text: 'Nilai', value: 'score' }
                 ],
                 leader: [],
 
