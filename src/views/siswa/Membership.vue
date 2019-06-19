@@ -10,6 +10,7 @@
     
             <v-card>
                 <div style="padding:18px 0px;margin:0px 18px;border-bottom:1px solid #D50000">
+                    <span style="color:#D50000">Anda Belum Menjadi Member!</span>
                     <h6 class="title" style="color:#D50000">Jadilah Member Sekarang!</h6>
                 </div>
                 <div style="padding:18px;">

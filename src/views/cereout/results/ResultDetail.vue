@@ -25,7 +25,7 @@
                     <hr>
                     <v-card>
                         <v-tabs v-model="active" color="#B71C1C" dark slider-color="blue">
-                            <v-tab v-for="n in name_tab" :key="n" ripple>
+                            <v-tab v-for="n in name_tab" :key="n" ripple style="margin:0px 2px 0px 5px;background:#D32F2F">
                                 {{ n }}
                             </v-tab>
                             
@@ -37,7 +37,7 @@
                                             <table>
                                                 <tr><td width="200"><b>Tanggal Percobaan</b></td><td>{{moment(data.created_at).format('DD/MM/YYYY hh:mm')}}</td></tr>
                                                 <tr><td><b>Durasi</b></td><td>{{data.my_time}} Menit</td></tr>
-                                                <tr><td><b>Skor</b></td><td>{{data.score}}</td></tr>
+                                                <tr><td><b>Nilai</b></td><td>{{data.score}}</td></tr>
                                                 <tr><td><b>Total Soal Terjawab</b></td><td>{{data.total_answer}}</td></tr>
                                             </table>
                                         </v-flex>

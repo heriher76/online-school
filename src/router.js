@@ -24,7 +24,8 @@ export default new Router({
       component: () => import("./views/auth/Login.vue"),
       meta: {
         requiresVisitor:true
-      }
+      },
+      props:true
     },
     {
       path: "/logout",
