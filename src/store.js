@@ -307,6 +307,7 @@ export default new Vuex.Store({
       }
       axios.get('/courses/'+router.currentRoute.params.id)
       .then(response => {
+        console.log(response.data.data)
         context.commit('getDataDetailPelajaran', response.data)
       })
       .catch(error => {

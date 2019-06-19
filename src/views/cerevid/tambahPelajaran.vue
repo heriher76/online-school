@@ -96,6 +96,7 @@
       axios.get('http://api.ceredinas.id/api/master/lesson')
         .then(response => {
           this.lessons = response.data.data
+          console.log(this.lessons)
         })
         .catch(error => {
           console.log(error)
