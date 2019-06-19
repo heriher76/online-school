@@ -11,17 +11,10 @@
         </a>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-sm-and-down">  
-        <v-menu v-if="loggedIn" :nudge-width="100">
-          <template v-slot:activator="{ on }">
-              <v-btn v-on="on" flat>Cerelink Guru<v-icon>arrow_drop_down</v-icon></v-btn>
-          </template>
-          <v-list>
-            <v-list-tile @click="linkCerevid" active-class="false">Cerevid</v-list-tile>
-            <v-list-tile @click="linkCerecall" active-class="false">Cerecall</v-list-tile>
-          </v-list>
-        </v-menu>
-
+      <v-toolbar-items v-show="loggedIn" class="hidden-sm-and-down" style="min-width:750px">
+        <v-btn flat @click="linkDashboard" active-class="false">Dashboard</v-btn>  
+        <v-btn flat @click="linkCerevid" active-class="false">Cerevid</v-btn>
+        <v-btn flat @click="linkCerecall" active-class="false">Cerecall</v-btn>
       </v-toolbar-items>
 
       <!-- <v-spacer></v-spacer> -->
@@ -36,21 +29,20 @@
             <v-menu
               v-model="menu"
               :close-on-content-click="false"
+              :nudge-width="200"
               offset-x
             >
             <template v-slot:activator="{ on }">
-              <v-list-tile v-on="on">
-                <v-icon>account_circle</v-icon>
-                {{user.name}}
-                <v-icon>arrow_drop_down</v-icon>
-                </v-list-tile>
+                <a v-on="on">
+                <!-- <p style="color: black; font-size: 18px;">Hello, {{user.name}} !</p> --><v-icon>account_circle</v-icon><v-icon>arrow_drop_down</v-icon>
+                </a>
             </template>
 
             <v-card>
                 <v-list>
                 <v-list-tile avatar>
                     <v-list-tile-avatar>
-                    <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
+                    <img :src="userPhoto" alt="John">
                     </v-list-tile-avatar>
                     <v-list-tile-content>
                     <v-list-tile-title>{{user.name}}</v-list-tile-title>
@@ -74,7 +66,11 @@
     </v-toolbar>
 
     <!-- navigation-drawer -->
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer 
+      v-model="drawer" 
+      absolute
+      temporary
+    >
       <v-toolbar flat class="transparent">
         <v-toolbar-title>
           <router-link to="/">
@@ -86,11 +82,11 @@
       <v-toolbar flat v-if="loggedIn" style="padding:30px 0px" class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar>
-            <v-list-tile-avatar style="margin-top:-50px">
-              <img src="https://randomuser.me/api/portraits/men/85.jpg">
+            <v-list-tile-avatar>
+              <img :src="userPhoto">
             </v-list-tile-avatar>
 
-            <v-list-tile-content style="height:100px;">
+            <v-list-tile-content>
               <v-list-tile-title @click="linkAkun">{{user.name}}
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
@@ -103,10 +99,9 @@
               </v-list-tile-title>
 
               <v-list-tile-sub-title>{{user.email}}</v-list-tile-sub-title>
-            
+
               <v-list-tile-sub-title>
                 <a style="color:red" flat @click="linkLogout">SIGN OUT</a>
-                
               </v-list-tile-sub-title>
 
             </v-list-tile-content>
@@ -114,51 +109,37 @@
         </v-list>
       </v-toolbar>
 
-      <v-list class="pt-0" dense>
+      <v-list class="pt-0" dense v-show="loggedIn">
         <v-divider></v-divider>
 
-        <v-list-group value="false" v-if="loggedIn">
-          <template v-slot:activator>
-            <v-list-tile>
-              <v-list-tile-title>CERELINK GURU</v-list-tile-title>
-            </v-list-tile>
-          </template>
+        <v-list-tile @click="linkDashboard">
+          <v-list-tile-content>
+            <v-list-tile-title>DASHBOARD</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
 
-          <v-list-tile @click="linkCerevid">
-            <v-list-tile-content style="margin-left:20px">
-              <v-list-tile-title>CEREVID</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+        
+        <v-list-tile @click="linkCerevid">
+          <v-list-tile-content>
+            <v-list-tile-title>CEREVID</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
 
-          <v-list-tile @click="linkCerecall">
-            <v-list-tile-content style="margin-left:20px">
-              <v-list-tile-title>CERECALL</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+        <v-list-tile @click="linkCerecall">
+          <v-list-tile-content>
+            <v-list-tile-title>CERECALL</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
 
-        </v-list-group>
+        <v-divider></v-divider>
+
+        <v-list-tile @click="linkPusatBantuan">
+          <v-list-tile-content>
+            <v-list-tile-title>PUSAT BANTUAN</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
         
       </v-list>
-      <v-divider></v-divider>
-
-      <v-list-tile to="/guru">
-        <v-list-tile-content style="margin-left:20px">
-          <v-list-tile-title>DASHBOARD</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-
-      <v-list-tile to="/guru/profile">
-        <v-list-tile-content style="margin-left:20px">
-          <v-list-tile-title>MY PROFILE</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-
-      <v-list-tile to="/guru/pusat-bantuan">
-        <v-list-tile-content style="margin-left:20px">
-          <v-list-tile-title>PUSAT BANTUAN</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-
     </v-navigation-drawer>
     <!-- /navigation-drawer -->
 
@@ -194,7 +175,8 @@
         drawer: false,
         loadLogout: false,
         menu: false,
-        user: []
+        user: [],
+        userPhoto: ''
       }
     },
 
@@ -202,6 +184,14 @@
       loggedIn: function(){
         this.menu = false
         return this.$store.getters.loggedIn
+      }
+    },
+
+    created() {
+      const loggedIn = this.$store.getters.loggedIn
+      console.log(loggedIn)
+      if (!loggedIn) {
+          this.$router.push({path:'/guru/login'})
       }
     },
 
@@ -214,8 +204,24 @@
       .catch(error => {
         console.log(error)
       })
+
+      axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
+      .then(response => {
+          // let imageNode = document.getElementById('myprofile');
+          let imgUrl     = URL.createObjectURL(response.data)
+          this.userPhoto = imgUrl
+      })
+      .catch(error => {
+          console.log(error)
+      })
     },
     methods: {
+      linkDashboard(){
+        return this.$router.push({path:'/guru'})
+      },
+      linkPusatBantuan(){
+        return this.$router.push({path:'/guru/pusat-bantuan'})
+      },
       linkCerevid(){
         return this.$router.push({path:'/guru/cerevid'})
       },

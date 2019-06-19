@@ -307,6 +307,7 @@ export default new Vuex.Store({
       }
       axios.get('/courses/'+router.currentRoute.params.id)
       .then(response => {
+        console.log(response.data.data)
         context.commit('getDataDetailPelajaran', response.data)
       })
       .catch(error => {
@@ -452,6 +453,14 @@ export default new Vuex.Store({
           user_id: credentials.user_id
         })
         .then(response => {
+          axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+          axios.get('/courses/'+router.currentRoute.params.id)
+          .then(response => {
+            context.commit('getDataDetailPelajaran', response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
           resolve(response)
         })
         .catch(error => {

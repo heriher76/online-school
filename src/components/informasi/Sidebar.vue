@@ -14,14 +14,14 @@
                     ></v-progress-circular>
                 </div>
                 <li v-for="recent in posts" :key="recent.id">
-                    <router-link :to="{name: 'detail_informasi', params: {data: recent} }">{{recent.title}}&nbsp;</router-link> <br>
+                    <router-link :to="{name: 'detail_informasi', params: {data: recent} }" style="text-transform:capitalize">{{recent.title}}&nbsp;</router-link> <br>
                     <span style="color:#757575; font-size:12px">Posted: {{recent.created_at}}</span>
                     <v-divider></v-divider>
                 </li>
             </ul>
         </div>
 
-        <div style="margin:50px 15px">
+        <!-- <div style="margin:50px 15px">
             <div style="margin:10px 22px">
                 <h6 class="title">PENGUMUMAN</h6>
             </div>
@@ -40,7 +40,7 @@
                     <v-divider></v-divider>
                 </li>
             </ul>
-        </div>
+        </div> -->
     </div>
 </template>
 

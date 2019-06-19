@@ -12,47 +12,32 @@
       <v-toolbar-items class="hidden-sm-and-down" style="min-width:750px">  
         <v-btn flat @click="linkHome" active-class="false">Home</v-btn>
         <v-btn flat @click="linkInformasi" active-class="false">Informasi</v-btn>
-        <v-menu v-if="loggedIn" :nudge-width="100">
-          <template v-slot:activator="{ on }">
-              <v-btn v-on="on" flat>Cerelink<v-icon>arrow_drop_down</v-icon></v-btn>
-          </template>
-          <v-list>
-            <v-list-tile @click="linkCerevid" active-class="false">Cerevid</v-list-tile>
-            <v-list-tile @click="linkCereout" active-class="false">Cereout</v-list-tile>
-            <v-list-tile @click="linkCerelisasi" active-class="false">Cerelisasi</v-list-tile>
-            <v-list-tile @click="linkCerecall" active-class="false">Cerecall</v-list-tile>
-          </v-list>
-        </v-menu>
-
-        <!-- search -->
-        <v-text-field style="margin:14px 25px; width:300px" flat prepend-inner-icon="search" placeholder="Search"></v-text-field>
-        <!-- /search -->
+        <v-btn v-if="loggedIn" flat @click="linkCerevid" active-class="false">Cerevid</v-btn>
+        <v-btn v-if="loggedIn" flat @click="linkCereout" active-class="false">Cereout</v-btn>
+        <v-btn v-if="loggedIn" flat @click="linkCerelisasi" active-class="false">Cerelisasi</v-btn>
+        <v-btn v-if="loggedIn" flat @click="linkCerecall" active-class="false">Cerecall</v-btn>
       </v-toolbar-items>
-
-      <!-- search mobile respon-->
-      <v-toolbar-side-icon class="grey--text hidden-md-and-up" v-if="loggedIn" v-show="bt_src" @click="src=true,bt_src=false"><v-icon>search</v-icon></v-toolbar-side-icon>
-      <v-toolbar-side-icon class="grey--text hidden-md-and-up" v-else style="margin-right:-25px" v-show="bt_src" @click="src=true,bt_src=false"><v-icon>search</v-icon></v-toolbar-side-icon>
-      <v-text-field v-show="src" class="hidden-md-and-up" v-if="loggedIn" style="margin:14px 25px; width:900px" flat prepend-inner-icon="search" placeholder="Search"></v-text-field>
-      <v-text-field v-show="src" class="hidden-md-and-up" v-else style="padding-left:5px; width:700px" flat prepend-inner-icon="search" placeholder="Search"></v-text-field>
-      <!-- /search -->
 
       <!-- <v-spacer></v-spacer> -->
 
-      <v-btn v-if="!loggedIn" flat @click="linkLogin">Sign In</v-btn>
+      <v-btn v-if="!loggedIn" flat @click="linkLogin">Masuk</v-btn>
 
       <!-- header actions -->
       <div v-if="loggedIn" class="nav-action hidden-sm-and-down">
         <div class="nav-bal">
             <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-                <router-link to="/my poin">
+                <router-link v-if="cekMember=='0'" to="/membership">
+                <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                </router-link>
+                <router-link v-else-if="cekMember=='1'" to="/my poin">
                 <v-icon style="margin:-2px" v-on="on">add</v-icon>
                 </router-link>
             </template>
             <span>Top up</span>
             </v-tooltip>
 
-            <b>Poin : {{user.balance}} </b>
+            <b>Cerecoin : {{user.balance}} </b>
 
             <div class="clear"></div>
         </div>
@@ -101,7 +86,7 @@
                 <v-list>
                 <v-list-tile avatar>
                     <v-list-tile-avatar>
-                    <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
+                    <img :src="userPhoto">
                     </v-list-tile-avatar>
                     <v-list-tile-content>
                     <v-list-tile-title>{{user.name}}</v-list-tile-title>
@@ -114,8 +99,8 @@
 
                 <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" flat @click="linkAkun">My Account</v-btn>
-                <v-btn color="red" flat @click="linkLogout">Sign Out</v-btn>
+                <v-btn color="primary" flat @click="linkAkun">Akun Saya</v-btn>
+                <v-btn color="red" flat @click="linkLogout">Keluar</v-btn>
                 </v-card-actions>
             </v-card>
             </v-menu>
@@ -125,7 +110,11 @@
     </v-toolbar>
 
     <!-- navigation-drawer -->
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer 
+      v-model="drawer" 
+      absolute
+      temporary
+    >
       <v-toolbar flat class="transparent">
         <v-toolbar-title>
           <router-link to="/">
@@ -138,7 +127,7 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar style="margin-top:-50px">
-              <img src="https://randomuser.me/api/portraits/men/85.jpg">
+              <img :src="userPhoto">
             </v-list-tile-avatar>
 
             <v-list-tile-content style="height:100px;">
@@ -191,7 +180,10 @@
                 <div class="nav-bal">
                     <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
-                        <router-link to="/my poin">
+                        <router-link v-if="cekMember=='0'" to="/membership">
+                        <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                        </router-link>
+                        <router-link v-else-if="cekMember=='1'" to="/my poin">
                         <v-icon style="margin:-2px" v-on="on">add</v-icon>
                         </router-link>
                     </template>
@@ -217,46 +209,39 @@
             <v-list-tile-title>HOME</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-
+        
         <v-list-tile @click="linkInformasi">
           <v-list-tile-content>
             <v-list-tile-title>INFORMASI</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-group value="false" v-if="loggedIn">
-          <template v-slot:activator>
-            <v-list-tile>
-              <v-list-tile-title>CERELINK</v-list-tile-title>
-            </v-list-tile>
-          </template>
-
+        <div v-if="loggedIn">
           <v-list-tile @click="linkCerevid">
-            <v-list-tile-content style="margin-left:20px">
+            <v-list-tile-content>
               <v-list-tile-title>CEREVID</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
           <v-list-tile @click="linkCereout">
-            <v-list-tile-content style="margin-left:20px">
+            <v-list-tile-content>
               <v-list-tile-title>CEREOUT</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
           <v-list-tile @click="linkCerelisasi">
-            <v-list-tile-content style="margin-left:20px">
+            <v-list-tile-content>
               <v-list-tile-title>CERELISASI</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
           <v-list-tile @click="linkCerecall">
-            <v-list-tile-content style="margin-left:20px">
+            <v-list-tile-content>
               <v-list-tile-title>CERECALL</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-
-        </v-list-group>
-        
+        </div>
+          
       </v-list>
     </v-navigation-drawer>
     <!-- /navigation-drawer -->
@@ -281,7 +266,9 @@ export default {
       drawer: false,
       loadLogout: false,
       menu: false,
-      user: []
+      user: [],
+      userPhoto: '',
+      cekMember:[]
     }
   },
 
@@ -295,10 +282,20 @@ export default {
   mounted(){      
     axios.get('/auth/user')
     .then(response => {
-      this.user = response.data.data
+      this.user      = response.data.data
+      this.cekMember = response.data.data.membership
     })
     .catch(error => {
       console.log(error)
+    })
+
+    axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
+    .then(response => {
+        let imgUrl     = URL.createObjectURL(response.data)
+        this.userPhoto = imgUrl
+    })
+    .catch(error => {
+        console.log(error)
     })
   },
 

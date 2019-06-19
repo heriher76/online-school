@@ -3,11 +3,25 @@
       <img :src="require('../../assets/images/cerevid-1.png')" alt="" height="100%" width="100%">
       <div class="baner-color"></div>
       
+      <v-snackbar
+        v-model="snackbar"
+        :multi-line="'multi-line'"
+        :right="'right'"
+        :timeout="8000"
+        :top="'top'"
+        color="rgba(0,0,0,0.6)"
+      >
+        <span>Registrasi Berhasil !!</span>
+        <v-btn :color="'col'" flat @click="snackbar = false">
+          Close
+        </v-btn>
+      </v-snackbar>
+
       <div class="panel-auth" style="color:white">
-        <h2 class="display-1">Welcome</h2>
-        <p>Login with your site account</p>
+        <h2 class="display-1">Selamat Datang</h2>
+        <p>Masuk dengan akun anda</p>
         
-        <form @submit.prevent="login">
+        <form @submit.prevent="login" @keyup.enter="login">
           <v-text-field
             dark
             color="white"
@@ -24,8 +38,8 @@
               :rules="[rules_pass.required, rules_pass.min]"
               :type="show_pass ? 'text' : 'password'"
               name="input-10-1"
-              label="Password"
-              hint="At least 8 characters"
+              label="Kata sandi"
+              hint="At least 6 characters"
               counter
               @click:append="show_pass = !show_pass"
           ></v-text-field>
@@ -36,44 +50,50 @@
               v-model="checkbox"
               label="Remember Me"
           ></v-checkbox>
-          <router-link to="/forgot password" class="label-forgot">Forgot your password?</router-link>
+          <router-link to="/forgot password" class="label-forgot">Lupa kata sandi?</router-link>
           
-          <v-btn @click="login" :loading="btn_load" round large block>SIGN IN</v-btn>  
+          <v-btn @click="login" :loading="btn_load" round large block>Masuk</v-btn>  
         </form>
 
         <div style="text-align:center; margin-top:25px">
           <div style="background:#ffffff; width:100%; height:1.5px"></div>
-          <span style="padding:8px; background:#7e88a0; position:relative;top:-11px"><label>OR</label></span>
+          <span style="padding:8px; background:#7e88a0; position:relative;top:-11px"><label>Atau</label></span>
         </div>
 
         
         <v-btn block round color="error" dark large @click="googleLogin">
-          SIGN IN WITH GOOGLE
+          masuk dengan akun google
         </v-btn>
 
-        <v-btn block round color="primary" dark large href="http://api.ceredinas.id/login/facebook">
-          SIGN IN WITH FACEBOOK
+        <v-btn block round color="primary" dark large href="https://api.ceredinas.id/login/facebook">
+          masuk dengan akun facebook
         </v-btn>
 
         <hr style="margin-bottom:15px">
-        <label>Not a member yet? <router-link to="/register" style="color:white">Register now</router-link></label>
+        <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>
       </div>
       
       <LoadingScreen2 :loading="loadLogin"></LoadingScreen2>
+
     </div>
 </template>
+
 
 <script>
 import axios from "axios"
 import LoadingScreen2 from'../../components/loading-screen/Loading2'
 
   export default {
+    name: 'login',
+    props: ['regist'],
     components:{ 
       LoadingScreen2
     },
 
     data () {
       return {
+        snackbar: false,
+
         loadLogin: false,
         btn_load: false,
         
@@ -83,7 +103,7 @@ import LoadingScreen2 from'../../components/loading-screen/Loading2'
         password: '',
         rules_pass: {
           required: value => !!value || 'Required.',
-          min: v => v.length >= 8 || 'Min 8 characters'
+          min: v => v.length >= 6 || 'Min 6 characters'
         },
 
         email: '',
@@ -95,6 +115,10 @@ import LoadingScreen2 from'../../components/loading-screen/Loading2'
           }
         }
       }
+    },
+
+    mounted(){
+      this.snackbar = this.regist
     },
 
     methods:{

@@ -1,6 +1,6 @@
 <template>
     <v-container grid-list-md>
-      <v-card style="padding:10px 20px" color="orange" dark>
+      <v-card style="padding:10px 20px" color="#B71C1C" dark>
         <h6 class="title">Layanan Konsultasi</h6>
       </v-card>
 

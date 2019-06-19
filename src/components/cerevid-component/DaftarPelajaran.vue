@@ -10,6 +10,8 @@
         content-class="layout row wrap"
         :expand="expand"
         :hide-actions="true"
+        no-data-text="Pelajaran tidak tersedia"
+        no-results-text="Pelajaran tidak ditemukan"
         >
         <template v-slot:item="props">
           <v-flex xs12 sm6 md3>

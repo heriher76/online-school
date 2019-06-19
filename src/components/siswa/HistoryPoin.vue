@@ -30,11 +30,17 @@
 
               <v-list-tile-action>
                 <v-list-tile-action-text>
-                  <v-chip v-if="item.status == 1" color="blue" text-color="white">
-                    Success
+                  <v-chip color="info" v-if="item.status == 0" text-color="white">
+                    Belum Selesai
+                  </v-chip>
+                  <v-chip color="success" v-else-if="item.status == 1" text-color="white">
+                    Sukses
+                  </v-chip>
+                  <v-chip v-else-if="item.status == 2" color="warning" text-color="white">
+                    Tertunda
                   </v-chip> 
-                  <v-chip v-else color="orange" text-color="white">
-                    Pending
+                  <v-chip v-else-if="item.status == 4" color="grey" text-color="white">
+                    Kadaluarsa
                   </v-chip> 
                 </v-list-tile-action-text>
                 <v-list-tile-action-text><span style="font-size:12px; color:#757575">{{ item.created_at }}</span></v-list-tile-action-text>
@@ -60,7 +66,7 @@ import Axios from 'axios';
     methods:{
       showList(val){
         // console.log(val)
-        if(val.status != 1){
+        if(val.status == 0 || val.status == 2){
           snap.show()
           snap.pay(val.snap_token, {
             onSuccess: function(result){console.log('success');console.log(result);},

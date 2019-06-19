@@ -9,21 +9,21 @@
         :right="'right'"
         :timeout="8000"
         :top="'top'"
-        color="rgba(0,0,0,0.5)"
+        color="rgba(0,0,0,0.6)"
       >
-        {{ text }}
+        <span style="color:orange">{{ text }}</span>
         <v-btn :color="'col'" flat @click="snackbar = false">
           Close
         </v-btn>
       </v-snackbar>
       
       <div class="panel-auth" style="color:white">
-        <h2 class="display-1">Welcome</h2>
-        <p>Register a new account</p>    
+        <h2 class="display-1">Selamat Datang</h2>
+        <p>Daftar akun baru</p>    
           
-        <!-- <form @submit.prevent="signUp"> -->
+        <!-- <form @submit.prevent="signUp" @keyup.enter="signUp"> -->
           <v-text-field 
-            label="Name"
+            label="Nama"
             dark
             color="white"
             :rules="[rules_name.required]"
@@ -47,8 +47,8 @@
               :rules="[rules_pass.required, rules_pass.min]"
               :type="show_pass ? 'text' : 'password'"
               name="input-10-1"
-              label="Password"
-              hint="At least 8 characters"
+              label="Kata sandi"
+              hint="At least 6 characters"
               counter
               @click:append="show_pass = !show_pass"
           ></v-text-field>
@@ -62,27 +62,33 @@
               :rules="[rules_pass_conf.required, rules_pass_conf.match]"
               :type="show_pass_conf ? 'text' : 'password'"
               name="input-10-1"
-              label="Re-enter Password"
-              hint="At least 8 characters"
+              label="Masukan ulang kata sandi"
+              hint="At least 6 characters"
               counter
               @click:append="show_pass_conf = !show_pass_conf"
           ></v-text-field>
-          <!-- <v-btn round large block>SIGN UP</v-btn>
-        </form> -->
+          <!-- <v-btn round large block>SIGN UP</v-btn> -->
+        <!-- </form> -->
 
-        <v-btn round large block @click="signUp">SIGN UP</v-btn>
+        <v-btn round large block @click="signUp">Daftar</v-btn>
               
         <hr style="margin-bottom:15px">
-        <label>Are you a member? <router-link to="/login" style="color:white">Login now</router-link></label>
+        <label>Sudah punya akun? <router-link to="/login" style="color:white">Masuk Sekarang</router-link></label>
 
       </div>
+
+      <LoadingScreen2 :loading="loadScreen"></LoadingScreen2>
     </div>
 </template>
 
 <script>
   import axios from 'axios'
+  import LoadingScreen2 from'../../components/loading-screen/Loading2'
 
   export default {
+    components:{ 
+      LoadingScreen2
+    },
     data () {
       return {
         snackbar: false,
@@ -91,7 +97,7 @@
 
         items:[],
 
-        loading_screen: false,
+        loadScreen: false,
   
         name: '',
         email: '',
@@ -113,7 +119,7 @@
         show_pass: false,            
         rules_pass: {
           required: value => !!value || 'Required.',
-          min: v => v.length >= 8 || 'Min 8 characters'
+          min: v => v.length >= 6 || 'Min 6 characters'
         },
 
         show_pass_conf: false,            
@@ -126,7 +132,7 @@
 
     methods: {
       signUp() {
-        // alert('hello')
+        this.loadScreen = true
         this.$store.dispatch('postRegister', {
           name: this.name,
           email: this.email,
@@ -134,37 +140,18 @@
           password_confirmation: this.password_confirmation
         })
         .then(response => {
-          this.col = 'orange'
-          this.text = response.data.message //"Registrasi Berhasil !!"
+          // this.text = response.data.message //"Registrasi Berhasil !!"
           this.snackbar = true
-          this.$router.push({name: 'login'})
+          this.loadScreen = false
+          this.$router.push({name: 'login', params:{regist: this.snackbar}})
         })
         .catch(error => {
-          this.col = 'red'
-          this.text = response.data.errors //"Registrasi Gagal !!"
+          this.loadScreen = false
           this.snackbar = true
+          this.text = "Registrasi Gagal !!"
           console.log(error.response)
         })  
-      },
-
-
-      // cobaSubmit(e){
-      //   e.preventDefault();
-      //   axios({
-      //     method: 'post',
-      //     url: 'http://api.ceredinas.id/api/master/attempts/',
-      //     data: {
-      //       user_id: 3,
-      //     },
-      //     headers: {
-      //       'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjJiMmE2MWE1Mjc2OTFkYTQyYWE4Njk4NDViMTgyNGY0ODg1YjNmOGYxY2E3OTY1NmNkZjA4Mzg2ZTkyMTg0YzhkY2VmOWYxNjQyZjJhMDk0In0.eyJhdWQiOiIxIiwianRpIjoiMmIyYTYxYTUyNzY5MWRhNDJhYTg2OTg0NWIxODI0ZjQ4ODViM2Y4ZjFjYTc5NjU2Y2RmMDgzODZlOTIxODRjOGRjZWY5ZjE2NDJmMmEwOTQiLCJpYXQiOjE1NTg2MzExMzEsIm5iZiI6MTU1ODYzMTEzMSwiZXhwIjoxNTkwMjUzNTMxLCJzdWIiOiI3Iiwic2NvcGVzIjpbXX0.dXtoJm7IYfgeYqeh14hrNyucqPCjs0c8lCNA97uILoK4sgW2-SLh05TaFaRe3HKYKYFW7lGv7WR0fir253eHiLtjNUfLrzO5U32uBP75OeldA1Mj8eKCLv2zRe6DJtW_e_bQGDc2NPaCpZizmhAEKP86FOq3KvPnb8mc2mQZ_JcGO56YVkK5NlqszbFxGAMGbin7AOCRBlHLLOXtpsQGPm-NaVJmAw2WsjzWJZyrbiqoEVQaZo_WSR2rZjvHKv2nFBVOM7Vem_LZsjE7kviwW09l5_hGzSQxjRbvIX87zDn8gzsUrYapiZwu_--2C0JcjFL75lE1X4PcTqyk951Nz_L_qIDSC4u8KbWXimN-1ui7avy-IFmPrjhVxtX72z13gF1yjC8ieasNlY1l3f5XehngfPaAssAcGI6Bgy9TRkO7ED1V3hkGNXqjJOJP3usJc9Ml652ejFJ7cq4DeX9Hvjj7-NkJjWietV2Z9N89RdumH-xmQxmJig8wj6AN6yDIsUpKRC1K1Kb7RxTVIwaY-H5R5Hy2_AwSAak0DibnmeMT_B_w4GbzqIbKk4zdyGr7qsX8JsnM9GiieQgL1_vY0D7uWEggQgnVwysAmqvt32v9rDI2naH5aNMWmVTzZjlldvAVRJhJ5rzQ-v-ZSQhcqRWyh59unLBvLOeteN0ElK0'
-      //     }
-      //   })
-      //   .then(response => (console.log(response.data)))
-      //   .catch(error => console.log(error.response))
-      //   .finally(() => this.loading = false)
-      // },
-    
+      },    
     }
   }
 </script>

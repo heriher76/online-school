@@ -6,40 +6,40 @@
             </v-toolbar>
             <v-container>
                 <v-card style="text-transform:capitalize">
-                    <v-layout>
+                    <v-layout row wrap>
                     <v-flex md6 sm12 xs12>
                         <v-list>
                             <v-list-tile>
                                 <v-list-tile-content>
-                                <v-list-tile-title>Name</v-list-tile-title>
+                                <v-list-tile-title>Nama</v-list-tile-title>
                                 <v-list-tile-sub-title>{{detail.name}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
 
                             <v-list-tile>
                                 <v-list-tile-content>
-                                <v-list-tile-title>Passing Percentage</v-list-tile-title>
+                                <v-list-tile-title>Passing Grade</v-list-tile-title>
                                 <v-list-tile-sub-title>{{detail.passing_percentage}}%</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
 
                             <v-list-tile>
                                 <v-list-tile-content>
-                                <v-list-tile-title>Instruction</v-list-tile-title>
+                                <v-list-tile-title>Intruksi</v-list-tile-title>
                                 <v-list-tile-sub-title>{{detail.instruction}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
 
                             <v-list-tile>
                                 <v-list-tile-content>
-                                <v-list-tile-title>Duration</v-list-tile-title>
+                                <v-list-tile-title>Durasi</v-list-tile-title>
                                 <v-list-tile-sub-title>{{detail.duration}} Mins</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
 
                             <v-list-tile>
                                 <v-list-tile-content>
-                                <v-list-tile-title>Class</v-list-tile-title>
+                                <v-list-tile-title>Kelas</v-list-tile-title>
                                 <v-list-tile-sub-title>{{detail.class}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
@@ -47,37 +47,43 @@
                     </v-flex>
                     <v-flex md6 sm12 xs12>
                         <v-list>
+                          <v-list-tile>
+                                <v-list-tile-content>
+                                <v-list-tile-title>Pelajaran</v-list-tile-title>
+                                <v-list-tile-sub-title>{{detail.lesson}}</v-list-tile-sub-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
                             <v-list-tile>
                                 <v-list-tile-content>
-                                <v-list-tile-title>Attempt Count</v-list-tile-title>
+                                <v-list-tile-title>Batas Percobaan</v-list-tile-title>
                                 <v-list-tile-sub-title>{{detail.attempt_count}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
 
                             <v-list-tile>
                                 <v-list-tile-content>
-                                <v-list-tile-title>Start Date</v-list-tile-title>
+                                <v-list-tile-title>Tanggal Mulai</v-list-tile-title>
                                 <v-list-tile-sub-title>{{detail.start_date}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                             <v-list-tile>
                                 <v-list-tile-content>
-                                <v-list-tile-title>End Date</v-list-tile-title>
+                                <v-list-tile-title>Tanggal Berakhir</v-list-tile-title>
                                 <v-list-tile-sub-title>{{detail.end_date}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                             <v-list-tile>
                                 <v-list-tile-content>
-                                <v-list-tile-title>Scoring System</v-list-tile-title>
+                                <v-list-tile-title>Sistem Penilaian</v-list-tile-title>
                                 <v-list-tile-sub-title>{{detail.scoring_system}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
-                            <v-list-tile>
+                            <!-- <v-list-tile>
                                 <v-list-tile-content>
-                                <v-list-tile-title>Price</v-list-tile-title>
+                                <v-list-tile-title>Harga</v-list-tile-title>
                                 <v-list-tile-sub-title>{{detail.price}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
-                            </v-list-tile>
+                            </v-list-tile> -->
                         </v-list>
                     </v-flex>
                 </v-layout>
@@ -102,6 +108,21 @@
                 </v-card>
             </v-container>
         </v-container>
+
+        <!-- <v-snackbar
+          v-model="snackbar"
+          :multi-line="'multi-line'"
+          :right="'right'"
+          :timeout="6000"
+          :top="'top'"
+          color="rgba(0,0,0,0.5)"
+        >
+          Connection timeout
+          <v-btn :color="'col'" flat @click="snackbar = false">
+          Close
+          </v-btn>
+        </v-snackbar> -->
+
     </div>
 </template>
 
@@ -114,6 +135,7 @@
     data () {
       return {
         user: [],
+        // snackbar:false,
         loading: false,
         dialog: false
       }
@@ -141,6 +163,7 @@
             console.log(response.data)
           
             if(response.data.status == true){ //cek user member atau bukan
+              this.$router.push({name: 'dashboard'})
               let routeData = this.$router.resolve({name: 'exam_page', params:{id:data.id, name: data.name, durasi:data.duration, attemptId:response.data.data.id}});
               window.open(routeData.href,
                           'my_window', 
@@ -149,7 +172,7 @@
                           )
             }
             else{
-              return this.$swal('Opps', response.data.message, 'warning')
+              return this.$swal('Mohon Maaf', 'Anda sudah mencapai batas maksimun percobaan', 'warning')
             }
 
           })
@@ -157,7 +180,7 @@
               console.log(error)
           })
         }
-        else{
+        else if(this.user.membership == 0){
           this.loading = false
           return this.$swal({
               title: 'Anda belum menjadi member',
@@ -174,6 +197,9 @@
               }
             })
         }
+        // else{
+        //   this.snackbar = true
+        // }
       },
     },
 
