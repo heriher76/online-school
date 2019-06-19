@@ -25,7 +25,7 @@
               :type="show_pass ? 'text' : 'password'"
               name="input-10-1"
               label="Password"
-              hint="At least 8 characters"
+              hint="At least 6 characters"
               counter
               @click:append="show_pass = !show_pass"
           ></v-text-field>
