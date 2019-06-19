@@ -163,16 +163,20 @@
                                   <v-list-tile-sub-title>
                                     <center>
                                     <v-btn color="orange" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/'+item.id+'/tambah-video'">
-                                      <v-icon color="white--text">visibility</v-icon>
-                                      <span class="pa-1 white--text">Tambah Video</span>
+                                      <v-icon color="white--text">add_box</v-icon>
+                                      <span class="pa-1 white--text">Video</span>
                                     </v-btn>
                                     <v-btn color="green" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/'+item.id+'/tambah-text'">
-                                      <v-icon color="white--text">visibility</v-icon>
-                                      <span class="pa-1 white--text">Tambah Text</span>
+                                      <v-icon color="white--text">add_box</v-icon>
+                                      <span class="pa-1 white--text">Text</span>
                                     </v-btn>
                                     <v-btn color="blue" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/quiz'">
-                                      <v-icon color="white--text">visibility</v-icon>
-                                      <span class="pa-1 white--text">Tambah Quiz</span>
+                                      <v-icon color="white--text">add_box</v-icon>
+                                      <span class="pa-1 white--text">Quiz</span>
+                                    </v-btn>
+                                    <v-btn color="red" @click="handleDeleteSection(item.id)">
+                                      <v-icon color="white--text">delete_forever</v-icon>
+                                      <span class="pa-1 white--text">Hapus Kurikulum</span>
                                     </v-btn>
                                     </center>
                                   </v-list-tile-sub-title>
@@ -253,27 +257,27 @@
 												            		<v-progress-linear
 																		      color="yellow darken-3"
 																		      height="18"
-																		      value="75"
+																		      :value="100*(star5/totalStar)"
 																		    ></v-progress-linear>
 														            		<v-progress-linear
 																		      color="yellow darken-3"
 																		      height="18"
-																		      value="75"
+																		      :value="100*(star4/totalStar)"
 																		    ></v-progress-linear>
 														            		<v-progress-linear
 																		      color="yellow darken-3"
 																		      height="18"
-																		      value="75"
+																		      :value="100*(star3/totalStar)"
 																		    ></v-progress-linear>
 														            		<v-progress-linear
 																		      color="yellow darken-3"
 																		      height="18"
-																		      value="75"
+																		      :value="100*(star2/totalStar)"
 																		    ></v-progress-linear>
 														            		<v-progress-linear
 																		      color="yellow darken-3"
 																		      height="18"
-																		      value="75"
+																		      :value="100*(star1/totalStar)"
 																		    ></v-progress-linear><v-spacer/>
 																			</v-flex>
 																		</v-layout>
@@ -487,7 +491,13 @@
       tambahMateri: false,
       is_load1: true,
       showTab: false,
-      showComment: false
+      showComment: false,
+      star1: 0,
+      star2: 0,
+      star3: 0,
+      star4: 0,
+      star5: 0,
+      totalStar: 0
     }),
     methods: {
         async getDataDetailPelajaran(){
@@ -524,6 +534,35 @@
               })
             } else {
               console.log('false')
+            }
+          });
+        },
+        handleDeleteSection(id) {
+          this.$swal({
+            title: "Hapus Section ini?",
+            text: "Apakah kamu yakin? Ini akan menghapus semua materi didalamnya!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ya, Hapus!"
+          }).then((willDelete) => {
+            if (willDelete.value) {
+              axios.defaults.headers = {  
+                  'Authorization': 'Bearer ' + this.$store.state.token
+              }
+              axios.delete('/courses/'+this.$route.params.id+'/sections/'+id)
+              .then(response => {
+                this.$swal('Sukses', 'Berhasil Menghapus Section!', 'success')
+                var sections = this.sections.filter(x => {
+                  return x.id != id;
+                })
+                this.sections = sections
+              })
+              .catch(error => {
+                this.$swal('Oops', 'Gagal Menghapus Section!', 'warning')
+              })
+            } else {
+              console.log('safe')
             }
           });
         },
@@ -608,7 +647,8 @@
           })
           .then(response => {
             this.$swal('Sukses', 'Berhasil Menambahkan Section!', 'success')
-            this.sections.unshift({title: this.title, course_id: this.$route.params.id});
+            this.sections.unshift({title: this.title, course_id: this.$route.params.id, id:response.data.data.id});
+            this.title = ''
           })
           .catch(error => {
             this.$swal('Oops', 'Gagal Menambahkan Section!', 'warning')
@@ -654,6 +694,21 @@
       axios.get('/courses/'+this.$route.params.id+'/reviews')
       .then(response => {
         this.reviews = response.data.data
+
+        for(var i=0;i<this.reviews.length;i++){
+          if(this.reviews[i].star==1){
+            this.star1+=1
+          }else if(this.reviews[i].star==2){
+            this.star2+=1
+          }else if(this.reviews[i].star==3){
+            this.star3+=1
+          }else if(this.reviews[i].star==4){
+            this.star4+=1
+          }else if(this.reviews[i].star==5){
+            this.star5+=1
+          }
+          this.totalStar+=1
+        }
       })
       .catch(error => {
         console.log(error)
