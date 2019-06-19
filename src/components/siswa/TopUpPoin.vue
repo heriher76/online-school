@@ -27,12 +27,27 @@
                     ></v-progress-circular>
                 </div>
                 
-                <div v-for="nom in nominals" :key="nom.id" class="card-border">
+                <div v-show="cardNominal" v-for="nom in nominals" :key="nom.id" class="card-border">
                     <v-card @click="alertTopUp(nom)" style="cursor:pointer; padding:20px; text-align:center">
                         <h6 class="title" >{{nom.nominal}} poin</h6>
                         <span style="font-size:12px">Rp. {{formatPrice(nom.harga)}}</span>
                     </v-card>
                 </div>
+
+                <v-layout v-show="cardMember">
+                    <v-flex md12>
+                        <v-card v-for="item in items" :key="item.id" style="padding:15px;margin:11px">
+                            <div style="float:left">
+                                <h6 class="title" style="color:#D50000">{{item.name}}</h6>
+                                <span style="font-size:12px; color:#D50000">Rp. {{ formatPrice(item.price) }}</span>
+                            </div>
+                            <div style="float:right">
+                                <v-btn color="#D50000" @click="alertBuy(item)" dark>Beli</v-btn>
+                            </div>
+                            <div class="clear"></div>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
 
                 <div class="clear"></div>
                 
@@ -40,7 +55,6 @@
             </div>
         <LoadingScreen4 :loading="loadingSubmit"></LoadingScreen4>
         <!-- <v-btn @click="payButton">Pay!</v-btn> -->
-     
         </v-card>
     </div>
 </template>
@@ -55,47 +69,108 @@
         },
         data(){
             return {
+                cardNominal: false,
+                cardMember: false,
+
+                cekMember: [],
                 text_info: '',
                 snackbar: false,
                 loadingSubmit:false,
                 load_data:true,
-                nominals:[]
+                nominals:[],
+                items:[]
             }
         },
         mounted(){
-            Axios.get('/master/nominal')
+            Axios.get('/auth/user')
             .then(response => {
-                this.load_data = false
-                this.nominals  = response.data.data
-                // console.log(response.data)
+                this.cekMember = response.data.data.membership
+                console.log(this.cekMember)
             })
             .catch(error => {
                 console.log(error.response)
             })
+
+            if(this.cekMember == 0){
+                Axios.get('/master/membership')
+                .then(response => {
+                    this.load_data = false
+                    this.cardMember= true
+                    this.items     = response.data.data
+                })
+                .catch(error => {
+                    console.log(error.response)
+                })
+            }
+            else if(this.cekMember == 1){
+                Axios.get('/master/nominal')
+                .then(response => {
+                    this.load_data   = false
+                    this.cardNominal = true
+                    this.nominals    = response.data.data
+                })
+                .catch(error => {
+                    console.log(error.response)
+                })
+            }
         },
 
         methods:{
-            payButton(){
-                snap.pay('6d068adc-c368-42a5-842a-8d6f9f660c3a', {
-                    onSuccess: function(result){
-                        console.log('success')
-                        console.log(result)
-                    },
-                    onPending: function(result){
-                        document.getElementById('result-json').innerHTML = result.transaction_status;
-                        
-                        console.log('pending');
-                        console.log(result);
-                    },
-                    onError: function(result){
-                        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                        
-                        console.log('error');
-                        console.log(result);
-                    },
-                    onClose: function(){console.log('customer closed the popup without finishing the payment');
+            alertBuy(val) {
+                this.$swal({
+                    title: 'Apakah Anda Yakin?',
+                    text: 'Anda akan membeli paket '+val.name,
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak',
+                    showCloseButton: true,
+                    showLoaderOnConfirm: true
+                }).then((result) => {
+                    if(result.value) { 
+                        return this.buyMember(val)
                     }
-                })    
+                })
+            },
+
+            buyMember(val){
+                // this.snackbar  = true
+                // this.text_info = 'Success'
+                this.loadingSubmit=true,
+                Axios.post('/payment/create',{
+                    user_id: this.$store.state.dataUser,
+                    nominal: val.price,
+                    membership_id: val.id,
+                    type: 1
+                })
+                .then(response => {
+                    this.loadingSubmit=false
+                    snap.show();
+                    snap.pay(response.data.snap_token, {
+                        onSuccess: function(result){
+                            document.getElementById('result-json').innerHTML = result.status_message;
+                            console.log('success')
+                            console.log(result)
+                        },
+                        onPending: function(result){
+                            document.getElementById('result-json').innerHTML = result.status_message;                        
+                            console.log('pending');
+                            console.log(result);
+                        },
+                        onError: function(result){
+                            document.getElementById('result-json').innerHTML = result.status_message;     
+                            console.log('error');
+                            console.log(result);
+                        },
+                        onClose: function(){
+                            document.getElementById('result-json').innerHTML = 'customer closed the popup without finishing the payment'
+                            console.log('customer closed the popup without finishing the payment');
+                        }
+                    })
+                })
+                .catch(error => {
+                    console.log(error.response)
+                })
             },
             
             alertTopUp(val) {

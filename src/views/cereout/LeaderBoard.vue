@@ -15,51 +15,93 @@
                 <!-- leader board -->
                 <v-flex md9 sm12 xs12>
                     <v-card color="#B71C1C" dark>
-                        <v-card-text class="px-0"><h6 class="title" style="margin:4px 20px">Papan Peringkat {{text_judul}}</h6></v-card-text>
+                        <v-card-text class="px-0"><h6 class="title" style="margin:4px 20px">Papan Peringkat</h6></v-card-text>
                     </v-card>
                     <br>
-                    <v-card>
-                        <!-- select -->
-                        <v-layout style="padding:0px 50px">
-                          <v-flex md12>
-                              <v-select
-                                  :items="dataLesson"
-                                  label="Lihat di Pelajaran"
-                                  name="pelajaran"
-                                  v-model="pelajaran"
-                                  item-text="name"
-                                  item-value="id"
-                                  @change="getDataPelajaranbyLesson"
-                              ></v-select>
-                          </v-flex>
-                        </v-layout>
-                        <!-- /select -->
+                    
+                    <v-layout row wrap>
+                      <v-flex md12 sm12 xs12>
+                        <v-card>
+                          <v-card color="red" dark >
+                            <v-card-text>Kelas <span v-if="user.class!=null">{{user.class.name_class}}</span></v-card-text>
+                          </v-card>
 
-                        <!-- loading -->
-                        <div v-show="load_data" style="margin:0px auto; padding:40px; width:5%;">
-                            <v-progress-circular
-                            :size="40"
-                            color="primary"
-                            indeterminate
-                            ></v-progress-circular>
-                        </div>
-                        <!-- /loading -->
+                          <!-- loading -->
+                          <div v-show="load_dataClass" style="margin:0px auto; padding:40px; width:5%;">
+                              <v-progress-circular
+                              :size="40"
+                              color="primary"
+                              indeterminate
+                              ></v-progress-circular>
+                          </div>
+                          <!-- /loading -->
 
-                        <div v-show="tabl" class="tabl">
-                          <v-data-table
-                            :headers="headers"
-                            :items="leader"
-                            disable-initial-sort
-                          >
-                            <template v-slot:items="props">
-                                <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.name}}</b></td>
-                                <td v-else>{{props.item.name}}</td>
-                                <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.score}}</b></td>
-                                <td v-else>{{props.item.score}}</td>
-                            </template>
-                          </v-data-table>
-                        </div>
-                    </v-card>
+                          <div v-show="tablClass" class="tabl">
+                            <v-data-table
+                              :headers="headers"
+                              :items="leaderClass"
+                              disable-initial-sort
+                            >
+                              <template v-slot:items="props">
+                                  <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.name}}</b></td>
+                                  <td v-else>{{props.item.name}}</td>
+                                  <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.score}}</b></td>
+                                  <td v-else>{{props.item.score}}</td>
+                              </template>
+                            </v-data-table>
+                          </div>
+                        </v-card>
+                      </v-flex>
+
+                      <v-flex md12 sm12 xs12>
+                        <v-card>
+                          <v-card color="red" dark >
+                            <v-card-text>Pelajaran </v-card-text>
+                          </v-card>
+
+                          <!-- select -->
+                          <v-layout style="padding:10px 20px">
+                            <v-flex md12>
+                                <v-select
+                                    :items="dataLesson"
+                                    label="Lihat di Pelajaran"
+                                    name="pelajaran"
+                                    v-model="pelajaran"
+                                    item-text="name"
+                                    item-value="id"
+                                    @change="getDataPelajaranbyLesson"
+                                ></v-select>
+                            </v-flex>
+                          </v-layout>
+                          <!-- /select -->
+
+                          <!-- loading -->
+                          <div v-show="load_data" style="margin:0px auto; padding:40px; width:5%;">
+                              <v-progress-circular
+                              :size="40"
+                              color="primary"
+                              indeterminate
+                              ></v-progress-circular>
+                          </div>
+                          <!-- /loading -->
+
+                          <div v-show="tabl" class="tabl">
+                            <v-data-table
+                              :headers="headers"
+                              :items="leader"
+                              disable-initial-sort
+                            >
+                              <template v-slot:items="props">
+                                  <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.name}}</b></td>
+                                  <td v-else>{{props.item.name}}</td>
+                                  <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.score}}</b></td>
+                                  <td v-else>{{props.item.score}}</td>
+                              </template>
+                            </v-data-table>
+                          </div>
+                        </v-card>
+                      </v-flex>
+                    </v-layout>
                 </v-flex>
                 <!-- /leader board -->
             </v-layout>
@@ -83,14 +125,19 @@
       return {
         load_data: true,
         tabl: false,
+        
+        load_dataClass: true,
+        tablClass: false,
+
         text_judul: "Kelas",
 
         user: [],
 
         headers: [
           { text: 'Name', value: 'name' },
-          { text: 'Score', value: 'score' }
+          { text: 'Nilai', value: 'score' }
         ],
+        leaderClass: [],
         leader: [],
         
         classs: [],
@@ -120,7 +167,7 @@
           this.load_data = false
           this.tabl      = true
           this.text_judul= 'Pelajaran '//+this.pelajaran
-          this.leader = response.data.data
+          this.leader    = response.data.data
           console.log(response.data)
         })
         .catch(error => {
@@ -134,9 +181,9 @@
     		var data = []
 				if(this.classs.data){
           for(var i=0;i<this.classs.data.length;i++){
-              if(this.classs.data[i].id == this.$store.state.classId){
-                  data = this.classs.data[i].lessons
-              }
+            if(this.classs.data[i].id == this.$store.state.classId){
+              data = this.classs.data[i].lessons
+            }
           }
 				}
     		return data
@@ -153,11 +200,15 @@
           console.log(error)
       })
 
+      
+      this.load_data = false
       Axios.get('/cereouts/leaderboard/'+this.$store.state.classId)//get by class_id user
       .then(response => {
-        this.load_data = false
-        this.tabl      = true
-        this.leader    = response.data.data
+        // this.tabl          = true
+        this.load_dataClass= false
+        this.tablClass     = true
+        this.leaderClass = response.data.data
+        // this.leader      = response.data.data
         console.log(response.data)
       })
       .catch(error => {
@@ -177,7 +228,7 @@
 
 <style>
   .tabl{
-    padding:0px 50px 30px 50px
+    padding:0px 10px 30px 10px
   }
   @media only screen and (max-width: 1080px) {
     .tabl{

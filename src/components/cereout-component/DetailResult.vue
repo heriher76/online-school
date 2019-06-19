@@ -22,14 +22,31 @@
                             v-for="(item, key, index) in detail" :key="item.id" 
                             @click="viewQuestion(key)"
                         >  
-                            <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
-                            <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
-
-                            <span v-else-if="key+1 < 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
-                            <span v-else-if="key+1 >= 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
+                            <!-- <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
+                            <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span>  -->
+                            
+                            <span v-if="key+1 < 10 && item.mark=='1'" style="background:orange;padding:10px 14.6px">{{key+1}} </span>       
+                            <span v-else-if="key+1 >= 10 && item.mark=='1'" style="background:orange;padding:10px 10.6px">{{key+1}}</span>
+                            
+                            <span v-else-if="key+1 < 10 && item.answer!=item.discussion.correct_answer" style="background:red;padding:10px 14.6px">{{key+1}}</span>
+                            <span v-else-if="key+1 >= 10 && item.answer!=item.discussion.correct_answer" style="background:red;padding:10px 10.6px">{{key+1}}</span>
+                        
+                            <span v-else-if="key+1 < 10" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
+                            <span v-else-if="key+1 >= 10" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
                         </a>
                         <div class="clear"></div>
-                    </v-card>
+
+                        <v-card style="padding:2px 5px">
+                                <b>Keterangan</b>
+                            </v-card>
+                            <v-layout>
+                                <v-flex md12>
+                                    <div><span style="width:15px;height:15px;background:red; margin:2.6px; float:left"></span><span>Jawaban Salah</span></div>
+                                    <div><span style="width:15px;height:15px;background:#64DD17; margin:2.6px; float:left"></span><span>Jawaban Benar</span></div>
+                                    <div><span style="width:15px;height:15px;background:orange; margin:2.6px; float:left"></span><span>Ditandai</span></div>
+                                </v-flex>   
+                            </v-layout>  
+                        </v-card>
                 </v-flex>
                 
                 <v-flex md9 sm12 xs12>
@@ -134,13 +151,13 @@
                                 <v-card-text>
                                 <v-layout style="font-size:15px">
                                     <v-flex md4>
-                                        <b>User Right</b>&nbsp;:&nbsp;<b>{{discuss.user_right}}</b>
+                                        <b>Siswa yang menjawab benar</b>&nbsp;:&nbsp;<b>{{discuss.user_right}}</b>
                                     </v-flex>
                                     <v-flex md4>
-                                        <b>User Wrong</b>&nbsp;:&nbsp;<b>{{discuss.user_wrong}}</b>
+                                        <b>Siswa yang menjawab salah</b>&nbsp;:&nbsp;<b>{{discuss.user_wrong}}</b>
                                     </v-flex>
                                     <v-flex md4>
-                                        <b>Score</b>&nbsp;:&nbsp;<b>{{discuss.score}}</b>
+                                        <b>Nilai</b>&nbsp;:&nbsp;<b>{{discuss.score}}</b>
                                     </v-flex>
                                 </v-layout>
                                 </v-card-text>
@@ -166,21 +183,36 @@
                         </v-card><br>
                         <div class="navigasi">
                             <a
-                            class="btn-num"
-                            v-for="(item, key, index) in detail" :key="item.id" 
-                            @click="viewQuestion(key)"
-                        >  
-                            <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
-                            <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
+                                class="btn-num"
+                                v-for="(item, key, index) in detail" :key="item.id" 
+                                @click="viewQuestion(key)"
+                            >  
+                                <!-- <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
+                                <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span>  -->
+                                
+                                <span v-if="key+1 < 10 && item.mark=='1'" style="background:orange;padding:10px 14.6px">{{key+1}} </span>       
+                                <span v-else-if="key+1 >= 10 && item.mark=='1'" style="background:orange;padding:10px 10.6px">{{key+1}}</span>
+                                
+                                <span v-else-if="key+1 < 10 && item.answer!=item.discussion.correct_answer" style="background:red;padding:10px 14.6px">{{key+1}}</span>
+                                <span v-else-if="key+1 >= 10 && item.answer!=item.discussion.correct_answer" style="background:red;padding:10px 10.6px">{{key+1}}</span>
                             
-                            <span v-else-if="key+1 < 10 && item.mark=='1'" style="background:orange;padding:10px 14.6px">{{key+1}} </span>       
-                            <span v-else-if="key+1 >= 10 && item.mark=='1'" style="background:orange;padding:10px 10.6px">{{key+1}}</span>
-                            
-                            <span v-else-if="key+1 < 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
-                            <span v-else-if="key+1 >= 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
-                        </a>
+                                <span v-else-if="key+1 < 10" style="background:#64DD17;padding:10px 14.6px">{{key+1}}</span>
+                                <span v-else-if="key+1 >= 10" style="background:#64DD17;padding:10px 10.6px">{{key+1}}</span>
+                                
+                            </a>
                             <div class="clear"></div>
                         </div>     
+                        <v-card style="padding:2px 5px">
+                            <b>Keterangan</b>
+                        </v-card>
+                        <v-layout>
+                            <v-flex md12>
+                                <div><span style="width:15px;height:15px;background:red; margin:2.6px; float:left"></span><span>Jawaban Salah</span></div>
+                                <div><span style="width:15px;height:15px;background:#64DD17; margin:2.6px; float:left"></span><span>Jawaban Benar</span></div>
+                                <div><span style="width:15px;height:15px;background:orange; margin:2.6px; float:left"></span><span>Ditandai</span></div>
+                                <!-- <div><span style="width:15px;height:15px;background:#03A9F4; margin:2.6px; float:left"></span><span>Aktif</span></div> -->
+                            </v-flex>
+                        </v-layout>  
                     </v-card>
                 </v-flex>
             </v-layout>

@@ -115,15 +115,18 @@
                                 v-for="(item, key, index) in questions" :key="item.id" 
                                 @click="viewQuestion(key)"
                             >  
-                                <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
-                                <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
+                                <!-- <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
+                                <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span>  -->
                                 
-                                <span v-else-if="key+1 < 10 && markanswer[key]=='1'" style="background:orange;padding:10px 14.6px">{{key+1}} </span>       
+                                <!-- ditandai -->
+                                <span v-if="key+1 < 10 && markanswer[key]=='1'" style="background:orange;padding:10px 14.6px">{{key+1}} </span>       
                                 <span v-else-if="key+1 >= 10 && markanswer[key]=='1'" style="background:orange;padding:10px 10.6px">{{key+1}}</span>
                                 
+                                <!-- no actions -->
                                 <span v-else-if="key+1 < 10 && tmpanswer[key]==null" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
                                 <span v-else-if="key+1 >= 10 && tmpanswer[key]==null" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
                                 
+                                <!-- terjawab -->
                                 <span v-else-if="key+1 < 10 && tmpanswer[key]!=null" style="background:#8BC34A;padding:10px 14.6px">{{key+1}}</span>
                                 <span v-else-if="key+1 >= 10 && tmpanswer[key]!=null" style="background:#8BC34A;padding:10px 10.6px">{{key+1}}</span>  
                             </a>
@@ -139,7 +142,7 @@
                                 </v-flex>
                                 <v-flex md7>
                                     <div><span style="width:15px;height:15px;background:#BDBDBD; margin:2.6px; float:left"></span><span>Belum Terjawab</span></div>
-                                    <div><span style="width:15px;height:15px;background:#03A9F4; margin:2.6px; float:left"></span><span>Aktif</span></div>
+                                    <!-- <div><span style="width:15px;height:15px;background:#03A9F4; margin:2.6px; float:left"></span><span>Aktif</span></div> -->
                                 </v-flex>
                             </v-layout>          
                         </div>     
@@ -195,7 +198,7 @@
             alertDisplay() {
                 this.$swal({
                     title: 'Apakah anda yakin?',
-                    text: 'Silahkan batalkan, dan periksa kembali jawaban anda jika anda tidak yakin',
+                    text: 'Silahkan batalkan, dan periksa kembali jawaban anda jika tidak yakin!',
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Ya Lanjutkan!',
@@ -344,7 +347,7 @@
 
                 this.quest     = this.questions[0].question
                 this.options   = this.questions[0].option;
-                // console.log(response.data)
+                console.log(response.data)
             })
             .catch(error =>{
                 console.log(error.response)

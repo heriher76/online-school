@@ -22,11 +22,14 @@
                             v-for="(item, key, index) in detail" :key="item.id" 
                             @click="viewQuestion(key)"
                         >  
-                            <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
-                            <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
-
-                            <span v-else-if="key+1 < 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
-                            <span v-else-if="key+1 >= 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
+                            <span v-if="key+1 < 10 && item.mark=='1'" style="background:orange;padding:10px 14.6px">{{key+1}} </span>       
+                            <span v-else-if="key+1 >= 10 && item.mark=='1'" style="background:orange;padding:10px 10.6px">{{key+1}}</span>
+                            
+                            <span v-else-if="key+1 < 10 && item.answer!=item.discussion.correct_answer" style="background:red;padding:10px 14.6px">{{key+1}}</span>
+                            <span v-else-if="key+1 >= 10 && item.answer!=item.discussion.correct_answer" style="background:red;padding:10px 10.6px">{{key+1}}</span>
+                        
+                            <span v-else-if="key+1 < 10" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
+                            <span v-else-if="key+1 >= 10" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
                         </a>
                         <div class="clear"></div>
                     </v-card>
@@ -41,7 +44,7 @@
 
                         <div style="float:right; padding:2px 10px 0px 0px;color:#64B5F6">
                             <span>Jawaban Benar: {{discussion.correct_answer}}</span> &nbsp;|&nbsp;
-                            <span>Jawaban Anda: {{discuss.answer}}</span>
+                            <span>Jawaban Anda: {{discuss.answer}}<span v-if="discuss.answer==null">-</span></span>
                         </div>
                     </v-card>
                     
@@ -122,7 +125,7 @@
                             <div>
                                 <b>Video Penjelasan:</b>
                                 <div style="width:100%;height:380px">
-                                    <iframe :src="'https://www.youtube.com/embed/V1Pl8CzNzCw?modestbranding=1&rel=0&iv_load_policy=3&fs=0&disablekb=1&showinfo=0&autoplay=0'" style="width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    <iframe :src="'https://www.youtube.com/embed/'+url_video" style="width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 </div>
                             </div>
                             <!-- /penjelasan -->
@@ -167,17 +170,31 @@
                             v-for="(item, key, index) in detail" :key="item.id" 
                             @click="viewQuestion(key)"
                         >  
-                            <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
-                            <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span> 
+                            <!-- <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
+                            <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span>  -->
                             
-                            <!-- <span v-else-if="key+1 < 10 && discuss[key].mark=='1'" style="background:orange;padding:10px 14.6px">{{key+1}} </span>       
-                            <span v-else-if="key+1 >= 10 && discuss[key].mark=='1'" style="background:orange;padding:10px 10.6px">{{key+1}}</span> -->
+                            <span v-if="key+1 < 10 && item.mark=='1'" style="background:orange;padding:10px 14.6px">{{key+1}} </span>       
+                            <span v-else-if="key+1 >= 10 && item.mark=='1'" style="background:orange;padding:10px 10.6px">{{key+1}}</span>
                             
-                            <span v-else-if="key+1 < 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 14.6px">{{key+1}}</span>
-                            <span v-else-if="key+1 >= 10 && hal+1!=key+1" style="background:#BDBDBD;padding:10px 10.6px">{{key+1}}</span>
-{{discuss[key].mark}}
+                            <span v-else-if="key+1 < 10 && item.answer!=item.discussion.correct_answer" style="background:red;padding:10px 14.6px">{{key+1}}</span>
+                            <span v-else-if="key+1 >= 10 && item.answer!=item.discussion.correct_answer" style="background:red;padding:10px 10.6px">{{key+1}}</span>
+                        
+                            <span v-else-if="key+1 < 10" style="background:#64DD17;padding:10px 14.6px">{{key+1}}</span>
+                            <span v-else-if="key+1 >= 10" style="background:#64DD17;padding:10px 10.6px">{{key+1}}</span>
+                            
                         </a>
                         <div class="clear"></div>
+                        <v-card style="padding:2px 5px">
+                            <b>Keterangan</b>
+                        </v-card>
+                        <v-layout>
+                            <v-flex md12>
+                                <div><span style="width:15px;height:15px;background:red; margin:2.6px; float:left"></span><span>Jawaban Salah</span></div>
+                                <div><span style="width:15px;height:15px;background:#64DD17; margin:2.6px; float:left"></span><span>Jawaban Benar</span></div>
+                                <div><span style="width:15px;height:15px;background:orange; margin:2.6px; float:left"></span><span>Ditandai</span></div>
+                                <!-- <div><span style="width:15px;height:15px;background:#03A9F4; margin:2.6px; float:left"></span><span>Aktif</span></div> -->
+                            </v-flex>
+                        </v-layout> 
                     </v-card>
                 </v-flex>
             </v-layout>
@@ -187,12 +204,15 @@
 
 <script>
     import axios from 'axios';
+    import getVideoId from 'get-video-id'
+    import urlParser from "js-video-url-parser"
 
     export default {
         props:["id"],
         
         data () {
             return {
+                url_video: '',
                 detail: [],
                 load_data: true,
                 hal: 0,
@@ -206,6 +226,8 @@
                 this.hal        = index 
                 this.discuss    = this.detail[index]
                 this.discussion = this.detail[index].discussion
+                let url         = urlParser.parse(this.detail[0].discussion.url_explanation).id
+                this.url_video  = url
             },
 
             previous(hal){
@@ -214,6 +236,8 @@
                     this.hal        = hal
                     this.discuss    = this.detail[hal]
                     this.discussion = this.detail[hal].discussion
+                    let url         = urlParser.parse(this.detail[0].discussion.url_explanation).id
+                    this.url_video  = url
                 }
             },
 
@@ -223,6 +247,8 @@
                     this.hal        = hal
                     this.discuss    = this.detail[hal]
                     this.discussion = this.detail[hal].discussion
+                    let url         = urlParser.parse(this.detail[0].discussion.url_explanation).id
+                    this.url_video  = url
                 }
             },  
         },
@@ -234,6 +260,8 @@
                 this.load_data  = false
                 this.discuss    = this.detail[0]
                 this.discussion = this.detail[0].discussion
+                let url         = urlParser.parse(this.detail[0].discussion.url_explanation).id
+                this.url_video  = url
                 console.log(response.data)
             })
             .catch(error => {
