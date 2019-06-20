@@ -256,7 +256,9 @@ export default new Vuex.Store({
 //---------------------------------cerevid function-----------------------------------------------
   //--------------------------------cerevid get--------------------------------
     getDataPelajaran(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+        'Authorization': 'Bearer ' + context.state.token 
+      }
       axios.get('/courses')
       .then(response => {
         context.commit('getDataPelajaran', response.data)
@@ -277,7 +279,9 @@ export default new Vuex.Store({
     },
 
     getDataLesson(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+        'Authorization': 'Bearer ' + context.state.token 
+      }
       axios.get('/master/lesson')
       .then(response => {
         context.commit('getDataLesson', response.data)
@@ -288,7 +292,9 @@ export default new Vuex.Store({
     },
 
     getDataPelajaranbyLesson(context,data){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+        'Authorization': 'Bearer ' + context.state.token 
+      }
       axios.get('/courses/lesson/'+data.id)
       .then(response => {
         context.commit('getDataPelajaranbyLesson', response.data)
@@ -299,7 +305,9 @@ export default new Vuex.Store({
     },
 
     getDataPelajaranbyUser(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token
+      }
       axios.get('/courses/'+this.state.dataUser+'/learned')
       .then(response => {
         context.commit('getDataPelajaranbyUser', response.data)
@@ -323,7 +331,9 @@ export default new Vuex.Store({
     },
 
     getDataFavoritbyUser(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+        'Authorization': 'Bearer ' + context.state.token 
+      }
       axios.get('/courses/favorites')
       .then(response => {
         context.commit('getDataFavoritbyUser', response.data)
@@ -339,6 +349,7 @@ export default new Vuex.Store({
       }
       axios.get('/courses/'+router.currentRoute.params.id)
       .then(response => {
+        console.log(response.data.data)
         context.commit('getDataDetailPelajaran', response.data)
       })
       .catch(error => {
@@ -346,19 +357,10 @@ export default new Vuex.Store({
       })
     },
 
-    getDataProgress(context, credentials){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-      axios.get('/courses/'+credentials.id+'/sections')
-      .then(response => {
-        context.commit('getDataDetailMateri', response.data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    },
-
     getDataDetailMateri(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token
+      }
       axios.get('/courses/'+router.currentRoute.params.id+'/sections')
       .then(response => {
         context.commit('getDataDetailMateri', response.data)
@@ -369,10 +371,14 @@ export default new Vuex.Store({
     },
 
     getDataVideo(context, data){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+        'Authorization': 'Bearer ' + context.state.token 
+      }
       axios.get('/sections/'+data.section_id+'/videos/'+data.id)
       .then(response => {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token 
+        }
         axios.get('/courses/'+router.currentRoute.params.id+'/sections')
         .then(response => {
           context.commit('getDataDetailMateri', response.data)
@@ -388,10 +394,14 @@ export default new Vuex.Store({
     },
 
     getDataText(context, data){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+        'Authorization': 'Bearer ' + context.state.token 
+      }
       axios.get('/sections/'+data.section_id+'/texts/'+data.id)
       .then(response => {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token 
+        }
         axios.get('/courses/'+router.currentRoute.params.id+'/sections')
         .then(response => {
           context.commit('getDataDetailMateri', response.data)
@@ -407,10 +417,14 @@ export default new Vuex.Store({
     },
 
     getDataQuiz(context, data){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+        'Authorization': 'Bearer ' + context.state.token 
+      }
       axios.get('/sections/'+data.section_id+'/quiz/'+data.id)
       .then(response => {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token 
+        }
         axios.get('/courses/'+router.currentRoute.params.id+'/sections')
         .then(response => {
           context.commit('getDataDetailMateri', response.data)
@@ -426,7 +440,9 @@ export default new Vuex.Store({
     },
 
     getDataDetailForum(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+        'Authorization': 'Bearer ' + context.state.token 
+      }
       axios.get('/courses/'+router.currentRoute.params.id+'/forums')
       .then(response => {
         context.commit('getDataDetailForum', response.data)
@@ -440,7 +456,9 @@ export default new Vuex.Store({
     //Simpan Favorit
     pushDataFavorit(context, credentials){
       return new Promise((resolve, reject) => {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token 
+        }
         axios.post('/courses/'+credentials.course_id+'/favorites/create',{
           user_id: credentials.user_id
         })
@@ -458,7 +476,9 @@ export default new Vuex.Store({
     //Simpan Learned
     pushDataLearned(context, credentials){
       return new Promise((resolve, reject) => {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token 
+        }
         axios.post('/courses/'+credentials.user_id+'/learned',{
           user_id: credentials.user_id,
           course_id: credentials.course_id,
@@ -476,7 +496,9 @@ export default new Vuex.Store({
     //Input Ulasan & Rating
     pushDataRating(context, credentials){
       return new Promise((resolve, reject) => {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token 
+        }
         axios.post('/courses/'+router.currentRoute.params.id+'/reviews/create',{
           course_id: credentials.course_id,
           star: credentials.star,
@@ -484,7 +506,9 @@ export default new Vuex.Store({
           user_id: credentials.user_id
         })
         .then(response => {
-          axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+          axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token 
+          }
           axios.get('/courses/'+router.currentRoute.params.id)
           .then(response => {
             context.commit('getDataDetailPelajaran', response.data)
@@ -501,16 +525,54 @@ export default new Vuex.Store({
       })
     },
 
-    pushDataForum(context, credentials){
+    pushDataComment(context, credentials){
       return new Promise((resolve, reject) => {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token 
+        }
         axios.post('/courses/'+router.currentRoute.params.id+'/forums/create',{
-          course_id: credentials.course_id,
+          forum_id: credentials.forum_id,
           body: credentials.isi,
-          user_id: credentials.user_id
         },)
         .then(response => {
-          context.commit('pushDataDetailForum', response.data)
+          axios.defaults.headers = {  
+            'Authorization': 'Bearer ' + context.state.token 
+          }
+          axios.get('/courses/'+router.currentRoute.params.id+'/forums')
+          .then(response => {
+            context.commit('getDataDetailForum', response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+          resolve(response)
+        })
+        .catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+
+    pushDataForum(context, credentials){
+      return new Promise((resolve, reject) => {
+        axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token 
+        }
+        axios.post('/courses/'+router.currentRoute.params.id+'/forums/create',{
+          body: credentials.isi,
+        },)
+        .then(response => {
+          axios.defaults.headers = {  
+            'Authorization': 'Bearer ' + context.state.token 
+          }
+          axios.get('/courses/'+router.currentRoute.params.id+'/forums')
+          .then(response => {
+            context.commit('getDataDetailForum', response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
           resolve(response)
         })
         .catch(error => {

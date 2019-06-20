@@ -15,7 +15,7 @@
                 <v-flex md9 sm12 xs12>
                     <v-layout row wrap>
                         <vue-snotify></vue-snotify>
-                        <h2>Dashboard Guru</h2>
+                        <h2>Selamat Datang !</h2>
                     </v-layout>
                 </v-flex>
                 

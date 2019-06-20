@@ -111,16 +111,16 @@
         },
         submit(){
           this.btn_load = true;
+console.log(this.dataDetailPelajaran.data.lesson.id)
 
           let data = new FormData();
           data.append('cover', this.dataDetailPelajaran.data.cover);
           data.set('title', this.dataDetailPelajaran.data.title);
           data.set('description', this.dataDetailPelajaran.data.description);
           data.set('curriculum', this.dataDetailPelajaran.data.curriculum);
-          data.set('lesson_id', this.dataDetailPelajaran.data.lesson_id);
-          data.set('user_id', this.dataDetailPelajaran.data.dataUser);
-          data.set('_method', 'PUT');
-
+          data.set('lesson_id', this.dataDetailPelajaran.data.lesson.id);
+          data.set('user_id', this.$store.state.dataUser);
+          data.set('_method', 'PUT')
           axios.defaults.headers = {  
             'Content-Type': 'multipart/form-data',  
             'Authorization': 'Bearer ' + this.$store.state.token 

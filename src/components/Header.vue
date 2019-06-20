@@ -55,11 +55,11 @@
 
             <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-                <router-link to="/cerevid/wishlist">
+                <router-link to="/cerevid/favorit">
                 <v-icon color="pink" v-on="on">favorite</v-icon>
                 </router-link>
             </template>
-            <span>Wishlist Cerevid</span>
+            <span>Pelajaran Favorit di Cerevid</span>
             </v-tooltip>
 
             <v-tooltip bottom>
@@ -159,11 +159,11 @@
                   
                   <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
-                      <router-link to="/cerevid/wishlist">
+                      <router-link to="/cerevid/favorit">
                       <v-icon color="pink" v-on="on">favorite</v-icon>
                       </router-link>
                   </template>
-                  <span>Wishlist Cerevid</span>
+                  <span>Pelajaran Favorit di Cerevid</span>
                   </v-tooltip>
 
                   <v-tooltip bottom>

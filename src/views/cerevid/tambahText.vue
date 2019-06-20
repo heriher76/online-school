@@ -77,12 +77,11 @@
           .then(response => {
             this.btn_load = false;
             this.$swal('Sukses', 'Berhasil Menambahkan Text!', 'success')
-            console.log(response.data)
+            this.$router.push({path:'/guru/cerevid/detail-pelajaran/'+this.$route.params.id})
           })
           .catch(error => {
             this.btn_load = false;
             this.$swal('Oops', 'Gagal Menambahkan Text!', 'warning')
-            console.log(error)
           })
         }
     }

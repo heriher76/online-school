@@ -96,6 +96,7 @@
       axios.get('http://api.ceredinas.id/api/master/lesson')
         .then(response => {
           this.lessons = response.data.data
+          console.log(this.lessons)
         })
         .catch(error => {
           console.log(error)
@@ -123,12 +124,11 @@
           .then(response => {
             this.btn_load = false;
             this.$swal('Sukses', 'Berhasil Menambah Pelajaran!', 'success')
-            console.log(response.data)
+            this.$router.push({path:'/guru/cerevid/daftar-pelajaran'})
           })
           .catch(error => {
             this.btn_load = false;
             this.$swal('Oops', 'Gagal Menambah Pelajaran!', 'warning')
-            console.log(error)
           })
         },
 		    daftarPelajaran(){

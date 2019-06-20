@@ -87,7 +87,7 @@
           .then(response => {
             this.btn_load = false;
             this.$swal('Sukses', 'Berhasil Mengedit Video!', 'success')
-            console.log(response.data)
+            this.$router.push({path:'/guru/cerevid/detail-pelajaran/'+this.$route.params.id})
           })
           .catch(error => {
             this.btn_load = false;
