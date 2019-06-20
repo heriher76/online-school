@@ -189,7 +189,6 @@
 
     created() {
       const loggedIn = this.$store.getters.loggedIn
-      console.log(loggedIn)
       if (!loggedIn) {
           this.$router.push({path:'/guru/login'})
       }
@@ -198,7 +197,6 @@
     mounted(){      
       axios.get('/auth/user')
       .then(response => {
-        console.log(response)
         this.user = response.data.data
       })
       .catch(error => {
