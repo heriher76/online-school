@@ -22,8 +22,8 @@
                     <v-layout row wrap>
                       <v-flex md12 sm12 xs12>
                         <v-card>
-                          <v-card color="red" dark >
-                            <v-card-text>Kelas <span v-if="user.class!=null">{{user.class.name_class}}</span></v-card-text>
+                          <v-card color="#E53935" dark >
+                            <v-card-text style="font-size:18px">Kelas <span v-if="user.class!=null">{{user.class.name_class}}</span></v-card-text>
                           </v-card>
 
                           <!-- loading -->
@@ -55,8 +55,8 @@
 
                       <v-flex md12 sm12 xs12>
                         <v-card>
-                          <v-card color="red" dark >
-                            <v-card-text>Pelajaran </v-card-text>
+                          <v-card color="#E53935" dark >
+                            <v-card-text style="font-size:18px">Pelajaran </v-card-text>
                           </v-card>
 
                           <!-- select -->

@@ -29,12 +29,12 @@ export default {
     Header,
     Footer
   },
-  created() {
-      const loggedIn = this.$store.getters.loggedIn
-      console.log(loggedIn)
-      if (!loggedIn) {
-          this.$router.push({path:'/guru/login'})
-      }
-  }
+  // created() {
+  //     const loggedIn = this.$store.getters.loggedIn
+  //     console.log(loggedIn)
+  //     if (!loggedIn) {
+  //         this.$router.push({path:'/guru/login'})
+  //     }
+  // }
 }
 </script>

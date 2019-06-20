@@ -157,6 +157,38 @@ export default new Vuex.Store({
       })
     },
 
+    cekAuth(context){
+      axios.get('/auth/user')
+      .then(response => {
+        // console.log("auth", response.data)
+        const dataUser = response.data.data.id
+        const classId  = response.data.data.class_id
+        
+        localStorage.setItem('getDataUser', dataUser)
+        localStorage.setItem('getDataClassId', classId)
+
+        context.commit('retrieveDataUser', dataUser)
+        context.commit('retrieveClassId', classId)
+      })
+      .catch(error=>{
+        // console.log("authErr", error.response)
+      })
+    },
+
+    //login function
+    retrieveTokenGoogle(context, data){
+      axios.get('/login/google?token='+data.token)
+      .then(response => {
+        const token    = response.data.access_token
+        localStorage.setItem('access_token', token)
+        context.commit('retrieveToken', token)
+        // console.log("google", response.data)
+      })
+      .catch(error => {
+        // console.log("googleErr", error.response)
+      })  
+    },
+
     //login function
     retrieveToken(context, credentials){
       return new Promise((resolve, reject) => {

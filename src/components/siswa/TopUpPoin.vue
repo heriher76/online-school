@@ -27,14 +27,14 @@
                     ></v-progress-circular>
                 </div>
                 
-                <div v-show="cardNominal" v-for="nom in nominals" :key="nom.id" class="card-border">
+                <div v-if="cekMember==1" v-for="nom in nominals" :key="nom.id" class="card-border">
                     <v-card @click="alertTopUp(nom)" style="cursor:pointer; padding:20px; text-align:center">
                         <h6 class="title" >{{nom.nominal}} poin</h6>
                         <span style="font-size:12px">Rp. {{formatPrice(nom.harga)}}</span>
                     </v-card>
                 </div>
 
-                <v-layout v-show="cardMember">
+                <v-layout v-else-if="cekMember==0">
                     <v-flex md12>
                         <v-card v-for="item in items" :key="item.id" style="padding:15px;margin:11px">
                             <div style="float:left">
@@ -54,7 +54,7 @@
                 <div id="result-json" style="color:red"></div>
             </div>
         <LoadingScreen4 :loading="loadingSubmit"></LoadingScreen4>
-        <!-- <v-btn @click="payButton">Pay!</v-btn> -->
+        
         </v-card>
     </div>
 </template>
@@ -91,7 +91,7 @@
                 console.log(error.response)
             })
 
-            if(this.cekMember == 0){
+            // if(this.cekMember == 0){
                 Axios.get('/master/membership')
                 .then(response => {
                     this.load_data = false
@@ -101,8 +101,8 @@
                 .catch(error => {
                     console.log(error.response)
                 })
-            }
-            else if(this.cekMember == 1){
+            // }
+            // else if(this.cekMember == 1){
                 Axios.get('/master/nominal')
                 .then(response => {
                     this.load_data   = false
@@ -112,7 +112,7 @@
                 .catch(error => {
                     console.log(error.response)
                 })
-            }
+            // }
         },
 
         methods:{
