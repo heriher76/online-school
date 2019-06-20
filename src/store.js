@@ -157,38 +157,6 @@ export default new Vuex.Store({
       })
     },
 
-    cekAuth(context){
-      axios.get('/auth/user')
-      .then(response => {
-        // console.log("auth", response.data)
-        const dataUser = response.data.data.id
-        const classId  = response.data.data.class_id
-        
-        localStorage.setItem('getDataUser', dataUser)
-        localStorage.setItem('getDataClassId', classId)
-
-        context.commit('retrieveDataUser', dataUser)
-        context.commit('retrieveClassId', classId)
-      })
-      .catch(error=>{
-        // console.log("authErr", error.response)
-      })
-    },
-
-    //login function
-    retrieveTokenGoogle(context, data){
-      axios.get('/login/google?token='+data.token)
-      .then(response => {
-        const token    = response.data.access_token
-        localStorage.setItem('access_token', token)
-        context.commit('retrieveToken', token)
-        // console.log("google", response.data)
-      })
-      .catch(error => {
-        // console.log("googleErr", error.response)
-      })  
-    },
-
     //login function
     retrieveToken(context, credentials){
       return new Promise((resolve, reject) => {
@@ -218,8 +186,9 @@ export default new Vuex.Store({
 
     // /logout function
     destroyToken(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
-
+      axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token 
+      }
       if(context.getters.loggedIn) {
         // return new Promise((resolve, reject) => {
           axios.get('/auth/logout')
@@ -349,7 +318,6 @@ export default new Vuex.Store({
       }
       axios.get('/courses/'+router.currentRoute.params.id)
       .then(response => {
-        console.log(response.data.data)
         context.commit('getDataDetailPelajaran', response.data)
       })
       .catch(error => {
@@ -533,7 +501,7 @@ export default new Vuex.Store({
         axios.post('/courses/'+router.currentRoute.params.id+'/forums/create',{
           forum_id: credentials.forum_id,
           body: credentials.isi,
-        },)
+        })
         .then(response => {
           axios.defaults.headers = {  
             'Authorization': 'Bearer ' + context.state.token 
@@ -585,7 +553,9 @@ export default new Vuex.Store({
     //Simpan Favorit
     delDataFavorit(context, credentials){
       return new Promise((resolve, reject) => {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+        axios.defaults.headers = {  
+          'Authorization': 'Bearer ' + context.state.token 
+        }
         axios.delete('/courses/'+credentials.user_id+'/favorites/'+credentials.favorit_id,{
           user_id: credentials.user_id
         },)

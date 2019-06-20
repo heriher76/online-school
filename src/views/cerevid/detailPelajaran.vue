@@ -37,7 +37,7 @@
         <v-tab-item :value="'ulasan'">
           <v-card>
             <v-container fluid>
-              <v-flex class="mx-4">
+              <v-flex>
                 <v-container grid-list-md>
                   <detailUlasan :datas="dataDetailPelajaran" />
                   </v-layout>

@@ -17,7 +17,7 @@
           <v-flex xs12 sm6 md3>
               <v-card>
                 <v-img
-                  v-bind:src="'http://admin.ceredinas.id/public/cover/'+ props.item.cover"
+                  v-bind:src="props.item.cover"
                   height="200px"
                 >
                   <v-flex offset-xs9 align-end flexbox>

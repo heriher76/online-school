@@ -5,6 +5,7 @@
   <!-- end sub - navbar -->
   <!-- content -->
   <v-container>
+    {{dataFavoritbyUser.data}}
     <p class="display-1 text-uppercase font-weight-light">
       <v-layout row wrap pa-3>
 
@@ -31,26 +32,18 @@
         <template v-slot:item="props">
           <v-flex xs12 sm6 md3>
             <v-card>
-              <v-img v-bind:src="'http://admin.ceredinas.id/public/cover/'+ props.item.course.cover" height="200px">
+              <v-img v-bind:src="props.item.course.cover" height="200px">
                 <v-flex offset-xs9 align-end flexbox>
-                  <div v-for="datas in dataDaftarPelajaran.data">
-                    <div v-if="datas.title==props.item.course.title">
-                      <v-btn fab dark small color="pink" style="opacity:0.85;" @click="hapusFavorit(props.item.id)">
-                        <v-icon dark>favorite</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
+                  <v-btn fab dark small color="pink" style="opacity:0.85;" @click="hapusFavorit(props.item.id)">
+                    <v-icon dark>favorite</v-icon>
+                  </v-btn>
                 </v-flex>
               </v-img>
 
               <v-card-title primary-title>
                 <div>
                   <div class="headline">
-                    <div v-for="datas in dataDaftarPelajaran.data">
-                      <div v-if="datas.title==props.item.course.title">
-                        <router-link v-bind:to="'/cerevid/detail-pelajaran/'+datas.id" style="text-decoration: none;">{{props.item.course.title}}</router-link>
-                      </div>
-                    </div>
+                    <router-link v-bind:to="'/cerevid/detail-pelajaran/'+props.item.course.course_id" style="text-decoration: none;">{{props.item.course.title}}</router-link>
                   </div>
                   <span class="grey--text">{{props.item.course.teacher.name}}</span>
                 </div>
@@ -96,10 +89,6 @@ export default {
         return datas.course.title.toLowerCase().includes(search.toLowerCase())
       })
     },
-    getDataPelajaran() {
-      this.$store.dispatch('getDataPelajaran')
-        .then(response => {})
-    },
     getDataFavoritbyUser() {
       this.$store.dispatch('getDataFavoritbyUser')
         .then(response => {})
@@ -117,7 +106,6 @@ export default {
 
   },
   created() {
-    this.getDataPelajaran()
     this.getDataFavoritbyUser()
   },
   computed: {
