@@ -14,14 +14,15 @@
     <v-layout class="justify-center">
       <div v-if="dataPelajaranbyUser.data">
             <div v-if="cekLearned()">
-              <v-btn color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#'+tipeMateri+'-'+sectionId+'-'+id">Lanjutkan Belajar</v-btn>
+              <v-btn :disabled="!ketemu" color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#'+tipeMateri+'-'+sectionId+'-'+id">Lanjutkan Belajar</v-btn>
             </div>
             <div v-else>
-              <v-btn color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#'+tipeMateri+'-'+sectionId+'-'+id" @click="postLearned">Mulai Belajar</v-btn>
+              <div class="body-2 red--text">Materi Belum Tersedia...</div>
+              <v-btn :disabled="!ketemu" color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#'+tipeMateri+'-'+sectionId+'-'+id" @click="postLearned">Mulai Belajar</v-btn>
             </div>
       </div>
       <div v-else>
-        <v-btn color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#'+tipeMateri+'-'+sectionId+'-'+id" @click="postLearned">Mulai Belajar</v-btn>
+        <v-btn :disabled="!ketemu" color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#'+tipeMateri+'-'+sectionId+'-'+id" @click="postLearned">Mulai Belajar</v-btn>
       </div>
     </v-layout>
   </div>
@@ -65,8 +66,6 @@ export default {
       if(this.dataDetailMateri.data){
         for(var i=0;i<this.dataDetailMateri.data.length;i++){
           for(var j=0;this.dataDetailMateri.data[i].videos.length;j++){
-            console.log(this.dataDetailMateri.data[i])
-            
               this.ketemu = true
               this.tipeMateri=1
               this.sectionId=this.dataDetailMateri.data[i].id

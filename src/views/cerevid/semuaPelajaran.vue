@@ -11,7 +11,6 @@
       </v-flex>
     </v-layout>
   </p>
-  <LoadingScreen :loading="is_load"></LoadingScreen>
   <v-data-iterator
     :items="dataDaftarPelajaran.data"
     :rows-per-page-items="rowsPerPageItems"
@@ -25,7 +24,7 @@
     <template v-slot:item="props">
       <v-flex xs12 sm6 md4 lg3>
         <v-card>
-          <v-img v-bind:src="'http://admin.ceredinas.id/public/cover/'+ props.item.cover" height="200px">
+          <v-img v-bind:src="props.item.cover" height="200px">
             <v-flex offset-xs9 align-end flexbox>
               <div v-if="props.item">
                 <div v-if="cekFavorit(props.item.id)">
@@ -84,11 +83,9 @@
 </v-container>
 </template>
 <script>
-import LoadingScreen from '../../components/loading-screen/LoadingCerevid'
 export default {
   name: "cerevid_semua_pelajaran",
   data: () => ({
-    is_load: false,
     expand: true,
     pagination: {
       rowsPerPage: 8
@@ -96,9 +93,6 @@ export default {
     search: '',
     rowsPerPageItems: [4],
   }),
-  components: {
-    LoadingScreen
-  },
   methods: {
     filterSearch(items, search, filter) {
       return items.filter(datas => {
@@ -108,7 +102,6 @@ export default {
     getDataPelajaran() {
       this.$store.dispatch('getDataPelajaran')
         .then(response => {
-          console.log("telah load data..")
         })
     },
     getDataFavoritbyUser() {
@@ -152,9 +145,6 @@ export default {
   },
   computed: {
     dataDaftarPelajaran() {
-      if (!this.$store.state.dataPelajaran.length) {
-        this.is_load = !this.is_load
-      }
       return this.$store.state.dataPelajaran || {}
     },
     dataFavoritbyUser() {
