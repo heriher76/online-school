@@ -10,12 +10,13 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down" style="min-width:750px">  
-        <v-btn flat @click="linkHome" active-class="false">Home</v-btn>
+        <!-- <v-btn flat @click="linkHome" active-class="false">Home</v-btn> -->
         <v-btn flat @click="linkInformasi" active-class="false">Informasi</v-btn>
         <v-btn v-if="loggedIn" flat @click="linkCerevid" active-class="false">Cerevid</v-btn>
         <v-btn v-if="loggedIn" flat @click="linkCereout" active-class="false">Cereout</v-btn>
         <v-btn v-if="loggedIn" flat @click="linkCerelisasi" active-class="false">Cerelisasi</v-btn>
         <v-btn v-if="loggedIn" flat @click="linkCerecall" active-class="false">Cerecall</v-btn>
+        <v-btn flat @click="linkTentang" active-class="false">Tentang</v-btn>
       </v-toolbar-items>
 
       <!-- <v-spacer></v-spacer> -->
@@ -204,11 +205,11 @@
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
 
-        <v-list-tile @click="linkHome">
+        <!-- <v-list-tile @click="linkHome">
           <v-list-tile-content>
             <v-list-tile-title>HOME</v-list-tile-title>
           </v-list-tile-content>
-        </v-list-tile>
+        </v-list-tile> -->
         
         <v-list-tile @click="linkInformasi">
           <v-list-tile-content>
@@ -241,6 +242,12 @@
             </v-list-tile-content>
           </v-list-tile>
         </div>
+
+        <v-list-tile @click="linkTentang">
+          <v-list-tile-content>
+            <v-list-tile-title>TENTANG</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
           
       </v-list>
     </v-navigation-drawer>
@@ -280,23 +287,26 @@ export default {
   },
 
   mounted(){      
-    axios.get('/auth/user')
-    .then(response => {
-      this.user      = response.data.data
-      this.cekMember = response.data.data.membership
-    })
-    .catch(error => {
-      console.log(error)
-    })
-
-    axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
-    .then(response => {
-        let imgUrl     = URL.createObjectURL(response.data)
-        this.userPhoto = imgUrl
-    })
-    .catch(error => {
+    if(this.$store.getters.loggedIn){
+      axios.get('/auth/user')
+      .then(response => {
+        this.user      = response.data.data
+        this.cekMember = response.data.data.membership
+      })
+      .catch(error => {
         console.log(error)
-    })
+      })
+
+      axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
+      .then(response => {
+          let imgUrl     = URL.createObjectURL(response.data)
+          this.userPhoto = imgUrl
+      })
+      .catch(error => {
+          console.log(error)
+      })
+    }
+
   },
 
   methods: {
@@ -317,6 +327,10 @@ export default {
     },
     linkCerecall(){
       this.$router.push({path:'/cerecall'})
+    },
+
+    linkTentang(){
+      this.$router.push({path:'/about'})
     },
 
     linkLogin(){

@@ -43,8 +43,8 @@
                             <td>{{ props.item.score }}</td>
                             <td>{{ props.item.result_status }}</td>
                             <td> 
-                                <router-link :to="{name: 'result_detail', params:{id: props.item.id, data: props.item, act:0}}">Detail</router-link> | 
-                                <router-link :to="{name: 'result_detail', params:{id: props.item.id, data: props.item, act:1}}">Lihat Pembahasan</router-link>
+                                <router-link :to="{name: 'result_detail', params:{idTryout: props.item.id, data: props.item}}">Detail</router-link>
+                                <!-- <router-link :to="{name: 'result_detail', params:{id: props.item.id, data: props.item, act:1}}">Lihat Pembahasan</router-link> -->
                             </td>
                         </template>
  
@@ -101,7 +101,7 @@
             this.load_data = false
             this.tabl      = true
             this.results   = response.data.data
-            console.log(response.data)
+            // console.log(response.data)
         })
         .catch(error => {
             console.log(error.response)
