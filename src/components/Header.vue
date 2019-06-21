@@ -87,7 +87,7 @@
                 <v-list>
                 <v-list-tile avatar>
                     <v-list-tile-avatar>
-                    <img :src="userPhoto">
+                    <img v-if="user.photo_url!=null" :src="user.photo_url">
                     </v-list-tile-avatar>
                     <v-list-tile-content>
                     <v-list-tile-title>{{user.name}}</v-list-tile-title>
@@ -113,7 +113,7 @@
     <!-- navigation-drawer -->
     <v-navigation-drawer 
       v-model="drawer" 
-      absolute
+      fixed
       temporary
     >
       <v-toolbar flat class="transparent">
@@ -128,7 +128,7 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar style="margin-top:-50px">
-              <img :src="userPhoto">
+              <img v-if="user.photo_url!=null" :src="user.photo_url">
             </v-list-tile-avatar>
 
             <v-list-tile-content style="height:100px;">
@@ -139,14 +139,14 @@
                       <v-icon color="blue" v-on="on">edit</v-icon>
                       </a>
                   </template>
-                  <span>My Account</span>
+                  <span>Akun Saya</span>
                 </v-tooltip>
               </v-list-tile-title>
 
               <v-list-tile-sub-title>{{user.email}}</v-list-tile-sub-title>
             
               <v-list-tile-sub-title>
-                <a style="color:red" flat @click="linkLogout">SIGN OUT</a>
+                <a style="color:red" flat @click="linkLogout">Keluar</a>
                 <div style="float:right;">
                   <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
@@ -296,15 +296,6 @@ export default {
       .catch(error => {
         console.log(error)
       })
-
-      axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
-      .then(response => {
-          let imgUrl     = URL.createObjectURL(response.data)
-          this.userPhoto = imgUrl
-      })
-      .catch(error => {
-          console.log(error)
-      })
     }
 
   },
@@ -320,6 +311,7 @@ export default {
       return this.$router.push({path:'/cerevid'})
     },
     linkCereout(){
+      // window.location.href = "/cereout/dashboard"
       this.$router.push({path:'/cereout/dashboard'})
     },
     linkCerelisasi(){

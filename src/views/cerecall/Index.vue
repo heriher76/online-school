@@ -1,70 +1,72 @@
 <template>
     <v-container grid-list-md>
-      <v-card style="padding:10px 20px" color="#B71C1C" dark>
-        <h6 class="title">Layanan Konsultasi</h6>
-      </v-card>
+      <div class="nav-result">
+          <ul>
+              <li><router-link class="active" :to="{name: 'cerecall'}">CARI GURU</router-link></li>
+              <li><router-link :to="{name: 'cerecall_history'}">RIWAYAT</router-link></li>
+          </ul>
+      </div>
 
-        <v-select
-          :items="items"
-          label="Pilih Mata Pelajaran"
-          item-text="name"
-          item-value="id"
-          @change="changeCard"
-        ></v-select>
+      <v-select
+        :items="lessons"
+        label="Pilih Mata Pelajaran"
+        item-text="name"
+        item-value="id"
+        @change="showTeacher"
+      ></v-select>
       
-      <!-- {{output}} -->
+      <div v-show="load_data" style="margin:150px auto; width:5%;">
+        <v-layout column justify-center align-center>
+            <hollow-dots-spinner
+              :animation-duration="1000"
+              :dot-size="15"
+              :dots-num="3"
+              color="#ff1d5e"
+            />
+        </v-layout>
+      </div>
 
-      <div v-show="show">
+      <div v-show="showCard">
         <v-card class="elevation-20">
-          <h3 style="padding:10px 20px">Pilih Guru {{mapel}}</h3>
+          <h3 style="padding:10px 20px">Pilih Guru</h3>
         </v-card>
-
         <v-layout row wrap>
-          <v-flex md2 v-for="card in cards" :key="card">
+          <div v-if="teachers == 0" style="font-size:20px; margin-top:30px" class="mx-auto">
+            Data tidak ditemukan !
+          </div>
+
+          <v-flex md3 v-for="teacher in teachers" :key="teacher.id">
             <v-card style="padding-top:10px;">
               <v-img
-                style="border-radius:100%; width:150px; margin:0px auto; height:150px"
-                src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                style="border-radius:100%; border:1px solid #E0E0E0; width:180px; margin:0px auto; height:180px"
+                :src="teacher.photo"
               >
               </v-img>
               <v-card-title>
                 <div class="mx-auto">
-                  <h6 class="title" style="color:black">Johnny English</h6>
-                  <div style="float:left;">                   
-                    <b class="grey--text">Price : {{card}} point</b>
-                  </div>  
-                  <div style="float:right">
-                    <v-tooltip bottom >
-                      <template v-slot:activator="{ on }">      
-                        <a @click="linkUlasan">
-                          <v-icon v-on="on">comment</v-icon>
-                        </a>        
-                        
-                      </template>
-                      <span>ulasan &amp; rating</span>
-                    </v-tooltip>
-                  </div>
+                  <h6 class="title" style="text-align:center;color:black">{{teacher.name}}</h6>
+                  <v-card-actions style="height:25px">
+                    <v-rating
+                      v-model="teacher.rating"
+                      background-color="yellow accent-4"
+                      color="yellow accent-4"
+                      dense
+                      half-increments
+                      :readonly="true"
+                      size="15"
+                    ></v-rating>
+                    <span class="grey--text text--lighten-2 caption mr-2">
+                      ({{ teacher.rating }})
+                    </span>
+                  </v-card-actions>    
                 </div>
               </v-card-title>
 
-              <v-card-actions style="float:right">
-                <span class="grey--text text--lighten-2 caption mr-2">
-                  ({{ rating }})
-                </span>
-                <v-rating
-                  v-model="rating"
-                  background-color="yellow accent-4"
-                  color="yellow accent-4"
-                  dense
-                  half-increments
-                  :readonly="true"
-                  size="15"
-                ></v-rating>
+              <v-card-actions style="margin-top:-10px">
+                <v-btn block dark color="orange" @click="postHistory(teacher)">Pilih</v-btn> 
+                <!-- <v-btn block dark color="orange" :to="{ name:'cerecall_chat', params: { guruId: '1'}}">Pilih</v-btn>  -->
               </v-card-actions>
-              <div class="clear"></div>
-              <v-card-actions>
-                <v-btn block dark color="orange" :to="{ name:'cerecall_chat', params: { guruId: '1'}}">Pilih</v-btn> 
-              </v-card-actions>
+
             </v-card>
             <v-divider></v-divider>
           </v-flex>
@@ -74,41 +76,117 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import { HollowDotsSpinner } from 'epic-spinners'
+
   export default {
-    data: () => ({
-      items: [
-        {name:'Matematika', id: '1'},
-        {name:'Bahasa Indonesia', id: '2'},
-        {name:'IPS', id: '3'},
-        {name:'IPA', id: '4'},
-      ],
-      show: false,
-      cards: ['230','120','300','100','100','230','230','120','300','100','100','230'],  
-      mapel: '',
-      rating: 3.2
-      // output: [],
-    }),
+    
+    components:{
+      HollowDotsSpinner
+    },
+
+    data (){
+      return {
+        lessons: [],
+        teachers: [],
+
+        lessonId: '',
+
+        load_data: false,
+        showCard: false,
+      }
+    },
+    
     methods: {
-      changeCard(value){
-        var m=''
-        console.log(value)
-        // this.output.push(value)
-        if(value==1){
-          m = "Matematika"
-        }else if(value==2){
-          m = "Bahasa Indonesia"
-        }else if(value==3){
-          m = "IPS"
-        }else if(value==4){
-          m = "IPA"
-        }
-        this.mapel = m
-        this.show = true
+      showTeacher(lessId){
+        this.showCard  = false
+        this.load_data = true
+        this.lessonId  = lessId
+        axios.get('/cerecall/available/teacher/'+lessId)
+        .then(response => {
+          this.load_data = false
+          this.showCard  = true
+          this.teachers  = response.data.data
+          console.log(response.data)
+        })
+        .catch(error => {console.log(error.response)})
       },
+
+      postHistory(val){
+        this.$swal({
+            title: 'Apakah anda yakin?',
+            text: 'Anda akan memulai konsultasi dengan '+val.name,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya Lanjutkan!',
+            cancelButtonText: 'Tidak, Batalkan!',
+            showCloseButton: true,
+            showLoaderOnConfirm: true
+        }).then((result) => {
+            if(result.value) { 
+              axios.post('/cerecall/history',{
+                student_id: this.$store.state.dataUser,
+                teacher_id: val.teacher_id,
+                lesson_id: this.lessonId
+              })
+              .then(response => {
+                console.log(response.data)
+                return this.$swal(
+                  'Berhasil!',
+                  'Pengajuan anda sedang diproses mohon menunggu sebentar!',
+                  'success'
+                )
+              })
+              .catch(error => {
+                console.log(response.data)
+                return this.$swal(
+                  'Gagal!',
+                  'Pengajuan anda gagal diproses silahkan ulangi kembali!',
+                  'error'
+                )
+              })
+              
+            }
+        })
+      },
+
 
       linkUlasan(){
         return this.$router.push({name:'cerecall_ulasan', params: { guruId: '1'}})
       }
+
+    },
+
+    mounted(){
+      axios.get('/master/lesson')//get lesson
+      .then(response => {
+        this.lessons = response.data.data
+      })
+      .catch(error => {console.log(error.response)})
+
     }
   }
 </script>
+
+<style>
+    .nav-result{
+        background: #B71C1C;
+        padding:10px;
+    }
+    .nav-result ul li{
+        display: inline;
+    }
+    .nav-result ul li a{
+        background:#D32F2F;
+        color: white;
+        padding: 12px 30px;
+        margin: 0px 2px;
+        text-decoration: none;
+    }
+    .nav-result ul li a.active{
+        background:#E53935;
+    }
+    .nav-result ul li a:hover{
+        background:#E53935;
+    }
+</style>

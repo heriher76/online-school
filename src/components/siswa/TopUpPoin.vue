@@ -197,6 +197,7 @@
                 Axios.post('/payment/create',{
                     user_id: this.data.id,
                     nominal: val.harga,
+                    membership_id: val.id,
                     type: 2
                 })
                 .then(response => {
@@ -236,7 +237,8 @@
             },
 
             formatPrice(value) {
-                let val = (value/1).toFixed(2).replace('.', ',')
+                let val = (value/1).toFixed(0).replace('.', '')
+                // let val = (value/1).toFixed(2).replace('.', ',')
                 return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
             },
         }
