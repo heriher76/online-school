@@ -60,7 +60,7 @@
   	data: () => ({
   	}),
 		methods: {
-      async getDataDetailMateri(){
+      getDataDetailMateri(){
         this.$store.dispatch('getDataDetailMateri')
         .then(response => {
         })

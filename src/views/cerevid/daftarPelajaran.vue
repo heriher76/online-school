@@ -31,7 +31,7 @@
         <template v-slot:item="props">
           <v-flex xs12 sm6 md3>
             <v-card>
-              <v-img v-bind:src="'http://admin.ceredinas.id/public/cover/'+ props.item.cover" height="200px">
+              <v-img v-bind:src="props.item.cover" height="200px">
                 <v-flex offset-xs9 align-end flexbox>
                   <div v-if="dataPelajaranbyUser.data">
                     <div v-if="cekFavorit(props.item.course_id)">

@@ -2,6 +2,8 @@ import Vue from "vue";
 import './plugins/vuetify';
 
 import VueSweetalert2 from 'vue-sweetalert2';
+import VueGoogleCharts from 'vue-google-charts';
+import VueCountdown from '@chenfengyuan/vue-countdown';
 
 import axios from 'axios';
 
@@ -15,8 +17,20 @@ import Default from "./layouts/Default.vue";
 import Exam from "./layouts/Exam.vue";
 import Guru from "./layouts/Guru.vue";
 
+import GAuth from 'vue-google-oauth2'
+const gauthOption = {
+  clientId: '932813981415-bvn8cqbcioh3419e5b2fupvou44fp44h',
+  scope: 'profile email',
+  prompt: 'select_account'
+}
+
+Vue.use(GAuth, gauthOption)
+
 Vue.use(VueSweetalert2);
 Vue.use(ReadMore);
+Vue.use(VueGoogleCharts);
+Vue.component(VueCountdown.name, VueCountdown);
+
 Vue.component('default-layout', Default);
 Vue.component('exam-layout', Exam);
 Vue.component('guru-layout', Guru);

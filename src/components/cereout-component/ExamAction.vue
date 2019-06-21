@@ -10,47 +10,48 @@
                             </v-flex>
                             <v-flex md3>             
                                 <!-- timer -->
-                                <!-- <Timer :time="time"/> -->
-                                <div style="width:180px;float:right; color:red" v-if="hours <= '00' && minutes <= '00' && seconds <= '00'">
-                                   <!-- dialog time out -->
-                                    <v-dialog v-model="timeoutDialog" persistent max-width="290">
-                                    <v-card>
-                                        <v-card-title class="headline">Waktu Habis</v-card-title>
-                                        <v-card-text>Waktu pengerjaan telah habis</v-card-text>
-                                        <v-card-actions>
-                                        <v-btn block color="green darken-1" flat dark @click="submit">OK</v-btn>
-                                        </v-card-actions>
-                                    </v-card>
-                                    </v-dialog>
-                                    <!-- /dialog time out -->
+                                <div style="width:160px;float:right;">
+                                    <h6 class="subheading" style="margin-top:7px;float:left">Durasi:&nbsp;</h6> 
 
-                                    <h6 class="subheading" style="float:left">Timer :</h6>
-                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px">
-                                        <span>00</span>
-                                    </div>
-                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px">
-                                        <span>00</span>
-                                    </div>
-                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px">
-                                        <span>00</span>
-                                    </div>
-                                    <div class="clear"></div>
-                                </div>
+                                    <countdown :time="totalTime" :transform="transform">
+                                        <template slot-scope="props">
+                                            <div v-if="props.seconds > 0">
+                                                <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px;">
+                                                    <span>{{ props.minutes }}</span>
+                                                </div>
+                                                <div style="border:1px solid #BDBDBD;float:left;padding:8px;">
+                                                    <span> {{ props.seconds }}</span>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
 
-                                <div style="width:180px;float:right;" v-else>
-                                    <h6 class="subheading" style="float:left">Timer:&nbsp;</h6> 
-                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;">
-                                        <span>{{ hours }}</span>
-                                    </div>
-                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px;">
-                                        <span>{{ minutes }}</span>
-                                    </div>
-                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;">
-                                        <span> {{ seconds }}</span>
-                                    </div>
-                                    <div class="clear"></div>
+                                            <div v-show="timerShow" v-else-if="props.seconds <= 0" style="color:red">
+                                                <!-- dialog time out -->
+                                                <v-dialog v-model="timeoutDialog" persistent max-width="290">
+                                                    <v-card>
+                                                        <v-card-title class="headline">Waktu Habis</v-card-title>
+                                                        <v-card-text>Waktu pengerjaan telah habis</v-card-text>
+                                                        <v-card-actions>
+                                                        <v-btn block color="green darken-1" flat dark @click="submit">OK</v-btn>
+                                                        </v-card-actions>
+                                                    </v-card>
+                                                </v-dialog>
+                                                <!-- /dialog time out -->
+
+                                                <div style="border:1px solid red;float:left;padding:8px;margin:0px 5px">
+                                                    <span>00</span>
+                                                </div>
+                                                <div style="border:1px solid red;float:left;padding:8px">
+                                                    <span>00</span>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                        </template>
+                                    </countdown>
+
                                 </div>
                                 <!-- timer -->
+
                             </v-flex>
                         </v-layout>
                     </v-card>
@@ -98,8 +99,6 @@
                                 value="1" v-model="markanswer[hal]"
                             ></v-checkbox> 
                         </div>
-                        <!-- <v-btn v-if="hal == markanswer[hal]" @click="delMark(hal)" dark color="orange" small>Hapus Tanda</v-btn>
-                        <v-btn v-else @click="mark(hal)" small>Tandai</v-btn> -->
                         <div class="clear"></div>
                     </v-card>
                 </v-flex>
@@ -176,8 +175,10 @@
                 loadSubmit: false,
                 timeoutDialog:true,
                 timer: null,
-                totalTime: this.time * 60,//konversi ke detik
+                // totalTime: this.time * 60,//konversi ke detik
+                totalTime: this.time * 60000,//konversi ke milidetik
 
+                timerShow: false,
                 load_data: true,
 
                 hal: 0,
@@ -293,6 +294,16 @@
                 }
             },
 
+            transform(props) { //timer
+                Object.entries(props).forEach(([key, value]) => {
+                    // Adds leading zero
+                    const digits = value < 10 ? `0${value}` : value;
+                    props[key] = `${digits}`;
+                });
+
+                return props;
+            },
+
             // mark(hal){
             //     if(hal < this.questions.length-1){
             //         this.markanswer[hal].push(1)
@@ -307,33 +318,33 @@
             // },
 
             //function timer
-            startTimer: function() {
-                this.timer = setInterval(() => this.countdown(), 1000); //1000ms = 1 second
-            },
+            // startTimer: function() {
+            //     this.timer = setInterval(() => this.countdown(), 1000); //1000ms = 1 second
+            // },
             
-            padTime: function(time){
-                return (time < 10 ? '0' : '') + time;
-            },
-            countdown: function() {
-                this.totalTime--;
-            }
+            // padTime: function(time){
+            //     return (time < 10 ? '0' : '') + time;
+            // },
+            // countdown: function() {
+            //     this.totalTime--;
+            // }
             //function timer
         },
 
         computed: {
             //function timer
-            hours: function() {        
-                const hours = Math.trunc(this.totalTime / 60 /60) % 24;
-                return this.padTime(hours);
-            },
-            minutes: function(){
-                const minutes = Math.trunc(this.totalTime / 60) % 60;
-                return this.padTime(minutes);
-            },
-            seconds: function() {
-                const seconds = Math.trunc(this.totalTime - this.minutes) % 60;
-                return this.padTime(seconds);
-            }
+            // hours: function() {        
+            //     const hours = Math.trunc(this.totalTime / 60 /60) % 24;
+            //     return this.padTime(hours);
+            // },
+            // minutes: function(){
+            //     const minutes = Math.trunc(this.totalTime / 60) % 60;
+            //     return this.padTime(minutes);
+            // },
+            // seconds: function() {
+            //     const seconds = Math.trunc(this.totalTime - this.minutes) % 60;
+            //     return this.padTime(seconds);
+            // }
             //function timer
         },
 
@@ -343,11 +354,13 @@
                 this.load_data = false
                 this.questions = response.data.data
                 
-                this.startTimer()
+                // this.startTimer()
 
                 this.quest     = this.questions[0].question
                 this.options   = this.questions[0].option;
-                console.log(response.data)
+                
+                this.timerShow = true
+                // console.log(response.data)
             })
             .catch(error =>{
                 console.log(error.response)
@@ -366,60 +379,4 @@
     a.btn-num:hover{
         color: black
     }
-
-    /* .container {
-        display: block;
-        position: relative;
-        margin-bottom:-20px;
-    }
-
-    .container input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-    }
-
-    .checkmark {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        height: 16px;
-        width: 16px;
-        background-color: #eee;
-        border-radius: 100%;
-    }
-
-    .checkmark p {
-        margin-left:24px; 
-        margin-top:-4px; 
-        font-size:16px
-    }
-
-    .container:hover input ~ .checkmark {
-        background-color: #ccc;
-    }
-
-    .container input:checked ~ .checkmark {
-        background-color: #2196F3;
-    }
-
-    .checkmark:after {
-        content: "";
-        position: absolute;
-        display: none;
-    }
-
-    .container input:checked ~ .checkmark:after {
-        display: block;
-    }
-
-    .container .checkmark:after {
-        top: 4px;
-        left: 4px;
-        width: 8px;
-        height: 8px;
-        border-radius: 100%;
-        background: white;
-    } */
 </style>

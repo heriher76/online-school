@@ -57,7 +57,10 @@
                                 <hr>
                                 <div style="text-align:center;height:193px;">
                                     <div style="width:120px;height:120px;margin:8px auto;border:1px solid #E0E0E0;border-radius:100%">
-                                        <img :src="userPhoto" style="border-radius:100%;" alt="not found" width="100%" height="100%">
+                                        <!-- <div v-if="cekPhoto=='[object Blob]'" style="padding-top:40px;">Tidak ada foto</div>
+                                        <span v-else> -->
+                                            <img :src="userPhoto" style="border-radius:100%;" alt="not found" width="100%" height="100%">
+                                        <!-- </span> -->
                                     </div>
                                     <div style="color:red;">
                                         <h6 class="subheading"><b>{{user.name}}</b></h6>
@@ -65,14 +68,10 @@
                                         <p v-else style="font-size:12px;">belum ada kelas</p>
                                     </div>
                                 </div>
-                                <div style="border-top:0.5px solid #E0E0E0; color:red; border-bottom:0.5px solid #E0E0E0; padding:10px">
-                                    <div style="text-align:center;width:50%;float:right">
-                                        <h6 class="title"><b>Total Tryout</b></h6>
-                                        <h5 class="headline" style="color:red">{{attempt.length}}</h5>
-                                    </div>
-                                    <div style="text-align:center;width:50%;float:right">
-                                        <h6 class="title"><b>Peringkat</b></h6>
-                                        <h5 class="headline" style="color:red">{{ranking.rank}}</h5>
+                                <div style="border-top:0.5px solid #E0E0E0; color:red; border-bottom:0.5px solid #E0E0E0; padding:6px">
+                                    <div style="text-align:center">
+                                        <h6 class="title" style="color:red;"><b>Peringkat</b></h6>
+                                        <h4 class="display-1" style="color:red;"><b>{{ranking.rank}}</b></h4>
                                     </div>
                                     <div class="clear"></div>
                                 </div>
@@ -82,59 +81,24 @@
                         </v-flex>
                         <!-- /My Exam Stats -->
 
-                        <v-flex md8 sm12 xs12>
-                            Grafik
-                            <!-- <v-card color="#546E7A" style="height:333px">
+                        <v-flex md9 sm12 xs12>
+                            <v-card color="#546E7A" style="height:333px">
                                 <div>
-                                    <h4 class="headline" style="padding:15px;float:left;color:white;margin-bottom:-18px;">Grafik Skor Tryout</h4>
-                                    <h6 class="subheading" style="float:right; margin:20px 20px 0px 0px;color:white">{{ moment(monthNow).format('MMMM - YYYY')}} </h6>
+                                    <h4 class="headline" style="padding:15px;float:left;color:white;">Grafik Kelas</h4>
                                     <div class="clear"></div>
                                 </div>
-
-                                <v-card-text>
-                                    <div style="background:white;height:250px;padding-top:10px">
-                                        loading
-                                        <div v-show="load_data" style="margin:0px auto; padding:60px;text-align:center">
-                                            <v-progress-circular
-                                            :size="40"
-                                            color="primary"
-                                            indeterminate
-                                            ></v-progress-circular>
-                                        </div>
-                                        /loading
-                                        
-                                        <v-sheet 
-                                            color="cyan"
-                                            class="v-sheet--offset mx-auto"
-                                            elevation="12"
-                                            max-width="calc(100% - 32px)"
-                                        >
-                                            <v-sparkline
-                                                :value="value"
-                                                color="#fff"
-                                                height="100"
-                                                line-width="2"
-                                                padding="20"
-                                                stroke-linecap="round"
-                                                smooth
-                                            >
-                                            <template v-slot:label="item">
-                                                s:{{ item.value }}
-                                            </template>
-                                            </v-sparkline>
-                                        </v-sheet>
-                                        <v-container fluid="">
-                                            <v-card style="padding:0px 10px">
-                                                <span style="color:green">s = skor nilai</span>
-                                            </v-card>
-                                        </v-container>
-                                    </div>
-                                </v-card-text>
-                            </v-card>   -->
-   
+                                <GChart
+                                    type="ColumnChart"
+                                    :data="chartData"
+                                    :options="chartOptions"
+                                /> 
+                                graf:{{graf}}<br>
+                                <!-- {{cek}} -->
+                                chart:{{chartData}}
+                            </v-card>
                         </v-flex>
 
-                        <v-flex md4 sm12 xs12>
+                        <v-flex md3 sm12 xs12>
                             <v-card color="#B71C1C">
                                 <h4 class="headline" style="padding:15px;color:white;margin-bottom:-18px;">Top Tryout</h4>
                                 <v-card-text>
@@ -168,11 +132,12 @@
                 </v-flex>
             </v-layout>
         </v-container>
-        <!-- /sub content -->
+        <!-- /sub content -->        
     </div>
 </template>
 
 <script>
+    import { GChart } from "vue-google-charts";
     import SideBar from '../../components/cereout-component/SideBar'
     import Navbar from '../../components/cereout-component/Navbar'
     import axios from 'axios';
@@ -183,11 +148,33 @@
         
         components: {
             SideBar,
-            Navbar
+            Navbar,
+            GChart
         },
 
         data () {
-            return {    
+            return {   
+                graf: [
+                    ["Bulan"],
+                    []
+                ],
+                chart: [],
+                // Array will be automatically processed with visualization.arrayToDataTable function
+                chartData: [
+                    // this.push
+                    ["Bulan", "Soshum", "Saintek", "Profit", "SMA 12"],
+                    ["Januari", 100, 400, 200, 12],
+                    ["Februari", 170, 460, 250, 200],
+                    ["Maret", 660, 120, 300, 320],
+                    ["April", 130, 540, 350, 390]
+                ],
+                chartOptions: {
+                    chart: {
+                    title: "Company Performance",
+                    subtitle: "Sales, Expenses, and Profit: 2014-2017"
+                    }
+                },
+
                 monthNow: new Date().toISOString(),
 
                 topTryout:[],
@@ -201,7 +188,6 @@
                 userClass: [],
                 userPhoto: '',
 
-                attempt: [],    
                 ranking: '',  
                
                 headers: [
@@ -220,33 +206,36 @@
         },
 
         mounted(){
+            axios.get('/cereouts/chart/class/7')
+            .then(response => {
+                this.chart = response.data.data
+                // this.graf.push(response.data.data)
+                // this.graf[0].push(response.data.data)
+                // console.log(response.data)
+                this.chart.forEach(element => {
+                    this.graf[0].push(element.name)
+                    // if(this.graf[1] = )
+                    this.graf[1].push(element.month)
+                    this.graf[1].push(element.score_student)
+                });
+            })
+            .catch(error => {console.log(error)})
+
             // get user
             axios.get('/auth/user')
             .then(response => {
                 this.user      = response.data.data
                 this.userClass = response.data.data.class
-                console.log(response.data)
             })
-            .catch(error => {
-                console.log(error)
-            })
-
+            .catch(error => {console.log(error)})
+            
+            //get photo user
             axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
             .then(response => {
-                // let imageNode = document.getElementById('myprofile');
-                let imgUrl = URL.createObjectURL(response.data)
+                let imgUrl     = URL.createObjectURL(response.data)
                 this.userPhoto = imgUrl
             })
-            .catch(error => {
-                console.log(error)
-            })
-
-            // get trayout attempt
-            axios.get('/cereouts/result/'+this.$store.state.dataUser)
-            .then(response => {
-                this.attempt = response.data.data
-            })
-            .catch(error => {console.log(error.response)})
+            .catch(error => {console.log(error)})
 
             // get ranking
             axios.get('/cereouts/leaderboard/ranking/'+this.$store.state.dataUser)
@@ -283,35 +272,6 @@
                 console.log(error.response)
             })
 
-            //get result tryout
-            var n
-            var bln
-            var blnNow
-
-            axios.get('/cereouts/result/'+this.$store.state.dataUser)
-            .then(response => {
-                this.load_data = false
-                this.tabl      = true
-                this.results   = response.data.data
-
-                this.results.forEach(element => {
-                    blnNow = new Date().getMonth()
-                    bln    = moment(element.created_at).format('M')
-
-                    // console.log(bln, blnNow+1)
-                    if(bln == blnNow+1){
-                        if(element.score == null){
-                            n = 0
-                        }else{
-                            n = element.score
-                        }
-                        this.value.push(n)
-                    }
-                });
-            })
-            .catch(error => {
-                console.log(error.response)
-            }) 
         }
     }
 </script>

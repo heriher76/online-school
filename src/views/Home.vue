@@ -4,9 +4,27 @@
     <Banner/>
     <!-- /banner -->
 
-    <!-- slider -->
-    <!-- <v-carousel
-    >
+    <!-- content up -->
+    <v-container>
+      <div style="margin-bottom:20px">
+        <hr>
+      </div>
+      
+      <!-- <div style="text-align:center;margin-top:50px">
+        <div style="background:#E65100; width:100%; height:10px"></div>
+        <span style="font-size:40px; padding:10px 20px; color:#B71C1C; background:#FAFAFA; position:relative;top:-36px"><b>Lorem Ipsum</b></span>
+      </div> -->
+      <!-- <v-card flat>
+        <v-card-text>
+          <h3 class=".display-2" style="color:#424242">Promo Hari Ini</h3>
+        </v-card-text>
+      </v-card> -->
+      
+      <v-carousel
+        height=300
+        interval=4000
+        delimiter-icon="adjust"
+      >
         <div v-show="load_data" style="margin:150px auto; width:5%;">
             <v-layout column justify-center align-center>
                 <hollow-dots-spinner
@@ -17,105 +35,35 @@
                 />
             </v-layout>
         </div>
-        <v-carousel-item
-            v-for="(item,i) in datas"
-            :key="i"
-            v-if="item.category=='sliders'"
-            :src="item.url"
+        <router-link v-for="(item,i) in datas"
+          style="text-decoration :none"
+          :key="i"
+          :to="{name: 'detail_informasi', params: {data: item} }"
         >
+          <v-carousel-item
+            v-if="item.category=='sliders'" 
+            :src="item.url"
+          >
             <h5 style="color:white; padding:10px 20px; background:rgba(0,0,0,0.2)" class="headline">{{item.title}}</h5>
-        </v-carousel-item>
-    </v-carousel> -->
-    <!-- /slider -->
-
-    <!-- content up -->
-    <v-container>
-      <div style="text-align:center;margin-top:50px">
-        <div style="background:#E65100; width:100%; height:10px"></div>
-        <span style="font-size:40px; padding:10px 20px; color:#B71C1C; background:#FAFAFA; position:relative;top:-36px"><b>Tujuan Kami</b></span>
-      </div>
+          </v-carousel-item>
+        </router-link>
+      </v-carousel>  
       
-      <v-container grid-list-lg>
-        <v-layout row wrap>
-          <v-flex md3 sm6 xs12>
-            <v-card color="red darken-4">
-              <router-link to="">
-                <div class="icons">
-                  <div class="icon-slide-container">
-                    <img class="slide-icon" :src="require('../assets/images/slide-1.jpg')" >
-                  </div>
-                </div>
-              </router-link>
-            </v-card>
-          </v-flex>
-          
-          <v-flex md3 sm6 xs12>
-            <v-card color="red darken-4">
-              <router-link to="">
-                <div class="icons">
-                  <div class="icon-slide-container">
-                    <img class="slide-icon" :src="require('../assets/images/slide-2.jpg')" >
-                  </div>
-                </div>
-              </router-link>
-            </v-card>
-          </v-flex>
-          
-          <v-flex md3 sm6 xs12>
-            <v-card color="red darken-4">
-              <router-link to="">
-                <div class="icons">
-                  <div class="icon-slide-container">
-                    <img class="slide-icon" :src="require('../assets/images/slide-3.jpg')" >
-                  </div>
-                </div>
-              </router-link>
-            </v-card>
-          </v-flex>
-          
-          <v-flex md3 sm6 xs12>
-            <v-card color="red darken-4">
-              <router-link to="">
-                <div class="icons">
-                  <div class="icon-slide-container">
-                    <img class="slide-icon" :src="require('../assets/images/slide-4.jpg')" >
-                  </div>
-                </div>
-              </router-link>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>   
+    </v-container>   
     <!-- /content up -->
 
-    <v-container style="margin-top:50px;">
-      <div style="text-align:center">
+    <!-- <v-container style="margin-top:50px;">
+      <div>
         <div style="background:#E65100; width:100%; height:10px"></div>
-        <span style="font-size:40px; padding:10px 20px; color:#B71C1C; background:#FAFAFA; position:relative;top:-36px"><b>Tentang Kami</b></span>
+        <span style="font-size:40px; padding:10px 20px; color:#B71C1C; background:#FAFAFA; position:relative;top:-36px;left:60px"><b>Testimonial</b></span>
       </div>
 
-      <v-layout row wrap style="margin:20px; font-size:18px">
-        <v-flex md8 sm12 xs12>
-          <p>Cerebrum adalah bimbel online untuk pelajar SD, SMP, SMA/SMK yang diberikan secara gratis untuk membantu pemerintah dalam mempercepat pemerataan kualitas pendidikan di Indonesia.</p>
-          <p>Cerebrum memiliki visi, yaitu sebagai media belajar untuk mempercepat pemerataan pendidikan yang berkualitas di Indonesia.</p>
-          <p>Adapun misi dari cerebrum adalah menjadi penyedia bimbingan belajar Online No. 1 di Indonesia yang membuat belajar menjadi menyenangkan, dengan kualitas terbaik, secara gratis, tanpa biaya yang mahal.</p>
-        </v-flex>
-        <v-flex md4 sm12 xs12>
-          <!-- <div style="width:300px; margin-top:-50px; margin-left:50px ">-->
-          <div style="margin-top:-30px; margin-left:50px ">    
-            <img :src="require('../assets/images/cerebrum.png')" width="100%" height="100%">
-          </div>
-        </v-flex>
-      </v-layout>
-    </v-container>
+      <p>lorem ipsum dolor sit amet lorem ipusm dolor</p>
+    </v-container> -->
 
     <!-- <hr>
     <v-divider></v-divider> -->
 
-    
-  </v-container>
-
-    
   </div>
 </template>
 
@@ -144,6 +92,14 @@
       .catch(error =>{
           console.log(error)
       })
+
+      if(this.$store.getters.loggedIn){
+        this.$store.dispatch('cekAuth')
+        .then(response => {
+          // console.log("auth", response)
+        })
+        .catch(error=>{console.log(error)})
+      }
     }
   }
 </script>

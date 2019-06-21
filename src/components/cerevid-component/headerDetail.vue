@@ -10,7 +10,7 @@
               {{datas.data.title}}
             </v-flex>
             <v-spacer/>
-            <v-flex md8>
+            <v-flex md8 sm12 xs12>
               <div class="font-weight-light">
                 {{datas.data.description}}
               </div>

@@ -2,7 +2,7 @@
 		<div>
 			<v-container grid-list-md>
 				<v-layout row wrap>
-				    <v-flex xs12 sm6 md6>
+				    <v-flex xs12 sm12 md12>
 					    <v-select
 					        :items="datas.data"
 					        label="Kelas"
@@ -13,7 +13,7 @@
 					        outline
 					    ></v-select>
 					</v-flex>
-				    <v-flex xs12 sm6 md6>
+				    <v-flex xs12 sm12 md12>
 					    <v-select
 					        :items="dataLesson"
 					        label="Pelajaran"
@@ -44,7 +44,7 @@
 						<v-flex xs12 sm6 md3>
 								<v-card>
 									<v-img
-										v-bind:src="'http://admin.ceredinas.id/public/cover/'+ props.item.cover"
+										v-bind:src="props.item.cover"
 										height="200px"
 									>
 	                  <v-flex offset-xs9 align-end flexbox>
