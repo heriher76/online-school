@@ -76,7 +76,12 @@
     created() {
       axios.get('http://api.ceredinas.id/api/quiz/'+this.$route.params.idQuiz+'/show_question/'+this.$route.params.idQuestion)
         .then(response => {
-          console.log(response)
+          this.question=response.data.question,
+          this.option_a=response.data.option_a,
+          this.option_b=response.data.option_b,
+          this.option_c=response.data.option_c,
+          this.option_d=response.data.option_d,
+          this.correct_answer=response.data.correct_answer
         })
         .catch(error => {
           console.log(error)
@@ -104,11 +109,11 @@
           })
           .then(response => {
             this.btn_load = false;
-            console.log(response.data)
+            this.$swal('Sukses', 'Berhasil Mengedit Pertanyaan!', 'success')
           })
           .catch(error => {
             this.btn_load = false;
-            console.log(error)
+            this.$swal('Oops', 'Gagal Mengedit Pertanyaan!', 'warning')
           })
         }
     }

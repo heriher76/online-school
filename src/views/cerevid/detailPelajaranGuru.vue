@@ -663,16 +663,17 @@
           axios.defaults.headers = {  
               'Authorization': 'Bearer ' + this.$store.state.token
           }
-          axios.delete('/quiz/'+idQuiz)
+          axios.delete('/sections/'+this.$route.params.idSection+'/quiz/'+idQuiz)
           .then(response => {
             this.$swal('Sukses', 'Berhasil Menghapus Materi Quiz!', 'success')
             
             for (let i = 0; i < this.sections.length; i++) {
-                this.findNestedQuiz(this.sections[i], this.sections, id, i); 
+                this.findNestedQuiz(this.sections[i], this.sections, idQuiz, i); 
             }
             
           })
           .catch(error => {
+            console.log(error)
             this.$swal('Oops', 'Gagal Menghapus Materi Quiz!', 'warning')
           })
         },
