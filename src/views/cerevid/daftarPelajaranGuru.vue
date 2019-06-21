@@ -18,12 +18,40 @@
 							          Daftar Pelajaran
 							        </v-flex>
 							        <v-flex xs12 sm12 md4>
-						                <v-text-field
+						                <!-- <v-text-field
 						                    label="Cari Pelajaran..."
 						                    append-icon="search"
 																class="mx-4"
 						                  >
-						                </v-text-field>
+						                </v-text-field> -->
+						                <v-autocomplete
+						                  v-model="select"
+						                  :loading="loading"
+						                  :items="dataPelajaranbyTeacher.data"
+						                  cache-items
+						                  class="mx-3"
+						                  flat
+						                  label="Cari Pelajaran..."
+						                  solo
+						                  clearable
+						                  append-icon="search"
+						                  background-color="white"
+						                  item-text="title"
+						                >
+					                        <template v-slot:item="data">
+					                          <template>
+					                            <v-list-tile @click="cariDetailPelajaran(data.item.id)">
+					                              <v-list-tile-avatar>
+					                                <img :src="data.item.cover">
+					                              </v-list-tile-avatar>
+					                              <v-list-tile-content>
+					                                <v-list-tile-title v-html="data.item.title"></v-list-tile-title>
+					                                <v-list-tile-sub-title v-html="data.item.teacher.name"></v-list-tile-sub-title>
+					                              </v-list-tile-content>
+					                            </v-list-tile>
+					                          </template>
+					                        </template>
+						                </v-autocomplete>
 							        </v-flex>
 							      </v-layout>
 							    </p>
@@ -49,11 +77,11 @@
 							              v-bind:src="props.item.cover"
 							              height="200px"
 							            	>
-							                <!-- <v-flex offset-xs9 align-end flexbox>
-							                  <v-btn fab dark small color="pink" style="opacity:0.85;">
-							                    <v-icon dark>favorite</v-icon>
+							                <v-flex offset-xs7 align-end flexbox>
+							                  <v-btn dark color="pink" @click="handleDeleteCourse(props.item.id)"> Hapus
+							                    <v-icon dark>highlight_off</v-icon>
 							                  </v-btn>
-							                </v-flex> -->
+							                </v-flex>
 							            </v-img>
 
 							            <v-card-title primary-title>
@@ -98,6 +126,7 @@
 	import subNavbarGuru from '../../components/cerevid-component/subNavbarGuru'
 	import sidebarGuru from '../../components/cerevid-component/sidebarGuru'
     import LoadingScreen1 from'../../components/loading-screen/LoadingCerevid'
+    import axios from 'axios'
 	export default {
 		name:"tambah-pelajaran",
 		components:{
@@ -124,6 +153,37 @@
 	            console.log("telah load data..")
 	          })
 	        },
+	        cariDetailPelajaran(id){
+	          this.$router.push({path:'/guru/cerevid/detail-pelajaran/'+id})
+	        },
+	        handleDeleteCourse(id){
+	          this.$swal({
+	            title: "Hapus Pelajaran Ini?",
+	            text: "Apakah Kamu Yakin?",
+	            type: "warning",
+	            showCancelButton: true,
+	            confirmButtonColor: "#3085d6",
+	            confirmButtonText: "Ya, Hapus!"
+	          }).then((willDelete) => {
+	              if (willDelete.value) {
+	                axios.defaults.headers = {  
+	                  'Authorization': 'Bearer ' + this.$store.state.token
+	                }
+	                axios.delete('/courses/'+id)
+	                .then(response => {
+					  var courses = this.dataPelajaranbyTeacher.data.filter(x => {
+						return x.id != id;
+					  })
+					  this.dataPelajaranbyTeacher.data = courses
+	                  this.$swal('Sukses', 'Berhasil Menghapus Pelajaran!', 'success')
+	                })
+	                .catch(error => {
+	                  console.log(error)
+	                  this.$swal('Oops', 'Gagal Menghapus Pelajaran!', 'warning')
+	                })
+	              }
+	          });
+	        }
 		},
 		created(){
 	     this.getDataPelajaranbyTeacher()
