@@ -182,7 +182,7 @@
           .then(response => {
             console.log(response.data)
             this.btn_load = false;
-            this.questions.push({question: this.question, option_a: this.option_a, option_b: this.option_b, option_c: this.option_c, option_d: this.option_d, correct_answer: this.correct_answer});
+            this.questions.push({id: response.data.data.id, question: this.question, option_a: this.option_a, option_b: this.option_b, option_c: this.option_c, option_d: this.option_d, correct_answer: this.correct_answer});
             this.$swal('Sukses', 'Berhasil Menambah Pertanyaan!', 'success')
           })
           .catch(error => {

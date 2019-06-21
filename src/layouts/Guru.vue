@@ -19,7 +19,7 @@
 
       <!-- <v-spacer></v-spacer> -->
 
-      <v-btn v-if="!loggedIn" flat @click="linkLogin">Sign In</v-btn>
+      <v-btn v-if="!loggedIn" flat @click="linkLogin">Masuk</v-btn>
 
       <!-- header actions -->
       <div v-if="loggedIn" class="nav-action hidden-sm-and-down">
@@ -52,11 +52,10 @@
                 </v-list-tile>
                 </v-list>
 
-
                 <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" flat @click="linkAkun">My Account</v-btn>
-                <v-btn color="red" flat @click="linkLogout">Sign Out</v-btn>
+                <v-btn color="primary" flat @click="linkAkun">Akun Saya</v-btn>
+                <v-btn color="red" flat @click="linkLogout">Keluar</v-btn>
                 </v-card-actions>
             </v-card>
             </v-menu>

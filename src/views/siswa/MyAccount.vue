@@ -18,7 +18,7 @@
                     <v-card-title>
                         <!-- detail -->
                         <MyProfile v-show="my_profile" :datas="this.dataProfileUser" :photo="this.photo"/>
-                        <EditProfile v-show="edit_profile" @canceled="showMyProfile" :datas="this.dataProfileUser" :photo="this.photo"/>
+                        <EditProfile v-show="edit_profile" @canceled="showMyProfile" :datas="this.dataProfileUser" :photo="this.photo" :listUniversity="this.listUniversity" :listClass="this.listClass"/>
                         <!-- /detail -->
                     </v-card-title>   
                 </v-card>
@@ -40,7 +40,9 @@
                 my_profile: true,
                 edit_profile: false,
                 photo: '',
-                dataProfileUser: null
+                dataProfileUser: null,
+                listClass: null,
+                listUniversity: null,
             }
         },
 
@@ -60,12 +62,33 @@
             }
         },
         created(){
+            //get list Kelas
+            axios.get('/master/class')
+            .then(response => {
+                console.log(response.data.data)
+                this.listClass= response.data.data
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+            //get list University
+            axios.get('/master/getAllDataUniversity')
+            .then(response => {
+                console.log(response.data.data)
+                this.listUniversity= response.data.data
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
             //get profile
             axios.defaults.headers = {  
               'Authorization': 'Bearer ' + this.$store.state.token
             }
             axios.get('/auth/user')
             .then(response => {
+                console.log(response)
                 this.dataProfileUser= response.data
             })
             .catch(error => {

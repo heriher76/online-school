@@ -186,7 +186,9 @@ export default new Vuex.Store({
 
     // /logout function
     destroyToken(context){
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers = {  
+        'Authorization': 'Bearer ' + context.state.token 
+      }
 
       if(context.getters.loggedIn) {
         // return new Promise((resolve, reject) => {
