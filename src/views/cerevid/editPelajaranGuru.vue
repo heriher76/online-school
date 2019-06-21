@@ -111,10 +111,8 @@
         },
         submit(){
           this.btn_load = true;
-console.log(this.dataDetailPelajaran.data.lesson.id)
-
           let data = new FormData();
-          data.append('cover', this.dataDetailPelajaran.data.cover);
+          data.append('cover', this.cover);
           data.set('title', this.dataDetailPelajaran.data.title);
           data.set('description', this.dataDetailPelajaran.data.description);
           data.set('curriculum', this.dataDetailPelajaran.data.curriculum);

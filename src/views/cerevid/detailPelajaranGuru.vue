@@ -151,7 +151,7 @@
                                   </v-btn>
                                 </v-list-tile-action>
                                 <v-list-tile-action>
-                                  <v-btn color="red">
+                                  <v-btn color="red" @click="handleDeleteQuiz(quiz_item.id)">
                                     <v-icon color="white--text">delete</v-icon>
                                     <span class="pa-1 white--text">Hapus</span>
                                   </v-btn>
@@ -170,7 +170,7 @@
                                       <v-icon color="white--text">add_box</v-icon>
                                       <span class="pa-1 white--text">Text</span>
                                     </v-btn>
-                                    <v-btn color="blue" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/quiz'">
+                                    <v-btn color="blue" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/'+item.id+'/tambah-quiz'">
                                       <v-icon color="white--text">add_box</v-icon>
                                       <span class="pa-1 white--text">Quiz</span>
                                     </v-btn>
@@ -396,7 +396,7 @@
                                             <i>{{forum.posted}}</i>
                                             <p>{{forum.body}}</p>
                                             <v-btn color="blue" class="white--text" @click="replyUser(forum.id)">Balas</v-btn>
-                                            <v-btn color="red" class="white--text" @click="handleDelete">Hapus</v-btn>
+                                            <v-btn color="red" class="white--text" @click="handleDelete(forum.id)">Hapus</v-btn>
                                             <br><br>
 
                                             <v-expansion-panel popout>
@@ -404,7 +404,8 @@
                                                 <template v-slot:header>
                                                   <div>Tampilkan Komentar...</div>
                                                 </template>
-                                                <v-card>
+                                                <div v-for="(comment, i) in forum.comments">
+                                                <v-card :key="i">
                                                   <v-card-text>
                                                     <div>
                                                       <v-layout row wrap>
@@ -412,20 +413,17 @@
                                                           <img :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'" style="border-radius: 50%; height: 80px;">
                                                         </v-flex>
                                                         <v-flex xs12 sm12 md10>
-                                                          <b style="margin-bottom:0px;">asdfasdfsa</b>
+                                                          <b style="margin-bottom:0px;">{{ comment.user }}</b>
                                                           <br>
-                                                          <i>23 menit</i>
-                                                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                                          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                                          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                                          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                                          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                                          <i>{{ comment.posted }}</i>
+                                                          <p>{{ comment.body }}</p>
+                                                          <v-btn color="red" class="white--text" @click="deleteComment(comment.id)">Hapus</v-btn>
                                                         </v-flex>
                                                       </v-layout>
                                                     </div>
                                                   </v-card-text>
                                                 </v-card>
+                                              </div>
                                               </v-expansion-panel-content>
                                             </v-expansion-panel>
 
@@ -522,12 +520,16 @@
                   'Authorization': 'Bearer ' + this.$store.state.token
               }
               axios.post('courses/'+this.$route.params.id+'/forums/create', {
-                forums_id: id,
+                forum_id: id,
                 body: willReply.value
               })
               .then(response => {
                 this.$swal('Sukses', 'Berhasil Menambahkan Komentar!', 'success')
-                // this.forums.unshift({body: this.body, posted: 'Just Now' , user: 'heri'});
+                for (let i = 0; i < this.forums.length; i++) {
+                    if(this.forums[i].id == id) {
+                      this.forums[i].comments.push({body: willReply.value, comments: [], posted: 'Baru Saja', user: 'heri', id:response.data.data.id});
+                    } 
+                }
               })
               .catch(error => {
                 this.$swal('Oops', 'Gagal Menambahkan Komentar!', 'warning')
@@ -566,17 +568,68 @@
             }
           });
         },
-        handleDelete() {
+        handleDelete(id) {
           this.$swal({
-            title: "Delete this comment?",
-            text: "Are you sure? You won't be able to revert this!",
+            title: "Hapus Komentar Ini?",
+            text: "Apakah Kamu Yakin?",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
-            confirmButtonText: "Yes, Delete it!"
+            confirmButtonText: "Ya, Hapus!"
           }).then((willDelete) => {
-            if (willDelete.value) {
-              console.log('deleted')
+              if (willDelete.value) {
+                axios.defaults.headers = {  
+                  'Authorization': 'Bearer ' + this.$store.state.token
+                }
+                axios.delete('courses/'+this.$route.params.id+'/forums/'+id)
+                .then(response => {
+                  this.$swal('Sukses', 'Berhasil Menghapus Komentar!', 'success')
+                  var forums = this.forums.filter(x => {
+                    return x.id != id;
+                  })
+                  this.forums = forums
+                })
+                .catch(error => {
+                  this.$swal('Oops', 'Gagal Menghapus Komentar!', 'warning')
+                })
+            } else {
+              console.log('safe')
+            }
+          });
+        },
+        findNestedComment (obj, parent, value, i) {
+            if (obj.id === value) {
+                parent.splice(i,1)
+            }
+            if (obj && obj.comments && obj.comments.length > 0) {
+                for (let j = 0; j < obj.comments.length; j++) {
+                    this.findNestedComment(obj.comments[j], obj.comments, value, j);
+                }
+            }
+        },
+        deleteComment(id) {
+          this.$swal({
+            title: "Hapus Komentar Ini?",
+            text: "Apakah Kamu Yakin?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ya, Hapus!"
+          }).then((willDelete) => {
+              if (willDelete.value) {
+                axios.defaults.headers = {  
+                  'Authorization': 'Bearer ' + this.$store.state.token
+                }
+                axios.delete('courses/'+this.$route.params.id+'/forums/'+id)
+                .then(response => {
+                  this.$swal('Sukses', 'Berhasil Menghapus Komentar!', 'success')
+                  for (let i = 0; i < this.forums.length; i++) {
+                      this.findNestedComment(this.forums[i], this.forums, id, i); 
+                  }
+                })
+                .catch(error => {
+                  this.$swal('Oops', 'Gagal Menghapus Komentar!', 'warning')
+                })
             } else {
               console.log('safe')
             }
@@ -636,6 +689,34 @@
             this.$swal('Oops', 'Gagal Menghapus Materi Video!', 'warning')
           })
         },
+        findNestedQuiz (obj, parent, value, i) {
+            if (obj.id === value) {
+                parent.splice(i,1)
+            }
+            if (obj && obj.quiz && obj.quiz.length > 0) {
+                for (let j = 0; j < obj.quiz.length; j++) {
+                    this.findNestedText(obj.quiz[j], obj.quiz, value, j);
+                }
+            }
+        },
+        handleDeleteQuiz(idQuiz){
+          axios.defaults.headers = {  
+              'Authorization': 'Bearer ' + this.$store.state.token
+          }
+          axios.delete('/sections/'+this.$route.params.idSection+'/quiz/'+idQuiz)
+          .then(response => {
+            this.$swal('Sukses', 'Berhasil Menghapus Materi Quiz!', 'success')
+            
+            for (let i = 0; i < this.sections.length; i++) {
+                this.findNestedQuiz(this.sections[i], this.sections, idQuiz, i); 
+            }
+            
+          })
+          .catch(error => {
+            console.log(error)
+            this.$swal('Oops', 'Gagal Menghapus Materi Quiz!', 'warning')
+          })
+        },
         submitSection() {
           this.tambahBab = false
           axios.defaults.headers = {  
@@ -666,7 +747,7 @@
           })
           .then(response => {
             this.$swal('Sukses', 'Berhasil Menambahkan Komentar!', 'success')
-            this.forums.unshift({body: this.body, posted: 'Just Now' , user: 'heri'});
+            this.forums.unshift({id: response.data.data.id, body: this.body, comments: [], posted: 'Just Now' , user: 'heri'});
           })
           .catch(error => {
             this.$swal('Oops', 'Gagal Menambahkan Komentar!', 'warning')
