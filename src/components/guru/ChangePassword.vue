@@ -6,7 +6,7 @@
 	        <v-text-field v-model="newPassword" style="height:60px" label="New Password"></v-text-field>
 	        <v-divider></v-divider>
 	        <v-btn block color="red" :loading="btn_load" @click="submit" dark>Update</v-btn>
-            <v-btn block @click="cancel" dark>Cancel</v-btn>
+            <v-btn block @click="cancel" dark>Kembali</v-btn>
 	    </form>
     </div>
 </template>
@@ -28,15 +28,22 @@
             },
             submit (event) {
                 this.btn_load = true
-                axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+                axios.defaults.headers = {  
+                    'Authorization': 'Bearer ' + this.$store.state.token 
+                }
                 axios.post('http://api.ceredinas.id/api/auth/user/changePassword/'+this.idUser,{
-                  currentPassword: this.currentPassword,
+                  email: this.email,
+                  password: this.password,
                   newPassword: this.newPassword
                 })
                 .then(response => {
+                  this.btn_load = false
+                  this.$swal('Sukses', 'Berhasil Mengganti Password!', 'success')
                   console.log(response.data)
                 })
                 .catch(error => {
+                  this.btn_load = false
+                  this.$swal('Oops', 'Gagal Mengganti Password!', 'warning')
                   console.log(error)
                 })
             }

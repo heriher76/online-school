@@ -151,7 +151,7 @@
                                   </v-btn>
                                 </v-list-tile-action>
                                 <v-list-tile-action>
-                                  <v-btn color="red">
+                                  <v-btn color="red" @click="handleDeleteQuiz(quiz_item.id)">
                                     <v-icon color="white--text">delete</v-icon>
                                     <span class="pa-1 white--text">Hapus</span>
                                   </v-btn>
@@ -170,7 +170,7 @@
                                       <v-icon color="white--text">add_box</v-icon>
                                       <span class="pa-1 white--text">Text</span>
                                     </v-btn>
-                                    <v-btn color="blue" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/quiz'">
+                                    <v-btn color="blue" :to="'/guru/cerevid/detail-pelajaran/'+$route.params.id+'/'+item.id+'/tambah-quiz'">
                                       <v-icon color="white--text">add_box</v-icon>
                                       <span class="pa-1 white--text">Quiz</span>
                                     </v-btn>
@@ -396,7 +396,7 @@
                                             <i>{{forum.posted}}</i>
                                             <p>{{forum.body}}</p>
                                             <v-btn color="blue" class="white--text" @click="replyUser(forum.id)">Balas</v-btn>
-                                            <v-btn color="red" class="white--text" @click="handleDelete">Hapus</v-btn>
+                                            <v-btn color="red" class="white--text" @click="handleDelete(forum.id)">Hapus</v-btn>
                                             <br><br>
 
                                             <v-expansion-panel popout>
@@ -566,17 +566,30 @@
             }
           });
         },
-        handleDelete() {
+        handleDelete(id) {
           this.$swal({
-            title: "Delete this comment?",
-            text: "Are you sure? You won't be able to revert this!",
+            title: "Hapus Komentar Ini?",
+            text: "Apakah Kamu Yakin?",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
-            confirmButtonText: "Yes, Delete it!"
+            confirmButtonText: "Ya, Hapus!"
           }).then((willDelete) => {
-            if (willDelete.value) {
-              console.log('deleted')
+              if (willDelete.value) {
+                axios.defaults.headers = {  
+                  'Authorization': 'Bearer ' + this.$store.state.token
+                }
+                axios.delete('courses/'+this.$route.params.id+'/forums/'+id)
+                .then(response => {
+                  this.$swal('Sukses', 'Berhasil Menghapus Komentar!', 'success')
+                  var forums = this.forums.filter(x => {
+                    return x.id != id;
+                  })
+                  this.forums = forums
+                })
+                .catch(error => {
+                  this.$swal('Oops', 'Gagal Menghapus Komentar!', 'warning')
+                })
             } else {
               console.log('safe')
             }
@@ -634,6 +647,34 @@
           })
           .catch(error => {
             this.$swal('Oops', 'Gagal Menghapus Materi Video!', 'warning')
+          })
+        },
+        findNestedQuiz (obj, parent, value, i) {
+            if (obj.id === value) {
+                parent.splice(i,1)
+            }
+            if (obj && obj.quiz && obj.quiz.length > 0) {
+                for (let j = 0; j < obj.quiz.length; j++) {
+                    this.findNestedText(obj.quiz[j], obj.quiz, value, j);
+                }
+            }
+        },
+        handleDeleteQuiz(idQuiz){
+          axios.defaults.headers = {  
+              'Authorization': 'Bearer ' + this.$store.state.token
+          }
+          axios.delete('/sections/'+this.$route.params.idSection+'/quiz/'+idQuiz)
+          .then(response => {
+            this.$swal('Sukses', 'Berhasil Menghapus Materi Quiz!', 'success')
+            
+            for (let i = 0; i < this.sections.length; i++) {
+                this.findNestedQuiz(this.sections[i], this.sections, idQuiz, i); 
+            }
+            
+          })
+          .catch(error => {
+            console.log(error)
+            this.$swal('Oops', 'Gagal Menghapus Materi Quiz!', 'warning')
           })
         },
         submitSection() {

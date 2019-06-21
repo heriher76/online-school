@@ -19,14 +19,14 @@
               <form>
                 <v-card-text style="background-color:#fff">
                   <v-text-field box v-model="question" label="Pertanyaan *" required></v-text-field>
-                  <v-text-field box v-model="a" label="Opsi A *" required></v-text-field>
-                  <v-text-field box v-model="b" label="Opsi B *" required></v-text-field>
-                  <v-text-field box v-model="c" label="Opsi C *" required></v-text-field>
-                  <v-text-field box v-model="d" label="Opsi D *" required></v-text-field>
-                  <v-select box v-model="answer"
-		            :items="corrects"
-		            label="Jawaban Benar *"
-		          ></v-select>
+                  <v-text-field box v-model="option_a" label="Opsi A *" required></v-text-field>
+                  <v-text-field box v-model="option_b" label="Opsi B *" required></v-text-field>
+                  <v-text-field box v-model="option_c" label="Opsi C *" required></v-text-field>
+                  <v-text-field box v-model="option_d" label="Opsi D *" required></v-text-field>
+                  <v-select box v-model="correct_answer"
+    		            :items="corrects"
+    		            label="Jawaban Benar *"
+    		          ></v-select>
                   
                   <v-divider></v-divider>
                   <v-card-actions style="background-color:#fff">
@@ -63,53 +63,58 @@
     data () {
       return {
         question: '',
-        a: '',
-        b: '',
-        c: '',
-        d: '',
-        answer: '',
+        option_a: '',
+        option_b: '',
+        option_c: '',
+        option_d: '',
+        correct_answer: '',
         corrects: ['A', 'B', 'C', 'D'],
         right: null,
         btn_load: false
       }
 	},
     created() {
-      // axios.get('http://api.ceredinas.id/api/sections/'+this.$route.params.idSection+'/quiz/'+this.$route.params.idQuiz)
-      //   .then(response => {
-      //     console.log(response.data)
-      //     this.title = response.data.data.title,
-      //     this.questions = response.data.data.question
-      //     console.log(this.questions)
-      //   })
-      //   .catch(error => {
-      //     console.log(error)
-      //   })
+      axios.get('http://api.ceredinas.id/api/quiz/'+this.$route.params.idQuiz+'/show_question/'+this.$route.params.idQuestion)
+        .then(response => {
+          this.question=response.data.question,
+          this.option_a=response.data.option_a,
+          this.option_b=response.data.option_b,
+          this.option_c=response.data.option_c,
+          this.option_d=response.data.option_d,
+          this.correct_answer=response.data.correct_answer
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    watch: {
+      correct_answer (newVal) {
+        this.correct_answer= newVal
+      }
     },
 	methods: {
         submit(){
-          // this.btn_load = true;
+          this.btn_load = true;
 
-          // let data = new FormData();
-          // data.append('cover', this.dataDetailPelajaran.data.cover);
-          // data.set('title', this.dataDetailPelajaran.data.title);
-          // data.set('description', this.dataDetailPelajaran.data.description);
-          // data.set('curriculum', this.dataDetailPelajaran.data.curriculum);
-          // data.set('lesson_id', this.dataDetailPelajaran.data.lesson_id);
-          // data.set('user_id', this.dataDetailPelajaran.data.dataUser);
-
-          // axios.defaults.headers = {  
-          //   'Content-Type': 'multipart/form-data',  
-          //   'Authorization': 'Bearer ' + this.$store.state.token 
-          // }
-          // axios.put('http://api.ceredinas.id/api/courses/'+this.$route.params.id, data)
-          // .then(response => {
-          //   this.btn_load = false;
-          //   console.log(response.data)
-          // })
-          // .catch(error => {
-          //   this.btn_load = false;
-          //   console.log(error)
-          // })
+          axios.defaults.headers = {  
+            'Authorization': 'Bearer ' + this.$store.state.token 
+          }
+          axios.put('http://api.ceredinas.id/api/quiz/'+this.$route.params.idQuiz+'/update_question/'+this.$route.params.idQuestion, {
+            question : this.question,
+            option_a : this.option_a,
+            option_b : this.option_b,
+            option_c : this.option_c,
+            option_d : this.option_d,
+            correct_answer : this.correct_answer
+          })
+          .then(response => {
+            this.btn_load = false;
+            this.$swal('Sukses', 'Berhasil Mengedit Pertanyaan!', 'success')
+          })
+          .catch(error => {
+            this.btn_load = false;
+            this.$swal('Oops', 'Gagal Mengedit Pertanyaan!', 'warning')
+          })
         }
     }
   }
