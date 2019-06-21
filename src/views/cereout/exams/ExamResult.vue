@@ -24,7 +24,7 @@
 
                         <v-card v-show="detailV" flat style="height:400px;padding-top:50px">
                             <v-card style="width:600px;margin:0px auto; padding:20px">
-                                <v-layout style="text-transform:capitalize;font-size:16px;">
+                                <v-layout row wrap style="text-transform:capitalize;font-size:16px;">
                                     <v-flex md6 sm12 xs12>
                                         <table>
                                             <tr><td width="150"><b>Jawaban Benar</b></td><td>{{data.correct_answered}}</td></tr>

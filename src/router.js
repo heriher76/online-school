@@ -196,6 +196,14 @@ export default new Router({
         requiresAuth: true
       }
     },
+    {
+      path: "/cerecall/history",
+      name: 'cerecall_history',
+      component: () => import("./views/cerecall/History.vue"),
+      meta: {
+        requiresAuth: true
+      }
+    },
 
     {
       path: "/cerecall/ulasan/:guruId",

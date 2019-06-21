@@ -12,7 +12,7 @@
       <div class="text-banner">
         <h3 class="display-2">Bimbel Online Gratis No. 1 di Indonesia</h3>
         <h5 class="subheading">Bimbel jadi gratis, bisa dimana saja dan kapan saja dengan video pembelajaran yang lengkap !</h5>
-        <v-btn v-if="!loggedIn" to="/login">Let's Start</v-btn>
+        <!-- <v-btn v-if="!loggedIn" to="/login">Mulai Belajar</v-btn> -->
       </div>
     </div>
 </template>
@@ -37,7 +37,7 @@
   }
 
   .text-banner{
-    top:380px;
+    top:400px;
     width:100%;
     padding:20px;
     background: rgba(0, 0, 0, 0.3);
