@@ -198,7 +198,7 @@
                         this.load_data = false
                         this.listPanel = true
                         this.items = response.data.data
-                        console.log(response.data)
+                        // console.log(response.data)
                     })
                     .catch(error =>{
                         this.load_data = false

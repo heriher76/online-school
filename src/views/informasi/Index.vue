@@ -45,7 +45,7 @@
                 </v-flex>
                 
                 <v-flex md4 sm12 xs12>
-                        <SideBar/>
+                    <SideBar/>
                 </v-flex>
             </v-layout>
         </v-container>

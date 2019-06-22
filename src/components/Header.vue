@@ -398,9 +398,9 @@ export default {
     }
   }
 
-  @media only screen and (min-width: 1160px) {
+  @media only screen and (max-width: 1160px) {
     .nav-act-resp{
-      display: none
+      display: block
     }
   }
 

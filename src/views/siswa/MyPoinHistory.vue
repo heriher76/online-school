@@ -38,11 +38,11 @@
                     <p>Riwayat transaksi.</p>
                     <hr>
                     </div>      
-                    <div v-show="load_data" style="margin:0px auto; padding:40px; width:5%;">
+                    <div v-show="load_data" style="margin:0px auto; padding:80px;text-align:center">
                         <v-progress-circular
-                        :size="40"
-                        color="primary"
-                        indeterminate
+                            :size="40"
+                            color="primary"
+                            indeterminate
                         ></v-progress-circular>
                     </div>
                     
@@ -117,7 +117,41 @@
                 return this.$router.push({name: 'my_poin'})
             },
             showList(val){
-                if(val.status == 0 || val.status == 2){
+                this.loadingSubmit = true
+                if(val.status == 0){
+                    Axios.put('/payment/update/'+val.id)
+                    .then(response => {
+                        // console.log(response.data)
+                        this.loadingSubmit = false
+                        snap.show()
+                        snap.pay(response.data.snap_token, {
+                            onSuccess:(result)=>{
+                                this.snackbar  = true,
+                                this.text_info = 'Transaksi berhasil dilakukan'
+                                this.updateHistory()
+                            },
+                            onPending:(result)=>{
+                                this.snackbar  = true,
+                                this.text_info = 'Transaksi tertunda' + ', silahkan lanjutkan pembayaran !'
+                                this.updateHistory()
+                            },
+                            onError:(result)=>{
+                                this.snackbar  = true,
+                                this.text_info = 'Transaksi gagal dilakukan'
+                                this.updateHistory()
+                            },
+                            onClose:()=>{
+                                this.snackbar  = true,
+                                this.text_info = 'Anda telah menutup halaman pembayaran'
+                                this.updateHistory()
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        console.log(error.response)
+                    })
+                }else if(val.status == 2){
+                    this.loadingSubmit = false
                     snap.show()
                     snap.pay(val.snap_token, {
                         onSuccess:(result)=>{

@@ -13,11 +13,14 @@
                     indeterminate
                     ></v-progress-circular>
                 </div>
-                <li v-for="recent in posts" :key="recent.id">
-                    <a @click="detail(recent)" style="text-transform:capitalize">{{recent.title}}&nbsp;</a> <br>
-                    <span style="color:#757575; font-size:12px">posted: {{recent.created_at}}</span>
-                    <v-divider></v-divider>
+                <li v-for="(recent, index) in posts" :key="recent.id">
+                    <div v-if="index<10">
+                        <a @click="detail(recent)" style="text-transform:capitalize">{{recent.title}}&nbsp;</a> <br>
+                        <span style="color:#757575; font-size:12px">dimuat: {{recent.created_at}}</span>
+                        <v-divider></v-divider>
+                    </div>
                 </li>
+                
             </ul>
         </div>
 
