@@ -212,25 +212,25 @@
 
       loginGoogle(){
         this.$gAuth.signIn()
-        .then(GoogleUser => {
+        .then(GoogleUser => {console.log(GoogleUser)
           //on success
-          this.$store.dispatch('retrieveTokenGoogle', {
-            token: GoogleUser.getAuthResponse().access_token
-          })
-          .then(response => {
-            console.log(response)
-            this.loadLogin      = true
-            this.snackbarGoogle = true
-            this.textbarGoogle  = "Berhasil Masuk !!"
+          // this.$store.dispatch('retrieveTokenGoogle', {
+          //   token: GoogleUser.getAuthResponse().access_token
+          // })
+          // .then(response => {
+          //   console.log(response)
+          //   this.loadLogin      = true
+          //   this.snackbarGoogle = true
+          //   this.textbarGoogle  = "Berhasil Masuk !!"
 
-            // return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 1800)
-          })
-          .catch(error => {
-            this.snackbarGoogle = true
-            this.textbarGoogle  = "Gagal Masuk !!"
+          //   return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 1500)
+          // })
+          // .catch(error => {
+          //   this.snackbarGoogle = true
+          //   this.textbarGoogle  = "Gagal Masuk !!"
 
-            console.log(error)
-          })
+          //   console.log(error)
+          // })
         })
         .catch(error => {
           //on fail do something
