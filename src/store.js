@@ -157,6 +157,43 @@ export default new Vuex.Store({
       })
     },
 
+    
+    cekAuth(context){
+      axios.get('/auth/user')
+      .then(response => {
+        // console.log("auth", response.data.data.class.class_id)
+        const dataUser   = response.data.data.id
+        const cekClassId = response.data.data.class
+
+        if(cekClassId != null){
+          const classId  = response.data.data.class.class_id
+          localStorage.setItem('getDataClassId', classId)
+          context.commit('retrieveClassId', classId)
+        }else{
+          const classId  = response.data.data.class
+          localStorage.setItem('getDataClassId', classId)
+          context.commit('retrieveClassId', classId)
+        }
+        
+        localStorage.setItem('getDataUser', dataUser)
+        context.commit('retrieveDataUser', dataUser)
+      })
+      .catch(error=>{
+      })
+    },
+
+    //login function
+    retrieveTokenGoogle(context, data){
+      axios.get('/login/google?token='+data.token)
+      .then(response => {
+        const token    = response.data.access_token
+        localStorage.setItem('access_token', token)
+        context.commit('retrieveToken', token)
+      })
+      .catch(error => {
+      })  
+    },
+
     //login function
     retrieveToken(context, credentials){
       return new Promise((resolve, reject) => {
@@ -166,14 +203,14 @@ export default new Vuex.Store({
         })
         .then(response => {
           const token    = response.data.access_token
-          const dataUser = response.data.data.id
-          const classId  = response.data.data.class_id
+          // const dataUser = response.data.data.id
+          // const classId  = response.data.data.class_id
           localStorage.setItem('access_token', token)
-          localStorage.setItem('getDataUser', dataUser)
-          localStorage.setItem('getDataClassId', classId)
+          // localStorage.setItem('getDataUser', dataUser)
+          // localStorage.setItem('getDataClassId', classId)
           context.commit('retrieveToken', token)
-          context.commit('retrieveDataUser', dataUser)
-          context.commit('retrieveClassId', classId)
+          // context.commit('retrieveDataUser', dataUser)
+          // context.commit('retrieveClassId', classId)
           resolve(response)
           // console.log(response.data)
         })

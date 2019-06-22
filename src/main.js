@@ -19,7 +19,7 @@ import Guru from "./layouts/Guru.vue";
 
 import GAuth from 'vue-google-oauth2'
 const gauthOption = {
-  clientId: '932813981415-bvn8cqbcioh3419e5b2fupvou44fp44h',
+  clientId: '598859419864-m3qpm4scbbe377icfjsufmbfvq51eppt',
   scope: 'profile email',
   prompt: 'select_account'
 }

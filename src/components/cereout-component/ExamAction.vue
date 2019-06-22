@@ -12,10 +12,10 @@
                                 <!-- timer -->
                                 <div style="width:160px;float:right;">
                                     <h6 class="subheading" style="margin-top:7px;float:left">Durasi:&nbsp;</h6> 
-
-                                    <countdown :time="totalTime" :transform="transform">
+                                   
+                                    <countdown v-show="StartTimer" :time="totalTime" :transform="transform">
                                         <template slot-scope="props">
-                                            <div v-if="props.seconds > 0">
+                                            <div>
                                                 <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px;">
                                                     <span>{{ props.minutes }}</span>
                                                 </div>
@@ -24,30 +24,28 @@
                                                 </div>
                                                 <div class="clear"></div>
                                             </div>
-
-                                            <div v-show="timerShow" v-else-if="props.seconds <= 0" style="color:red">
-                                                <!-- dialog time out -->
-                                                <v-dialog v-model="timeoutDialog" persistent max-width="290">
-                                                    <v-card>
-                                                        <v-card-title class="headline">Waktu Habis</v-card-title>
-                                                        <v-card-text>Waktu pengerjaan telah habis</v-card-text>
-                                                        <v-card-actions>
-                                                        <v-btn block color="green darken-1" flat dark @click="submit">OK</v-btn>
-                                                        </v-card-actions>
-                                                    </v-card>
-                                                </v-dialog>
-                                                <!-- /dialog time out -->
-
-                                                <div style="border:1px solid red;float:left;padding:8px;margin:0px 5px">
-                                                    <span>00</span>
-                                                </div>
-                                                <div style="border:1px solid red;float:left;padding:8px">
-                                                    <span>00</span>
-                                                </div>
-                                                <div class="clear"></div>
-                                            </div>
                                         </template>
                                     </countdown>
+
+                                    <div v-show="EndTimer" style="color:red">
+                                        <v-dialog v-model="timeoutDialog" persistent max-width="290">
+                                            <v-card>
+                                                <v-card-title class="headline">Waktu Habis</v-card-title>
+                                                <v-card-text>Waktu pengerjaan telah habis</v-card-text>
+                                                <v-card-actions>
+                                                <v-btn block color="green darken-1" flat dark @click="submit">OK</v-btn>
+                                                </v-card-actions>
+                                            </v-card>
+                                        </v-dialog>
+
+                                        <div style="border:1px solid red;float:left;padding:8px;margin:0px 5px">
+                                            <span>00</span>
+                                        </div>
+                                        <div style="border:1px solid red;float:left;padding:8px">
+                                            <span>00</span>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
 
                                 </div>
                                 <!-- timer -->
@@ -161,6 +159,7 @@
     // import Timer from "../cereout-component/Timer"    
     import LoadingScreen3 from'../../components/loading-screen/Loading3'
     import axios from 'axios';
+    import { constants } from 'crypto';
 
     export default {
         props:["name","cereoutId", "time", "attemptId"],
@@ -172,13 +171,22 @@
         
         data () {
             return {
+                StartTimer: true,
+                EndTimer: false,
+                timeoutDialog:false,
+
+                cekDurasi: this.time * 60,
+                timeUp: 0,
+                interval: null,
+                ////
+
                 loadSubmit: false,
-                timeoutDialog:true,
-                timer: null,
+                // timer: null,
                 // totalTime: this.time * 60,//konversi ke detik
+
                 totalTime: this.time * 60000,//konversi ke milidetik
 
-                timerShow: false,
+                // timerShow: false,
                 load_data: true,
 
                 hal: 0,
@@ -194,8 +202,7 @@
             }
         },
 
-
-        methods:{
+        methods:{            
             alertDisplay() {
                 this.$swal({
                     title: 'Apakah anda yakin?',
@@ -223,8 +230,8 @@
                 var ans = ''
                 var n = ''
                 
-                // this.myTime = this.hours +""+ this.minutes +"Menit"+ this.seconds +"Detik"
-                this.myTime = this.minutes
+                // this.myTime = (this.time - 5) / 60
+                this.myTime = this.timeUp
                 for(var i=0; i < this.questions.length; i++){
                     if(this.tmpanswer[i] == 0){
                         ans = 'A'
@@ -255,7 +262,7 @@
                     }              
                     this.answer.push(tmp)
                 }
-
+                
                 axios.post('/cereouts/'+this.cereoutId+'/attempts/'+this.attemptId+'/valuation', {
                     my_time: this.myTime,
                     answers: this.answer
@@ -304,48 +311,22 @@
                 return props;
             },
 
-            // mark(hal){
-            //     if(hal < this.questions.length-1){
-            //         this.markanswer[hal].push(1)
-            //     }
+            toggleTimer() {
+                this.interval = setInterval(this.incrementTime, 1000);
+            },
+            incrementTime() {
+                this.timeUp = parseInt(this.timeUp) + 1;
 
-            //     console.log(hal)
-            // },
-
-            // delMark(hal){
-            //     const index = this.markanswer.indexOf(hal) //mencari index
-            //     this.markanswer.splice(index, 1)
-            // },
-
-            //function timer
-            // startTimer: function() {
-            //     this.timer = setInterval(() => this.countdown(), 1000); //1000ms = 1 second
-            // },
+                // console.log(this.timeUp)
+                if(this.timeUp == this.cekDurasi){
+                    clearInterval(this.interval);
+                    this.StartTimer   = false
+                    this.EndTimer     = true
+                    this.timeoutDialog= true
+                }
             
-            // padTime: function(time){
-            //     return (time < 10 ? '0' : '') + time;
-            // },
-            // countdown: function() {
-            //     this.totalTime--;
-            // }
-            //function timer
-        },
-
-        computed: {
-            //function timer
-            // hours: function() {        
-            //     const hours = Math.trunc(this.totalTime / 60 /60) % 24;
-            //     return this.padTime(hours);
-            // },
-            // minutes: function(){
-            //     const minutes = Math.trunc(this.totalTime / 60) % 60;
-            //     return this.padTime(minutes);
-            // },
-            // seconds: function() {
-            //     const seconds = Math.trunc(this.totalTime - this.minutes) % 60;
-            //     return this.padTime(seconds);
-            // }
-            //function timer
+            },
+            
         },
 
         mounted(){
@@ -360,6 +341,8 @@
                 this.options   = this.questions[0].option;
                 
                 this.timerShow = true
+                // this.totalTime = this.time * 60000
+                this.toggleTimer() //aktifkan countUp
                 // console.log(response.data)
             })
             .catch(error =>{

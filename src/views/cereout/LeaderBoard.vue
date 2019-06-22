@@ -22,40 +22,7 @@
                     <v-layout row wrap>
                       <v-flex md12 sm12 xs12>
                         <v-card>
-                          <v-card color="#E53935" dark >
-                            <v-card-text style="font-size:18px">Kelas <span v-if="user.class!=null">{{user.class.name_class}}</span></v-card-text>
-                          </v-card>
-
-                          <!-- loading -->
-                          <div v-show="load_dataClass" style="margin:0px auto; padding:40px; width:5%;">
-                              <v-progress-circular
-                              :size="40"
-                              color="primary"
-                              indeterminate
-                              ></v-progress-circular>
-                          </div>
-                          <!-- /loading -->
-
-                          <div v-show="tablClass" class="tabl">
-                            <v-data-table
-                              :headers="headers"
-                              :items="leaderClass"
-                              disable-initial-sort
-                            >
-                              <template v-slot:items="props">
-                                  <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.name}}</b></td>
-                                  <td v-else>{{props.item.name}}</td>
-                                  <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.score}}</b></td>
-                                  <td v-else>{{props.item.score}}</td>
-                              </template>
-                            </v-data-table>
-                          </div>
-                        </v-card>
-                      </v-flex>
-
-                      <v-flex md12 sm12 xs12>
-                        <v-card>
-                          <v-card color="#E53935" dark >
+                          <v-card color="#1E88E5" dark >
                             <v-card-text style="font-size:18px">Pelajaran </v-card-text>
                           </v-card>
 
@@ -89,6 +56,39 @@
                             <v-data-table
                               :headers="headers"
                               :items="leader"
+                              disable-initial-sort
+                            >
+                              <template v-slot:items="props">
+                                  <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.name}}</b></td>
+                                  <td v-else>{{props.item.name}}</td>
+                                  <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.score}}</b></td>
+                                  <td v-else>{{props.item.score}}</td>
+                              </template>
+                            </v-data-table>
+                          </div>
+                        </v-card>
+                      </v-flex>
+                      
+                      <v-flex md12 sm12 xs12>
+                        <v-card>
+                          <v-card color="#1565C0" dark >
+                            <v-card-text style="font-size:18px">Kelas <span v-if="user.class!=null">{{user.class.name_class}}</span></v-card-text>
+                          </v-card>
+
+                          <!-- loading -->
+                          <div v-show="load_dataClass" style="margin:0px auto; padding:40px; width:5%;">
+                              <v-progress-circular
+                              :size="40"
+                              color="primary"
+                              indeterminate
+                              ></v-progress-circular>
+                          </div>
+                          <!-- /loading -->
+
+                          <div v-show="tablClass" class="tabl">
+                            <v-data-table
+                              :headers="headers"
+                              :items="leaderClass"
                               disable-initial-sort
                             >
                               <template v-slot:items="props">

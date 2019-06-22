@@ -17,15 +17,15 @@
           <template v-for="(item, index) in items">
             <v-list-tile :key="index" avatar ripple @click="showList(item)">
               <v-list-tile-content>
-                <div v-if="item.membership_name != null">
+                <div v-if="item.nominal == null">
                   <span style="font-size:12px; color:#757575">Membership</span>
                   <v-list-tile-title>{{ item.membership_name }}</v-list-tile-title>
                 </div>
                 <div v-else>
                   <span style="font-size:12px; color:#757575">Top up</span>
-                  <v-list-tile-title>{{ item.nominal }} poin</v-list-tile-title>
+                  <v-list-tile-title>{{ item.membership_name }} poin</v-list-tile-title>
                 </div>
-                <v-list-tile-sub-title>Rp. {{formatPrice(item.nominal)}}</v-list-tile-sub-title>
+                <v-list-tile-sub-title>Rp. {{formatPrice(item.harga)}}</v-list-tile-sub-title>
               </v-list-tile-content>
 
               <v-list-tile-action>
@@ -78,7 +78,8 @@ import Axios from 'axios';
       },
 
       formatPrice(value) {
-        let val = (value/1).toFixed(2).replace('.', ',')
+        let val = (value/1).toFixed(0).replace('.', '')
+        // let val = (value/1).toFixed(2).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
       },
     },

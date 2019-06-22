@@ -17,50 +17,39 @@
                     <v-layout row wrap>
                         <!-- papan peringkat kelas -->
                         <v-flex md8 sm12 xs12>
-                            <v-card color="#B71C1C">
-                                <h4 class="headline" style="padding:15px;color:white;margin-bottom:-18px;text-transform:capitalize">papan peringkat kelas <span v-if="userClass!=null">{{userClass.name_class}}</span></h4>
-                                <v-card-text>
-                                    <div style="background:white;height:264px">
-                                        <!-- loading -->
-                                        <div v-show="load_data" style="margin:0px auto; padding:60px;text-align:center">
-                                            <v-progress-circular
-                                            :size="40"
-                                            color="primary"
-                                            indeterminate
-                                            ></v-progress-circular>
-                                        </div>
-                                        <!-- /loading -->
-                                        <v-data-table
-                                            v-show="tabl"
-                                            :headers="headers"
-                                            :items="leader"
-                                            disable-initial-sort
-                                            rows-per-page-items = '3'
-                                        >
-                                            <template v-slot:items="props">
-                                                <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.name}}</b></td>
-                                                <td v-else>{{props.item.name}}</td>
-                                                <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.score}}</b></td>
-                                                <td v-else>{{props.item.score}}</td>
-                                            </template>
-                                        </v-data-table>
-                                    </div>
-                                </v-card-text>
+                            <v-card color="#546E7A" style="padding:15px;">
+                                <h4 class="headline" style="color:white;text-transform:capitalize">Grafik Nilai Kelas <label v-if="userClass != null">{{userClass.name_class}}</label></h4>
+                                <div style="background:white;height:264px;margin-top:14px">
+                                    <GChart
+                                        v-if="graf!=0"
+                                        style="padding:30px 10px"
+                                        @ready="onChartReady"
+                                        :data="graf"
+                                        :createChart="(el, google) => new google.charts.Bar(el)"
+                                    />
+                                    <GChart
+                                        v-else
+                                        style="padding:30px 10px"
+                                        :data="chartNull"
+                                        :createChart="(el, google) => new google.charts.Bar(el)"
+                                    /> 
+                                </div>
                             </v-card>
                         </v-flex>
                         <!-- papan peringkat kelas -->
 
                         <!-- My Exam Stats -->
                         <v-flex md4 sm12 xs12 class="hidden-sm-and-down">
-                            <v-card style="height:333px">
-                                <v-card-text style="background:#B71C1C;color:white;font-size:20px">Profil Saya</v-card-text>
+                            <v-card style="height:336px">
+                                <h4 class="headline" style="background:#B71C1C;padding:15px;color:white;">Profil Saya</h4>
                                 <hr>
-                                <div style="text-align:center;height:193px;">
+                                <div style="text-align:center;height:198px;">
                                     <div style="width:120px;height:120px;margin:8px auto;border:1px solid #E0E0E0;border-radius:100%">
-                                        <!-- <div v-if="cekPhoto=='[object Blob]'" style="padding-top:40px;">Tidak ada foto</div>
-                                        <span v-else> -->
-                                            <img :src="userPhoto" style="border-radius:100%;" alt="not found" width="100%" height="100%">
-                                        <!-- </span> -->
+                                        <v-img
+                                            v-if="user.photo_url!=null"
+                                            style="border-radius:100%;" width="100%" height="100%"
+                                            :src="user.photo_url"
+                                        ></v-img>
                                     </div>
                                     <div style="color:red;">
                                         <h6 class="subheading"><b>{{user.name}}</b></h6>
@@ -68,7 +57,7 @@
                                         <p v-else style="font-size:12px;">belum ada kelas</p>
                                     </div>
                                 </div>
-                                <div style="border-top:0.5px solid #E0E0E0; color:red; border-bottom:0.5px solid #E0E0E0; padding:6px">
+                                <div style="border-top:0.5px solid #E0E0E0;height:70px; color:red; border-bottom:0.5px solid #E0E0E0; padding:6px">
                                     <div style="text-align:center">
                                         <h6 class="title" style="color:red;"><b>Peringkat</b></h6>
                                         <h4 class="display-1" style="color:red;"><b>{{ranking.rank}}</b></h4>
@@ -82,25 +71,65 @@
                         <!-- /My Exam Stats -->
 
                         <v-flex md9 sm12 xs12>
-                            <v-card color="#546E7A" style="height:333px">
-                                <div>
-                                    <h4 class="headline" style="padding:15px;float:left;color:white;">Grafik Kelas</h4>
-                                    <div class="clear"></div>
+                            <v-card color="#546E7A" style="padding:15px;">
+                                <!-- <h4 class="headline" style="color:white;text-transform:capitalize">Grafik Nilai Pelajaran</h4> -->
+                                <v-layout row wrap>
+                                    <v-flex md5>
+                                        <h4 class="headline" style="margin:9px 0px;color:white;text-transform:capitalize">Grafik Nilai Pelajaran</h4>
+                                    </v-flex>
+                                    <v-flex md7>
+                                        <v-select
+                                            solo
+                                            :items="lessons"
+                                            label="Lihat Pelajaran"
+                                            v-model="pelajaran"
+                                            item-text="name"
+                                            item-value="id"
+                                            @change="getChartLesson"
+                                        ></v-select>
+                                    </v-flex>
+                                </v-layout>
+                                
+                                <div style="background:white;margin-top:-15px">
+                                    <!-- loading -->
+                                    <div v-show="load_CL" style="border:1px solid white;">
+                                        <fingerprint-spinner
+                                            style="margin:80px auto" 
+                                            :animation-duration="1500"
+                                            :size="64"
+                                            color="#ff1d5e"
+                                        />
+                                        <span>Memuat data...</span>
+                                    </div>
+                                    <!-- /loading -->
+
+                                    <div v-show="show_CL">
+                                        <GChart
+                                            v-if="chartLess!=0"
+                                            style="padding:30px 10px"
+                                            :settings="{packages: ['bar']}"    
+                                            :data="chartLesson"
+                                            :options="chartOptions"
+                                            :createChart="(el, google) => new google.charts.Bar(el)"
+                                            @ready="onChartReady"
+                                        />
+                                        <GChart
+                                            v-else
+                                            style="padding:30px 10px"
+                                            :settings="{packages: ['bar']}"    
+                                            :data="chartNull"
+                                            :options="chartOptions"
+                                            :createChart="(el, google) => new google.charts.Bar(el)"
+                                            @ready="onChartReady"
+                                        /> 
+                                    </div>
                                 </div>
-                                <GChart
-                                    type="ColumnChart"
-                                    :data="chartData"
-                                    :options="chartOptions"
-                                /> 
-                                graf:{{graf}}<br>
-                                <!-- {{cek}} -->
-                                chart:{{chartData}}
                             </v-card>
                         </v-flex>
 
                         <v-flex md3 sm12 xs12>
                             <v-card color="#B71C1C">
-                                <h4 class="headline" style="padding:15px;color:white;margin-bottom:-18px;">Top Tryout</h4>
+                                <h4 class="headline" style="padding:15px;color:white;margin-bottom:-18px;">Top 5 Tryout</h4>
                                 <v-card-text>
                                     <div style="background:white;padding:5px;">
                                         <!-- loading -->
@@ -115,12 +144,16 @@
                                         <div v-show="data_topTryout">
                                             <v-card
                                                 style="padding:6px"
-                                                v-for="n in topTryout" :key="n.id"
-                                                elevation="12"    
+                                                v-for="(n,index) in topTryout" :key="n.id"
+                                                elevation="15"    
                                             >
-                                                <p style="text-transform:uppercase;padding:2px;color:red"><b>{{n.name}}</b></p>
-                                                <span style="float:right;border-left:1px solid #607D8B; padding:2px 0px 0px 10px"><b style="color:red">{{n.attempt}}</b>&nbsp;<b style="color:green">Percobaan</b></span>
-                                                <div class="clear"></div>
+                                                <p style="text-transform:capitalize;padding:2px;color:#424242"><b>{{n.name}}</b></p>
+                                                
+                                                    <span style="float:left;margin:3px 0px 0px 3px">{{index+1}}</span>
+                                                    <v-icon color="red">start</v-icon>
+                                                    
+                                                    <span style="float:right;border-left:1px solid #BDBDBD; padding:2px 0px 0px 10px"><b style="color:blue">{{n.attempt}}</b>&nbsp;<b style="color:#757575">Percobaan</b></span>
+                                                    <div class="clear"></div>
                                             </v-card>
                                             <div v-if="topTryout==0" style="text-align:center">Data tidak ditemukan</div>
                                         </div>
@@ -132,12 +165,13 @@
                 </v-flex>
             </v-layout>
         </v-container>
-        <!-- /sub content -->        
+        <!-- /sub content --> 
     </div>
 </template>
 
 <script>
-    import { GChart } from "vue-google-charts";
+    import { FingerprintSpinner } from 'epic-spinners'
+    import { GChart } from 'vue-google-charts'
     import SideBar from '../../components/cereout-component/SideBar'
     import Navbar from '../../components/cereout-component/Navbar'
     import axios from 'axios';
@@ -145,82 +179,118 @@
 
     export default {
         name: 'dashboard',
-        
         components: {
             SideBar,
+            FingerprintSpinner,
             Navbar,
             GChart
         },
 
         data () {
             return {   
-                graf: [
-                    ["Bulan"],
-                    []
-                ],
+                //graf Class
+                graf: [],
+                month: [""],
+                nilai: [],
                 chart: [],
-                // Array will be automatically processed with visualization.arrayToDataTable function
-                chartData: [
-                    // this.push
-                    ["Bulan", "Soshum", "Saintek", "Profit", "SMA 12"],
-                    ["Januari", 100, 400, 200, 12],
-                    ["Februari", 170, 460, 250, 200],
-                    ["Maret", 660, 120, 300, 320],
-                    ["April", 130, 540, 350, 390]
+                chartNull: [
+                    ["Bulan", ""],
+                    ["", 0]
                 ],
-                chartOptions: {
-                    chart: {
-                    title: "Company Performance",
-                    subtitle: "Sales, Expenses, and Profit: 2014-2017"
-                    }
-                },
+
+                //graf lesson
+                load_CL: false,
+                show_CL: true,
+                pelajaran: '',
+                lessons: [],
+                chartLess: [],
+                monthLess: [""],
+                nilaiLess: [],
+                chartLesson: [],
+                chartsLib: null, 
+
 
                 monthNow: new Date().toISOString(),
-
-                topTryout:[],
                 
                 load_data: true,
-                tabl: false,
-
                 data_topTryout: false,
+                topTryout:[],
 
                 user: [], 
                 userClass: [],
-                userPhoto: '',
-
                 ranking: '',  
                
                 headers: [
                     { text: 'Name', value: 'name' },
                     { text: 'Nilai', value: 'score' }
                 ],
-                leader: [],
-
-                results: [],
-                value: [],
             }
         },
 
-        methods:{
-            moment
+        computed:{
+            chartOptions () {
+                if (!this.chartsLib) return null
+                return this.chartsLib.charts.Bar.convertOptions({
+                    bars: 'horizontal', // Required for Material Bar Charts.
+                    hAxis: { format: 'decimal' },
+                    height: 250,
+                    colors: ['#1b9e77', '#d95f02', '#7570b3']
+                })
+            },
+        },
+        methods: {
+            moment,
+            onChartReady (chart, google) {
+                this.chartsLib = google
+                // this.google.charts.load('current', {'packages':['bar']});
+                // this.google.charts.setOnLoadCallback(this.onChartReady)
+            },
+
+            
+            //get 
+            getChartLesson(){
+                this.load_CL = true
+                this.show_CL = false
+                var n;
+                this.monthLess   = [""]
+                this.nilaiLess   = []
+                this.chartLesson = []
+
+                axios.get('/cereouts/chart/lesson/'+this.pelajaran)//get by lesson id
+                .then(response => {
+                    this.load_CL = false
+                    this.show_CL = true
+                    this.chartLess = response.data.data
+                    
+                    this.chartLess.forEach(element => {
+                        this.monthLess.push(element.name)
+                        if(element.month == this.nilaiLess[0]){
+                            if(element.score_student == null){
+                                n = 0
+                            }else{
+                                n = element.score_student
+                            }
+                            this.nilaiLess.push(n)
+                        }
+                        else{
+                            if(element.score_student == null){
+                                n = 0
+                            }else{
+                                n = element.score_student
+                            }
+                            this.nilaiLess.push(element.month, n)
+                        }
+                    });
+                    this.chartLesson.push(this.monthLess, this.nilaiLess)
+                    
+                })
+                .catch(error => {
+                    console.log(error.response)
+                })
+            },
         },
 
         mounted(){
-            axios.get('/cereouts/chart/class/7')
-            .then(response => {
-                this.chart = response.data.data
-                // this.graf.push(response.data.data)
-                // this.graf[0].push(response.data.data)
-                // console.log(response.data)
-                this.chart.forEach(element => {
-                    this.graf[0].push(element.name)
-                    // if(this.graf[1] = )
-                    this.graf[1].push(element.month)
-                    this.graf[1].push(element.score_student)
-                });
-            })
-            .catch(error => {console.log(error)})
-
             // get user
             axios.get('/auth/user')
             .then(response => {
@@ -228,16 +298,8 @@
                 this.userClass = response.data.data.class
             })
             .catch(error => {console.log(error)})
-            
-            //get photo user
-            axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
-            .then(response => {
-                let imgUrl     = URL.createObjectURL(response.data)
-                this.userPhoto = imgUrl
-            })
-            .catch(error => {console.log(error)})
-
-            // get ranking
+          
+          // get ranking
             axios.get('/cereouts/leaderboard/ranking/'+this.$store.state.dataUser)
             .then(response => {
                 this.load_data = false
@@ -249,29 +311,55 @@
                 console.log(error.response)
             })
 
-            // get leader
-            axios.get('/cereouts/leaderboard/'+this.$store.state.classId)//get by class_id user
-            .then(response => {
-                this.load_data = false
-                this.tabl      = true
-                this.leader    = response.data.data
-                // console.log(response.data)
-            })
-            .catch(error => {
-                console.log(error.response)
-            })
 
-            // get top tryout
-            axios.get('/cereouts/leaderboard/toptryout/'+this.$store.state.classId)//get by class_id user
-            .then(response => {
-                this.data_topTryout = true
-                this.topTryout      = response.data.data
-                // console.log(response.data)
-            })
-            .catch(error => {
-                console.log(error.response)
-            })
+            if(this.$store.state.classId!=null) {
+                // get top tryout
+                axios.get('/cereouts/leaderboard/toptryout/'+this.$store.state.classId)//get by class_id user
+                .then(response => {
+                    this.data_topTryout = true
+                    this.topTryout      = response.data.data
+                    // console.log(response.data)
+                })
+                .catch(error => {
+                    console.log(error.response)
+                })
 
+                //get lessons
+                axios.get('/lessons/'+this.$store.state.classId)
+                .then(response => {
+                    this.lessons = response.data.data
+                })
+                .catch(error => {console.log(error.response)})
+
+                //chart class
+                var n
+                axios.get('/cereouts/chart/class/'+this.$store.state.classId)
+                .then(response => {
+                    this.chart = response.data.data
+                    this.chart.forEach(element => {
+                        this.month.push(element.name)
+                        if(element.month != this.nilai[0]){
+                            if(element.score_student == null){
+                                n = 0
+                            }else{
+                                n = element.score_student
+                            }
+                            this.nilai.push(element.month, n)
+                        }
+                        else{
+                            if(element.score_student == null){
+                                n = 0
+                            }else{
+                                n = element.score_student
+                            }
+                            this.nilai.push(n)
+                        }
+                    });
+                    this.graf.push(this.month, this.nilai)
+                })
+                .catch(error => {console.log(error)})
+            }
+            
         }
     }
 </script>

@@ -77,28 +77,39 @@
         
         <v-btn block round color="error" dark large @click="loginGoogle">
           masuk dengan akun google
-          <!-- v-google-signin-button="clientId" -->
         </v-btn>
 
-        <!-- <v-btn block round color="primary" dark large href="https://api.ceredinas.id/login/facebook">
+        <v-btn block round color="primary" dark large>
           masuk dengan akun facebook
-        </v-btn> -->
-        <v-facebook-login app-id="169764986370463"></v-facebook-login>
+        </v-btn>
+    
+        <!-- <facebook-login class="button"
+          appId="318638459074473"
+          @login="getUserData"
+          @logout="onLogout"
+          @sdk-loaded="sdkLoaded">
+        </facebook-login> -->
+
+         <!-- <facebook-login class="button"
+          appId="318638459074473"
+          @login="getUserData"
+          @get-initial-status="getUserData">
+        </facebook-login> -->
 
         <hr style="margin-bottom:15px">
         <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>
       </div>
       
       <LoadingScreen2 :loading="loadLogin"></LoadingScreen2>
-
     </div>
 </template>
 
 
 <script>
+// import Vue from "vue";
   import axios from "axios"
   import LoadingScreen2 from'../../components/loading-screen/Loading2'
-  import { VFBLogin as VFacebookLogin } from 'vue-facebook-login-component'
+  import facebookLogin from 'facebook-login-vuejs';
 
   export default {
     name: 'login',
@@ -106,11 +117,19 @@
 
     components:{ 
       LoadingScreen2,
-      VFacebookLogin
+      facebookLogin
     },
 
     data () {
       return {
+        time: 0,
+        interval: null,
+
+        isConnected: false,
+        name: '',
+        email: '',
+        personalID: '',
+        FB: undefined,
 
         snackbar: false,
         snackbarGoogle:false,
@@ -141,13 +160,21 @@
 
     mounted(){
       this.snackbar = this.regist
+      this.toggleTimer()
       
-      if(this.$store.getters.loggedIn){
-        window.location.href = "/"
-      }
     },
 
     methods:{
+      toggleTimer() {
+        this.interval = setInterval(this.incrementTime, 1000);
+      },
+      incrementTime() {
+          this.time = parseInt(this.time) + 1;
+          if(this.$store.getters.loggedIn){
+            window.location.href = "/"
+          }
+      },
+
       login(){      
         this.btn_load = true
         this.loadLogin = true
@@ -209,7 +236,33 @@
           //on fail do something
           console.log(error)
         })
-      }       
+      },
+
+      getUserData() {
+        this.FB.api('/me', 'GET', {fields: 'id.name.email'},
+          userInformation => {
+            console.warn("get data from fb", userInformation)
+            this.personalID = userInformation.id;
+            this.email = userInformation.email;
+            this.name = userInformation.name;
+          }
+        )
+      },
+      // sdkLoaded(){
+      //   this.isConnected = payload.isConnected
+      //   this.FB = payload.FB
+      //   if(this.isConnected) this.getUserData()
+      // },
+      // onLogin(){
+      //   this.isConnected = true
+      //   this.getUserData()
+      // },
+      // onLogout(){
+      //   this.isConnected = false
+      // }
+
+      
+      
 
     }
   }

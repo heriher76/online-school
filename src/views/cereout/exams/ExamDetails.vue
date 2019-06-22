@@ -2,7 +2,7 @@
     <div class="my_exams">
         <v-container>
             <v-toolbar color="#B71C1C" dark>
-                <v-toolbar-title>Exam Details</v-toolbar-title>
+                <v-toolbar-title>Detail Tryout</v-toolbar-title>
             </v-toolbar>
             <v-container>
                 <v-card style="text-transform:capitalize">
@@ -90,16 +90,16 @@
                 <v-divider></v-divider>
 
                 <v-btn dark @click="action(detail)" color="info">
-                  Attempt Now
+                  Coba Sekarang
                   <v-icon right dark>launch</v-icon>
                 </v-btn>
                 <v-btn @click="$router.go(-1)">Cancel</v-btn>
 
                 <!-- loading -->
-                <v-dialog v-model="loading" hide-overlay persistent width="300">
+                <v-dialog v-model="loading" hide-overlay persistent width="400">
                   <v-card color="primary" dark>
                     <v-card-text>
-                      Please stand by
+                      Sedang menyiapkan, mohon tunggu sebentar
                       <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
                     </v-card-text>
                   </v-card>
