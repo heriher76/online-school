@@ -45,28 +45,8 @@
           </router-link>
         </v-carousel> 
       </v-card>
-      
-    </v-container>   
-    <!-- /content up -->
 
-    <v-container fluid >
-      <div style="margin:10px;">
-        <span style="font-size:40px; color:#B71C1C;"><b>Ribuan Pelajar Terbantu Dan Lolos PTN !</b></span>
-      </div>
-
-      <v-layout row wrap>
-        <v-flex md7>
-          <div style="font-size:20px;color:#616161;margin:10px 20px">
-          <hr style="margin:20px 0px;">
-            <b>Unduh Aplikasi Kami di:</b>
-            <div style="margin-top:5px">
-              <img :src="require('../assets/images/google-play.png')" width="200px" alt="">
-              <img :src="require('../assets/images/app-store.png')" height="61px" width="200px" alt="">
-            </div>
-          </div>
-        </v-flex>
-
-        <v-flex md5>
+      <!-- <v-flex md12 sm12 xs12 class="hidden-md-and-up">
           <h6 class="title" style="margin:12px 0px;color:#616161">Spesial Khusus Member Baru</h6>
           
           <v-carousel
@@ -110,8 +90,75 @@
                   </div>
               
               </v-jumbotron>
+            </v-carousel-item>
+          </v-carousel> 
+        </v-flex> -->
+      
+    </v-container>   
+    <!-- /content up -->
+
+    <v-container fluid >
+      <div style="margin:10px;">
+        <span style="font-size:40px; color:#B71C1C;"><b>Ribuan Pelajar Terbantu Dan Lolos PTN !</b></span>
+      </div>
+
+      <v-layout row wrap>
+        <v-flex md7>
+          <div style="font-size:20px;color:#616161;margin:10px 20px">
+          <hr style="margin:20px 0px;">
+            <b>Unduh Aplikasi Kami di:</b>
+            <div style="margin-top:5px">
+              <img :src="require('../assets/images/google-play.png')" width="200px" alt="">
+              <img :src="require('../assets/images/app-store.png')" height="61px" width="200px" alt="">
+            </div>
+          </div>
+        </v-flex>
+
+        <v-flex md5 sm12 xs12>
+          <h6 class="title" style="margin:12px 0px;color:#616161">Spesial Khusus Member Baru</h6>
+          
+          <v-carousel
+            style="border-radius:10px"
+            hide-delimiters
+            height=150
+            interval=6000
+            hide-controls
+          >
+            <div v-show="load_data" style="margin:50px auto; width:5%;">
+                <v-layout column justify-center align-center>
+                    <hollow-dots-spinner
+                      :animation-duration="1000"
+                      :dot-size="15"
+                      :dots-num="3"
+                      color="#ff1d5e"
+                    />
+                </v-layout>
+            </div>
+
+            <v-carousel-item
+              v-for="(item,i) in member"
+              :key="i"
+              :src="item.url"
+            >
+
+              <v-jumbotron
+                :gradient="gradient"
+                dark
+                src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
+              >
+      
+                <div style="margin:25px;color:white">
+                    <span>Membership</span>
+                    <h4 class="display-1"><b>{{item.name}}</b></h4>
+                  </div>
 
 
+                  <div style="margin:10px 28px;border-top:1px solid white">
+                    <h6 v-if="item.coupon_name!=null" class="title" style="float:right;padding-top:4px">kode kupon: {{item.coupon_code}}</h6>
+                    <div class="clear"></div>
+                  </div>
+              
+              </v-jumbotron>
             </v-carousel-item>
           </v-carousel> 
         </v-flex>
