@@ -260,11 +260,11 @@ export default {
           this.forumId = null
       }
     },
-    async getDataDetailMateri() {
+    getDataDetailMateri() {
       this.$store.dispatch('getDataDetailMateri')
         .then(response => {})
     },
-    async getDataDetailForum() {
+    getDataDetailForum() {
       this.$store.dispatch('getDataDetailForum')
         .then(response => {})
     },
