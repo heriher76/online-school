@@ -117,6 +117,40 @@ export default new Router({
       // }
     },
 
+    {
+      path: "/kebijakan-privasi",
+      name: 'kebijakan_privasi',
+      component: () => import("./views/informasi/KebijakanPrivasi.vue"),
+    },
+
+    {
+      path: "/panduan-siswa",
+      name: 'panduan_siswa',
+      component: () => import("./views/informasi/PanduanSiswa.vue"),
+    },
+
+    {
+      path: "/panduan-guru",
+      name: 'panduan_guru',
+      component: () => import("./views/informasi/PanduanGuru.vue"),
+    },
+
+    {
+      path: "/syarat-ketentuan",
+      name: 'syarat_ketentuan',
+      component: () => import("./views/informasi/SyaratKetentuan.vue"),
+    },
+
+    {
+      path: "/FAQ",
+      name: 'FAQ',
+      component: () => import("./views/informasi/FAQ.vue")
+    },
+    {
+      path: "/pusat bantuan",
+      name: 'pusat_bantuan_siswa',
+      component: () => import("./views/informasi/PusatBantuan.vue")
+    },
     // -----------------------------cereout-----------------------------
     {
       path: "/cereout/dashboard",
@@ -437,12 +471,5 @@ export default new Router({
       meta: {layout: "guru"},
       component: () => import("./views/cerevid/tambahPelajaran.vue")
     },
-
-    // -----------------------------Menu Lainnya---------------------------
-    {
-      path: "/pusat bantuan",
-      name: 'pusat_bantuan_siswa',
-      component: () => import("./views/PusatBantuan.vue")
-    }
   ]
 });
