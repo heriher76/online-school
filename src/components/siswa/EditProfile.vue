@@ -55,18 +55,17 @@
                     <!-- <v-text-field style="height:60px" v-model="datas.data.email" label="Email" placeholder="email"></v-text-field>
                      -->
                     <v-text-field style="height:60px" v-model="datas.data.phone" label="Phone Number" placeholder="Nomor Handphone"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.address" label="Alamat" placeholder="Alamat"></v-text-field>
                     <v-text-field style="height:60px" v-model="datas.data.gender" label="Gender" placeholder="Jenis Kelamin"></v-text-field>
                     <v-text-field style="height:60px" v-model="datas.data.birth_place" label="Birth Place" placeholder="Tempat Lahir"></v-text-field>
-                    <v-text-field style="height:60px" v-model="datas.data.birth_date" label="Birth Date" placeholder="Tanggal Lahir"></v-text-field>
-                    <v-date-picker
-                       no-title
-          v-model="picker"
-          :date-format="date => new Date(date).toDateString()"
-          :formatted-value.sync="formatted"
-        ></v-date-picker>
-                    <v-text-field style="height:60px" v-model="datas.data.parrent_name" label="Parrent Name" placeholder="Nama Orang Tua"></v-text-field>
-                    <v-text-field style="height:60px" v-model="datas.data.parrent_phone" label="Parrent Phone" placeholder="Nomor Orang Tua"></v-text-field>
-
+                    <!-- <v-text-field style="height:60px" v-model="datas.data.birth_date" label="Birth Date" placeholder="Tanggal Lahir"></v-text-field> -->
+                    <label>Tanggal Lahir</label>
+                    <br>
+                    <v-date-picker v-model="datas.data.birth_date"></v-date-picker>
+                    <br><br>
+                    <v-text-field style="height:60px" v-model="datas.data.parrent_name" label="Nama Orang Tua" placeholder="Nama Orang Tua"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.parrent_phone" label="Nomor Orang Tua" placeholder="Nomor Orang Tua"></v-text-field>
+                    <br>
                     <!-- Kelas -->
                     <label>Pilih Kelas</label>
                     <v-select
@@ -83,7 +82,7 @@
                         item-value="name"
                         label="Kelas *"
                     ></v-select>
-
+                    <br>
                     <!-- Pilihan Pertama -->
                     <label>Pilihan Pertama</label>
                     <v-select
@@ -100,7 +99,6 @@
                         item-value="name"
                         label="Universitas *"
                     ></v-select>
-
                     <v-select
                         v-if="datas.data.option1"
                         v-model="datas.data.option1.department_name" 
@@ -115,7 +113,7 @@
                         item-value="name"
                         label="Jurusan *"
                     ></v-select>
-
+                    <br>
                     <!-- Pilihan Kedua -->
                     <label>Pilihan Kedua</label>
                     <v-select
@@ -147,7 +145,7 @@
                         item-value="name"
                         label="Jurusan *"
                     ></v-select>
-
+                    <br>
                     <!-- Pilihan Ketiga -->
                     <label>Pilihan Ketiga</label>
                     <v-select
@@ -187,7 +185,7 @@
             </div>
             <!-- {{dataUser}} -->
             <!--  -->
-            <ChangePassword v-show="chg_pass" @canceled="showEditProfile" :idUser="this.datas.data.id"/>
+            <ChangePassword v-show="chg_pass" @canceled="showEditProfile" :idUser="this.datas.data.id" :email="this.datas.data.email"/>
         </v-flex>
     </v-layout>
 </template>
@@ -224,6 +222,7 @@
             option1_university_name: '',
             option2_university_name: '',
             option3_university_name: '',
+            birth_date: new Date().toISOString().substr(0, 10),
             list_kelas: [],
             is_load1 :false,
             showImage:true
@@ -233,6 +232,10 @@
             LoadingScreen1
         },
         watch: {
+          birth_date (date) {
+            this.birth_date= date
+            console.log(this.birth_date)
+          },
           kelas (newVal) {
             this.kelas= newVal
           },
@@ -328,6 +331,7 @@
                     name: this.datas.data.name,
                     gender: this.datas.data.gender,
                     phone: this.datas.data.phone,
+                    address: this.datas.data.address,
                     birth_place: this.datas.data.birth_place,
                     birth_date: this.datas.data.birth_date,
                     parrent_name: this.datas.data.parrent_name,

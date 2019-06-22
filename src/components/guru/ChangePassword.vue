@@ -15,7 +15,7 @@
 	import axios from 'axios';
 
     export default {
-        props: ['idUser'],
+        props: ['idUser', 'email'],
         data: () => ({
             email: '',
             password: '',
