@@ -259,18 +259,22 @@
 						</v-flex>
 					</v-layout>
 				</v-container>
+				<LoadingScreen2 :loading="loadAnalisis"></LoadingScreen2>
 	</div>
 </template>
 <script>
 	import sideBar from '../../components/cerelisasi-component/sideBar'
+  	import LoadingScreen2 from'../../components/loading-screen/Loading2'
   	import axios from 'axios'
 
   	export default {
 	components: {
-		sideBar
+		sideBar,
+		LoadingScreen2
 	},
     data: () => ({
       valid: true,
+      loadAnalisis: true,
       name: '',
       nameRules: [
         v => !!v || 'Name is required',
@@ -324,6 +328,24 @@
 	  btn_load: false
     }),
     created() {
+    	//get hasil analisis jika ada
+    	axios.defaults.headers = {
+		    'Authorization': 'Bearer ' + this.$store.state.token
+		}
+		axios.get('/cerelisasi/analysis')
+		.then(response => {
+		  this.dataAnalysis = response.data.data
+		  if(this.dataAnalysis.my_point != 0){
+		  	this.$swal('Hasil Simulasi', 'Anda Sudah Melakukan Simulasi', 'success')
+		  	this.$router.push({ name:'cerelisasi_analisis', params: { data: this.dataAnalysis, name: this.name } })
+		  }else{
+		  	this.loadAnalisis=false
+		  }
+		})
+		.catch(error => {
+		  console.log(error)
+		})
+
         //get list Kelas
         axios.get('/master/class')
         .then(response => {
@@ -403,10 +425,8 @@
     watch: {
     	kelas(newKelas) {
     		this.kelas = newKelas
-    		console.log(this.kelas)
     	},
     	option1_university_name (university1) {
-    	  console.log(university1)
     	  this.option1_university_name = university1
     	  this.listUniversity.map((univ) => {
     	      if (univ.name == this.option1_university_name) {
@@ -415,7 +435,6 @@
     	  })
     	},
     	option2_university_name (university2) {
-    	  console.log(university2)
     	  this.option2_university_name = university2
     	  this.listUniversity.map((univ) => {
     	      if (univ.name == this.option2_university_name) {
@@ -424,7 +443,6 @@
     	  })
     	},
     	option3_university_name (university3) {
-    	  console.log(university3)
     	  this.option3_university_name = university3
     	  this.listUniversity.map((univ) => {
     	      if (univ.name == this.option3_university_name) {
@@ -451,10 +469,20 @@
 			this.points.push(Number(this.tps2))
 			this.points.push(Number(this.tps3))
 			this.points.push(Number(this.tps4))
-			this.points.push(Number(this.tka_saintek1))
-			this.points.push(Number(this.tka_saintek2))
-			this.points.push(Number(this.tka_saintek3))
-			this.points.push(Number(this.tka_saintek4))
+
+			if(this.kelas == 'Saintek'){
+				this.points.push(Number(this.tka_saintek1))
+				this.points.push(Number(this.tka_saintek2))
+				this.points.push(Number(this.tka_saintek3))
+				this.points.push(Number(this.tka_saintek4))
+			}else if(this.kelas == 'Soshum'){
+				this.points.push(Number(this.tka_soshum1))
+				this.points.push(Number(this.tka_soshum2))
+				this.points.push(Number(this.tka_soshum3))
+				this.points.push(Number(this.tka_soshum4))
+				this.points.push(Number(this.tka_soshum5))
+			}
+
 			this.departments.push(this.option1_department_name)
 			this.departments.push(this.option2_department_name)
 			this.departments.push(this.option3_department_name)

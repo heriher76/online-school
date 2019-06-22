@@ -25,7 +25,7 @@
                     <v-flex md4 sm4 xs12>
                       <v-card flat>
                         <v-card-text>
-                          <div class="headline my-4">Chakra Bernat Yusuf</div>
+                          <div class="headline my-4">{{ this.name }}</div>
                           <v-flex md6 sm12 xs12>
                             <v-toolbar flat dark>
                               <v-list>
@@ -62,29 +62,29 @@
                               </v-toolbar>
                               <v-card>
                                 <v-card-text>
-                                  <div class="display-1" style="text-align:center">#3 / #247</div>
+                                  <div class="display-1" style="text-align:center">#{{ this.hasilAnalisis.national_ranks.my_rank }} / #{{ this.hasilAnalisis.national_ranks.other_ranks.length }}</div>
                                 </v-card-text>
                                 <v-card-actions class="justify-center">
-                                  <v-btn block flat @click="dialog=true">Lihat Detail</v-btn>
+                                  <v-btn block flat @click="ranking_nasional=true">Lihat Detail</v-btn>
                                 </v-card-actions>
                               </v-card>
                               <v-dialog
-                                v-model="dialog"
+                                v-model="ranking_nasional"
                                 max-width="800"
                               >
                                 <v-card>
                                   <v-card-title class="headline">Detail Ranking Nasional</v-card-title>
                                   <v-card-text>
                                     <v-data-table
-                                      :items="desserts"
+                                      :items="this.hasilAnalisis.national_ranks.other_ranks"
                                       class="elevation-1"
                                       hide-actions
                                       hide-headers
                                     >
                                       <template v-slot:items="props">
-                                        <td>#1</td>
-                                        <td>{{ props.item.nama }}</td>
-                                        <td class="text-xs-right">{{ props.item.skor }}</td>
+                                        <td>#{{ props.item.rank }}</td>
+                                        <td>{{ (hasilAnalisis.national_ranks.my_rank == props.item.rank) ? name : other_name }}</td>
+                                        <td class="text-xs-right">{{ props.item.total_point }}</td>
                                       </template>
                                     </v-data-table>
                                   </v-card-text>
@@ -95,7 +95,7 @@
                                     <v-btn
                                       color="green darken-1"
                                       flat="flat"
-                                      @click="dialog = false"
+                                      @click="ranking_nasional = false"
                                     >
                                       Kembali
                                     </v-btn>
@@ -121,14 +121,14 @@
                                       smooth
                                     >
                                       <template v-slot:label="item">
-                                        ${{ item.value }}
+                                        {{ item.value }}
                                       </template>
                                     </v-sparkline>
                                   </v-sheet>
                                 </v-card-text>
 
                                 <v-card-text>
-                                  <div class="display-1 font-weight-thin">Grafik Ranking Nasional</div>
+                                  <div class="display-1 font-weight-thin">Grafik Nilai Ranking Nasional</div>
                                 </v-card-text>
 
                                 <v-divider></v-divider>
@@ -138,8 +138,8 @@
                               </v-card>
                             </v-flex>
                           </v-layout>
-
-                            <div class="headline my-4">Ranking Jurusan 1 - Teknik Informatika</div>
+                          <div v-for="(department, index) in this.hasilAnalisis.department_ranks">
+                            <div class="headline my-4">Ranking Jurusan {{index+1}} - {{ department.department.name }}</div>
                             <v-layout row wrap>
                               <v-flex md4 sm12 xs12>
                                 <v-toolbar flat dark>
@@ -153,46 +153,13 @@
                                 </v-toolbar>
                                 <v-card>
                                   <v-card-text>
-                                    <div class="display-1" style="text-align:center">#3 / #247</div>
+                                    <div class="display-1" style="text-align:center">#{{department.ranks.my_rank}} / #{{department.ranks.other_ranks.length}}</div>
                                   </v-card-text>
                                   <v-card-actions class="justify-center">
-                                    <v-btn block flat @click="dialog=true">Lihat Detail</v-btn>
+                                    <v-btn block flat @click="showModal(department)">Lihat Detail</v-btn>
                                   </v-card-actions>
                                 </v-card>
-                                <v-dialog
-                                  v-model="dialog"
-                                  max-width="800"
-                                >
-                                  <v-card>
-                                    <v-card-title class="headline">Detail Ranking Nasional</v-card-title>
-                                    <v-card-text>
-                                      <v-data-table
-                                        :items="desserts"
-                                        class="elevation-1"
-                                        hide-actions
-                                        hide-headers
-                                      >
-                                        <template v-slot:items="props">
-                                          <td>#1</td>
-                                          <td>{{ props.item.nama }}</td>
-                                          <td class="text-xs-right">{{ props.item.skor }}</td>
-                                        </template>
-                                      </v-data-table>
-                                    </v-card-text>
-
-                                    <v-card-actions>
-                                      <v-spacer></v-spacer>
-
-                                      <v-btn
-                                        color="green darken-1"
-                                        flat="flat"
-                                        @click="dialog = false"
-                                      >
-                                        Kembali
-                                      </v-btn>
-                                    </v-card-actions>
-                                  </v-card>
-                                </v-dialog>
+                                
                               </v-flex>
                               <v-flex md8 sm12 xs12>
                                 <v-card
@@ -204,13 +171,15 @@
                                     <v-divider class="ma-2"></v-divider>
                                     <v-progress-linear
                                       :height="12"
-                                      :value="90"
+                                      :value="70"
                                       background-color="success"
                                       color="error"
                                     >
                                     </v-progress-linear>
-                                    <div class="headline ma-2">Peminat : 1000 Org</div>
-                                    <div class="headline ma-2">Daya Tampung : 100 Org / 10%</div>
+                                    <div class="headline ma-2">Peminat : {{department.department.interrested_num}} Org</div>
+                                    <div class="headline ma-2">Daya Tampung : {{department.department.capacity}} Org</div>
+                                    <div class="headline ma-2">Keketatan : {{department.department.tightness}} Org</div>
+                                    <div class="headline ma-2">Passing Grade : {{department.department.passing_grade}} </div>
                                   </v-card-text>
                                   <v-card-text>
                                     <div class="headline">Status Potensi Jurusan</div>
@@ -222,18 +191,58 @@
                                       :value="78"
                                       color="teal"
                                     >
-                                      <div class="display-3 ma-2">78%</div>
+                                      <div class="display-3 ma-2">{{department.accuracy}}%</div>
                                     </v-progress-circular>
-                                    <div class="display-1 ma-2">Bagus</div>
+                                    <div class="display-1 ma-2">{{department.status}}</div>
                                   </v-card-text>
                                 </v-card>
                               </v-flex>
                             </v-layout>
+                          </div>
+                          <!-- end v for -->
+                          <v-dialog
+                            v-model="dialog"
+                            max-width="800"
+                          >
+                            <v-card>
+                              <v-card-title class="headline">Detail Ranking {{modal_department.department.name}}</v-card-title>
+                              <v-card-text>
+                                <v-data-table
+                                  :items="modal_department.ranks.other_ranks"
+                                  class="elevation-1"
+                                  hide-actions
+                                  hide-headers
+                                >
+                                  <template v-slot:items="props">
+                                    <td>#{{ props.item.rank }}</td>
+                                    <td>{{ (modal_department.ranks.my_rank == props.item.rank) ? name : other_name }}</td>
+                                    <td class="text-xs-right">{{ props.item.total_point }}</td>
+                                  </template>
+                                </v-data-table>
+                              </v-card-text>
+
+                              <v-card-actions>
+                                <v-spacer></v-spacer>
+
+                                <v-btn
+                                  color="green darken-1"
+                                  flat="flat"
+                                  @click="dialog = false"
+                                >
+                                  Kembali
+                                </v-btn>
+                              </v-card-actions>
+                            </v-card>
+                          </v-dialog>
+                          <!-- modal -->
                         </v-card-text>
                       </v-card>
                     </v-flex>
                   </v-layout>
+                  <br>
                   <div style="text-align:center">
+                    <label>Setelah mereset data anda tidak dapat lagi melihat hasil analisis saat ini dan akan dikenakan biaya pada analisis selanjutnya.</label>
+                    <br>
                     <v-btn
                       color="error darken-2"
                       dark
@@ -250,7 +259,7 @@
                       <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn flat color="error" @click="dialogReset = false">Tidak Setuju</v-btn>
-                        <v-btn flat color="success" @click="dialogReset = false">Setuju</v-btn>
+                        <v-btn flat color="success" @click="handleResetAnalisis">Setuju</v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
@@ -263,40 +272,53 @@
 </template>
 <script>
 	import sideBar from '../../components/cerelisasi-component/sideBar'
+  import axios from 'axios'
   export default {
 		components: {
 			sideBar
 		},
     data: () => ({
       hasilAnalisis: '',
+      name: '',
+      other_name: '###########################',
+      modal_department: '',
+      ranking_nasional: false,
       dialog: false,
       dialogReset: false,
       no:0,
-        desserts: [
-          {
-            nama: 'John Doe',
-            skor: 100
-          },
-          {
-            nama: 'Lorem Ipsum',
-            skor: 99
-          },
-        ],
-      value: [
-        423,
-        446,
-        675,
-        510,
-        590,
-        610,
-        760
-      ],
+      value: [],
     }),
     created() {
       this.hasilAnalisis = this.$route.params.data
+      this.hasilAnalisis.national_ranks.other_ranks.map((nilai) => {
+        this.value.unshift(nilai.total_point)
+      }) 
+      console.log(this.value)
+      this.modal_department = this.hasilAnalisis.department_ranks[0]
+      this.name = this.$route.params.name
       console.log(this.$route.params.data)
     },
 		methods: {
+      handleResetAnalisis() {
+        this.dialogReset=false
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + this.$store.state.token
+        }
+        axios.post('/cerelisasi/reset_analysis')
+        .then(response => {
+          console.log(response)
+          this.$swal('Sukses', 'Berhasil Reset Analisis', 'success')
+          this.$router.push({ name:'cerelisasi_form_input_siswa' })
+        })
+        .catch(error => {
+          this.$swal('Oops', 'Gagal Reset Analisis', 'warning')
+          console.log(error)
+        })
+      },
+      showModal(data) {
+        this.modal_department = data
+        this.dialog = true
+      }
 		}
   }
 </script>
