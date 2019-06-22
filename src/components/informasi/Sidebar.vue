@@ -2,7 +2,7 @@
     <div>
         <div style="margin:0px 15px">
             <div style="margin:10px 22px">
-                <h6 class="title">RECENT POSTS</h6>
+                <h6 class="title">INFO TERBARU</h6>
             </div>
             <ul class="side_bar">
                 <v-divider></v-divider>
@@ -15,7 +15,7 @@
                 </div>
                 <li v-for="recent in posts" :key="recent.id">
                     <router-link :to="{name: 'detail_informasi', params: {data: recent} }" style="text-transform:capitalize">{{recent.title}}&nbsp;</router-link> <br>
-                    <span style="color:#757575; font-size:12px">Posted: {{recent.created_at}}</span>
+                    <span style="color:#757575; font-size:12px">posted: {{recent.created_at}}</span>
                     <v-divider></v-divider>
                 </li>
             </ul>

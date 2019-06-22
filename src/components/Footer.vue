@@ -6,9 +6,9 @@
                     <v-layout row wrap>
                         <v-flex md4>         
                             <v-img :src="require('../assets/images/logo_final2.png')" width="280px"></v-img>
-                            <div style="margin:10px 20px">
-                                <!-- <p>Get connected with us on social networks</p> -->
-                                <p>Jl. Raya Cipadung No.334 Cipadung Wetan, Panyileukan Bandung, Jawa Barat, 40614.</p>
+                            <div style="margin:10px 20px;color:#424242">
+                                <p>PT. Cerebrum Media Tama Indonesia.</p> 
+                                <p> Pondok Ganesha (Perumahan ITB) No 181 Rt 04 Rw 06. Jl Pondok, Jl. Melati 3, Melatiwangi, Cilengkrang, Bandung, Jawa Barat 40618.</p>
                             </div>
                         </v-flex>
                         

@@ -19,7 +19,7 @@
                     </v-card>
                     <br>
                     <v-card>
-                        <div v-show="load_data" style="margin:0px auto; padding:40px; width:5%;">
+                        <div v-show="load_data" style="margin:0px auto; padding:100px; width:5%;">
                             <v-progress-circular
                             :size="40"
                             color="primary"
