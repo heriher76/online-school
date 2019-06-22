@@ -32,7 +32,7 @@
     width: 100%;
     height: 100%;
     font-family: "Arial";
-    /* background-image: linear-gradient(10deg, #2c3e50,#ffffff,#ee1414,#51a9fc,#8e44ad); */
+    background-image: linear-gradient(10deg, #2c3e50,#ffffff,#ee1414,#51a9fc,#8e44ad);
     background-size: 270% 350%;
   }
 
