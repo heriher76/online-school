@@ -7,7 +7,7 @@
         <h2 class="display-1">Welcome</h2>
         <p>Login Guru</p>
         
-        <form @submit.prevent="login">
+        <form @submit.prevent="login" @keyup.enter="login">
           <v-text-field
             dark
             color="white"
@@ -24,7 +24,7 @@
               :rules="[rules_pass.required, rules_pass.min]"
               :type="show_pass ? 'text' : 'password'"
               name="input-10-1"
-              label="Password"
+              label="Kata Sandi"
               hint="At least 6 characters"
               counter
               @click:append="show_pass = !show_pass"
@@ -36,9 +36,9 @@
               v-model="checkbox"
               label="Remember Me"
           ></v-checkbox>
-          <router-link to="/guru/forgot-password" class="label-forgot">Forgot your password?</router-link>
+          <router-link to="/guru/forgot-password" class="label-forgot">Lupa kata sandi?</router-link>
           
-          <v-btn @click="login" :loading="btn_load" round large block>SIGN IN</v-btn>  
+          <v-btn @click="login" :loading="btn_load" round large block>Masuk</v-btn>  
         </form>
 
         <!-- <div class="list">
@@ -96,8 +96,18 @@ import axios from "axios"
           password: this.password
         })
         .then(response => {
+          if (response.data.role != 1) {
+            this.$swal('Oopps', 'Anda Tidak Memiliki Akses Kesini!', 'warning')
+            this.$store.dispatch('destroyToken')
+            .then(response => {
+                this.$router.push({path:'/'})
+            })
+            // .catch(error => {
+            //     console.log(error)
+            //   })
+          }
           this.btn_load = false
-          this.$router.push({path: '/guru'})
+          // this.$router.push({path: '/guru'})
         })
         .catch(error => {
           this.btn_load = false

@@ -38,7 +38,7 @@
                             </v-toolbar>
                             <v-card>
                               <v-card-text>
-                                <div class="display-1" style="text-align:center">100</div>
+                                <div class="display-1" style="text-align:center">{{ this.hasilAnalisis.my_point }}</div>
                               </v-card-text>
                             </v-card>
                           </v-flex>
@@ -268,6 +268,7 @@
 			sideBar
 		},
     data: () => ({
+      hasilAnalisis: '',
       dialog: false,
       dialogReset: false,
       no:0,
@@ -291,6 +292,10 @@
         760
       ],
     }),
+    created() {
+      this.hasilAnalisis = this.$route.params.data
+      console.log(this.$route.params.data)
+    },
 		methods: {
 		}
   }

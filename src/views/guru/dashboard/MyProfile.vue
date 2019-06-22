@@ -3,14 +3,14 @@
         <div class="my_account">
             <v-layout>
                 <!-- sidebar -->
-                <v-flex md3 sm12 xs12>
+                <v-flex lg3 md0>
                     <v-card>
                         <SideBar class="hidden-sm-and-down" style="float:left;"/>
                     </v-card>
                 </v-flex>
                 <!-- /sidebar -->
 
-                <v-flex md9 sm12 xs12>
+                <v-flex lg9 md12 sm12 xs12>
                 <v-card>
                     <v-card-title style="float:left">
                         <h6 class="title">My Profile</h6>

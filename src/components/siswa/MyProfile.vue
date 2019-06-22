@@ -38,7 +38,7 @@
                     <td><b>Membership</b></td><td v-if="datas.data.membership !== null">{{ datas.data.membership }}</td>
                 </tr>
                 <tr height="30">
-                    <td><b>Class</b></td><td v-if="datas.data.class !== null">{{ datas.data.class.name_class }}</td>
+                    <td><b>Kelas</b></td><td v-if="datas.data.class !== null">{{ datas.data.class.name_class }}</td>
                 </tr>
                 <tr height="30">
                     <td><b>Pilihan Pertama</b></td><td v-if="datas.data.option1 !== null">{{ datas.data.option1.department_name }} - {{ datas.data.option1.university_name }}</td>

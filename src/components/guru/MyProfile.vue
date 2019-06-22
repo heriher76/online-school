@@ -34,12 +34,12 @@
                 <tr height="30">
                     <td><b>Parrent Phone</b></td><td v-if="datas.data.parrent_phone">{{ datas.data.parrent_phone }}</td>
                 </tr>
-                <tr height="30">
+                <!-- <tr height="30">
                     <td><b>Membership</b></td><td v-if="datas.data.membership">{{ datas.data.membership }}</td>
-                </tr>
-                <tr height="30">
+                </tr> -->
+                <!-- <tr height="30">
                     <td><b>Class</b></td><td v-if="datas.data.class">{{ datas.data.class.name_class }}</td>
-                </tr>
+                </tr> -->
             </table>
         </v-flex>
     </v-layout>
