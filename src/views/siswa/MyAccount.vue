@@ -1,6 +1,20 @@
 <template>
     <v-container>
         <div class="my_account">
+            <v-snackbar
+                v-model="snackbar"
+                :multi-line="'multi-line'"
+                :right="'right'"
+                :timeout="3000"
+                :top="'top'"
+                color="rgba(0,0,0,0.5)"
+            >
+                Silahkan lengkapi data diri anda terlebih dahulu !
+                <v-btn :color="'col'" flat @click="snackbar = false">
+                Close
+                </v-btn>
+            </v-snackbar>
+
             <v-layout>
                 <v-flex xs12 sm6 offset-sm3>
                 <v-card>
@@ -34,8 +48,10 @@
     import EditProfile from "../../components/siswa/EditProfile"
 
     export default {
+        props: ["snackb"],
         data () {
             return {
+                snackbar: this.snackb,
                 user: [],
                 my_profile: true,
                 edit_profile: false,

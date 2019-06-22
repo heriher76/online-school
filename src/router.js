@@ -68,12 +68,30 @@ export default new Router({
         requiresAuth:true
       }
     },
+    {
+      path: '/membership/history',
+      name: 'membership_history',
+      component: () => import("./views/siswa/MembershipHistory.vue"),
+      props: true,
+      meta: {
+        requiresAuth:true
+      }
+    },
 
     // -----------------------------poin saldo-----------------------------
     {
       path: "/my poin",
       name: 'my_poin',
       component: () => import("./views/siswa/MyPoin.vue"),
+      meta: {
+        requiresAuth:true
+      }
+    },
+    {
+      path: "/my poin/history",
+      name: 'myPoin_history',
+      component: () => import("./views/siswa/MyPoinHistory.vue"),
+      props:true,
       meta: {
         requiresAuth:true
       }
@@ -287,7 +305,8 @@ export default new Router({
     {
       path: "/my account",
       name: 'my_account',
-      component: () => import("./views/siswa/MyAccount.vue")
+      component: () => import("./views/siswa/MyAccount.vue"),
+      props:true
     },
 
 
