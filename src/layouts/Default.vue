@@ -43,11 +43,6 @@ export default {
     //       return this.$router.push({name: 'login'})
     //     }
         
-    //     // kalo data = false dan status != 2
-    //     // redirect to login ServiceWorkerMessageEvent
-
-    //     // jika status == true dan status.user != 2
-    //     // return login
     //   })
     //   .catch(error => {
     //     console.log(error.response)

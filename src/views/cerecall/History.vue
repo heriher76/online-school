@@ -1,6 +1,6 @@
 <template>
     <div class="history_call">
-        <v-container grid-list-md>
+        <v-container>
             <div class="nav-result">
                 <ul>
                     <li><router-link :to="{name: 'cerecall'}">CARI GURU</router-link></li>

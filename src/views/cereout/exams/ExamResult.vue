@@ -360,7 +360,7 @@
                     this.discussion = this.detail[0].discussion
                     let url         = urlParser.parse(this.detail[0].discussion.url_explanation).id
                     this.url_video  = url
-                    console.log(response.data)
+                    // console.log(response.data)
                 })
                 .catch(error => {
                     console.log(error.response)
