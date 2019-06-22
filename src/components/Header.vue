@@ -1,10 +1,10 @@
 <template>
   <div class="header">
-    <v-toolbar app height="90">
+    <v-toolbar color="#B71C1C" dark app height="90">
       <v-toolbar-side-icon class="grey--text hidden-md-and-up" style="margin-right:-10px" @click="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>
         <a href="/">
-          <v-img :src="require('../assets/images/logo_final2.png')" class="hidden-sm-and-down" width="200px"></v-img>
+          <v-img :src="require('../assets/images/logo_final.png')" class="hidden-sm-and-down" width="200px"></v-img>
           <v-img :src="require('../assets/images/logo_final2.png')" class="hidden-md-and-up" style="margin-left:-10px" width="200px"></v-img>
         </a>
       </v-toolbar-title>

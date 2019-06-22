@@ -17,13 +17,13 @@
                                     indeterminate
                                     ></v-progress-circular>
                                 </div>
-                                
+
                                 <div v-for="info in datas" :key="info.id">
                                     <v-layout row wrap="" style="border-bottom:1px solid grey; padding:10px 0px">
                                         <v-flex md5 sm12 xs12>
                                             <div class="image_info">
                                                 <v-img
-                                                    :src="info.url"
+                                                    v-bind:src="info.url"
                                                     height="180"
                                                     class="grey darken-4"
                                                 ></v-img>
