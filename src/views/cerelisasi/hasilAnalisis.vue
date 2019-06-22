@@ -171,9 +171,9 @@
                                     <v-divider class="ma-2"></v-divider>
                                     <v-progress-linear
                                       :height="12"
-                                      :value="70"
-                                      background-color="success"
-                                      color="error"
+                                      :value="(department.department.capacity / department.department.interrested_num)*100"
+                                      background-color="error"
+                                      color="success"
                                     >
                                     </v-progress-linear>
                                     <div class="headline ma-2">Peminat : {{department.department.interrested_num}} Org</div>
