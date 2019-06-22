@@ -328,44 +328,6 @@
 	  btn_load: false
     }),
     created() {
-    	//get hasil analisis jika ada
-    	axios.defaults.headers = {
-		    'Authorization': 'Bearer ' + this.$store.state.token
-		}
-		axios.get('/cerelisasi/analysis')
-		.then(response => {
-		  this.dataAnalysis = response.data.data
-		  if(this.dataAnalysis.my_point != 0){
-		  	this.$swal('Hasil Simulasi', 'Anda Sudah Melakukan Simulasi', 'success')
-		  	this.$router.push({ name:'cerelisasi_analisis', params: { data: this.dataAnalysis, name: this.name } })
-		  }else{
-		  	this.loadAnalisis=false
-		  }
-		})
-		.catch(error => {
-		  console.log(error)
-		})
-
-        //get list Kelas
-        axios.get('/master/class')
-        .then(response => {
-            console.log(response.data.data)
-            this.item_kelas= response.data.data
-        })
-        .catch(error => {
-            console.log(error)
-        })
-
-        //get list University
-        axios.get('/master/getAllDataUniversity')
-        .then(response => {
-            console.log(response.data.data)
-            this.listUniversity= response.data.data
-        })
-        .catch(error => {
-            console.log(error)
-        })
-
     	//get profile
         axios.defaults.headers = {  
           'Authorization': 'Bearer ' + this.$store.state.token
@@ -417,6 +379,44 @@
             	this.option3_department_name = ''
         	}
 
+        })
+        .catch(error => {
+            console.log(error)
+        })
+        
+    	//get hasil analisis jika ada
+    	axios.defaults.headers = {
+		    'Authorization': 'Bearer ' + this.$store.state.token
+		}
+		axios.get('/cerelisasi/analysis')
+		.then(response => {
+		  this.dataAnalysis = response.data.data
+		  if(this.dataAnalysis.my_point != 0){
+		  	this.$swal('Hasil Simulasi', 'Anda Sudah Melakukan Simulasi', 'success')
+		  	this.$router.push({ name:'cerelisasi_analisis', params: { data: this.dataAnalysis, name: this.name } })
+		  }else{
+		  	this.loadAnalisis=false
+		  }
+		})
+		.catch(error => {
+		  console.log(error)
+		})
+
+        //get list Kelas
+        axios.get('/master/class')
+        .then(response => {
+            console.log(response.data.data)
+            this.item_kelas= response.data.data
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+        //get list University
+        axios.get('/master/getAllDataUniversity')
+        .then(response => {
+            console.log(response.data.data)
+            this.listUniversity= response.data.data
         })
         .catch(error => {
             console.log(error)
