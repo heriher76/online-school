@@ -5,7 +5,6 @@
   <!-- end sub - navbar -->
   <!-- content -->
   <v-container>
-    {{dataFavoritbyUser.data}}
     <p class="display-1 text-uppercase font-weight-light">
       <v-layout row wrap pa-3>
 
@@ -43,7 +42,17 @@
               <v-card-title primary-title>
                 <div>
                   <div class="headline">
-                    <router-link v-bind:to="'/cerevid/detail-pelajaran/'+props.item.course.course_id" style="text-decoration: none;">{{props.item.course.title}}</router-link>
+                    <router-link v-bind:to="'/cerevid/detail-pelajaran/'+props.item.course.course_id" style="text-decoration: none;">
+                      <div v-if="props.item.course.title.length<32">{{props.item.course.title}}</div>
+                      <div v-else>
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                            <span v-on="on">{{props.item.course.title.substring(0,29)}}...</span>
+                          </template>
+                          <span>{{props.item.course.title}}</span>
+                        </v-tooltip>
+                      </div>
+                    </router-link>
                   </div>
                   <span class="grey--text">{{props.item.course.teacher.name}}</span>
                 </div>

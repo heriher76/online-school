@@ -17,7 +17,7 @@
               <v-btn :disabled="!ketemu" color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#'+tipeMateri+'-'+sectionId+'-'+id">Lanjutkan Belajar</v-btn>
             </div>
             <div v-else>
-              <div class="body-2 red--text">Materi Belum Tersedia...</div>
+              <div v-if="!ketemu" class="body-2 red--text">Materi Belum Tersedia...</div>
               <v-btn :disabled="!ketemu" color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#'+tipeMateri+'-'+sectionId+'-'+id" @click="postLearned">Mulai Belajar</v-btn>
             </div>
       </div>
@@ -72,35 +72,35 @@ export default {
               this.id=this.dataDetailMateri.data[i].videos[j].id
               break;
               return true
-            
+
           }
           if(this.ketemu){
             break;
             return true
           }
           for(var j=0;this.dataDetailMateri.data[i].texts.length;j++){
-            
+
               this.ketemu = true
               this.tipeMateri=2
               this.sectionId=this.dataDetailMateri.data[i].id
               this.id=this.dataDetailMateri.data[i].texts[j].id
               break;
               return true
-            
+
           }
           if(this.ketemu){
             break;
             return true
           }
           for(var j=0;this.dataDetailMateri.data[i].quiz.length;j++){
-            
+
               this.ketemu = true
               this.tipeMateri=3
               this.sectionId=this.dataDetailMateri.data[i].id
               this.id=this.dataDetailMateri.data[i].quiz[j].id
               break;
               return true
-            
+
           }
           if(this.ketemu){
             break;

@@ -4,33 +4,39 @@
             <v-card-title class="blue-grey lighten-5 black--text">
                 <v-container>
                     <v-layout row wrap>
-                        <v-flex md4>         
+                        <v-flex md4>
                             <v-img :src="require('../assets/images/logo_final2.png')" width="280px"></v-img>
                             <div style="margin:10px 20px;color:#424242">
-                                <p>PT. Cerebrum Media Tama Indonesia.</p> 
+                                <p>PT. Cerebrum Media Tama Indonesia.</p>
                                 <p> Pondok Ganesha (Perumahan ITB) No 181 Rt 04 Rw 06. Jl Pondok, Jl. Melati 3, Melatiwangi, Cilengkrang, Bandung, Jawa Barat 40618.</p>
                             </div>
                         </v-flex>
-                        
+
                         <v-flex md2 style="margin:0px 20px">
                             <ul class="link-cere">
-                                <li><a href="">Kebijakan Privasi</a></li>
-                                <li><a href="">Syarat &amp; Ketentuan </a></li>
-                                <li><a href="">Tentang Kami</a></li>
+                                <li><a href="/kebijakan-privasi">Kebijakan Privasi</a></li>
+                                <li><a href="/syarat-ketentuan">Syarat &amp; Ketentuan </a></li>
+                                <li><a href="/about">Tentang Kami</a></li>
+                            </ul>
+                        </v-flex>
+
+                        <v-flex md2 style="margin:0px 20px">
+                            <ul class="link-cere">
+                                <li><a href="/FAQ">Frequenly Asked Question</a></li>
+                                <li><a href="/panduan-guru">Panduan Guru </a></li>
+                                <li><a href="/panduan-siswa">Panduan Siswa</a></li>
                             </ul>
                         </v-flex>
 
                         <v-flex md2 style="margin:0px 20px">
                             <ul class="link-cere">
                                 <li><a href="/pusat bantuan">Pusat Bantuan</a></li>
-                                <li><a href="">Panduan Guru </a></li>
-                                <li><a href="">Panduan Siswa</a></li>
                             </ul>
                         </v-flex>
 
                         <!-- <v-flex md2 class="med">
                             <h5 class="title" style="color:black">Ikuti Kami</h5>
-                            
+
                             <ul class="link-cere">
                                  <v-btn
                                 v-for="icon in icons"

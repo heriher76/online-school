@@ -14,6 +14,7 @@
   <v-data-iterator
     :items="dataDaftarPelajaran.data"
     :rows-per-page-items="rowsPerPageItems"
+    :pagination.sync="pagination"
     content-class="layout row wrap"
     :expand="expand"
     :search="search"
@@ -47,7 +48,17 @@
           <v-card-title primary-title>
             <div>
               <div class="headline">
-                <router-link v-bind:to="'/cerevid/detail-pelajaran/'+props.item.id" style="text-decoration: none;">{{props.item.title}}</router-link>
+                <router-link v-bind:to="'/cerevid/detail-pelajaran/'+props.item.id" style="text-decoration: none;">
+                  <div v-if="props.item.title.length<32">{{props.item.title}}</div>
+                  <div v-else>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on }">
+                        <span v-on="on">{{props.item.title.substring(0,29)}}...</span>
+                      </template>
+                      <span>{{props.item.title}}</span>
+                    </v-tooltip>
+                  </div>
+                </router-link>
               </div>
               <span class="grey--text">{{props.item.teacher.name}}</span>
             </div>
@@ -91,7 +102,7 @@ export default {
       rowsPerPage: 8
     },
     search: '',
-    rowsPerPageItems: [4],
+    rowsPerPageItems: [4,8,12],
   }),
   methods: {
     filterSearch(items, search, filter) {
