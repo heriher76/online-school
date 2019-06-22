@@ -188,7 +188,7 @@
                                       :rotate="360"
                                       :size="180"
                                       :width="15"
-                                      :value="78"
+                                      :value="department.accuracy"
                                       color="teal"
                                     >
                                       <div class="display-3 ma-2">{{department.accuracy}}%</div>

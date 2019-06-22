@@ -80,9 +80,10 @@
           <!-- v-google-signin-button="clientId" -->
         </v-btn>
 
-        <v-btn block round color="primary" dark large href="https://api.ceredinas.id/login/facebook">
+        <!-- <v-btn block round color="primary" dark large href="https://api.ceredinas.id/login/facebook">
           masuk dengan akun facebook
-        </v-btn>
+        </v-btn> -->
+        <v-facebook-login app-id="318638459074473"></v-facebook-login>
 
         <hr style="margin-bottom:15px">
         <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>
@@ -97,6 +98,7 @@
 <script>
   import axios from "axios"
   import LoadingScreen2 from'../../components/loading-screen/Loading2'
+  import { VFBLogin as VFacebookLogin } from 'vue-facebook-login-component'
 
   export default {
     name: 'login',
@@ -104,6 +106,7 @@
 
     components:{ 
       LoadingScreen2,
+      VFacebookLogin
     },
 
     data () {
@@ -182,25 +185,25 @@
 
       loginGoogle(){
         this.$gAuth.signIn()
-        .then(GoogleUser => {
+        .then(GoogleUser => {console.log(GoogleUser)
           //on success
-          this.$store.dispatch('retrieveTokenGoogle', {
-            token: GoogleUser.getAuthResponse().access_token
-          })
-          .then(response => {
-            console.log(response)
-            this.loadLogin      = true
-            this.snackbarGoogle = true
-            this.textbarGoogle  = "Berhasil Masuk !!"
+          // this.$store.dispatch('retrieveTokenGoogle', {
+          //   token: GoogleUser.getAuthResponse().access_token
+          // })
+          // .then(response => {
+          //   console.log(response)
+          //   this.loadLogin      = true
+          //   this.snackbarGoogle = true
+          //   this.textbarGoogle  = "Berhasil Masuk !!"
 
-            return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 1500)
-          })
-          .catch(error => {
-            this.snackbarGoogle = true
-            this.textbarGoogle  = "Gagal Masuk !!"
+          //   return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 1500)
+          // })
+          // .catch(error => {
+          //   this.snackbarGoogle = true
+          //   this.textbarGoogle  = "Gagal Masuk !!"
 
-            console.log(error)
-          })
+          //   console.log(error)
+          // })
         })
         .catch(error => {
           //on fail do something
