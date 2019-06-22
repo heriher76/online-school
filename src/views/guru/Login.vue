@@ -58,14 +58,22 @@
         <hr style="margin-bottom:15px">
         <label>Not a member yet? <router-link to="/register" style="color:white">Register now</router-link></label> -->
       </div>
+
+      <LoadingScreen2 :loading="loadLogin"></LoadingScreen2>
+
     </div>
 </template>
 
 <script>
-import axios from "axios"
+  import axios from "axios"
+  import LoadingScreen2 from'../../components/loading-screen/Loading2'
   export default {
+    components:{ 
+      LoadingScreen2,
+    },
     data () {
       return {
+        loadLogin: false,
         btn_load: false,
         
         checkbox: '',
@@ -91,12 +99,14 @@ import axios from "axios"
     methods:{
       login(){      
         this.btn_load = true
+        this.loadLogin = true
         this.$store.dispatch('retrieveToken', {
           email: this.email,
           password: this.password
         })
         .then(response => {
           this.btn_load = false
+          this.loadLogin = false
           if (response.data.role != 1) {
             this.$swal('Oopps', 'Anda Tidak Memiliki Akses Kesini!', 'warning')
             this.$store.dispatch('destroyToken')
@@ -113,6 +123,7 @@ import axios from "axios"
         })
         .catch(error => {
           this.btn_load = false
+          this.loadLogin = false
           this.$swal('Oopps', 'Your email or password is invalid', 'warning')
         })
       },
