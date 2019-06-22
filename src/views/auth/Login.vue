@@ -155,9 +155,22 @@
         .then(response => {
           this.btn_load = false
           this.loadLogin = false
+
+          if (response.data.role != 2) {
+            this.$swal('Oopps', 'Anda Tidak Memiliki Akses Kesini!', 'warning')
+            this.$store.dispatch('destroyToken')
+            .then(response => {
+                this.$router.push({path:'/'})
+            })
+            // .catch(error => {
+            //     console.log(error)
+            //   })
+          }else{
+            window.location.href = "/"
+          }
           
-          window.location.href = "/"
-            // this.$router.replace('/')
+          // window.location.href = "/"
+          // this.$router.replace('/')
         })
         .catch(error => {
           this.btn_load = false

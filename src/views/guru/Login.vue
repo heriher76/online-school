@@ -96,6 +96,7 @@ import axios from "axios"
           password: this.password
         })
         .then(response => {
+          this.btn_load = false
           if (response.data.role != 1) {
             this.$swal('Oopps', 'Anda Tidak Memiliki Akses Kesini!', 'warning')
             this.$store.dispatch('destroyToken')
@@ -105,8 +106,9 @@ import axios from "axios"
             // .catch(error => {
             //     console.log(error)
             //   })
+          }else{
+            window.location.href = "/guru"
           }
-          this.btn_load = false
           // this.$router.push({path: '/guru'})
         })
         .catch(error => {
