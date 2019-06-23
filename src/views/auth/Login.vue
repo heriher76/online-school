@@ -92,9 +92,9 @@
           @login="getUserData"
           @logout="onLogout"
           @sdk-loaded="sdkLoaded">
-        </facebook-login>
+        </facebook-login> -->
 
-         <facebook-login class="button"
+         <!-- <facebook-login class="button"
           appId="318638459074473"
           @login="getUserData"
           @get-initial-status="getUserData">
@@ -262,14 +262,19 @@
       },
 
       getUserData() {
-        this.FB.api('/me', 'GET', {fields: 'id.name.email'},
-          userInformation => {
-            console.warn("get data from fb", userInformation)
-            this.personalID = userInformation.id;
-            this.email = userInformation.email;
-            this.name = userInformation.name;
+        FB.getLoginStatus(function(response) {
+          if (response.status === 'connected') {
+            console.log(response.authResponse.accessToken);
           }
-        )
+        });
+        // this.FB.api('/me', 'GET', {fields: 'id.name.email'},
+        //   userInformation => {
+        //     console.warn("get data from fb", userInformation)
+        //     this.personalID = userInformation.id;
+        //     this.email = userInformation.email;
+        //     this.name = userInformation.name;
+        //   }
+        // )
       },
       // sdkLoaded(){
       //   this.isConnected = payload.isConnected

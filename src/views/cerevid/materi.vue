@@ -39,71 +39,73 @@
           <v-card style="position: relative;width:100%;height:0;padding-bottom: 100%;">
 
             <div style="position: absolute;top: 0;left: 0;width: 100%;height: 100%; overflow:auto">
-              <v-list three-line>
-                <template v-for="(item, index) in dataDetailMateri.data">
-                  <v-subheader>
-                    {{index+1}}. {{ item.title }}
-                  </v-subheader>
-                  <v-divider></v-divider>
-                  <div v-for="materi in item.videos">
-                    <v-list-tile avatar @click="tipeMateri = 'video'" :href="'#1-'+item.id+'-'+materi.id">
-                      <v-list-tile-avatar>
-                        <v-icon class="mt-3">videocam</v-icon>
-                      </v-list-tile-avatar>
+                  <v-expansion-panel expand v-model="panel">
+                    <v-expansion-panel-content v-for="(item, index) in dataDetailMateri.data">
+                      <template v-slot:header>
+                        <div>
+                          {{index+1}}. {{ item.title }}
+                        </div>
+                      </template>
+                      <v-divider></v-divider>
+                      <div v-for="materi in item.videos">
+                        <v-list-tile avatar @click="tipeMateri = 'video'" :href="'#1-'+item.id+'-'+materi.id">
+                          <v-list-tile-avatar>
+                            <v-icon>videocam</v-icon>
+                          </v-list-tile-avatar>
 
-                      <v-list-tile-content>
-                        <v-list-tile-title v-html="materi.title"></v-list-tile-title>
-                        <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
-                      </v-list-tile-content>
+                          <v-list-tile-content>
+                            <v-list-tile-title v-html="materi.title"></v-list-tile-title>
+                            <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
+                          </v-list-tile-content>
 
-                      <v-spacer></v-spacer>
-                      <div v-if="materi.last_seen!=null">
-                        <v-list-tile-avatar>
-                          <v-icon class="mt-3" color="green">done</v-icon>
-                        </v-list-tile-avatar>
+                          <v-spacer></v-spacer>
+                          <div v-if="materi.last_seen!=null">
+                            <v-list-tile-avatar>
+                              <v-icon color="green">done</v-icon>
+                            </v-list-tile-avatar>
+                          </div>
+                        </v-list-tile>
                       </div>
-                    </v-list-tile>
-                  </div>
-                  <div v-for="materi in item.texts">
-                    <v-list-tile avatar @click="tipeMateri = 'text'" :href="'#2-'+item.id+'-'+materi.id">
-                      <v-list-tile-avatar>
-                        <v-icon class="mt-3">assignment</v-icon>
-                      </v-list-tile-avatar>
+                      <div v-for="materi in item.texts">
+                        <v-list-tile avatar @click="tipeMateri = 'text'" :href="'#2-'+item.id+'-'+materi.id">
+                          <v-list-tile-avatar>
+                            <v-icon>assignment</v-icon>
+                          </v-list-tile-avatar>
 
-                      <v-list-tile-content>
-                        <v-list-tile-title v-html="materi.title"></v-list-tile-title>
-                        <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
-                      </v-list-tile-content>
+                          <v-list-tile-content>
+                            <v-list-tile-title v-html="materi.title"></v-list-tile-title>
+                            <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
+                          </v-list-tile-content>
 
-                      <v-spacer></v-spacer>
-                      <div v-if="materi.last_seen!=null">
-                        <v-list-tile-avatar>
-                          <v-icon class="mt-3" color="green">done</v-icon>
-                        </v-list-tile-avatar>
+                          <v-spacer></v-spacer>
+                          <div v-if="materi.last_seen!=null">
+                            <v-list-tile-avatar>
+                              <v-icon color="green">done</v-icon>
+                            </v-list-tile-avatar>
+                          </div>
+                        </v-list-tile>
                       </div>
-                    </v-list-tile>
-                  </div>
-                  <div v-for="materi in item.quiz">
-                    <v-list-tile avatar @click="tipeMateri = 'quiz'" :href="'#3-'+materi.section_id+'-'+materi.id">
-                      <v-list-tile-avatar>
-                        <v-icon class="mt-3">create</v-icon>
-                      </v-list-tile-avatar>
+                      <div v-for="materi in item.quiz">
+                        <v-list-tile avatar @click="tipeMateri = 'quiz'" :href="'#3-'+materi.section_id+'-'+materi.id">
+                          <v-list-tile-avatar>
+                            <v-icon>create</v-icon>
+                          </v-list-tile-avatar>
 
-                      <v-list-tile-content>
-                        <v-list-tile-title v-html="materi.title"></v-list-tile-title>
-                        <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
-                      </v-list-tile-content>
+                          <v-list-tile-content>
+                            <v-list-tile-title v-html="materi.title"></v-list-tile-title>
+                            <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
+                          </v-list-tile-content>
 
-                      <v-spacer></v-spacer>
-                      <div v-if="materi.last_seen!=null">
-                        <v-list-tile-avatar>
-                          <v-icon class="mt-3" color="green">done</v-icon>
-                        </v-list-tile-avatar>
+                          <v-spacer></v-spacer>
+                          <div v-if="materi.last_seen!=null">
+                            <v-list-tile-avatar>
+                              <v-icon color="green">done</v-icon>
+                            </v-list-tile-avatar>
+                          </div>
+                        </v-list-tile>
                       </div>
-                    </v-list-tile>
-                  </div>
-                </template>
-              </v-list>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
             </div>
           </v-card>
         </v-flex>
@@ -146,7 +148,14 @@
                           <v-list-tile>
                             <v-list-tile-content>
                               <v-list-tile-title v-html="item.user" class="ml-3"></v-list-tile-title>
-                              <v-list-tile-sub-title v-html="item.body" class="ml-3"></v-list-tile-sub-title>
+                              <v-tooltip bottom>
+                                <template v-slot:activator="{ on }">
+                                  <span v-on="on">
+                                    <v-list-tile-sub-title v-html="item.body" class="ml-3"></v-list-tile-sub-title>
+                                  </span>
+                                </template>
+                                <span>{{item.body}}</span>
+                              </v-tooltip>
                             </v-list-tile-content>
                             <v-list-tile-action>
                               <v-list-tile-action-text>
@@ -163,7 +172,14 @@
                               <v-list-tile class="ml-4">
                                 <v-list-tile-content>
                                   <v-list-tile-title v-html="comments.user" class="ml-3"></v-list-tile-title>
-                                  <v-list-tile-sub-title v-html="comments.body" class="ml-3"></v-list-tile-sub-title>
+                                    <v-tooltip bottom>
+                                      <template v-slot:activator="{ on }">
+                                        <span v-on="on">
+                                          <v-list-tile-sub-title v-html="comments.body" class="ml-3"></v-list-tile-sub-title>
+                                        </span>
+                                      </template>
+                                      <span>{{comments.body}}</span>
+                                    </v-tooltip>
                                 </v-list-tile-content>
                                 <v-list-tile-action>
                                   <v-list-tile-action-text>
@@ -178,7 +194,7 @@
                           </div>
                               <v-container class="text-xs-center" v-show="forumId==item.id">
                                 <v-form @submit.prevent="kirimKomentar" ref="formKomentar">
-                                  <v-textarea name="input" v-model="body_balas" label="Tulis Balasan" hint="Isi balasan anda disini." :rules="[rules_body.required]"></v-textarea>
+                                  <v-textarea name="input" v-model="body_balas" label="Tulis Balasan" hint="Isi balasan anda disini."></v-textarea>
                                   <div class="justify-end">
                                     <v-btn :disabled="!formIsValidBalas" color="#2c3e50" class="white--text" @click="kirimKomentar">Kirim Balasan</v-btn>
                                   </div>
@@ -230,6 +246,8 @@ export default {
         required: value => !!value || 'Required.',
       },
       forumId: null,
+      panel: [],
+      load: true,
     }
   },
   methods: {
@@ -242,11 +260,11 @@ export default {
           this.forumId = null
       }
     },
-    async getDataDetailMateri() {
+    getDataDetailMateri() {
       this.$store.dispatch('getDataDetailMateri')
         .then(response => {})
     },
-    async getDataDetailForum() {
+    getDataDetailForum() {
       this.$store.dispatch('getDataDetailForum')
         .then(response => {})
     },
@@ -257,8 +275,6 @@ export default {
         this.tipeMateri = 'text'
       } else if (this.$route.hash.split('-')[0].substring(1) == 3) {
         this.tipeMateri = 'quiz'
-      } else if (!this.$route.hash.length) {
-        this.tipeMateri = 'video'
       } else {
         this.tipeMateri = 'not found'
       }
@@ -289,7 +305,7 @@ export default {
           this.$refs.form.reset()
           this.$swal('Oopps', 'Gagal Mengirim Pertanyaan...', 'warning')
         })
-    }
+    },
   },
   created() {
     this.getDataDetailMateri()
@@ -308,6 +324,10 @@ export default {
       )
     },
     dataDetailMateri() {
+      if(this.$store.state.dataDetailMateri.data && this.load){
+        this.panel = [...Array(this.$store.state.dataDetailMateri.data.length).keys()].map(_ => true)
+        this.load = false
+      }
       return this.$store.state.dataDetailMateri || {}
     },
     dataDetailForum() {

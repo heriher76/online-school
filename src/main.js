@@ -4,6 +4,7 @@ import './plugins/vuetify';
 import VueSweetalert2 from 'vue-sweetalert2';
 import VueGoogleCharts from 'vue-google-charts';
 import VueCountdown from '@chenfengyuan/vue-countdown';
+import VueCarousel from '@chenfengyuan/vue-carousel';
 
 import axios from 'axios';
 
@@ -30,6 +31,7 @@ Vue.use(VueSweetalert2);
 Vue.use(ReadMore);
 Vue.use(VueGoogleCharts);
 Vue.component(VueCountdown.name, VueCountdown);
+Vue.component(VueCarousel.name, VueCarousel);
 
 Vue.component('default-layout', Default);
 Vue.component('exam-layout', Exam);

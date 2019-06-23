@@ -17,8 +17,8 @@
                         <v-card-text class="px-0"><h6 class="title" style="margin:4px 20px">Tryout</h6></v-card-text>
                     </v-card>  
 
-                    <v-card v-show="load_data"> 
-                        <div style="margin:10px auto; padding:20px; width:5%;">
+                    <v-card v-show="loadTryout"> 
+                        <div style="margin:10px auto; padding:100px; width:5%;">
                             <v-progress-circular
                             :size="40"
                             color="primary"
@@ -148,6 +148,7 @@
             ExamDetail
         },
         data: () => ({
+            loadTryout:true,
             load_data:true,
             note:false,
             listPanel:false,
@@ -197,7 +198,7 @@
                         this.load_data = false
                         this.listPanel = true
                         this.items = response.data.data
-                        console.log(response.data)
+                        // console.log(response.data)
                     })
                     .catch(error =>{
                         this.load_data = false
@@ -218,6 +219,7 @@
 
             axios.get('/cereouts')
             .then(response => {
+                this.loadTryout= false
                 this.load_data = false
                 this.listPanel = true
                 this.note      = true
