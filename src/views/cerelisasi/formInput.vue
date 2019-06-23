@@ -41,7 +41,7 @@
 								      label="E-mail"
 								      required
 								    ></v-text-field> -->
-
+ 
 								    <!-- Kelas -->
 								    <v-select
 								      v-model="kelas"
