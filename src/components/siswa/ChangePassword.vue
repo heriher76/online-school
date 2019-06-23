@@ -32,12 +32,12 @@
                     'Authorization': 'Bearer ' + this.$store.state.token
                 }
                 axios.post('http://api.ceredinas.id/api/auth/user/changePassword/'+this.idUser,{
+                  email: this.email,
                   password: this.password,
                   newPassword: this.newPassword
                 })
                 .then(response => {
                   this.$swal('Sukses', 'Berhasil Mengganti Password!', 'success')
-                  console.log(response.data)
                 })
                 .catch(error => {
                   this.$swal('Oops', 'Gagal Mengganti Password!', 'warning')
