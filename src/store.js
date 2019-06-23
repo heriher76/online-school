@@ -182,6 +182,18 @@ export default new Vuex.Store({
       })
     },
 
+    //login facebook
+    retrieveTokenFacebook(context, data){
+      axios.get('/login/facebook?token='+data.access_token)
+      .then(response => {
+        const token    = response.data.access_token
+        localStorage.setItem('access_token', token)
+        context.commit('retrieveToken', token)
+      })
+      .catch(error => {
+      })  
+    },
+
     //login function
     retrieveTokenGoogle(context, data){
       axios.get('/login/google?token='+data.token)
