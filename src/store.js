@@ -12,6 +12,7 @@ export default new Vuex.Store({
     token: localStorage.getItem('access_token') || null, //get token,
     dataUser : localStorage.getItem('getDataUser') || null,
     classId : localStorage.getItem('getDataClassId') || null,
+    status : localStorage.getItem('getStatus') || null,
     info: [],
     dataClass: [],
     dataPelajaran: [],
@@ -42,6 +43,10 @@ export default new Vuex.Store({
       state.classId = classId
     },
 
+    retrieveStatus(state,status){
+      state.status = status
+    },
+
     retrieveDataUser(state,dataUser){
       state.dataUser = dataUser
     },
@@ -52,6 +57,10 @@ export default new Vuex.Store({
 
     destroyDataClassId(state) {
       state.classId = null
+    },
+
+    destroyStatus(state) {
+      state.status = null
     },
 
     destroydataUser(state) {
@@ -161,9 +170,11 @@ export default new Vuex.Store({
     cekAuth(context){
       axios.get('/auth/user')
       .then(response => {
+        console.log(response)
         // console.log("auth", response.data.data.class.class_id)
         const dataUser   = response.data.data.id
         const cekClassId = response.data.data.class
+        const status = response.data.data.status
 
         if(cekClassId != null){
           const classId  = response.data.data.class.class_id
@@ -177,6 +188,9 @@ export default new Vuex.Store({
 
         localStorage.setItem('getDataUser', dataUser)
         context.commit('retrieveDataUser', dataUser)
+
+        localStorage.setItem('getStatus', status)
+        context.commit('retrieveStatus', status)
       })
       .catch(error=>{
       })
@@ -214,6 +228,7 @@ export default new Vuex.Store({
           password: credentials.password
         })
         .then(response => {
+          console.log(response)
           const token    = response.data.access_token
           // const dataUser = response.data.data.id
           // const classId  = response.data.data.class_id
@@ -243,22 +258,26 @@ export default new Vuex.Store({
         // return new Promise((resolve, reject) => {
           axios.get('/auth/logout')
           .then(response => {
-            localStorage.removeItem('getDataUser')
             localStorage.removeItem('access_token')
+            localStorage.removeItem('getDataUser')
             localStorage.removeItem('getDataClassId')
+            localStorage.removeItem('getStatus')
             context.commit('destroyDataClassId')
             context.commit('destroyToken')
             context.commit('destroydataUser')
+            context.commit('destroyStatus')
             // resolve(response)
             // console.log(response.data)
           })
           .catch(error => {
-            localStorage.removeItem('getDataUser')
             localStorage.removeItem('access_token')
+            localStorage.removeItem('getDataUser')
             localStorage.removeItem('getDataClassId')
+            localStorage.removeItem('getStatus')
             context.commit('destroyDataClassId')
             context.commit('destroyToken')
             context.commit('destroydataUser')
+            context.commit('destroyStatus')
             // reject(error)
           })
         // })

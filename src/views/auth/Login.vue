@@ -168,16 +168,22 @@
       
     },
 
+    created() {
+      if(this.$store.getters.loggedIn){
+        window.location.href = "/"
+      }
+    },
+
     methods:{
-      toggleTimer() {
-        this.interval = setInterval(this.incrementTime, 1000);
-      },
-      incrementTime() {
-          this.time = parseInt(this.time) + 1;
-          if(this.$store.getters.loggedIn){
-            window.location.href = "/"
-          }
-      },
+      // toggleTimer() {
+      //   this.interval = setInterval(this.incrementTime, 1000);
+      // },
+      // incrementTime() {
+      //     this.time = parseInt(this.time) + 1;
+      //     if(this.$store.getters.loggedIn){
+      //       window.location.href = "/"
+      //     }
+      // },
 
       login(){      
         this.btn_load = true
@@ -189,22 +195,20 @@
         .then(response => {
           this.btn_load = false
           this.loadLogin = false
-
+          console.log(response)
           if (response.data.role != 2) {
             this.$swal('Oopps', 'Anda Tidak Memiliki Akses Kesini!', 'warning')
             this.$store.dispatch('destroyToken')
             .then(response => {
-                this.$router.push({path:'/'})
+                window.location.href = "/"
             })
-            // .catch(error => {
-            //     console.log(error)
-            //   })
+            .catch(error => {
+                console.log(error)
+            })
           }else{
+            this.$swal('Sukses', 'Selamat Datang!', 'success')
             window.location.href = "/"
           }
-          
-          // window.location.href = "/"
-          // this.$router.replace('/')
         })
         .catch(error => {
           this.btn_load = false
@@ -222,7 +226,7 @@
           this.btn_load = false
 
           this.$swal('Sukses', 'Berhasil Login !', 'success')
-          return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 3000)
+          return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 5000)
         })
         .catch(error => {
           this.btn_load = false
