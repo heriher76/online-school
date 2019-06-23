@@ -79,9 +79,13 @@
           masuk dengan akun google
         </v-btn>
 
-        <v-btn block round color="primary" dark large>
+        <!-- <v-btn block round color="primary" dark large>
           masuk dengan akun facebook
-        </v-btn>
+        </v-btn> -->
+        <center>
+          <v-facebook-login :value="true" @login="loginFacebook" app-id="318638459074473" style="width: 100%; height: 50px;"></v-facebook-login>
+        </center>
+        <br>
     
         <!-- <facebook-login class="button"
           appId="318638459074473"
@@ -95,8 +99,6 @@
           @login="getUserData"
           @get-initial-status="getUserData">
         </facebook-login> -->
-
-        <v-facebook-login @login="loginFacebook" app-id="318638459074473"></v-facebook-login>
 
         <hr style="margin-bottom:15px">
         <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>
@@ -220,7 +222,7 @@
           this.btn_load = false
 
           this.$swal('Sukses', 'Berhasil Login !', 'success')
-          return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 1500)
+          return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 3000)
         })
         .catch(error => {
           this.btn_load = false
