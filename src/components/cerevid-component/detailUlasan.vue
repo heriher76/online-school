@@ -30,7 +30,7 @@
             <v-card flat>
               <v-layout row wrap>
                 <v-flex md1 sm1 xs2><div class="subheading mt-2 pt-1 pl-3">5</div></v-flex>
-                <v-flex md11 sm11 xs10>
+                <v-flex md10 sm10 xs8>
         				<v-progress-linear
           				color="yellow darken-3"
           				height="18"
@@ -38,12 +38,13 @@
           				>
                 </v-progress-linear>
                 </v-flex>
+                <v-flex md1 sm1 xs2><div class="subheading mt-2 pt-1 pl-3">{{star5.toFixed(2)}}%</div></v-flex>
               </v-layout>
             </v-card>
             <v-card flat>
               <v-layout row wrap>
                 <v-flex md1 sm1 xs2><div class="subheading mt-2 pt-1 pl-3">4</div></v-flex>
-                <v-flex md11 sm11 xs10>
+                <v-flex md10 sm10 xs8>
                 <v-progress-linear
                   color="yellow darken-3"
                   height="18"
@@ -51,12 +52,13 @@
                   >
                 </v-progress-linear>
                 </v-flex>
+                <v-flex md1 sm1 xs2><div class="subheading mt-2 pt-1 pl-3">{{star4.toFixed(2)}}%</div></v-flex>
               </v-layout>
             </v-card>
             <v-card flat>
               <v-layout row wrap>
                 <v-flex md1 sm1 xs2><div class="subheading mt-2 pt-1 pl-3">3</div></v-flex>
-                <v-flex md11 sm11 xs10>
+                <v-flex md10 sm10 xs8>
                 <v-progress-linear
                   color="yellow darken-3"
                   height="18"
@@ -64,12 +66,13 @@
                   >
                 </v-progress-linear>
                 </v-flex>
+                <v-flex md1 sm1 xs2><div class="subheading mt-2 pt-1 pl-3">{{star3.toFixed(2)}}%</div></v-flex>
               </v-layout>
             </v-card>
             <v-card flat>
               <v-layout row wrap>
                 <v-flex md1 sm1 xs2><div class="subheading mt-2 pt-1 pl-3">2</div></v-flex>
-                <v-flex md11 sm11 xs10>
+                <v-flex md10 sm10 xs8>
                 <v-progress-linear
                   color="yellow darken-3"
                   height="18"
@@ -77,12 +80,13 @@
                   >
                 </v-progress-linear>
                 </v-flex>
+                <v-flex md1 sm1 xs2><div class="subheading mt-2 pt-1 pl-3">{{star2.toFixed(2)}}%</div></v-flex>
               </v-layout>
             </v-card>
             <v-card flat>
               <v-layout row wrap>
                 <v-flex md1 sm1 xs2><div class="subheading mt-2 pt-1 pl-3">1</div></v-flex>
-                <v-flex md11 sm11 xs10>
+                <v-flex md10 sm10 xs8>
                 <v-progress-linear
                   color="yellow darken-3"
                   height="18"
@@ -90,6 +94,7 @@
                   >
                 </v-progress-linear>
                 </v-flex>
+                <v-flex md1 sm1 xs2><div class="subheading mt-2 pt-1 pl-3">{{star1.toFixed(2)}}%</div></v-flex>
               </v-layout>
             </v-card>
               <v-spacer/>
@@ -132,7 +137,7 @@
   								</v-list>
   					    </v-flex>
   				     </v-layout>
-
+               
                <v-container>
                  <v-layout justify-end>
                    <v-flex md12>

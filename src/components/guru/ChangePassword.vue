@@ -2,8 +2,8 @@
     <div class="change_passw">
     	<form @submit.prevent="login">
             <v-text-field v-model="email" style="height:60px" label="Email"></v-text-field>
-	        <v-text-field v-model="password" style="height:60px" label="Old Password"></v-text-field>
-	        <v-text-field v-model="newPassword" style="height:60px" label="New Password"></v-text-field>
+	        <v-text-field v-model="password" style="height:60px" label="Password Lama"></v-text-field>
+	        <v-text-field v-model="newPassword" style="height:60px" label="Password Baru"></v-text-field>
 	        <v-divider></v-divider>
 	        <v-btn block color="red" :loading="btn_load" @click="submit" dark>Update</v-btn>
             <v-btn block @click="cancel" dark>Kembali</v-btn>
@@ -39,7 +39,6 @@
                 .then(response => {
                   this.btn_load = false
                   this.$swal('Sukses', 'Berhasil Mengganti Password!', 'success')
-                  console.log(response.data)
                 })
                 .catch(error => {
                   this.btn_load = false
