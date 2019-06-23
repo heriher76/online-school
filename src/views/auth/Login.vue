@@ -96,7 +96,7 @@
           @get-initial-status="getUserData">
         </facebook-login> -->
 
-        <!-- <v-facebook-login app-id="318638459074473"></v-facebook-login> -->
+        <v-facebook-login @login="loginFacebook" app-id="318638459074473"></v-facebook-login>
 
         <hr style="margin-bottom:15px">
         <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>
@@ -210,6 +210,25 @@
           console.log(error.response)
           this.$swal('Error', 'email atau password yang anda masukan salah !', 'warning')
         })
+      },
+
+      loginFacebook(response) {
+        this.$store.dispatch('retrieveTokenFacebook', {
+          access_token: response.authResponse.accessToken
+        })
+        .then(response => {
+          this.btn_load = false
+
+          this.$swal('Sukses', 'Berhasil Login !', 'success')
+          return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 1500)
+        })
+        .catch(error => {
+          this.btn_load = false
+          this.$swal('Error', 'email atau password yang anda masukan salah !', 'warning')
+        })
+        // access_token
+        // device_id
+        console.log(response.authResponse.accessToken)
       },
 
       loginGoogle(){

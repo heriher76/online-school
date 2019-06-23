@@ -2,7 +2,7 @@
     <div class="forgot_password">
       <v-container>
         <v-layout>
-            <v-flex xs12 md6 sm6 offset-sm4>
+            <v-flex xs12 md6 sm6 offset-sm3>
                 <v-card>
                     <v-card-title primary-title>
                         <div style="margin: 0px 15px">
