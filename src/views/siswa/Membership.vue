@@ -207,26 +207,26 @@
             lanjutBayar(){
                 snap.show();
                 snap.pay(this.resPayment.snap_token, {
-                    onSuccess:(result)=>{
-                        this.snackbar  = true,
-                        this.text_info = 'Transaksi berhasil dilakukan'
-                        return this.$router.push({name: 'membership_history'})
-                    },
-                    onPending:(result)=>{
-                        this.snackbar  = true,
-                        this.text_info = result.status_message + ', silahkan lanjutkan pembayaran !'
-                        return this.$router.push({name: 'membership_history'})
-                    },
-                    onError:(result)=>{
-                        this.snackbar  = true,
-                        this.text_info = 'Transaksi gagal dilakukan'
-                        return this.$router.push({name: 'membership_history'})
-                    },
-                    onClose:()=>{
-                        this.snackbar  = true,
-                        this.text_info = 'Anda telah menutup halaman pembayaran'
-                        return this.$router.push({name: 'membership_history'})
-                    }
+                        onSuccess:(result)=>{
+                            this.snackbar  = true,
+                            this.text_info = 'Transaksi berhasil dilakukan'
+                            return this.$router.push({name: 'membership_history', params:{snackB: this.snackbar, textB: this.text_info}})
+                        },
+                        onPending:(result)=>{
+                            this.snackbar  = true,
+                            this.text_info = result.status_message + ', silahkan lanjutkan pembayaran !'
+                            return this.$router.push({name: 'membership_history', params:{snackB: this.snackbar, textB: this.text_info}})
+                        },
+                        onError:(result)=>{
+                            this.snackbar  = true,
+                            this.text_info = 'Transaksi gagal dilakukan'
+                            return this.$router.push({name: 'membership_history', params:{snackB: this.snackbar, textB: this.text_info}})
+                        },
+                        onClose:()=>{
+                            this.snackbar  = true,
+                            this.text_info = 'Anda telah menutup halaman pembayaran'
+                            return this.$router.push({name: 'membership_history', params:{snackB: this.snackbar, textB: this.text_info}})
+                        }
                 })
             },
             
