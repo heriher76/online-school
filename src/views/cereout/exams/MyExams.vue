@@ -119,10 +119,63 @@
                     
                         <div v-else-if="user.membership==0">
                             <router-link :to="{name:'membership'}" style="color:black;text-decoration:none">
-                                <div style="border:1px solid black;background:white;font-size:20px;text-align:center;padding:20px">
-                                    DAFTARKAN DIRIMU DI<span style="color:red">CEREBRUM</span> SEKARANG JUGA !!
-                                </div>
+                                <v-card dark class="elevation-10" color="#03A9F4" style="border-radius:10px;border:2px solid white;text-align:center;padding:20px">
+                                    <b style="font-size:28px;">DAFTARKAN DIRIMU MEMBER DI<span style="color:#B71C1C;-webkit-text-stroke-width: 0.8px;-webkit-text-stroke-color: white;">CEREBRUM</span> SEKARANG JUGA !!</b>
+                                    <p>Klik Disini Untuk Mendaftar</p>
+                                </v-card>
                             </router-link>
+                            <br>
+                            <v-divider></v-divider> 
+                            <v-layout>
+                                <v-flex md5 sm12 xs12>
+                                    <h6 class="title" style="margin:12px 0px;color:#616161">Spesial Khusus Member Baru</h6>
+                                    
+                                    <v-carousel
+                                        style="border-radius:10px"
+                                        hide-delimiters
+                                        height=180
+                                        interval=6000
+                                        hide-controls
+                                    >
+                                        <div v-show="load_member" style="margin:50px auto; width:5%;">
+                                            <v-layout column justify-center align-center>
+                                                <hollow-dots-spinner
+                                                :animation-duration="1000"
+                                                :dot-size="15"
+                                                :dots-num="3"
+                                                color="#ff1d5e"
+                                                />
+                                            </v-layout>
+                                        </div>
+
+                                        <v-carousel-item
+                                            v-for="(item,i) in member"
+                                            :key="i"
+                                            :src="item.url"
+                                        >
+
+                                        <v-jumbotron
+                                            dark
+                                            src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
+                                        >
+                                
+                                            <div style="margin:25px 25px 10px 25px; text-transform:capitalize;color:white">
+                                                <span>Membership</span>
+                                                <h4 class="display-1">
+                                                    <b v-if="item.name.length<30">{{item.name}}</b>
+                                                    <b v-else>{{item.name.substring(0,30)+"..."}}</b>
+                                                </h4>
+                                            </div>
+                                            <div style="margin:0px 28px;border-top:1px solid white">
+                                                <h6 class="title" v-if="item.coupon_name!=null" style="color:white;float:right;padding-top:10px">kode kupon: {{item.coupon_code}}</h6>
+                                                <div class="clear"></div>
+                                            </div>
+                                        
+                                        </v-jumbotron>
+                                        </v-carousel-item>
+                                    </v-carousel> 
+                                    </v-flex>
+                            </v-layout>
                         </div>      
                     </div>
                     
@@ -137,29 +190,35 @@
     import SideBar from '../../../components/cereout-component/SideBar'
     import Navbar from '../../../components/cereout-component/Navbar'
     import ExamDetail from '../exams/ExamDetails'
+    import { HollowDotsSpinner } from 'epic-spinners'
 
     import axios from 'axios'
 
     export default {
         name: 'dashboard',
         components: {
+            HollowDotsSpinner,
             SideBar,
             Navbar,
             ExamDetail
         },
-        data: () => ({
-            loadTryout:true,
-            load_data:true,
-            note:false,
-            listPanel:false,
-            listCere:false,
-            
-            user: [],
-            classs: [],
-            items: [],
-            detail: '',
-            ListName: 'Daftar Tryout',
-        }),
+        data () {
+            return {
+                load_member:true, 
+                member: [],
+                loadTryout:true,
+                load_data:true,
+                note:false,
+                listPanel:false,
+                listCere:false,
+                
+                user: [],
+                classs: [],
+                items: [],
+                detail: '',
+                ListName: 'Daftar Tryout',
+            }
+        },
         
         methods:{
             changeList(list){
@@ -235,6 +294,15 @@
                 this.classs = response.data.data
             })
             .catch(error => {console.log(error.response)})
+
+            axios.get('/master/membership')
+            .then(response => {
+                this.load_member = false
+                this.member = response.data.data
+            })
+            .catch(error => {
+                console.log(error.response)
+            })
         },
     }
 </script>

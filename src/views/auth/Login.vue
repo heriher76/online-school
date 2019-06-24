@@ -79,29 +79,19 @@
           masuk dengan akun google
         </v-btn>
 
-        <v-btn block round color="primary" dark large>
+        <!-- <v-btn app-id="318638459074473" @login="getUserData" @get-initial-status="getUserData" block round color="primary" dark large>
           masuk dengan akun facebook
-        </v-btn>
-    
-        <!-- <facebook-login class="button"
-          appId="318638459074473"
-          @login="getUserData"
-          @logout="onLogout"
-          @sdk-loaded="sdkLoaded">
-        </facebook-login> -->
-
-         <!-- <facebook-login class="button"
-          appId="318638459074473"
-          @login="getUserData"
-          @get-initial-status="getUserData">
-        </facebook-login> -->
+        </v-btn> -->
 
         <v-facebook-login 
           app-id="318638459074473"
           @login="getUserData"
           @get-initial-status="getUserData"
+          style="width:100%;border-radius:50px;height:45px"
         >
         </v-facebook-login>
+        
+          <!-- @data-auto-logout-link="false" -->
 
         <hr style="margin-bottom:15px">
         <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>
@@ -194,7 +184,7 @@
           this.loadLogin = false
 
           if (response.data.role != 2) {
-            this.$swal('Oopps', 'Anda Tidak Memiliki Akses Kesini!', 'warning')
+            this.$swal('Opps', 'Anda Tidak Memiliki Akses Kesini!', 'warning')
             this.$store.dispatch('destroyToken')
             .then(response => {
                 this.$router.push({path:'/'})
@@ -228,13 +218,12 @@
             console.log(response)
             this.loadLogin      = true
             this.snackbarGoogle = true
-            this.textbarGoogle  = "Berhasil Masuk !!"
-
+            this.textbarGoogle  = "Berhasil masuk dengan google!!"
             return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 1500)
           })
           .catch(error => {
             this.snackbarGoogle = true
-            this.textbarGoogle  = "Gagal Masuk !!"
+            this.textbarGoogle  = "Gagal masuk dengan google !!"
 
             console.log(error)
           })
@@ -245,89 +234,84 @@
         })
       },
 
+      //login facebook
       getUserData() {
-        FB.getLoginStatus(function(response) {
-          if (response.status === 'connected') {
-            console.log(response.authResponse.accessToken);
-          }
-        });
-        // this.FB.api('/me', 'GET', {fields: 'id.name.email'},
-        //   userInformation => {
-        //     console.warn("get data from fb", userInformation)
-        //     this.personalID = userInformation.id;
-        //     this.email = userInformation.email;
-        //     this.name = userInformation.name;
+        // FB.getLoginStatus(response => {
+        //   if (response.status === 'connected') {
+        //     console.log(response.authResponse.accessToken);
+        //     //on success
+        //     this.$store.dispatch('retrieveTokenFacebook', {
+        //       token: response.authResponse.accessToken
+        //     })
+        //     .then(response => {
+        //       console.log(response)
+        //       this.loadLogin      = true
+        //       this.snackbarGoogle = true
+        //       this.textbarGoogle  = "Berhasil masuk dengan facebook !!"
+
+        //       return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 1500)
+        //     })
+        //     .catch(error => {
+        //       this.snackbarGoogle = true
+        //       this.textbarGoogle  = "Gagal masuk dengan facebok !!"
+
+        //       console.log(error)
+        //     })
         //   }
-        // )
+        // })
       },
-      // sdkLoaded(){
-      //   this.isConnected = payload.isConnected
-      //   this.FB = payload.FB
-      //   if(this.isConnected) this.getUserData()
-      // },
-      // onLogin(){
-      //   this.isConnected = true
-      //   this.getUserData()
-      // },
-      // onLogout(){
-      //   this.isConnected = false
-      // }
-
-      
-      
-
     }
   }
 </script>
 
 <style>
-    .banner-login{
-        height:650px;
-        position:relative
-    }
+.banner-login{
+    height:650px;
+    position:relative
+}
 
-    .baner-color {
-        align-items: center;
-        bottom: 0px;
-        justify-content: center;
-        opacity: .5;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        font-family: "Arial";
-        background-image: linear-gradient(10deg, #2c3e50,#ffffff,#ee1414,#51a9fc,#8e44ad);
-        background-size: 270% 350%;
-    }
+.baner-color {
+    align-items: center;
+    bottom: 0px;
+    justify-content: center;
+    opacity: .5;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    font-family: "Arial";
+    background-image: linear-gradient(10deg, #2c3e50,#ffffff,#ee1414,#51a9fc,#8e44ad);
+    background-size: 270% 350%;
+}
 
-    .panel-auth{
-        top:50px;
-        width:450px;
-        right: 0;
-        left: 0;
-        margin: 0px auto;
-        padding:20px;
-        background: rgba(0, 0, 0, 0.3);
-        position:absolute;
-        text-align:center;
-    }
+.panel-auth{
+    top:50px;
+    width:450px;
+    right: 0;
+    left: 0;
+    margin: 0px auto;
+    padding:20px;
+    background: rgba(0, 0, 0, 0.3);
+    position:absolute;
+    text-align:center;
+}
 
-    
-    @media only screen and (max-width: 650px) {
-      .panel-auth {
-        width: 100%;
-      }
-    }
 
-    .text-banner h1,h5{
-        font-family:'Arial';
-        color:white;
-    }
+@media only screen and (max-width: 650px) {
+  .panel-auth {
+    width: 100%;
+  }
+}
 
-    .label-forgot{
-        float:right;
-        margin-top:20px;
-        font-size:14px; 
-        color:white;
-        text-decoration:none
-    }
+.text-banner h1,h5{
+    font-family:'Arial';
+    color:white;
+}
+
+.label-forgot{
+    float:right;
+    margin-top:20px;
+    font-size:14px; 
+    color:white;
+    text-decoration:none
+}
 </style>

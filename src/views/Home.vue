@@ -45,59 +45,10 @@
           </router-link>
         </v-carousel> 
       </v-card>
-
-      <!-- <v-flex md12 sm12 xs12 class="hidden-md-and-up">
-          <h6 class="title" style="margin:12px 0px;color:#616161">Spesial Khusus Member Baru</h6>
-          
-          <v-carousel
-            style="border-radius:10px"
-            hide-delimiters
-            height=150
-            interval=6000
-            hide-controls
-          >
-            <div v-show="load_data" style="margin:50px auto; width:5%;">
-                <v-layout column justify-center align-center>
-                    <hollow-dots-spinner
-                      :animation-duration="1000"
-                      :dot-size="15"
-                      :dots-num="3"
-                      color="#ff1d5e"
-                    />
-                </v-layout>
-            </div>
-
-            <v-carousel-item
-              v-for="(item,i) in member"
-              :key="i"
-              :src="item.url"
-            >
-
-              <v-jumbotron
-                :gradient="gradient"
-                dark
-                src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
-              >
-      
-                <div style="margin:25px;color:white">
-                    <span>Membership</span>
-                    <h4 class="display-1"><b>{{item.name}}</b></h4>
-                  </div>
-
-                  <div style="margin:10px 28px;border-top:1px solid white">
-                    <h6 v-if="item.coupon_code!=''" class="title" style="float:right;padding-top:4px">kode kupon: {{item.coupon_code}}</h6>
-                    <div class="clear"></div>
-                  </div>
-              
-              </v-jumbotron>
-            </v-carousel-item>
-          </v-carousel> 
-        </v-flex> -->
-      
     </v-container>   
     <!-- /content up -->
 
-    <v-container fluid >
+    <v-container fluid>
       <div style="margin:10px;">
         <span style="font-size:40px; color:#B71C1C;"><b>Ribuan Pelajar Terbantu Dan Lolos PTN !</b></span>
       </div>
@@ -118,50 +69,50 @@
           <h6 class="title" style="margin:12px 0px;color:#616161">Spesial Khusus Member Baru</h6>
           
           <v-carousel
-            style="border-radius:10px"
-            hide-delimiters
-            height=150
-            interval=6000
-            hide-controls
+              style="border-radius:10px"
+              hide-delimiters
+              height=180
+              interval=6000
+              hide-controls
           >
-            <div v-show="load_data" style="margin:50px auto; width:5%;">
-                <v-layout column justify-center align-center>
-                    <hollow-dots-spinner
+              <div v-show="load_data" style="margin:50px auto; width:5%;">
+                  <v-layout column justify-center align-center>
+                      <hollow-dots-spinner
                       :animation-duration="1000"
                       :dot-size="15"
                       :dots-num="3"
                       color="#ff1d5e"
-                    />
-                </v-layout>
-            </div>
+                      />
+                  </v-layout>
+              </div>
 
-            <v-carousel-item
-              v-for="(item,i) in member"
-              :key="i"
-              :src="item.url"
-            >
+              <v-carousel-item
+                  v-for="(item,i) in member"
+                  :key="i"
+                  :src="item.url"
+              >
 
               <v-jumbotron
-                :gradient="gradient"
-                dark
-                src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
+                  dark
+                  src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
               >
       
-                <div style="margin:25px;color:white">
-                    <span>Membership</span>
-                    <h4 class="display-1"><b>{{item.name}}</b></h4>
+                  <div style="margin:25px 25px 10px 25px; text-transform:capitalize;color:white">
+                      <span>Membership</span>
+                      <h4 class="display-1">
+                          <b v-if="item.name.length<30">{{item.name}}</b>
+                          <b v-else>{{item.name.substring(0,30)+"..."}}</b>
+                      </h4>
                   </div>
-
-
-                  <div style="margin:10px 28px;border-top:1px solid white">
-                    <h6 v-if="item.coupon_name!=null" class="title" style="float:right;padding-top:4px">kode kupon: {{item.coupon_code}}</h6>
-                    <div class="clear"></div>
+                  <div style="margin:0px 28px;border-top:1px solid white">
+                      <h6 class="title" v-if="item.coupon_name!=null" style="color:white;float:right;padding-top:10px">kode kupon: {{item.coupon_code}}</h6>
+                      <div class="clear"></div>
                   </div>
               
               </v-jumbotron>
-            </v-carousel-item>
+              </v-carousel-item>
           </v-carousel> 
-        </v-flex>
+          </v-flex>
       </v-layout>
     </v-container>
 
@@ -180,6 +131,7 @@
     },
     data(){
       return {
+        // gradient: 'to top right, rgba(63,81,181, .7), rgba(25,32,72, .7)',
         load_data:true,    
         datas:[],
         member: []

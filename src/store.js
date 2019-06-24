@@ -182,15 +182,29 @@ export default new Vuex.Store({
       })
     },
 
-    //login function
+    //login facebook function
+    // retrieveTokenFacebook(context, data){
+    //   axios.get('/login/facebook?token='+data.token)
+    //   .then(response => {
+    //     const token = response.data.access_token
+    //     localStorage.setItem('access_token', token)
+    //     context.commit('retrieveToken', token)
+    //   })
+    //   .catch(error => {
+    //     console.console.log(error.response);
+    //   })  
+    // },
+
+    //login google function
     retrieveTokenGoogle(context, data){
       axios.get('/login/google?token='+data.token)
       .then(response => {
-        const token    = response.data.access_token
+        const token = response.data.access_token
         localStorage.setItem('access_token', token)
         context.commit('retrieveToken', token)
       })
       .catch(error => {
+        console.console.log(error.response);
       })  
     },
 
@@ -203,16 +217,9 @@ export default new Vuex.Store({
         })
         .then(response => {
           const token    = response.data.access_token
-          // const dataUser = response.data.data.id
-          // const classId  = response.data.data.class_id
           localStorage.setItem('access_token', token)
-          // localStorage.setItem('getDataUser', dataUser)
-          // localStorage.setItem('getDataClassId', classId)
           context.commit('retrieveToken', token)
-          // context.commit('retrieveDataUser', dataUser)
-          // context.commit('retrieveClassId', classId)
           resolve(response)
-          // console.log(response.data)
         })
         .catch(error => {
           console.log(error)
