@@ -12,6 +12,7 @@ export default new Vuex.Store({
     token: localStorage.getItem('access_token') || null, //get token,
     dataUser : localStorage.getItem('getDataUser') || null,
     classId : localStorage.getItem('getDataClassId') || null,
+    status : localStorage.getItem('getStatus') || null,
     info: [],
     dataClass: [],
     dataPelajaran: [],
@@ -37,9 +38,13 @@ export default new Vuex.Store({
     retrieveToken(state, token){
       state.token = token
     },
-    
+
     retrieveClassId(state,classId){
       state.classId = classId
+    },
+
+    retrieveStatus(state,status){
+      state.status = status
     },
 
     retrieveDataUser(state,dataUser){
@@ -52,6 +57,10 @@ export default new Vuex.Store({
 
     destroyDataClassId(state) {
       state.classId = null
+    },
+
+    destroyStatus(state) {
+      state.status = null
     },
 
     destroydataUser(state) {
@@ -157,13 +166,15 @@ export default new Vuex.Store({
       })
     },
 
-    
+
     cekAuth(context){
       axios.get('/auth/user')
       .then(response => {
+        console.log(response)
         // console.log("auth", response.data.data.class.class_id)
         const dataUser   = response.data.data.id
         const cekClassId = response.data.data.class
+        const status = response.data.data.status
 
         if(cekClassId != null){
           const classId  = response.data.data.class.class_id
@@ -174,26 +185,28 @@ export default new Vuex.Store({
           localStorage.setItem('getDataClassId', classId)
           context.commit('retrieveClassId', classId)
         }
-        
+
         localStorage.setItem('getDataUser', dataUser)
         context.commit('retrieveDataUser', dataUser)
+
+        localStorage.setItem('getStatus', status)
+        context.commit('retrieveStatus', status)
       })
       .catch(error=>{
       })
     },
 
-    //login facebook function
-    // retrieveTokenFacebook(context, data){
-    //   axios.get('/login/facebook?token='+data.token)
-    //   .then(response => {
-    //     const token = response.data.access_token
-    //     localStorage.setItem('access_token', token)
-    //     context.commit('retrieveToken', token)
-    //   })
-    //   .catch(error => {
-    //     console.console.log(error.response);
-    //   })  
-    // },
+    //login facebook
+    retrieveTokenFacebook(context, data){
+      axios.get('/login/facebook?token='+data.access_token)
+      .then(response => {
+        const token    = response.data.access_token
+        localStorage.setItem('access_token', token)
+        context.commit('retrieveToken', token)
+      })
+      .catch(error => {
+      })  
+    },
 
     //login google function
     retrieveTokenGoogle(context, data){
@@ -216,6 +229,7 @@ export default new Vuex.Store({
           password: credentials.password
         })
         .then(response => {
+          console.log(response)
           const token    = response.data.access_token
           localStorage.setItem('access_token', token)
           context.commit('retrieveToken', token)
@@ -230,30 +244,34 @@ export default new Vuex.Store({
 
     // /logout function
     destroyToken(context){
-      axios.defaults.headers = {  
-        'Authorization': 'Bearer ' + context.state.token 
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
       }
 
       if(context.getters.loggedIn) {
         // return new Promise((resolve, reject) => {
           axios.get('/auth/logout')
           .then(response => {
-            localStorage.removeItem('getDataUser')
             localStorage.removeItem('access_token')
+            localStorage.removeItem('getDataUser')
             localStorage.removeItem('getDataClassId')
+            localStorage.removeItem('getStatus')
             context.commit('destroyDataClassId')
             context.commit('destroyToken')
             context.commit('destroydataUser')
+            context.commit('destroyStatus')
             // resolve(response)
             // console.log(response.data)
           })
           .catch(error => {
-            localStorage.removeItem('getDataUser')
             localStorage.removeItem('access_token')
+            localStorage.removeItem('getDataUser')
             localStorage.removeItem('getDataClassId')
+            localStorage.removeItem('getStatus')
             context.commit('destroyDataClassId')
             context.commit('destroyToken')
             context.commit('destroydataUser')
+            context.commit('destroyStatus')
             // reject(error)
           })
         // })
@@ -270,8 +288,8 @@ export default new Vuex.Store({
 //---------------------------------cerevid function-----------------------------------------------
   //--------------------------------cerevid get--------------------------------
     getDataPelajaran(context){
-      axios.defaults.headers = {  
-        'Authorization': 'Bearer ' + context.state.token 
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
       }
       axios.get('/courses')
       .then(response => {
@@ -293,8 +311,8 @@ export default new Vuex.Store({
     },
 
     getDataLesson(context){
-      axios.defaults.headers = {  
-        'Authorization': 'Bearer ' + context.state.token 
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
       }
       axios.get('/master/lesson')
       .then(response => {
@@ -306,8 +324,8 @@ export default new Vuex.Store({
     },
 
     getDataPelajaranbyLesson(context,data){
-      axios.defaults.headers = {  
-        'Authorization': 'Bearer ' + context.state.token 
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
       }
       axios.get('/courses/lesson/'+data.id)
       .then(response => {
@@ -319,7 +337,7 @@ export default new Vuex.Store({
     },
 
     getDataPelajaranbyUser(context){
-      axios.defaults.headers = {  
+      axios.defaults.headers = {
           'Authorization': 'Bearer ' + context.state.token
       }
       axios.get('/courses/'+this.state.dataUser+'/learned')
@@ -332,8 +350,8 @@ export default new Vuex.Store({
     },
 
     getDataPelajaranbyTeacher(context){
-      axios.defaults.headers = {  
-        'Authorization': 'Bearer ' + context.state.token 
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
       }
       axios.get('/courses/teacher/'+this.state.dataUser)
       .then(response => {console.log(response.data)
@@ -345,8 +363,8 @@ export default new Vuex.Store({
     },
 
     getDataFavoritbyUser(context){
-      axios.defaults.headers = {  
-        'Authorization': 'Bearer ' + context.state.token 
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
       }
       axios.get('/courses/favorites')
       .then(response => {
@@ -358,8 +376,8 @@ export default new Vuex.Store({
     },
 
     getDataDetailPelajaran(context){
-      axios.defaults.headers = {  
-        'Authorization': 'Bearer ' + context.state.token 
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
       }
       axios.get('/courses/'+router.currentRoute.params.id)
       .then(response => {
@@ -371,7 +389,7 @@ export default new Vuex.Store({
     },
 
     getDataDetailMateri(context){
-      axios.defaults.headers = {  
+      axios.defaults.headers = {
           'Authorization': 'Bearer ' + context.state.token
       }
       axios.get('/courses/'+router.currentRoute.params.id+'/sections')
@@ -384,13 +402,13 @@ export default new Vuex.Store({
     },
 
     getDataVideo(context, data){
-      axios.defaults.headers = {  
-        'Authorization': 'Bearer ' + context.state.token 
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
       }
       axios.get('/sections/'+data.section_id+'/videos/'+data.id)
       .then(response => {
-        axios.defaults.headers = {  
-          'Authorization': 'Bearer ' + context.state.token 
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + context.state.token
         }
         axios.get('/courses/'+router.currentRoute.params.id+'/sections')
         .then(response => {
@@ -407,13 +425,13 @@ export default new Vuex.Store({
     },
 
     getDataText(context, data){
-      axios.defaults.headers = {  
-        'Authorization': 'Bearer ' + context.state.token 
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
       }
       axios.get('/sections/'+data.section_id+'/texts/'+data.id)
       .then(response => {
-        axios.defaults.headers = {  
-          'Authorization': 'Bearer ' + context.state.token 
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + context.state.token
         }
         axios.get('/courses/'+router.currentRoute.params.id+'/sections')
         .then(response => {
@@ -430,13 +448,13 @@ export default new Vuex.Store({
     },
 
     getDataQuiz(context, data){
-      axios.defaults.headers = {  
-        'Authorization': 'Bearer ' + context.state.token 
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
       }
       axios.get('/sections/'+data.section_id+'/quiz/'+data.id)
       .then(response => {
-        axios.defaults.headers = {  
-          'Authorization': 'Bearer ' + context.state.token 
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + context.state.token
         }
         axios.get('/courses/'+router.currentRoute.params.id+'/sections')
         .then(response => {
@@ -453,8 +471,8 @@ export default new Vuex.Store({
     },
 
     getDataDetailForum(context){
-      axios.defaults.headers = {  
-        'Authorization': 'Bearer ' + context.state.token 
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
       }
       axios.get('/courses/'+router.currentRoute.params.id+'/forums')
       .then(response => {
@@ -469,8 +487,8 @@ export default new Vuex.Store({
     //Simpan Favorit
     pushDataFavorit(context, credentials){
       return new Promise((resolve, reject) => {
-        axios.defaults.headers = {  
-          'Authorization': 'Bearer ' + context.state.token 
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + context.state.token
         }
         axios.post('/courses/'+credentials.course_id+'/favorites/create',{
           user_id: credentials.user_id
@@ -489,8 +507,8 @@ export default new Vuex.Store({
     //Simpan Learned
     pushDataLearned(context, credentials){
       return new Promise((resolve, reject) => {
-        axios.defaults.headers = {  
-          'Authorization': 'Bearer ' + context.state.token 
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + context.state.token
         }
         axios.post('/courses/'+credentials.user_id+'/learned',{
           user_id: credentials.user_id,
@@ -509,8 +527,8 @@ export default new Vuex.Store({
     //Input Ulasan & Rating
     pushDataRating(context, credentials){
       return new Promise((resolve, reject) => {
-        axios.defaults.headers = {  
-          'Authorization': 'Bearer ' + context.state.token 
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + context.state.token
         }
         axios.post('/courses/'+router.currentRoute.params.id+'/reviews/create',{
           course_id: credentials.course_id,
@@ -519,8 +537,8 @@ export default new Vuex.Store({
           user_id: credentials.user_id
         })
         .then(response => {
-          axios.defaults.headers = {  
-          'Authorization': 'Bearer ' + context.state.token 
+          axios.defaults.headers = {
+          'Authorization': 'Bearer ' + context.state.token
           }
           axios.get('/courses/'+router.currentRoute.params.id)
           .then(response => {
@@ -540,16 +558,16 @@ export default new Vuex.Store({
 
     pushDataComment(context, credentials){
       return new Promise((resolve, reject) => {
-        axios.defaults.headers = {  
-          'Authorization': 'Bearer ' + context.state.token 
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + context.state.token
         }
         axios.post('/courses/'+router.currentRoute.params.id+'/forums/create',{
           forum_id: credentials.forum_id,
           body: credentials.isi,
         })
         .then(response => {
-          axios.defaults.headers = {  
-            'Authorization': 'Bearer ' + context.state.token 
+          axios.defaults.headers = {
+            'Authorization': 'Bearer ' + context.state.token
           }
           axios.get('/courses/'+router.currentRoute.params.id+'/forums')
           .then(response => {
@@ -569,15 +587,15 @@ export default new Vuex.Store({
 
     pushDataForum(context, credentials){
       return new Promise((resolve, reject) => {
-        axios.defaults.headers = {  
-          'Authorization': 'Bearer ' + context.state.token 
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + context.state.token
         }
         axios.post('/courses/'+router.currentRoute.params.id+'/forums/create',{
           body: credentials.isi,
         },)
         .then(response => {
-          axios.defaults.headers = {  
-            'Authorization': 'Bearer ' + context.state.token 
+          axios.defaults.headers = {
+            'Authorization': 'Bearer ' + context.state.token
           }
           axios.get('/courses/'+router.currentRoute.params.id+'/forums')
           .then(response => {
@@ -598,8 +616,8 @@ export default new Vuex.Store({
     //Simpan Favorit
     delDataFavorit(context, credentials){
       return new Promise((resolve, reject) => {
-        axios.defaults.headers = {  
-          'Authorization': 'Bearer ' + context.state.token 
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + context.state.token
         }
         axios.delete('/courses/'+credentials.user_id+'/favorites/'+credentials.favorit_id,{
           user_id: credentials.user_id
@@ -618,7 +636,7 @@ export default new Vuex.Store({
     // -----------------------------SISWA
     // get profile
     getProfileUser(context){
-      axios.defaults.headers = {  
+      axios.defaults.headers = {
           'Authorization': 'Bearer ' + context.state.token
       }
       axios.get('/auth/user')
@@ -646,7 +664,7 @@ export default new Vuex.Store({
             address: credentials.address
           }
           // return new Promise((resolve, reject) => {
-          axios.defaults.headers = {  
+          axios.defaults.headers = {
               'Authorization': 'Bearer ' + context.state.token
           }
           axios.put('/auth/user/'+this.state.dataUser, data)
@@ -675,7 +693,7 @@ export default new Vuex.Store({
             file: credentials.file
           }
           // return new Promise((resolve, reject) => {
-          axios.defaults.headers = {  
+          axios.defaults.headers = {
             'Authorization': 'Bearer ' + context.state.token
           }
           axios.put('/auth/teacher/'+this.state.dataUser, data)

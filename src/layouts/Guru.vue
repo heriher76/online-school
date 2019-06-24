@@ -188,9 +188,14 @@
 
     created() {
       const loggedIn = this.$store.getters.loggedIn
+      const status = this.$store.state.status
       if (!loggedIn) {
           this.$router.push({path:'/guru/login'})
       }
+      console.log(status)
+      // if (loggedIn && status != 1) {
+      //     this.$router.push({path:'/'})
+      // }
     },
 
     mounted(){      
@@ -217,7 +222,7 @@
         return this.$router.push({path:'/guru'})
       },
       linkPusatBantuan(){
-        return this.$router.push({path:'/guru/pusat-bantuan'})
+        return this.$router.push({path:'/pusat bantuan'})
       },
       linkCerevid(){
         return this.$router.push({path:'/guru/cerevid'})

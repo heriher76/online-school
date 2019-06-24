@@ -79,19 +79,26 @@
           masuk dengan akun google
         </v-btn>
 
-        <!-- <v-btn app-id="318638459074473" @login="getUserData" @get-initial-status="getUserData" block round color="primary" dark large>
+        <!-- <v-btn block round color="primary" dark large>
           masuk dengan akun facebook
         </v-btn> -->
-
-        <v-facebook-login 
-          app-id="318638459074473"
+        <center>
+          <v-facebook-login :value="true" @login="loginFacebook" app-id="318638459074473" style="width: 100%; height: 50px;"></v-facebook-login>
+        </center>
+        <br>
+    
+        <!-- <facebook-login class="button"
+          appId="318638459074473"
           @login="getUserData"
-          @get-initial-status="getUserData"
-          style="width:100%;border-radius:50px;height:45px"
-        >
-        </v-facebook-login>
-        
-          <!-- @data-auto-logout-link="false" -->
+          @logout="onLogout"
+          @sdk-loaded="sdkLoaded">
+        </facebook-login> -->
+
+         <!-- <facebook-login class="button"
+          appId="318638459074473"
+          @login="getUserData"
+          @get-initial-status="getUserData">
+        </facebook-login> -->
 
         <hr style="margin-bottom:15px">
         <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>
@@ -161,16 +168,22 @@
       
     },
 
+    created() {
+      if(this.$store.getters.loggedIn){
+        window.location.href = "/"
+      }
+    },
+
     methods:{
-      toggleTimer() {
-        this.interval = setInterval(this.incrementTime, 1000);
-      },
-      incrementTime() {
-          this.time = parseInt(this.time) + 1;
-          if(this.$store.getters.loggedIn){
-            window.location.href = "/"
-          }
-      },
+      // toggleTimer() {
+      //   this.interval = setInterval(this.incrementTime, 1000);
+      // },
+      // incrementTime() {
+      //     this.time = parseInt(this.time) + 1;
+      //     if(this.$store.getters.loggedIn){
+      //       window.location.href = "/"
+      //     }
+      // },
 
       login(){      
         this.btn_load = true
@@ -182,22 +195,20 @@
         .then(response => {
           this.btn_load = false
           this.loadLogin = false
-
+          console.log(response)
           if (response.data.role != 2) {
             this.$swal('Opps', 'Anda Tidak Memiliki Akses Kesini!', 'warning')
             this.$store.dispatch('destroyToken')
             .then(response => {
-                this.$router.push({path:'/'})
+                window.location.href = "/"
             })
-            // .catch(error => {
-            //     console.log(error)
-            //   })
+            .catch(error => {
+                console.log(error)
+            })
           }else{
+            this.$swal('Sukses', 'Selamat Datang!', 'success')
             window.location.href = "/"
           }
-          
-          // window.location.href = "/"
-          // this.$router.replace('/')
         })
         .catch(error => {
           this.btn_load = false
@@ -205,6 +216,25 @@
           console.log(error.response)
           this.$swal('Error', 'email atau password yang anda masukan salah !', 'warning')
         })
+      },
+
+      loginFacebook(response) {
+        this.$store.dispatch('retrieveTokenFacebook', {
+          access_token: response.authResponse.accessToken
+        })
+        .then(response => {
+          this.btn_load = false
+
+          this.$swal('Sukses', 'Berhasil Login !', 'success')
+          return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 5000)
+        })
+        .catch(error => {
+          this.btn_load = false
+          this.$swal('Error', 'email atau password yang anda masukan salah !', 'warning')
+        })
+        // access_token
+        // device_id
+        console.log(response.authResponse.accessToken)
       },
 
       loginGoogle(){

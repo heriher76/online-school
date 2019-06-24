@@ -142,7 +142,7 @@ export default {
     LoadingScreen
   },
   methods: {
-    async getDataPelajaranbyLesson() {
+    getDataPelajaranbyLesson() {
       this.$store.dispatch('getDataPelajaranbyLesson', {
           id: this.pelajaran
         })
@@ -151,7 +151,7 @@ export default {
           console.log(error)
         })
     },
-    async getDataFavoritbyUser() {
+    getDataFavoritbyUser() {
       this.$store.dispatch('getDataFavoritbyUser')
         .then(response => {})
     },

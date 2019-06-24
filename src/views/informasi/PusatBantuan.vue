@@ -85,7 +85,6 @@ import axios from 'axios'
           axios.get('/master/generalInformation')
           .then(response => {
             this.dataKontakAdmin = response.data.data
-            console.log(response.data)
           })
           .catch(error=>{
           console.log(error)
