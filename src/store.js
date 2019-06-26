@@ -666,7 +666,11 @@ export default new Vuex.Store({
             birth_date: credentials.birth_date,
             parrent_name: credentials.parrent_name,
             parrent_phone: credentials.parrent_phone,
-            address: credentials.address
+            address: credentials.address,
+            class_id: credentials.class_id,
+            option1: credentials.option1,
+            option2: credentials.option2,
+            option3: credentials.option3,
           }
           // return new Promise((resolve, reject) => {
           axios.defaults.headers = {
