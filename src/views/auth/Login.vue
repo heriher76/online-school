@@ -226,7 +226,7 @@
           this.btn_load = false
 
           this.$swal('Sukses', 'Berhasil Login !', 'success')
-          return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 5000)
+          return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 4000)
         })
         .catch(error => {
           this.btn_load = false
