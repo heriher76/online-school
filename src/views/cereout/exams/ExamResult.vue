@@ -50,7 +50,6 @@
                         
                         <!-- discuss -->
                         <v-card v-show="discussV">
-                            
                             <v-container grid-list-xl>
                                 <v-layout row wrap>
                                     <v-flex md12 sm12 xs12>
@@ -93,9 +92,12 @@
                                                 <span v-else>&nbsp;<v-icon color="red">clear</v-icon></span> 
                                             </span>
 
-                                            <div style="float:right; padding:2px 10px 0px 0px;color:#64B5F6">
-                                                <span>Jawaban Benar: {{discussion.correct_answer}}</span> &nbsp;|&nbsp;
-                                                <span>Jawaban Anda: {{discuss.answer}}<span v-if="discuss.answer==null">-</span></span>
+                                            <div style="float:right; padding:2px 10px 0px 0px;">
+                                                <span style="color:#757575">Jawaban Benar: <b style="color:#0091EA">{{discussion.correct_answer}}</b></span>
+                                                <span style="margin:10px">|</span>
+                                                <span style="color:#757575">Jawaban Anda: <b style="color:#0091EA">{{discuss.answer}}<span v-if="discuss.answer==null">-</span></b></span>
+                                                <span style="margin:10px">|</span>
+                                                <span style="color:#757575">Nilai Soal: <b style="color:#0091EA">{{discuss.score}}</b></span>
                                             </div>
                                         </v-card>
                                         
@@ -115,8 +117,8 @@
                                                 <div v-if="discussion.option_a!=null">
                                                     <b style="float:left">A.&nbsp;</b>
                                                     <span style="float:left" v-html="discussion.option_a"></span>
-                                                    <span v-if="discuss.answer!= 'A' && discussion.correct_answer== 'A'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
-                                                    <span v-if="discuss.answer== 'A' && discussion.correct_answer== 'A'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
+                                                    <span v-if="discuss.answer!= 'A' && discussion.correct_answer== 'A'" style="color:green">&nbsp;<v-icon color="green" size="20">done</v-icon>Jawaban Benar</span>
+                                                    <span v-if="discuss.answer== 'A' && discussion.correct_answer== 'A'" style="color:green">&nbsp;<v-icon color="green" size="20">done</v-icon>Jawaban Anda</span>
                                                     <span v-if="discuss.answer== 'A' && discussion.correct_answer!= 'A'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
                                                     <div class="clear"></div>
                                                 </div>
@@ -124,8 +126,8 @@
                                                 <div v-if="discussion.option_b!=null">
                                                     <b style="float:left">B.&nbsp;</b>
                                                     <span style="float:left" v-html="discussion.option_b"></span>
-                                                    <span v-if="discuss.answer!= 'B' && discussion.correct_answer== 'B'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
-                                                    <span v-if="discuss.answer== 'B' && discussion.correct_answer== 'B'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
+                                                    <span v-if="discuss.answer!= 'B' && discussion.correct_answer== 'B'" style="color:green">&nbsp;<v-icon color="green" size="20">done</v-icon>Jawaban Benar</span>
+                                                    <span v-if="discuss.answer== 'B' && discussion.correct_answer== 'B'" style="color:green">&nbsp;<v-icon color="green" size="20">done</v-icon>Jawaban Anda</span>
                                                     <span v-if="discuss.answer== 'B' && discussion.correct_answer!= 'B'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
                                                     <div class="clear"></div>
                                                 </div>
@@ -133,8 +135,8 @@
                                                 <div v-if="discussion.option_c!=null">
                                                     <b style="float:left">C.&nbsp;</b>
                                                     <span style="float:left" v-html="discussion.option_c"></span>
-                                                    <span v-if="discuss.answer!= 'C' && discussion.correct_answer== 'C'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
-                                                    <span v-if="discuss.answer== 'C' && discussion.correct_answer== 'C'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
+                                                    <span v-if="discuss.answer!= 'C' && discussion.correct_answer== 'C'" style="color:green">&nbsp;<v-icon color="green" size="20">done</v-icon>Jawaban Benar</span>
+                                                    <span v-if="discuss.answer== 'C' && discussion.correct_answer== 'C'" style="color:green">&nbsp;<v-icon color="green" size="20">done</v-icon>Jawaban Anda</span>
                                                     <span v-if="discuss.answer== 'C' && discussion.correct_answer!= 'C'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
                                                     <div class="clear"></div>
                                                 </div>
@@ -142,8 +144,8 @@
                                                 <div v-if="discussion.option_c!=null">
                                                     <b style="float:left">D.&nbsp;</b>
                                                     <span style="float:left" v-html="discussion.option_c"></span>
-                                                    <span v-if="discuss.answer!= 'D' && discussion.correct_answer== 'D'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
-                                                    <span v-if="discuss.answer== 'D' && discussion.correct_answer== 'D'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
+                                                    <span v-if="discuss.answer!= 'D' && discussion.correct_answer== 'D'" style="color:green">&nbsp;<v-icon color="green" size="20">done</v-icon>Jawaban Benar</span>
+                                                    <span v-if="discuss.answer== 'D' && discussion.correct_answer== 'D'" style="color:green">&nbsp;<v-icon color="green" size="20">done</v-icon>Jawaban Anda</span>
                                                     <span v-if="discuss.answer== 'D' && discussion.correct_answer!= 'D'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
                                                     <div class="clear"></div>
                                                 </div>
@@ -151,8 +153,8 @@
                                                 <div v-if="discussion.option_e!=null">
                                                     <b style="float:left">E.&nbsp;</b>
                                                     <span style="float:left" v-html="discussion.option_e"></span>
-                                                    <span v-if="discuss.answer!= 'E' && discussion.correct_answer== 'E'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
-                                                    <span v-if="discuss.answer== 'E' && discussion.correct_answer== 'E'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
+                                                    <span v-if="discuss.answer!= 'E' && discussion.correct_answer== 'E'" style="color:green">&nbsp;<v-icon color="green" size="20">done</v-icon>Jawaban Benar</span>
+                                                    <span v-if="discuss.answer== 'E' && discussion.correct_answer== 'E'" style="color:green">&nbsp;<v-icon color="green" size="20">done</v-icon>Jawaban Anda</span>
                                                     <span v-if="discuss.answer== 'E' && discussion.correct_answer!= 'E'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
                                                     <div class="clear"></div>
                                                 </div>
@@ -160,8 +162,8 @@
                                                 <div v-if="discussion.option_f!=null">
                                                     <b style="float:left">F.&nbsp;</b>
                                                     <span style="float:left" v-html="discussion.option_f"></span>
-                                                    <span v-if="discuss.answer!= 'F' && discussion.correct_answer== 'F'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Benar</span>
-                                                    <span v-if="discuss.answer== 'F' && discussion.correct_answer== 'F'" style="color:green">&nbsp;<v-icon color="green" size="20">done_outline</v-icon>Jawaban Anda</span>
+                                                    <span v-if="discuss.answer!= 'F' && discussion.correct_answer== 'F'" style="color:green">&nbsp;<v-icon color="green" size="20">done</v-icon>Jawaban Benar</span>
+                                                    <span v-if="discuss.answer== 'F' && discussion.correct_answer== 'F'" style="color:green">&nbsp;<v-icon color="green" size="20">done</v-icon>Jawaban Anda</span>
                                                     <span v-if="discuss.answer== 'F' && discussion.correct_answer!= 'F'" style="color:red">&nbsp;<v-icon color="red" size="20">clear</v-icon>Jawaban Anda</span>
                                                     <div class="clear"></div>
                                                 </div>
@@ -185,15 +187,15 @@
                                                 <v-card color="#B71C1C" dark>
                                                     <v-card-text>
                                                     <v-layout style="font-size:15px">
-                                                        <v-flex md4>
+                                                        <v-flex md6>
                                                             <b>Siswa yang menjawab benar</b>&nbsp;:&nbsp;<b>{{discuss.user_right}}</b>
                                                         </v-flex>
-                                                        <v-flex md4>
+                                                        <v-flex md6>
                                                             <b>Siswa yang menjawab salah</b>&nbsp;:&nbsp;<b>{{discuss.user_wrong}}</b>
                                                         </v-flex>
-                                                        <v-flex md4>
+                                                        <!-- <v-flex md4>
                                                             <b>Nilai</b>&nbsp;:&nbsp;<b>{{discuss.score}}</b>
-                                                        </v-flex>
+                                                        </v-flex> -->
                                                     </v-layout>
                                                     </v-card-text>
                                                 </v-card>

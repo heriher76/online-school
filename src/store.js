@@ -156,7 +156,7 @@ export default new Vuex.Store({
           password_confirmation: r.password_confirmation
         })
         .then(response => {
-          console.log(response.data)
+          // console.log(response.data)
           resolve(response)
         })
         .catch(error => {
@@ -170,7 +170,7 @@ export default new Vuex.Store({
     cekAuth(context){
       axios.get('/auth/user')
       .then(response => {
-        console.log(response)
+        // console.log(response)
         // console.log("auth", response.data.data.class.class_id)
         const dataUser   = response.data.data.id
         const cekClassId = response.data.data.class
@@ -208,16 +208,17 @@ export default new Vuex.Store({
       })  
     },
 
-    //login function
+    //login google function
     retrieveTokenGoogle(context, data){
       axios.get('/login/google?token='+data.token)
       .then(response => {
-        const token    = response.data.access_token
+        const token = response.data.access_token
         localStorage.setItem('access_token', token)
         context.commit('retrieveToken', token)
       })
       .catch(error => {
-      })
+        console.log(error.response);
+      })  
     },
 
     //login function
@@ -229,16 +230,9 @@ export default new Vuex.Store({
         })
         .then(response => {
           const token    = response.data.access_token
-          // const dataUser = response.data.data.id
-          // const classId  = response.data.data.class_id
           localStorage.setItem('access_token', token)
-          // localStorage.setItem('getDataUser', dataUser)
-          // localStorage.setItem('getDataClassId', classId)
           context.commit('retrieveToken', token)
-          // context.commit('retrieveDataUser', dataUser)
-          // context.commit('retrieveClassId', classId)
           resolve(response)
-          // console.log(response.data)
         })
         .catch(error => {
           console.log(error)
