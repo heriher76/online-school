@@ -14,7 +14,72 @@
                 <!-- sub content -->
                 <v-flex md9 sm12 xs12 style="min-height:300px">
                     <v-card color="#B71C1C" dark style="margin-bottom:8px">
+                        <div class="hidden-md-and-up" style="float:left; margin:18px 10px 0px 20px">
+                            <v-menu
+                                v-model="menuList"
+                                :close-on-content-click="false"
+                                :nudge-width="200"
+                                offset-x
+                            >
+                            <template v-slot:activator="{ on }">
+                                <a v-on="on">
+                                <v-icon>list</v-icon><v-icon>arrow_drop_down</v-icon>
+                                </a>
+                            </template>
+                                <v-card>
+                                    <v-list>
+                                        <v-list-tile @click="changeList(1)" active-class="false">
+                                            <v-list-tile-content>
+                                            <v-list-tile-title>Daftar Tryout</v-list-tile-title>
+                                            </v-list-tile-content>
+                                        </v-list-tile>
+
+                                        <v-list-tile @click="changeList(2)" active-class="false">
+                                            <v-list-tile-content>
+                                            <v-list-tile-title>Tryout Diambil</v-list-tile-title>
+                                            </v-list-tile-content>
+                                        </v-list-tile>
+
+                                        <v-list-tile @click="changeList(3)" active-class="false">
+                                            <v-list-tile-content>
+                                            <v-list-tile-title>Tryout Kadaluarsa</v-list-tile-title>
+                                            </v-list-tile-content>
+                                        </v-list-tile>
+                                    </v-list>
+                                </v-card>
+                            </v-menu>
+                        </div>
                         <v-card-text class="px-0"><h6 class="title" style="margin:4px 20px">Tryout</h6></v-card-text>
+
+                        <div class="hidden-md-and-up">
+                            <v-autocomplete
+                                v-model="model"
+                                :items="searchItem"
+                                :loading="isLoading"
+                                :search-input.sync="search"
+                                chips
+                                clearable
+                                hide-details
+                                hide-selected
+                                append-icon="search"
+                                item-text="name"
+                                item-value="name"
+                                label="Tryout apa yang anda cari?"
+                                solo
+                                no-data-text="Tryout tidak ditemukan"
+                            >
+                                <template v-slot:item="data">
+                                    <template>
+                                        <v-list-tile @click="examDetail(data.item)">
+                                            <v-list-tile-content>
+                                                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                                                <!-- <v-list-tile-sub-title v-html="data.item.class"></v-list-tile-sub-title> -->
+                                            </v-list-tile-content>
+                                        </v-list-tile>
+                                    </template>
+                                </template>
+                            </v-autocomplete>
+                        </div>
                     </v-card>  
 
                     <v-card v-show="loadTryout"> 
@@ -29,7 +94,7 @@
 
                     <div v-show="listCere">
                         <v-layout v-if="user.membership==1" row wrap>
-                            <v-flex md2 sm12 xs12 class="hidden-sm-and-down">
+                            <v-flex md2 sm12 xs12 class="hidden-md-and-down">
                                 <v-navigation-drawer class="grey lighten-5">          
                                     <v-list dense class="pt-0">
                                         <v-list-tile @click="changeList(1)" active-class="false">
@@ -60,7 +125,6 @@
                                             <h6 class="title" style="margin:15px 0px 0px 16px; text-transform: capitalize">{{ListName}}</h6>
                                         </v-flex>
                                         <v-flex md3>
-                                            
                                             <v-select
                                                 v-if="ListName == 'Daftar Tryout'"
                                                 :items="classs"
@@ -91,8 +155,9 @@
                                         </v-flex>
 
 
-                                        <v-flex md5>
+                                        <v-flex md5 sm12 xs12>
                                             <v-autocomplete
+                                                class="hidden-md-and-down"
                                                 v-model="model"
                                                 :items="searchItem"
                                                 :loading="isLoading"
@@ -261,6 +326,7 @@
         },
         data () {
             return {
+                menuList:false,
                 searchItem: [],
 
                 isLoading: false,

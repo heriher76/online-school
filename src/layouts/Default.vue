@@ -43,6 +43,8 @@ export default {
 
   data(){
     return {
+      cekStatus: [],
+
       time: 0,
       interval: null,
 
@@ -85,6 +87,18 @@ export default {
     },
     incrementTime() {
         this.time = parseInt(this.time) + 1;
+        axios.get('/auth/user')
+        .then(response => {
+          // console.log(response.data.data)
+          this.cekStatus = response.data.data.status
+          if(this.cekStatus == 1){
+            return this.$router.push({name:'dashboard_guru'})
+          }
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+
         axios.get('/cereouts/running')
         .then(response => {
           if(response.data.status == true){

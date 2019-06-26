@@ -59,7 +59,101 @@
       <!-- /header action responsive -->
 
       <!-- header actions -->
-      <div v-if="loggedIn" class="nav-action hidden-sm-and-down">
+      <div v-if="loggedIn" class="hidden-sm-and-down">
+        <div class="hidden-lg-and-up">
+          <v-menu
+            v-model="menuDrop"
+            :close-on-content-click="false"
+            :nudge-width="200"
+            offset-x
+          >
+          <template v-slot:activator="{ on }">
+            <a v-on="on">
+            <v-icon>list</v-icon><v-icon>arrow_drop_down</v-icon>
+            </a>
+          </template>
+              <v-card height="130px" style="padding-top:25px">
+                <v-list>
+                  <v-list-tile avatar>
+                    <v-list-tile-avatar>
+                      <img v-if="user.photo_url!=null" :src="user.photo_url">
+                    </v-list-tile-avatar>
+
+                    <v-list-tile-content style="height:100px;">
+                      <v-list-tile-title @click="linkAkun">{{user.name}}
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                              <a @click="linkAkun">
+                              <v-icon color="blue" v-on="on">edit</v-icon>
+                              </a>
+                          </template>
+                          <span>Akun Saya</span>
+                        </v-tooltip>
+                      </v-list-tile-title>
+
+                      <v-list-tile-sub-title>{{user.email}}</v-list-tile-sub-title>
+                    
+                      <v-list-tile-sub-title>
+                        <a style="color:red" flat @click="linkLogout">Keluar</a>
+                        <div style="float:right;">
+                          <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                              <router-link to="/cerevid/daftar-pelajaran">
+                              <v-icon color="blue" v-on="on">book</v-icon>
+                              </router-link>
+                          </template>
+                          <span>Pelajaran saya di Cerevid</span>
+                          </v-tooltip>
+                          
+                          <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                              <router-link to="/cerevid/favorit">
+                              <v-icon color="pink" v-on="on">favorite</v-icon>
+                              </router-link>
+                          </template>
+                          <span>Pelajaran Favorit di Cerevid</span>
+                          </v-tooltip>
+
+                          <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                              <router-link to="">
+                              <v-icon color="#F44336" v-on="on">email</v-icon>
+                              </router-link>
+                          </template>
+                          <span>Cerecall Masuk</span>
+                          </v-tooltip>
+                        </div>  
+                      </v-list-tile-sub-title>
+
+                      <v-list-tile-sub-title>
+                        <div class="nav-bal">
+                            <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <router-link v-if="cekMember=='0'" to="/membership">
+                                <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                                </router-link>
+                                <router-link v-else-if="cekMember=='1'" to="/my poin">
+                                <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                                </router-link>
+                            </template>
+                            <span>Top up</span>
+                            </v-tooltip>
+
+                            <b>Cerecoin : {{user.balance}} </b>
+
+                            <div class="clear"></div>
+                        </div>
+                      </v-list-tile-sub-title>
+
+                    </v-list-tile-content>
+                  </v-list-tile>
+                </v-list>
+              </v-card>
+          </v-menu>
+        </div>
+      </div>
+      
+      <div v-if="loggedIn" class="nav-action hidden-md-and-down">
         <div class="nav-bal">
             <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -226,7 +320,7 @@
                     <span>Top up</span>
                     </v-tooltip>
 
-                    <b>Poin : {{user.balance}} </b>
+                    <b>Cerecoin : {{user.balance}} </b>
 
                     <div class="clear"></div>
                 </div>
@@ -304,6 +398,7 @@ export default {
   },
   data() {
     return {
+      menuDrop:false,
       bt_src:true,
       src: false,
       drawer: false,

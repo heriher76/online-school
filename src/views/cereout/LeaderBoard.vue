@@ -169,7 +169,7 @@
           this.tabl      = true
           this.text_judul= 'Pelajaran '//+this.pelajaran
           this.leader    = response.data.data
-          console.log(response.data)
+          // console.log(response.data)
         })
         .catch(error => {
           console.log(error.response)
@@ -210,7 +210,7 @@
         this.tablClass     = true
         this.leaderClass = response.data.data
         // this.leader      = response.data.data
-        console.log(response.data)
+        // console.log(response.data)
       })
       .catch(error => {
         console.log(error.response)
@@ -219,7 +219,7 @@
       Axios.get('/master/class')//get class
       .then(response => {
         this.classs = response.data
-        console.log(response.data)
+        // console.log(response.data)
       })
       .catch(error => {console.log(error.response)})
 
