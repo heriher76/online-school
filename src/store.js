@@ -228,7 +228,6 @@ export default new Vuex.Store({
           password: credentials.password
         })
         .then(response => {
-          console.log(response)
           const token    = response.data.access_token
           // const dataUser = response.data.data.id
           // const classId  = response.data.data.class_id

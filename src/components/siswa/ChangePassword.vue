@@ -1,7 +1,7 @@
 <template>
     <div class="change_passw">
     	<form @submit.prevent="login">
-            <v-text-field v-model="email" style="height:60px" label="Email"></v-text-field>
+            <v-text-field v-model="myemail" style="height:60px" label="Email"></v-text-field>
 	        <v-text-field v-model="password" style="height:60px" label="Old Password"></v-text-field>
 	        <v-text-field v-model="newPassword" style="height:60px" label="New Password"></v-text-field>
 	        <v-divider></v-divider>
@@ -15,7 +15,7 @@
 	import axios from 'axios';
 
     export default {
-        props: ['idUser', 'email'],
+        props: ['idUser', 'myemail'],
         data: () => ({
             email: '',
             password: '',
@@ -32,7 +32,7 @@
                     'Authorization': 'Bearer ' + this.$store.state.token
                 }
                 axios.post('http://api.ceredinas.id/api/auth/user/changePassword/'+this.idUser,{
-                  email: this.email,
+                  email: this.myemail,
                   password: this.password,
                   newPassword: this.newPassword
                 })

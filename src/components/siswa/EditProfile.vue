@@ -79,7 +79,7 @@
                         v-model="kelas" 
                         :items="listClass"
                         item-text="name"
-                        item-value="name"
+                        item-value="id"
                         label="Kelas *"
                     ></v-select>
                     <br>
@@ -89,6 +89,8 @@
                         v-if="datas.data.option1"
                         v-model="datas.data.option1.university_name" 
                         :items="listUniversity"
+                        item-text="name"
+                        item-value="id"
                         label="Universitas *"
                     ></v-select>
                     <v-select
@@ -96,7 +98,7 @@
                         v-model="option1_university_name" 
                         :items="listUniversity"
                         item-text="name"
-                        item-value="name"
+                        item-value="id"
                         label="Universitas *"
                     ></v-select>
                     <v-select
@@ -109,8 +111,6 @@
                         v-else
                         v-model="option1_department_name" 
                         :items="departmentUniversity1"
-                        item-text="name"
-                        item-value="name"
                         label="Jurusan *"
                     ></v-select>
                     <br>
@@ -185,7 +185,7 @@
             </div>
             <!-- {{dataUser}} -->
             <!--  -->
-            <ChangePassword v-show="chg_pass" @canceled="showEditProfile" :idUser="this.datas.data.id" :email="this.datas.data.email"/>
+            <ChangePassword v-show="chg_pass" @canceled="showEditProfile" :idUser="this.datas.data.id" :myemail="this.datas.data.email"/>
         </v-flex>
     </v-layout>
 </template>
@@ -213,9 +213,9 @@
             address: '',
             file: '',
             kelas: '',
-            departmentUniversity1: '',
-            departmentUniversity2: '',
-            departmentUniversity3: '',
+            departmentUniversity1: [],
+            departmentUniversity2: [],
+            departmentUniversity3: [],
             option1_department_name: '',
             option2_department_name: '',
             option3_department_name: '',
@@ -240,7 +240,7 @@
             this.kelas= newVal
           },
           option1_university_name (university1) {
-            console.log(university1)
+            console.log(1)
             this.option1_university_name = university1
             this.listUniversity.map((univ) => {
                 if (univ.name == this.option1_university_name) {
@@ -322,33 +322,34 @@
                 })
             },
             submit (event) {
-                let kelas = this.kelas || this.datas.data.class.name_class
-                // var option1_department_name = this.option1_department_name || this.datas.data.option1.department_name
+                var kelas = this.kelas || this.datas.data.class.name_class
+                var option1_department_name = this.option1_department_name || this.datas.data.option1.department_name
+                console.log(option1_department_name)
                 // var option2_department_name = this.option2_department_name || this.datas.data.option2.department_name
                 // var option3_department_name = this.option3_department_name || this.datas.data.option3.department_name
-                this.btn_load = true
-                this.$store.dispatch('editProfileUser', {
-                    name: this.datas.data.name,
-                    gender: this.datas.data.gender,
-                    phone: this.datas.data.phone,
-                    address: this.datas.data.address,
-                    birth_place: this.datas.data.birth_place,
-                    birth_date: this.datas.data.birth_date,
-                    parrent_name: this.datas.data.parrent_name,
-                    parrent_phone: this.datas.data.parrent_phone,
-                    address: this.datas.data.address,
-                    class: kelas
-                })
-                .then(response => {
-                  this.btn_load = false
-                  this.$swal('Sukses', 'Berhasil Mengganti Profile!', 'success')
-                  // this.$router.push({path: '/'})
-                })
-                .catch(error => {
-                  this.btn_load = false
-                  this.$swal('Oops', 'Gagal Mengubah Profile!', 'warning')
+                // this.btn_load = true
+                // this.$store.dispatch('editProfileUser', {
+                //     name: this.datas.data.name,
+                //     gender: this.datas.data.gender,
+                //     phone: this.datas.data.phone,
+                //     address: this.datas.data.address,
+                //     birth_place: this.datas.data.birth_place,
+                //     birth_date: this.datas.data.birth_date,
+                //     parrent_name: this.datas.data.parrent_name,
+                //     parrent_phone: this.datas.data.parrent_phone,
+                //     address: this.datas.data.address,
+                //     class: kelas
+                // })
+                // .then(response => {
+                //   this.btn_load = false
+                //   this.$swal('Sukses', 'Berhasil Mengganti Profile!', 'success')
+                //   // this.$router.push({path: '/'})
+                // })
+                // .catch(error => {
+                //   this.btn_load = false
+                //   this.$swal('Oops', 'Gagal Mengubah Profile!', 'warning')
                   
-                })
+                // })
             }
         }
     }

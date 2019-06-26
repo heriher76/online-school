@@ -83,7 +83,11 @@
           masuk dengan akun facebook
         </v-btn> -->
         <center>
-          <v-facebook-login :value="true" @login="loginFacebook" app-id="318638459074473" style="width: 100%; height: 50px;"></v-facebook-login>
+          <v-facebook-login :value="true" @login="loginFacebook" app-id="318638459074473" style="width: 100%; height: 50px;">
+            <span slot="login">MASUK DENGAN AKUN FACEBOOK</span>
+            <span slot="logout">MASUK DENGAN AKUN FACEBOOK</span>
+            <span slot="working">MOHON TUNGGU....</span>
+          </v-facebook-login>
         </center>
         <br>
     
@@ -200,7 +204,7 @@
             this.$swal('Oopps', 'Anda Tidak Memiliki Akses Kesini!', 'warning')
             this.$store.dispatch('destroyToken')
             .then(response => {
-                window.location.href = "/"
+                
             })
             .catch(error => {
                 console.log(error)

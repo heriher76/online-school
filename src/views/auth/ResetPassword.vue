@@ -87,10 +87,11 @@
       axios.defaults.headers = {
         'Authorization': 'Bearer ' + this.$store.state.token
       }
-      axios.get('/password/find/asdfasdfasdfasdfsadf')
+      axios.get('/password/find/'+this.$route.query.token)
       .then(response => {
         console.log(response)
         this.loadToken = false
+        this.email = response.data.data.email
       })
       .catch(error => {
         console.log(error)
@@ -109,7 +110,7 @@
           email: this.email,
           password: this.password,
           password_confirmation: this.password_confirmation,
-          token: 'asdfsadfsadfsadf'
+          token: this.$route.query.token
         })
         .then(response => {
           this.btn_load = false
