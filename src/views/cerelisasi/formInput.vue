@@ -328,6 +328,26 @@
 	  btn_load: false
     }),
     created() {
+    	//get list Kelas
+        axios.get('/master/class')
+        .then(response => {
+            console.log(response.data.data)
+            this.item_kelas= response.data.data
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+        //get list University
+        axios.get('/master/getAllDataUniversity')
+        .then(response => {
+            console.log(response.data.data)
+            this.listUniversity= response.data.data
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
     	//get profile
         axios.defaults.headers = {  
           'Authorization': 'Bearer ' + this.$store.state.token
@@ -339,8 +359,8 @@
             (response.data.data.class) ? this.kelas = response.data.data.class.name_class : this.kelas = '';
             if(response.data.data.option1) {
             	this.option1_university_name = response.data.data.option1.university_name
-            	this.option1_department_name = response.data.data.option1.department_name
-
+            	this.option1_department_name = response.data.data.option1.department_id
+            	console.log(this.option1_university_name)
             	this.listUniversity.map((univ) => {
             	    if (univ.name == this.option1_university_name) {
             	        this.departmentUniversity1 = univ.department
@@ -353,7 +373,7 @@
 
             if(response.data.data.option2) {
             	this.option2_university_name = response.data.data.option2.university_name
-            	this.option2_department_name = response.data.data.option2.department_name
+            	this.option2_department_name = response.data.data.option2.department_id
 
             	this.listUniversity.map((univ) => {
             	    if (univ.name == this.option2_university_name) {
@@ -367,7 +387,7 @@
 
         	if(response.data.data.option3) {
             	this.option3_university_name = response.data.data.option3.university_name
-            	this.option3_department_name = response.data.data.option3.department_name
+            	this.option3_department_name = response.data.data.option3.department_id
 
             	this.listUniversity.map((univ) => {
             	    if (univ.name == this.option3_university_name) {
@@ -390,8 +410,9 @@
 		}
 		axios.get('/cerelisasi/analysis')
 		.then(response => {
+			console.log(response)
 		  this.dataAnalysis = response.data.data
-		  if(this.dataAnalysis.my_point != 0){
+		  if(this.dataAnalysis != null){
 		  	this.$swal('Hasil Simulasi', 'Anda Sudah Melakukan Simulasi', 'success')
 		  	this.$router.push({ name:'cerelisasi_analisis', params: { data: this.dataAnalysis, name: this.name } })
 		  }else{
@@ -401,30 +422,25 @@
 		.catch(error => {
 		  console.log(error)
 		})
-
-        //get list Kelas
-        axios.get('/master/class')
-        .then(response => {
-            console.log(response.data.data)
-            this.item_kelas= response.data.data
-        })
-        .catch(error => {
-            console.log(error)
-        })
-
-        //get list University
-        axios.get('/master/getAllDataUniversity')
-        .then(response => {
-            console.log(response.data.data)
-            this.listUniversity= response.data.data
-        })
-        .catch(error => {
-            console.log(error)
-        })
     },
     watch: {
     	kelas(newKelas) {
     		this.kelas = newKelas
+    	},
+    	listUniversity() {
+    		this.listUniversity.map((univ) => {
+    	      if (univ.name == this.option1_university_name) {
+    	          this.departmentUniversity1 = univ.department
+    	      }
+
+    	      if (univ.name == this.option2_university_name) {
+    	          this.departmentUniversity2 = univ.department
+    	      }
+
+    	      if (univ.name == this.option3_university_name) {
+    	          this.departmentUniversity3 = univ.department
+    	      }
+    	  })
     	},
     	option1_university_name (university1) {
     	  this.option1_university_name = university1
