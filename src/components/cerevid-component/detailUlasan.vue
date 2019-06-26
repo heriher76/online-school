@@ -143,13 +143,17 @@
                    <v-flex md12>
                      <template>
                        <v-layout row justify-center>
-                         <v-btn
-                           dark color="#2c3e50"
+                         <div v-if="cekReview()">
+                          <v-btn :disabled="true"color="#2c3e50" class="white--text">Berikan Ulasan</v-btn>
+                         </div>
+                         <div v-else>
+                          <v-btn
                            @click.stop="dialog = true"
-                         >
+                           dark color="#2c3e50"
+                          >
                            Berikan Ulasan
-                         </v-btn>
-
+                          </v-btn>
+                         </div>
                          <v-dialog
                            v-model="dialog"
                            max-width="450"
@@ -200,6 +204,7 @@
   </div>
 </template>
 <script>
+  import axios from 'axios'
   export default {
     props: ['datas'],
     data: () => ({
@@ -212,6 +217,7 @@
       star5: 0,
       totalStar: 0,
       body: "",
+      dataUser:[],
       rules_rating: {
         required: value => !!value || 'Wajib Diisi',
       },
@@ -270,7 +276,29 @@
 				return this.$store.state.dataUser || {}
 			},
     },
+    mounted(){      
+      if(this.$store.getters.loggedIn){
+        axios.get('/auth/user')
+        .then(response => {
+          this.dataUser      = response.data.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      }
+
+    },
     methods: {
+      cekReview() {
+        if(this.datas.data.reviews){
+          for(var i=0;i<this.datas.data.reviews.length;i++){
+            if(this.datas.data.reviews[i].user==this.dataUser.name){
+              return true
+              break;
+            }
+          }
+        }
+      },
       getCountStar(){
         this.star5 = 0
         this.star4 = 0
