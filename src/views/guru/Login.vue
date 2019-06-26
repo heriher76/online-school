@@ -111,11 +111,11 @@
             this.$swal('Oopps', 'Anda Tidak Memiliki Akses Kesini!', 'warning')
             this.$store.dispatch('destroyToken')
             .then(response => {
-                this.$router.push({path:'/'})
+                
             })
-            // .catch(error => {
-            //     console.log(error)
-            //   })
+            .catch(error => {
+                console.log(error)
+              })
           }else{
             window.location.href = "/guru"
           }
