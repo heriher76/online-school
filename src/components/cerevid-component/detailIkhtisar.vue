@@ -18,11 +18,12 @@
             </div>
             <div v-else>
               <div v-if="!ketemu" class="body-2 red--text">Materi Belum Tersedia...</div>
-              <v-btn :disabled="!ketemu" color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#'+tipeMateri+'-'+sectionId+'-'+id" @click="postLearned">Mulai Belajar</v-btn>
+              <v-btn :disabled="!ketemu" @click="postLearned" color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#'+tipeMateri+'-'+sectionId+'-'+id">Mulai Belajar</v-btn>
             </div>
       </div>
       <div v-else>
-        <v-btn :disabled="!ketemu" color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#'+tipeMateri+'-'+sectionId+'-'+id" @click="postLearned">Mulai Belajar</v-btn>
+        <div v-if="!ketemu" class="body-2 red--text">Materi Belum Tersedia...</div>
+        <v-btn :disabled="!ketemu" @click="postLearned" color="#2c3e50" class="white--text" :to="'/cerevid/detail-pelajaran/'+courseId+'/materi#'+tipeMateri+'-'+sectionId+'-'+id">Mulai Belajar</v-btn>
       </div>
     </v-layout>
   </div>
@@ -47,8 +48,10 @@ export default {
           user_id: this.userId,
         })
         .then(response => {
+          console.log(response)
         })
         .catch(error => {
+          console.log(error)
         })
     },
     getDataPelajaranbyUser() {
