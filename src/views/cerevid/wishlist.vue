@@ -21,12 +21,14 @@
       <v-data-iterator
 				:items="dataFavoritbyUser.data"
 				:rows-per-page-items="rowsPerPageItems"
+        :pagination.sync="pagination"
 				content-class="layout row wrap"
 				:expand="expand"
 				:search="search"
         :custom-filter="filterSearch"
 				no-data-text="Pelajaran tidak tersedia"
 				no-results-text="Pelajaran tidak ditemukan"
+        :hide-actions="true"
 				>
         <template v-slot:item="props">
           <v-flex xs12 sm6 md3>
@@ -75,6 +77,23 @@
           </v-flex>
         </template>
       </v-data-iterator>
+      <v-layout row wrap>
+        <v-flex class="mt-4" offset-md10 offset-sm8 md2 sm4 xs12 style="text-align:right">
+          <v-select
+            :items="rowsPerPageItems"
+            label="Tampil Data per Halaman"
+            v-model="pagination.rowsPerPage"
+            outline
+          ></v-select>
+        </v-flex>
+      </v-layout>
+      <div class="text-xs-center">
+        <v-pagination
+          v-model="pagination.page"
+          :length="parseInt(Math.ceil(pagination.totalItems/pagination.rowsPerPage)) || 1"
+          :total-visible="7"
+        ></v-pagination>
+      </div>
     </v-container>
   </v-container>
   <!-- end scontent -->
@@ -89,8 +108,14 @@ export default {
   },
   data: () => ({
     expand: true,
-    rowsPerPageItems: [4],
+    pagination: {
+      rowsPerPage: 8,
+      totalItems: 0,
+      page: 1
+    },
     search: '',
+    rowsPerPageItems: [4,8,12],
+    isiAwal: true
   }),
   methods: {
     filterSearch(items, search, filter) {
@@ -107,7 +132,9 @@ export default {
           user_id: this.userId,
           favorit_id: favorit_id,
         })
-        .then(response => {})
+        .then(response => {
+          this.isiAwal = true
+        })
         .catch(error => {
           this.$swal('Oopps', 'Gagal Menghapus Favorit...', 'warning')
         })
@@ -118,10 +145,11 @@ export default {
     this.getDataFavoritbyUser()
   },
   computed: {
-    dataDaftarPelajaran() {
-      return this.$store.state.dataPelajaran || {}
-    },
     dataFavoritbyUser() {
+      if(this.$store.state.dataFavoritbyUser.data && this.isiAwal){
+        this.pagination.totalItems = this.$store.state.dataFavoritbyUser.data.length
+        this.isiAwal = false
+      }
       return this.$store.state.dataFavoritbyUser || {}
     },
     userId() {

@@ -41,7 +41,7 @@
                         v-model="pesanWA"
                         placeholder="Isi Pesan Disini"
                       ></v-text-field>
-                      <v-btn color="success"  :href="'https://wa.me/'+data.whatsapp+'?text='+pesanWA" :disabled="!pesanWA">Kirim</v-btn>
+                      <v-btn color="success"  :href="'https://wa.me/'+('62'+data.whatsapp.slice(1))+'?text='+pesanWA" :disabled="!pesanWA">Kirim</v-btn>
                     </v-card-text>
                   </v-card>
                 </v-flex>
