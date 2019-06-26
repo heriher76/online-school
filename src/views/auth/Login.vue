@@ -75,7 +75,10 @@
         </div>
 
         
-        <v-btn block round color="error" dark large @click="loginGoogle">
+        <v-btn block round color="#d44132" dark large @click="loginGoogle">
+          <div style="float:left; padding:3px 5px 0px 0px">
+             <img width="40px" alt="Google &quot;G&quot; Logo" :src="require('../../assets/images/icon_gplus.png')"/>
+         </div>
           masuk dengan akun google
         </v-btn>
 
@@ -175,15 +178,15 @@
     },
 
     methods:{
-      // toggleTimer() {
-      //   this.interval = setInterval(this.incrementTime, 1000);
-      // },
-      // incrementTime() {
-      //     this.time = parseInt(this.time) + 1;
-      //     if(this.$store.getters.loggedIn){
-      //       window.location.href = "/"
-      //     }
-      // },
+      toggleTimer() {
+        this.interval = setInterval(this.incrementTime, 1000);
+      },
+      incrementTime() {
+          this.time = parseInt(this.time) + 1;
+          if(this.$store.getters.loggedIn){
+            window.location.href = "/"
+          }
+      },
 
       login(){      
         this.btn_load = true
@@ -245,11 +248,11 @@
             token: GoogleUser.getAuthResponse().access_token
           })
           .then(response => {
-            console.log(response)
+            // console.log(response)
             this.loadLogin      = true
             this.snackbarGoogle = true
             this.textbarGoogle  = "Berhasil masuk dengan google!!"
-            return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 1500)
+            // return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 1500)
           })
           .catch(error => {
             this.snackbarGoogle = true

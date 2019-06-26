@@ -156,7 +156,7 @@ export default new Vuex.Store({
           password_confirmation: r.password_confirmation
         })
         .then(response => {
-          console.log(response.data)
+          // console.log(response.data)
           resolve(response)
         })
         .catch(error => {
@@ -170,7 +170,7 @@ export default new Vuex.Store({
     cekAuth(context){
       axios.get('/auth/user')
       .then(response => {
-        console.log(response)
+        // console.log(response)
         // console.log("auth", response.data.data.class.class_id)
         const dataUser   = response.data.data.id
         const cekClassId = response.data.data.class
@@ -217,7 +217,7 @@ export default new Vuex.Store({
         context.commit('retrieveToken', token)
       })
       .catch(error => {
-        console.console.log(error.response);
+        console.log(error.response);
       })  
     },
 
@@ -229,7 +229,7 @@ export default new Vuex.Store({
           password: credentials.password
         })
         .then(response => {
-          console.log(response)
+          // console.log(response)
           const token    = response.data.access_token
           localStorage.setItem('access_token', token)
           context.commit('retrieveToken', token)

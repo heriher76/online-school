@@ -13,7 +13,7 @@
                 <!-- /sidebar -->
 
                 <!-- leader board -->
-                <v-flex md9 sm12 xs12>
+                <v-flex md9 sm12 xs12 style="min-height:300px">
                     <v-card color="#B71C1C" dark>
                         <v-card-text class="px-0"><h6 class="title" style="margin:4px 20px">Papan Peringkat</h6></v-card-text>
                     </v-card>
@@ -92,6 +92,7 @@
                               disable-initial-sort
                             >
                               <template v-slot:items="props">
+                                <!-- {{props.item}} -->
                                   <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.name}}</b></td>
                                   <td v-else>{{props.item.name}}</td>
                                   <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.score}}</b></td>

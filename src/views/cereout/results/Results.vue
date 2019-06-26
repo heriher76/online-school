@@ -13,7 +13,7 @@
                 <!-- /sidebar -->
                 
                 <!-- results -->
-                <v-flex md9 sm12 xs12>
+                <v-flex md9 sm12 xs12 style="min-height:300px">
                     <v-card color="#B71C1C" dark>
                         <v-card-text class="px-0"><h6 class="title" style="margin:4px 20px">Hasil Tryout</h6></v-card-text>
                     </v-card>
