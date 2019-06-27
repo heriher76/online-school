@@ -53,23 +53,6 @@ export default {
     }
   },
 
-  // created(){
-  //   axios.get('/cereouts/running')
-  //   .then(response => {
-  //     if(response.data.status == true){
-  //       this.dialogRunning = true
-  //       this.data = response.data.data
-  //     }
-  //     else if(response.data.status == false){
-  //       this.dialogRunning = false
-  //       this.data = response.data.data
-  //     }
-  //   })
-  //   .catch(error => {
-  //     console.log(error.response)
-  //   })
-  // },
-
   methods:{
     attemptRunning(){
       this.dialogRunning = false

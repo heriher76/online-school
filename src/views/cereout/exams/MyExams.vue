@@ -438,7 +438,7 @@
                     })
                 }
                 else{
-                    axios.get('http://api.ceredinas.id/api/cereouts/class/'+val)
+                    axios.get('/cereouts/class/'+val)
                     .then(response => {
                         this.load_data = false
                         this.listPanel = true
@@ -472,7 +472,7 @@
                         console.log(error)
                     })
                 }else{
-                    axios.get('http://api.ceredinas.id/api/cereouts/attempttryout/class/'+val)
+                    axios.get('/cereouts/attempttryout/class/'+val)
                     .then(response => {
                         this.load_data = false
                         this.listPanel = true
@@ -508,7 +508,7 @@
                     })
                 }
                 else{
-                    axios.get('http://api.ceredinas.id/api/cereouts/attempttryout/class/'+val+'/expire')
+                    axios.get('/cereouts/attempttryout/class/'+val+'/expire')
                     .then(response => {
                         this.load_data = false
                         this.listPanel = true
