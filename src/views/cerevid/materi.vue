@@ -257,6 +257,7 @@ export default {
       forumId: null,
       panel: [],
       load: true,
+      ketemu: false
     }
   },
   methods: {
@@ -315,6 +316,18 @@ export default {
           this.$swal('Oopps', 'Gagal Mengirim Pertanyaan...', 'warning')
         })
     },
+    postLearned() {
+        this.$store.dispatch('pushDataLearned', {
+          course_id: this.courseId,
+          user_id: this.userId,
+        })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
   },
   created() {
     this.getDataDetailMateri()
@@ -335,15 +348,59 @@ export default {
     dataDetailMateri() {
       if(this.$store.state.dataDetailMateri.data && this.load){
         this.panel = [...Array(this.$store.state.dataDetailMateri.data.length).keys()].map(_ => true)
+        for(var i=0;i<this.$store.state.dataDetailMateri.data.length;i++){
+          for(var j=0;j<this.$store.state.dataDetailMateri.data[i].videos.length;j++){
+            if(this.$store.state.dataDetailMateri.data[i].videos[j].last_seen!=null){
+              this.postLearned();
+              this.ketemu = true;
+              break;
+              return true
+            }
+          }
+          if(this.ketemu){
+            break;
+            return true
+          }
+          for(var j=0;j<this.$store.state.dataDetailMateri.data[i].texts.length;j++){
+            if(this.$store.state.dataDetailMateri.data[i].texts[j].last_seen!=null){
+              this.postLearned();
+              this.ketemu = true;
+              break;
+              return true
+            }
+          }
+          if(this.ketemu){
+            break;
+            return true
+          }
+          for(var j=0;j<this.$store.state.dataDetailMateri.data[i].quiz.length;j++){
+            if(this.$store.state.dataDetailMateri.data[i].quiz[j].last_seen!=null){
+              this.postLearned();
+              this.ketemu = true;
+              break;
+              return true
+            }
+          }
+          if(this.ketemu){
+            break;
+            return true
+          }
+        }
         this.load = false
       }
       return this.$store.state.dataDetailMateri || {}
+    },
+    dataPelajaranbyUser(){
+      return this.$store.state.dataPelajaranbyUser || {}
     },
     dataDetailForum() {
       return this.$store.state.dataDetailForum || {}
     },
     userId() {
       return this.$store.state.dataUser || {}
+    },
+    courseId() {
+      return this.$route.params.id || {}
     },
   },
 }
