@@ -38,7 +38,7 @@
                                     <v-flex md6>
                                         <table>
                                             <tr><td width="200"><b>Tanggal Percobaan</b></td><td>{{moment(data.created_at).format('DD/MM/YYYY hh:mm')}}</td></tr>
-                                            <tr><td><b>Durasi</b></td><td>{{data.my_time}} Detik</td></tr>
+                                            <tr><td><b>Durasi</b></td><td>{{data.my_time}} Menit</td></tr>
                                             <tr><td><b>Nilai</b></td><td>{{data.score}}</td></tr>
                                             <tr><td><b>Total Soal Terjawab</b></td><td>{{data.total_answer}}</td></tr>
                                         </table>
