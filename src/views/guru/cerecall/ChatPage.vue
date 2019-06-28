@@ -13,7 +13,7 @@
 				
 		<v-flex md9 sm12 xs12>
 			<h1>CereCall Guru</h1>
-    
+            {{dataHistory}}
             <div class="cerecall_chat">
                 <v-container>
                     <div class="chat_box">
@@ -57,11 +57,29 @@
 
 <script>
 	import SideBar from '../../../components/guru/SideBar'
+    import axios from 'axios'
 
 	export default {
         name: 'dashboard',
-            components: {
+        data: () => ({
+            dataHistory:[],
+        }),
+        components: {
             SideBar,
+        },
+        methods: {
+            getHistoryChat(){
+                axios.defaults.headers = {
+                    'Authorization': 'Bearer ' + context.state.token
+                }
+                axios.get('/api/cerecall/teacher/history/running')
+                .then(response => {
+                    this.dataHistory = response.data.data
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            }
         }
     }
 </script>
