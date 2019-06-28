@@ -110,11 +110,11 @@
                 </v-flex>
     
                 <v-flex md3>
-                    <v-card style="padding:15px;height:100%"> 
-                        <div style="min-height:90%;">
-                            <v-card style="padding:2px 5px">
-                                <b>Navigasi Soal</b>
-                            </v-card><br>
+                    <v-card style="height:424px;padding:15px"> 
+                        <v-card style="padding:2px 5px">
+                            <b>Navigasi Soal</b>
+                        </v-card><br>
+                        <div style="margin:-10px 0px 10px 0px;width:100%;height:55%;overflow:auto">
                             <a
                                 class="btn-num"
                                 v-for="(item, key, index) in questions" :key="item.id" 
@@ -136,24 +136,22 @@
                                 <span v-else-if="key+1 >= 10 && tmpanswer[key]!=null" style="background:#8BC34A;padding:10px 10.6px">{{key+1}}</span>  
                             </a>
                             <div class="clear"></div>
-                            
-                            <v-card style="padding:2px 5px">
-                                <b>Keterangan</b>
-                            </v-card>
-                            <v-layout>
-                                <v-flex md5>
-                                    <div><span style="width:15px;height:15px;background:#8BC34A; margin:2.6px; float:left"></span><span>Terjawab</span></div>
-                                    <div><span style="width:15px;height:15px;background:orange; margin:2.6px; float:left"></span><span>Ditandai</span></div>
-                                </v-flex>
-                                <v-flex md7>
-                                    <div><span style="width:15px;height:15px;background:#BDBDBD; margin:2.6px; float:left"></span><span>Belum Terjawab</span></div>
-                                    <!-- <div><span style="width:15px;height:15px;background:#03A9F4; margin:2.6px; float:left"></span><span>Aktif</span></div> -->
-                                </v-flex>
-                            </v-layout>          
-                        </div>     
+                        </div>
+
+                        <v-card style="padding:2px 5px">
+                            <b>Keterangan</b>
+                        </v-card>
+                        <v-layout>
+                            <v-flex md5>
+                                <div><span style="width:15px;height:15px;background:#8BC34A; margin:2.6px; float:left"></span><span>Terjawab</span></div>
+                                <div><span style="width:15px;height:15px;background:orange; margin:2.6px; float:left"></span><span>Ditandai</span></div>
+                            </v-flex>
+                            <v-flex md7>
+                                <div><span style="width:15px;height:15px;background:#BDBDBD; margin:2.6px; float:left"></span><span>Belum Terjawab</span></div>
+                            </v-flex>
+                        </v-layout>          
                         <v-divider></v-divider>
-                        <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn>                
-                        <!-- <v-btn block color="red" dark @click="submit">Akhiri</v-btn> -->
+                        <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn>     
                     </v-card>
                 </v-flex>
             </v-layout>
