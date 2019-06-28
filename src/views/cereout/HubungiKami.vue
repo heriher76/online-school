@@ -15,7 +15,19 @@
                 <!-- hubungi kami -->
                 <v-flex md6 sm12 xs12 style="min-height:300px">
                     <h5 class="headline" style="color:#424242;margin-bottom:10px">Hubungi Kami</h5>
-                    <div v-for="item in items" :key="item.id">
+
+                    <div v-show="load_data" style="margin:150px auto; width:5%;">
+                        <v-layout column justify-center align-center>
+                            <hollow-dots-spinner
+                            :animation-duration="1000"
+                            :dot-size="15"
+                            :dots-num="3"
+                            color="#ff1d5e"
+                            />
+                        </v-layout>
+                    </div>
+
+                    <div v-show="listData" v-for="item in items" :key="item.id">
                         <v-card style="padding:10px">
                             <div style="float:left">
                                 <label style="font-size:12px;color:#757575">Telepon Admin</label><br>
@@ -62,15 +74,19 @@
     import SideBar from '../../components/cereout-component/SideBar'
     import Navbar from '../../components/cereout-component/Navbar'
     import axios from 'axios';
+    import { HollowDotsSpinner } from 'epic-spinners'
 
     export default {
         components:{
             SideBar,
-            Navbar
+            Navbar,
+            HollowDotsSpinner
         },
 
         data(){
             return {
+                load_data:true,
+                listData:false,
                 items: []
             }
         },
@@ -78,8 +94,10 @@
         mounted(){
             axios.get('/master/generalInformation')
             .then(response => {
-                this.items = response.data.data
-                console.log(response.data.data)
+                this.load_data = false
+                this.listData  = true
+                this.items     = response.data.data
+                // console.log(response.data.data)
             })
             .catch(error => {
                 console.log(error.response)
