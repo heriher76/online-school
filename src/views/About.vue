@@ -1,33 +1,6 @@
 <template>
   <div class="about">
-    <!-- banner -->
     
-    <!-- /banner -->
-
-    <!-- slider -->
-    <!-- <v-carousel
-    >
-        <div v-show="load_data" style="margin:150px auto; width:5%;">
-            <v-layout column justify-center align-center>
-                <hollow-dots-spinner
-                  :animation-duration="1000"
-                  :dot-size="15"
-                  :dots-num="3"
-                  color="#ff1d5e"
-                />
-            </v-layout>
-        </div>
-        <v-carousel-item
-            v-for="(item,i) in datas"
-            :key="i"
-            v-if="item.category=='sliders'"
-            :src="item.url"
-        >
-            <h5 style="color:white; padding:10px 20px; background:rgba(0,0,0,0.2)" class="headline">{{item.title}}</h5>
-        </v-carousel-item>
-    </v-carousel> -->
-    <!-- /slider -->
-
     <!-- content up -->
     <v-container>
       <div style="text-align:center;margin-top:50px">
@@ -94,25 +67,34 @@
         <span style="font-size:40px; padding:10px 20px; color:#B71C1C; background:#FAFAFA; position:relative;top:-36px"><b>Tentang Kami</b></span>
       </div>
 
-      <v-layout row wrap style="margin:20px; font-size:18px">
-        <v-flex md8 sm12 xs12>
-          <p>Cerebrum adalah bimbel online untuk pelajar SD, SMP, SMA/SMK yang diberikan secara gratis untuk membantu pemerintah dalam mempercepat pemerataan kualitas pendidikan di Indonesia.</p>
-          <p>Cerebrum memiliki visi, yaitu sebagai media belajar untuk mempercepat pemerataan pendidikan yang berkualitas di Indonesia.</p>
-          <p>Adapun misi dari cerebrum adalah menjadi penyedia bimbingan belajar Online No. 1 di Indonesia yang membuat belajar menjadi menyenangkan, dengan kualitas terbaik, secara gratis, tanpa biaya yang mahal.</p>
-        </v-flex>
-        <v-flex md4 sm12 xs12>
-          <!-- <div style="width:300px; margin-top:-50px; margin-left:50px ">-->
-          <div style="margin-top:-30px; margin-left:50px ">    
-            <img :src="require('../assets/images/cerebrum.png')" width="100%" height="100%">
-          </div>
-        </v-flex>
-      </v-layout>
+      <div style="margin:15px; font-size:18px">
+        <div style="margin-top:-30px; margin-left:50px; width:350px;height:350px;float:right">    
+          <img :src="require('../assets/images/cerebrum.png')" width="100%" height="100%">
+        </div>
+        <p>Cerebrum adalah super apps edukasi yang bertujuan untuk meningkatkan kualitas dan pemerataan pendidikan di Indonesia. Untuk saat ini Cerebrum telah membuat 6 produk yaitu:</p>
+        
+        <b>Cerevid - Cerebrum Video</b>
+        <p>Cerevid adalah platform video pembelajaran untuk siswa SD, SMP, dan SMA. Di cerevid video ditambahkan animasi untuk membuat siswa lebih memahami materi. Tidak hanya itu, di cerevid terdapat rangkuman materi yang di design menarik dan juga mini quiz untuk mencek sebarapa paham siswa dengan materi yang telah disampaikan.</p>
+        
+        <b>Cereout - Cerebrum TryOut</b>
+        <p>Cereout adalah platform untuk simulasi ujian berbasis komputer. Di cereout hasil analisis sangat lengkap sehingga diharapkan siswa dapat mengetahui telah sampai mana pencapaian belajarnya. Tidak hanya itu di cereout juga siswa dapat membandingkan nilai dengan peserta lain yang diharapkan dapat menyusun strategi untuk memilih PTN.</p>
+        
+        <b>Cerelisasi - Cerebrum Rasionalisasi</b>
+        <p>Cerelisasi adalah platform online untuk merasionalkan nilai raport untuk SNMPTN dan merasionalkan nilai UTBK untuk SBMPTN. Di cerelisasi siswa dapat mengetahui seberapa ketat pertarungan di suatu jurusan dan peluang siswa masuk ke jurusan tersebut. Cerelisas menggunakan AI dan machine learning untuk memprediksi peluang terbesar supaya siswa dapat tembus PTN yang diinginkan.</p>
+        
+        <b>Cerecall - Cerebrum Consultation</b>
+        <p>Cerecall adalah platform untuk menayangkan soal yang siswa kurang pahami. Siswa akan mendapatkan pembahasan berupa teks, sound, gambar, video ataupun secara live streaming dari jutaan guru di Indonesia.</p>
+
+        <b>Cerejur – Cerebrum Jurusan</b>
+        <p>Cerejur adalah platform untuk mengetahui informasi tentang jurusan yang ada di seluruh Indonesia. Bersihkan video bagaimana mahasiswa belajar di jurusan tersebut hingga prospek kerja. Tidak hanya itu di cerejur juga terdapat informasi keketata jurusan yang akan diintegrasikan dengan cerelisasi untuk mengetahui peluang siswa masuk ke jurusan tersebut.</p>
+ 
+        <b>Cerefo - Cerebrum Info</b>
+        <p>Cerefo adalah platform utuk memperoleh informasi menarik seputar sains dan ilmu pengetahuan. Dikemas secara santai dan tidak membosankan. Tidak hanya berupa tulisan tetapi terdapat gambar dan video yang diharapkan siswa lebih tertarik untuk membaca artikel sains.</p>
+
+        <p>Tidak hanya 6 produk ini, kedepannya cerebrum akan terus mengembangkan aplikasi dan terus menambah produk yang bermanfaat. Diharapkan produk-produk dari Cerebrum dapat mewujudkan terciptanya Pemerataan dan peningkatan kualitas pendidikan di Indonesia.</p>          
+
+      </div>
     </v-container>
-
-    <!-- <hr>
-    <v-divider></v-divider> -->
-
-    
   </v-container>
 
     

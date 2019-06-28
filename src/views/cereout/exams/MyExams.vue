@@ -398,26 +398,6 @@
                 }
             },
 
-            // show search data
-            // lihatListTryout(val){
-            //     var n;
-            //     this.load_data = true
-            //     this.listPanel = false
-            //     this.note      = false
-
-            //     axios.get('/cereouts')
-            //     .then(response => {
-            //         this.load_data = false
-            //         this.listPanel = true
-            //         this.note      = true
-            //         this.items     = response.data.data
-            //     })
-            //     .catch(error =>{
-            //         this.load_data = false
-            //         console.log(error)
-            //     })
-            // },
-
             // get list tryout by class
             showClassLT(val){
                 this.load_data = true
