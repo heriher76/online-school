@@ -1,6 +1,6 @@
 <template>
   <v-layout v-resize="onResize" column align-center justify-center>
-	<iframe src="http://admin.ceredinas.id/syaratKetentuan" :height="windowSize.y" width="100%"></iframe>
+	<iframe src="http://ceredinas.id/doc/sdk.html" :height="windowSize.y" width="100%"></iframe>
   </v-layout>
 </template>
 <script type='text/javascript'>
