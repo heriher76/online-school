@@ -479,6 +479,7 @@
 	export default {
 		name:"detail-pelajaran-guru",
     data: () => ({
+      myname: '',
       sections: '',
 			reviews: '',
       forums: '',
@@ -527,7 +528,7 @@
                 this.$swal('Sukses', 'Berhasil Menambahkan Komentar!', 'success')
                 for (let i = 0; i < this.forums.length; i++) {
                     if(this.forums[i].id == id) {
-                      this.forums[i].comments.push({body: willReply.value, comments: [], posted: 'Baru Saja', user: 'heri', id:response.data.data.id});
+                      this.forums[i].comments.push({body: willReply.value, comments: [], posted: 'Baru Saja', user: this.myname, id:response.data.data.id});
                     } 
                 }
               })
@@ -747,7 +748,7 @@
           })
           .then(response => {
             this.$swal('Sukses', 'Berhasil Menambahkan Komentar!', 'success')
-            this.forums.unshift({id: response.data.data.id, body: this.body, comments: [], posted: 'Just Now' , user: 'heri'});
+            this.forums.unshift({id: response.data.data.id, body: this.body, comments: [], posted: 'Baru Saja' , user: this.myname});
           })
           .catch(error => {
             this.$swal('Oops', 'Gagal Menambahkan Komentar!', 'warning')
@@ -810,6 +811,7 @@
     },
     computed: {
       dataDetailPelajaran(){
+        this.myname = this.$store.state.dataDetailPelajaran.data.teacher.name
         if(typeof this.$store.state.dataDetailPelajaran.data !== "undefined"){
           this.is_load1 = false
           this.showTab = true
