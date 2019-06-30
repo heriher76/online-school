@@ -54,10 +54,13 @@
                           <v-list-tile-avatar>
                             <v-icon>videocam</v-icon>
                           </v-list-tile-avatar>
-
                           <v-list-tile-content>
-                            <v-list-tile-title v-html="materi.title"></v-list-tile-title>
-                            <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
+                                <v-tooltip bottom>
+                                  <template v-slot:activator="{ on }">
+                                    <span v-on="on"><v-list-tile-title v-html="materi.title"></v-list-tile-title></span>
+                                  </template>
+                                  <span>{{materi.title}}</span>
+                                </v-tooltip>
                           </v-list-tile-content>
 
                           <v-spacer></v-spacer>
@@ -75,8 +78,12 @@
                           </v-list-tile-avatar>
 
                           <v-list-tile-content>
-                            <v-list-tile-title v-html="materi.title"></v-list-tile-title>
-                            <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
+                                <v-tooltip bottom>
+                                  <template v-slot:activator="{ on }">
+                                    <span v-on="on"><v-list-tile-title v-html="materi.title"></v-list-tile-title></span>
+                                  </template>
+                                  <span>{{materi.title}}</span>
+                                </v-tooltip>
                           </v-list-tile-content>
 
                           <v-spacer></v-spacer>
@@ -94,8 +101,12 @@
                           </v-list-tile-avatar>
 
                           <v-list-tile-content>
-                            <v-list-tile-title v-html="materi.title"></v-list-tile-title>
-                            <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
+                                <v-tooltip bottom>
+                                  <template v-slot:activator="{ on }">
+                                    <span v-on="on"><v-list-tile-title v-html="materi.title"></v-list-tile-title></span>
+                                  </template>
+                                  <span>{{materi.title}}</span>
+                                </v-tooltip>
                           </v-list-tile-content>
 
                           <v-spacer></v-spacer>
@@ -316,18 +327,6 @@ export default {
           this.$swal('Oopps', 'Gagal Mengirim Pertanyaan...', 'warning')
         })
     },
-    postLearned() {
-        this.$store.dispatch('pushDataLearned', {
-          course_id: this.courseId,
-          user_id: this.userId,
-        })
-        .then(response => {
-          console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
   },
   created() {
     this.getDataDetailMateri()
@@ -348,44 +347,6 @@ export default {
     dataDetailMateri() {
       if(this.$store.state.dataDetailMateri.data && this.load){
         this.panel = [...Array(this.$store.state.dataDetailMateri.data.length).keys()].map(_ => true)
-        for(var i=0;i<this.$store.state.dataDetailMateri.data.length;i++){
-          for(var j=0;j<this.$store.state.dataDetailMateri.data[i].videos.length;j++){
-            if(this.$store.state.dataDetailMateri.data[i].videos[j].last_seen!=null){
-              this.postLearned();
-              this.ketemu = true;
-              break;
-              return true
-            }
-          }
-          if(this.ketemu){
-            break;
-            return true
-          }
-          for(var j=0;j<this.$store.state.dataDetailMateri.data[i].texts.length;j++){
-            if(this.$store.state.dataDetailMateri.data[i].texts[j].last_seen!=null){
-              this.postLearned();
-              this.ketemu = true;
-              break;
-              return true
-            }
-          }
-          if(this.ketemu){
-            break;
-            return true
-          }
-          for(var j=0;j<this.$store.state.dataDetailMateri.data[i].quiz.length;j++){
-            if(this.$store.state.dataDetailMateri.data[i].quiz[j].last_seen!=null){
-              this.postLearned();
-              this.ketemu = true;
-              break;
-              return true
-            }
-          }
-          if(this.ketemu){
-            break;
-            return true
-          }
-        }
         this.load = false
       }
       return this.$store.state.dataDetailMateri || {}
@@ -405,7 +366,7 @@ export default {
   },
 }
 </script>
-<style> 
+<style>
 .theme--light.v-expansion-panel .v-expansion-panel__container .v-expansion-panel__header .v-expansion-panel__header__icon .v-icon{
   color:rgb(0,0,0,0.87);
 }
