@@ -29,7 +29,9 @@
   export default {
     props:['datas'],
     data: () => ({
-      i: null
+      i: null,
+      ketemu: false,
+      is_learned: false
     }),
     methods:{
       getDataText(data1, data2){
@@ -51,9 +53,43 @@
           return false
         }
       },
+      getDataPelajaranbyUser() {
+        this.$store.dispatch('getDataPelajaranbyUser')
+          .then(response => {
+
+          })
+      },
+      postLearned() {
+          this.$store.dispatch('pushDataLearned', {
+            course_id: this.courseId,
+            user_id: this.userId,
+          })
+          .then(response => {
+          })
+          .catch(error => {
+          })
+      },
       getIndexText(materi, index){
         if(materi==this.ambilId){
           this.getDataText(this.datas[this.i].id, this.datas[this.i].texts[index].id)
+          if(!this.ketemu && !this.is_learned){
+            if(this.dataPelajaranbyUser.data && !this.is_learned){
+              for(var i=0;i<this.dataPelajaranbyUser.data.length;i++){
+                if(this.dataPelajaranbyUser.data[i].course_id==this.courseId){
+                  this.is_learned = true
+                }
+              }
+              if(!this.is_learned){
+                for(var j=0;j<this.datas[this.i].texts.length;j++){
+                  if(this.datas[this.i].texts[j].last_seen!=null){
+                    this.postLearned();
+                    this.ketemu = true;
+                    break;
+                  }
+                }
+              }
+            }
+          }
           return true
         }else{
           return false
@@ -61,7 +97,19 @@
 
       }
     },
+    created(){
+      this.getDataPelajaranbyUser()
+    },
     computed:{
+      dataPelajaranbyUser() {
+        return this.$store.state.dataPelajaranbyUser || {}
+      },
+      courseId() {
+        return this.$route.params.id || {}
+      },
+      userId() {
+        return this.$store.state.dataUser || {}
+      },
       ambilSectionId(){
         return this.$route.hash.split('-')[1] || {}
       },
