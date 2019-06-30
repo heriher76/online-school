@@ -53,6 +53,16 @@
 								      required
 								      @change="selected1 = true"
 								    ></v-select>
+
+								    <v-select
+								      v-model="tipe"
+								      :items="item_tipe"
+								      item-value="value"
+								      item-text="name"
+								      label="Tipe Jalur"
+								      required
+								      @change="selected1 = true"
+								    ></v-select>
 										<div>{{select}}</div>
 
 									<label>Pilihan Pertama</label>
@@ -313,6 +323,11 @@
       tka_soshum3: '',
       tka_soshum4: '',
       tka_soshum5: '',
+      tipe: '',
+      item_tipe: [
+      	{value: 0, name: 'SBMPTN'},
+      	{value: 1, name: 'Raport'}
+      ],
       kelas: '',
       item_kelas: [],
       listUniversity: [],
@@ -424,6 +439,9 @@
 		})
     },
     watch: {
+    	tipe(value) {
+    		this.tipe = value
+    	},
     	kelas(newKelas) {
     		this.kelas = newKelas
     	},
@@ -498,7 +516,6 @@
 				this.points.push(Number(this.tka_soshum4))
 				this.points.push(Number(this.tka_soshum5))
 			}
-
 			this.departments.push(this.option1_department_name)
 			this.departments.push(this.option2_department_name)
 			this.departments.push(this.option3_department_name)
@@ -508,7 +525,8 @@
 			}
 			axios.post('/cerelisasi/analysis', {
 				points: this.points,
-				departments: this.departments
+				departments: this.departments,
+				type: this.tipe
 			})
 			.then(response => {
 			  this.btn_load = false
