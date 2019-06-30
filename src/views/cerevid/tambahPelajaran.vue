@@ -128,6 +128,7 @@
             this.$router.push({path:'/guru/cerevid/daftar-pelajaran'})
           })
           .catch(error => {
+            console.log(error)
             this.btn_load = false;
             this.$swal('Oops', 'Gagal Menambah Pelajaran!', 'warning')
           })

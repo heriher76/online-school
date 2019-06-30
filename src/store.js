@@ -230,8 +230,13 @@ export default new Vuex.Store({
         })
         .then(response => {
           const token    = response.data.access_token
+          const dataUser   = response.data.data.id
+          
           localStorage.setItem('access_token', token)
           context.commit('retrieveToken', token)
+
+          localStorage.setItem('getDataUser', dataUser)
+          context.commit('retrieveDataUser', dataUser)
           resolve(response)
         })
         .catch(error => {
@@ -349,6 +354,7 @@ export default new Vuex.Store({
     },
 
     getDataPelajaranbyTeacher(context){
+      console.log(this.state.dataUser)
       axios.defaults.headers = {
         'Authorization': 'Bearer ' + context.state.token
       }
