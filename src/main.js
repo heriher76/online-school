@@ -6,6 +6,8 @@ import VueGoogleCharts from 'vue-google-charts';
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import VueCarousel from '@chenfengyuan/vue-carousel';
 
+// import VueMathjax from 'vue-mathjax'
+
 import axios from 'axios';
 
 import ReadMore from 'vue-read-more';
@@ -24,6 +26,8 @@ const gauthOption = {
   scope: 'profile email',
   prompt: 'select_account'
 }
+
+// Vue.use(VueMathjax)
 
 Vue.use(GAuth, gauthOption)
 

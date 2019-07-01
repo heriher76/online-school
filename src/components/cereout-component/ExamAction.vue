@@ -79,6 +79,21 @@
                             </div>
                             <v-container>
                                 <p style="font-size:16px" v-html="quest"></p>
+
+                                <!-- <textarea v-model="formula" cols="30" rows="10"></textarea> -->
+                                <!-- <vue-mathjax :formula="cek"></vue-mathjax> -->
+
+                                <!-- <p>$$e^{i\pi} + 1 = 0$$</p>  -->
+
+                                <!-- <p style="font-size:16px" v-html="coba"></p> -->
+
+<!-- cek {{cek}} <br>
+la {{latex}} -->
+
+                                <!-- <input v-model="latex"/><br> -->
+                                <!-- <div :key="latex">{{latex}}</div> -->
+                                <!-- <div :key="latex">{{latex}}</div> -->
+   
                                 <div v-for="(n,key,index) in options" :key="n.index">
                                     <label v-if="n.option!=null">
                                         <input type="radio" style="float:left;margin:4px" :value="key" v-model="tmpanswer[hal]" name="opt">
@@ -120,9 +135,6 @@
                                 v-for="(item, key, index) in questions" :key="item.id" 
                                 @click="viewQuestion(key)"
                             >  
-                                <!-- <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
-                                <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span>  -->
-                                
                                 <!-- ditandai -->
                                 <span v-if="key+1 < 10 && markanswer[key]=='1'" style="background:orange;padding:10px 14.6px">{{key+1}} </span>       
                                 <span v-else-if="key+1 >= 10 && markanswer[key]=='1'" style="background:orange;padding:10px 10.6px">{{key+1}}</span>
@@ -157,13 +169,13 @@
             </v-layout>
         </v-container>
         <LoadingScreen3 :loading="loadSubmit"></LoadingScreen3>
+
     </div>
 </template>
 
 <script>   
     import LoadingScreen3 from'../../components/loading-screen/Loading3'
     import axios from 'axios';
-    import { constants } from 'crypto';
 
     export default {
         props:["cereoutId", "scoringSystem", "attemptId"],
@@ -174,6 +186,8 @@
         
         data () {
             return {
+                latex: '',
+                
                 load_data: true,
 
                 StartTimer: true,
@@ -201,7 +215,14 @@
             }
         },
 
-        methods:{            
+        methods:{     
+            
+            reRender() {
+                if(window.MathJax) {
+                    console.log('rendering mathjax');
+                    window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub], () => console.log('done'));
+                }
+            },
             alertDisplay() {
                 this.$swal({
                     title: 'Apakah anda yakin?',
@@ -280,6 +301,8 @@
                 this.detQuest= this.questions[index] 
                 this.quest   = this.questions[index].question
                 this.options = this.questions[index].option
+
+                this.latex = this.quest.replace(/(<span[^>]+>|<span>|<\/span>)/g, '$')
             },
 
             previous(hal){
@@ -289,6 +312,8 @@
                     this.detQuest  = this.questions[hal]
                     this.quest     = this.questions[hal].question
                     this.options   = this.questions[hal].option
+
+                    this.latex = this.quest.replace(/(<span[^>]+>|<span>|<\/span>)/g, '$')
                 }
             },
 
@@ -299,6 +324,8 @@
                     this.detQuest = this.questions[hal]
                     this.quest    = this.questions[hal].question
                     this.options  = this.questions[hal].option
+
+                    this.latex = this.quest.replace(/(<span[^>]+>|<span>|<\/span>)/g, '$')
                 }
             },
 
@@ -329,7 +356,19 @@
             
         },
 
+        watch: {
+            latex: function() {
+                console.log('data changed')
+                // this.reRender();
+                this.$nextTick().then(()=>{
+                    this.reRender();
+                });
+            }
+        },
+
         mounted(){
+            this.reRender();
+
             axios.get('/cereouts/question/' + this.cereoutId)
             .then(response => {
                 this.load_data = false
@@ -340,6 +379,8 @@
                 this.quest     = this.questions[0].question
                 this.options   = this.questions[0].option;
                 
+                this.latex     = this.quest.replace(/(<span[^>]+>|<span>|<\/span>)/g, '$')
+
                 this.cekDurasi = this.detQuest.duration * 60
                 this.totalTime = this.detQuest.duration * 60000
 

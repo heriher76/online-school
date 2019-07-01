@@ -43,6 +43,7 @@
                                         <v-list-tile-action>
                                             <v-list-tile-action-text>
                                                  <div style="float:right">
+                                                     {{item.status}}
                                                     <v-chip color="info" v-if="item.status == 1" text-color="white">
                                                         Menunggu Konfirmasi
                                                     </v-chip>
