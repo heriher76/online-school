@@ -128,7 +128,7 @@
         <v-pagination
           v-model="pagination.page"
           :length="parseInt(Math.ceil(pagination.totalItems/pagination.rowsPerPage)) || 1"
-          :total-visible="7"
+          :total-visible="5"
         ></v-pagination>
       </div>
     </v-container>
