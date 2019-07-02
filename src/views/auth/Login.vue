@@ -96,7 +96,7 @@
           @get-initial-status="getUserData">
         </facebook-login> -->
 
-        <!-- <v-facebook-login app-id="318638459074473"></v-facebook-login> -->
+        <v-facebook-login app-id="318638459074473"></v-facebook-login>
 
         <hr style="margin-bottom:15px">
         <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>

@@ -21,8 +21,8 @@
             <v-list-tile-title>Form Input Nilai Siswa</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile
-          to="/cerelisasi/riwayat"
+        <!-- <v-list-tile
+          to="/cerelisasi/hasil-analisis"
         >
           <v-list-tile-action>
             <v-icon>dashboard</v-icon>
@@ -31,7 +31,7 @@
           <v-list-tile-content>
             <v-list-tile-title>Riwayat Analisis</v-list-tile-title>
           </v-list-tile-content>
-        </v-list-tile>
+        </v-list-tile> -->
       </v-list>
     </v-card-text>
 </template>

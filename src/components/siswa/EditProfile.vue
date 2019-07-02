@@ -312,7 +312,6 @@
                   this.showImage = !this.showImage
                   this.is_load1 = !this.is_load1
                   this.$swal('Sukses', 'Berhasil Mengganti Photo Profile!', 'success')
-                  console.log(response.data)
                 })
                 .catch(error => {
                   this.showImage = !this.showImage
