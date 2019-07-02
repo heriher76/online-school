@@ -18,40 +18,13 @@
 							          Daftar Pelajaran
 							        </v-flex>
 							        <v-flex xs12 sm12 md4>
-						                <!-- <v-text-field
+						                <v-text-field
 						                    label="Cari Pelajaran..."
 						                    append-icon="search"
-																class="mx-4"
+											class="mx-4"
+											v-model="search"
 						                  >
-						                </v-text-field> -->
-						                <v-autocomplete
-						                  v-model="select"
-						                  :loading="loading"
-						                  :items="dataPelajaranbyTeacher.data"
-						                  cache-items
-						                  class="mx-3"
-						                  flat
-						                  label="Cari Pelajaran..."
-						                  solo
-						                  clearable
-						                  append-icon="search"
-						                  background-color="white"
-						                  item-text="title"
-						                >
-					                        <template v-slot:item="data">
-					                          <template>
-					                            <v-list-tile @click="cariDetailPelajaran(data.item.id)">
-					                              <v-list-tile-avatar>
-					                                <img :src="data.item.cover">
-					                              </v-list-tile-avatar>
-					                              <v-list-tile-content>
-					                                <v-list-tile-title v-html="data.item.title"></v-list-tile-title>
-					                                <v-list-tile-sub-title v-html="data.item.teacher.name"></v-list-tile-sub-title>
-					                              </v-list-tile-content>
-					                            </v-list-tile>
-					                          </template>
-					                        </template>
-						                </v-autocomplete>
+						                </v-text-field>
 							        </v-flex>
 							      </v-layout>
 							    </p>
@@ -63,13 +36,18 @@
 						      v-show='showPelajaran'
 						      >
 						      	<v-data-iterator
-						        :items="dataPelajaranbyTeacher.data"
-						        :rows-per-page-items="rowsPerPageItems"
-						        content-class="layout row wrap"
-						        :expand="expand"
-						        :hide-actions="true"
-						        >
-							        <template v-slot:item="props">
+				                    :items="dataPelajaranbyTeacher.data"
+				                    :rows-per-page-items="rowsPerPageItems"
+				                    :pagination.sync="pagination"
+				                    content-class="layout row wrap"
+				                    :expand="expand"
+				                    :search="search"
+				                    :custom-filter="filterSearch"
+				                    no-data-text="Pelajaran tidak tersedia"
+				                    no-results-text="Pelajaran tidak ditemukan"
+				                    :hide-actions="true"
+			                    >
+							      <template v-slot:item="props">
 							      <!-- <v-layout row wrap fill-height ma-3> -->
 							        <v-flex xs12 sm6 md4>
 							          <v-card>
@@ -113,6 +91,23 @@
 							    	<!-- </v-layout> -->
 							    	</template>
 						    	</v-data-iterator>
+						    	<v-layout row wrap>
+						    	<v-flex class="mt-4" offset-md10 offset-sm8 md2 sm4 xs12 style="text-align:right">
+						    	    <v-select
+						    	      :items="rowsPerPageItems"
+						    	      label="Per Halaman"
+						    	      v-model="pagination.rowsPerPage"
+						    	      outline
+						    	    ></v-select>
+						    	  </v-flex>
+						    	</v-layout>
+						    	<div class="text-xs-center">
+						    	  <v-pagination
+						    	    v-model="pagination.page"
+						    	    :length="parseInt(Math.ceil(pagination.totalItems/pagination.rowsPerPage)) || 1"
+						    	    :total-visible="7"
+						    	  ></v-pagination>
+						    	</div>
 								<br/>
 							</v-container>
 						</v-card>
@@ -137,10 +132,22 @@
 		data: () => ({
 		      expand: true,
 		      showPelajaran: false,
+		      pagination: {
+			    rowsPerPage: 6,
+			    totalItems: 0,
+			    page: 1
+			  },
+			  search: '',
               is_load1 :true,
-		      rowsPerPageItems: [4],
+		      rowsPerPageItems: [3,6,9],
+		      isiAwal: true
 		}),
 		methods: {
+			filterSearch(items, search, filter) {
+		      return items.filter(datas => {
+		        return datas.title.toLowerCase().includes(search.toLowerCase())
+		      })
+		    },
 		    daftarPelajaran(){
 		      return this.$router.push({path:'/cerevid/guru/daftar-pelajaran'})
 				},
@@ -194,6 +201,10 @@
 				this.is_load1 = false
 				this.showPelajaran = true
 			}
+			if(this.$store.state.dataPelajaranbyTeacher.data && this.isiAwal){
+		        this.pagination.totalItems = this.$store.state.dataPelajaranbyTeacher.data.length
+		        this.isiAwal = false
+		    }
 	        return this.$store.state.dataPelajaranbyTeacher || {}
 	      },
 	      userId(){

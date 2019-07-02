@@ -15,6 +15,38 @@
 
                 <v-flex md9 sm12 xs12>
                     <v-layout row wrap>
+                        <!-- My Exam Stats -->
+                        <v-flex md4 sm12 xs12 class="hidden-md-and-up">
+                            <v-card style="height:336px">
+                                <h4 class="headline" style="background:#B71C1C;padding:15px;color:white;">Profil Saya</h4>
+                                <hr>
+                                <div style="text-align:center;height:198px;">
+                                    <div style="width:120px;height:120px;margin:8px auto;border:1px solid #E0E0E0;border-radius:100%">
+                                        <v-img
+                                            v-if="user.photo_url!=null"
+                                            style="border-radius:100%;" width="100%" height="100%"
+                                            :src="user.photo_url"
+                                        ></v-img>
+                                    </div>
+                                    <div style="color:red;">
+                                        <h6 class="subheading"><b>{{user.name}}</b></h6>
+                                        <p v-if="userClass != null" style="font-size:12px;text-transform: uppercase;">{{userClass.name_class}}</p>
+                                        <p v-else style="font-size:12px;">belum ada kelas</p>
+                                    </div>
+                                </div>
+                                <div style="border-top:0.5px solid #E0E0E0;height:70px; color:red; border-bottom:0.5px solid #E0E0E0; padding:6px">
+                                    <div style="text-align:center">
+                                        <h6 class="title" style="color:red;"><b>Peringkat</b></h6>
+                                        <h4 class="display-1" style="color:red;"><b>{{ranking.rank}}</b></h4>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <hr>
+                                <v-divider></v-divider>
+                            </v-card>
+                        </v-flex>
+                        <!-- /My Exam Stats -->
+
                         <!-- papan peringkat kelas -->
                         <v-flex md8 sm12 xs12>
                             <v-card color="#546E7A" style="padding:15px;">
@@ -23,16 +55,22 @@
                                     <GChart
                                         v-if="graf!=0"
                                         style="padding:30px 10px"
-                                        @ready="onChartReady"
+                                        :settings="{packages: ['bar']}"    
                                         :data="graf"
+                                        :options="chartOptClass"
                                         :createChart="(el, google) => new google.charts.Bar(el)"
+                                        @ready="onChartCReady"
                                     />
+
                                     <GChart
                                         v-else
                                         style="padding:30px 10px"
+                                        :settings="{packages: ['bar']}"    
                                         :data="chartNull"
+                                        :options="chartOptClass"
                                         :createChart="(el, google) => new google.charts.Bar(el)"
-                                    /> 
+                                        @ready="onChartCReady"
+                                    />
                                 </div>
                             </v-card>
                         </v-flex>
@@ -94,7 +132,7 @@
                                     <!-- loading -->
                                     <div v-show="load_CL" style="border:1px solid white;">
                                         <fingerprint-spinner
-                                            style="margin:80px auto" 
+                                            style="margin:160px auto" 
                                             :animation-duration="1500"
                                             :size="64"
                                             color="#ff1d5e"
@@ -188,15 +226,16 @@
 
         data () {
             return {   
+                chartNull: [
+                    ["Bulan", ""],
+                    ["", 0]
+                ],
                 //graf Class
                 graf: [],
                 month: [""],
                 nilai: [],
                 chart: [],
-                chartNull: [
-                    ["Bulan", ""],
-                    ["", 0]
-                ],
+                chartCLib:null,
 
                 //graf lesson
                 load_CL: false,
@@ -208,8 +247,7 @@
                 nilaiLess: [],
                 chartLesson: [],
                 chartsLib: null, 
-
-
+                
                 monthNow: new Date().toISOString(),
                 
                 load_data: true,
@@ -233,8 +271,17 @@
                 return this.chartsLib.charts.Bar.convertOptions({
                     bars: 'horizontal', // Required for Material Bar Charts.
                     hAxis: { format: 'decimal' },
-                    height: 250,
+                    height: 345,
                     colors: ['#1b9e77', '#d95f02', '#7570b3']
+                })
+            },
+            chartOptClass () {
+                if (!this.chartCLib) return null
+                return this.chartCLib.charts.Bar.convertOptions({
+                    bars: 'vertikal', // Required for Material Bar Charts.
+                    hAxis: { format: 'decimal' },
+                    height: 250,
+                    // colors: ['#1b9e77', '#d95f02', '#7570b3']
                 })
             },
         },
@@ -242,12 +289,12 @@
             moment,
             onChartReady (chart, google) {
                 this.chartsLib = google
-                // this.google.charts.load('current', {'packages':['bar']});
-                // this.google.charts.setOnLoadCallback(this.onChartReady)
+            },
+            onChartCReady (chart, google) {
+                this.chartsLibC = google
             },
 
-            
-            //get 
+            //get chart lesson
             getChartLesson(){
                 this.load_CL = true
                 this.show_CL = false
@@ -300,7 +347,7 @@
             .catch(error => {console.log(error)})
           
           // get ranking
-            axios.get('/cereouts/leaderboard/ranking/'+this.$store.state.dataUser)
+            axios.get('/cereouts/leaderboard/ranking/'+this.$store.state.classId)
             .then(response => {
                 this.load_data = false
                 this.tabl      = true
@@ -310,7 +357,6 @@
             .catch(error => {
                 console.log(error.response)
             })
-
 
             if(this.$store.state.classId!=null) {
                 // get top tryout

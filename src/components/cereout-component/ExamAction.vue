@@ -6,13 +6,12 @@
                     <v-card>
                         <v-layout row wrap>
                             <v-flex md9 style="padding-top:22px;padding-left:35px;text-transform:capitalize">                        
-                               <h6 class="title">{{name}}</h6>
+                               <h6 class="title">{{detQuest.tryout_name}}</h6>
                             </v-flex>
                             <v-flex md3>             
                                 <!-- timer -->
                                 <div style="width:160px;float:right;">
                                     <h6 class="subheading" style="margin-top:7px;float:left">Durasi:&nbsp;</h6> 
-                                   
                                     <countdown v-show="StartTimer" :time="totalTime" :transform="transform">
                                         <template slot-scope="props">
                                             <div>
@@ -58,6 +57,15 @@
                 <v-flex md9>
                     <v-card style="padding:5px;">
                         <span style="margin:18px;font-size:18px"><b>Soal No. {{hal+1}}</b></span>
+                        <div v-if="scoringSystem==1" style="margin:0px 10px 0px 0px;font-size:16px;float:right">
+                            <span style="color:#757575"><b>Nilai Benar : <span style="color:#0091EA">{{detQuest.correct_score}}</span></b></span>
+                            <span style="margin:10px">|</span>
+                            <span style="color:#757575"><b>Nilai Salah : <span style="color:red">{{detQuest.incorrect_score}}</span></b></span>    
+                        </div>
+                        <div v-else-if="scoringSystem==2" style="margin:0px 10px 0px 0px;font-size:16px;float:right">
+                            <span style="color:#757575"><b>Bobot Soal: <span style="color:#8BC34A">{{detQuest.weight}}</span></b></span>
+                        </div>
+                        <div class="clear"></div>
                     </v-card>
                     <v-card style="min-height:347px">
                         <div style="position: absolute;top: 0;left: 0;width: 100%;height: 100%; overflow: auto">
@@ -151,48 +159,41 @@
             </v-layout>
         </v-container>
         <LoadingScreen3 :loading="loadSubmit"></LoadingScreen3>
-        <!-- {{answer}} -->
     </div>
 </template>
 
-<script>
-    // import Timer from "../cereout-component/Timer"    
+<script>   
     import LoadingScreen3 from'../../components/loading-screen/Loading3'
     import axios from 'axios';
     import { constants } from 'crypto';
 
     export default {
-        props:["name","cereoutId", "time", "attemptId"],
+        props:["cereoutId", "scoringSystem", "attemptId"],
 
         components:{
-            // Timer,
             LoadingScreen3
         },
         
         data () {
             return {
+                load_data: true,
+
                 StartTimer: true,
                 EndTimer: false,
                 timeoutDialog:false,
 
-                cekDurasi: this.time * 60,
+                cekDurasi: 0,//this.time * 60, //konversi ke detik
                 timeUp: 0,
                 interval: null,
                 ////
 
-                loadSubmit: false,
-                // timer: null,
-                // totalTime: this.time * 60,//konversi ke detik
-
-                totalTime: this.time * 60000,//konversi ke milidetik
-
-                // timerShow: false,
-                load_data: true,
-
+                totalTime: 0,//this.time * 60000,//konversi ke milidetik
                 hal: 0,
+                detQuest: [],
                 questions: [],       
                 quest: "",
                 options: [],
+                loadSubmit: false,
 
                 myTime: '',
                 answer: [],
@@ -222,7 +223,7 @@
 
             //uncheck mark
             uncheck(val) {
-                this.tmpanswer[val] = false
+                this.tmpanswer[val] = null
             },
 
             submit() {
@@ -230,8 +231,7 @@
                 var ans = ''
                 var n = ''
                 
-                // this.myTime = (this.time - 5) / 60
-                this.myTime = this.timeUp
+                this.myTime = Math.round(this.timeUp / 60)
                 for(var i=0; i < this.questions.length; i++){
                     if(this.tmpanswer[i] == 0){
                         ans = 'A'
@@ -278,8 +278,9 @@
             },
 
             viewQuestion(index) {   
-                this.hal   = index 
-                this.quest = this.questions[index].question
+                this.hal     = index
+                this.detQuest= this.questions[index] 
+                this.quest   = this.questions[index].question
                 this.options = this.questions[index].option
             },
 
@@ -287,8 +288,9 @@
                 if(hal > 0){
                     hal--
                     this.hal   = hal
-                    this.quest = this.questions[hal].question
-                    this.options = this.questions[hal].option
+                    this.detQuest  = this.questions[hal]
+                    this.quest     = this.questions[hal].question
+                    this.options   = this.questions[hal].option
                 }
             },
 
@@ -296,8 +298,9 @@
                 if(hal < this.questions.length-1){
                     hal++
                     this.hal   = hal
-                    this.quest = this.questions[hal].question
-                    this.options = this.questions[hal].option
+                    this.detQuest = this.questions[hal]
+                    this.quest    = this.questions[hal].question
+                    this.options  = this.questions[hal].option
                 }
             },
 
@@ -317,7 +320,6 @@
             incrementTime() {
                 this.timeUp = parseInt(this.timeUp) + 1;
 
-                // console.log(this.timeUp)
                 if(this.timeUp == this.cekDurasi){
                     clearInterval(this.interval);
                     this.StartTimer   = false
@@ -336,14 +338,14 @@
                 this.questions = response.data.data
                 
                 // this.startTimer()
-
+                this.detQuest  = this.questions[0]
                 this.quest     = this.questions[0].question
                 this.options   = this.questions[0].option;
                 
-                this.timerShow = true
-                // this.totalTime = this.time * 60000
+                this.cekDurasi = this.detQuest.duration * 60
+                this.totalTime = this.detQuest.duration * 60000
+
                 this.toggleTimer() //aktifkan countUp
-                // console.log(response.data)
             })
             .catch(error =>{
                 console.log(error.response)

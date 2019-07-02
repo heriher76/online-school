@@ -5,64 +5,116 @@
     <!-- /banner -->
 
     <!-- content up -->
-    <v-container>
+    <v-container fluid>
       <div style="margin-bottom:20px">
         <hr>
       </div>
       
-      <!-- <div style="text-align:center;margin-top:50px">
-        <div style="background:#E65100; width:100%; height:10px"></div>
-        <span style="font-size:40px; padding:10px 20px; color:#B71C1C; background:#FAFAFA; position:relative;top:-36px"><b>Lorem Ipsum</b></span>
-      </div> -->
-      <!-- <v-card flat>
-        <v-card-text>
-          <h3 class=".display-2" style="color:#424242">Promo Hari Ini</h3>
-        </v-card-text>
-      </v-card> -->
-      
-      <v-carousel
-        height=300
-        interval=4000
-        delimiter-icon="adjust"
-      >
-        <div v-show="load_data" style="margin:150px auto; width:5%;">
-            <v-layout column justify-center align-center>
+      <v-card class="elevation-6" style="border-radius:12px;padding:10px">
+        <div style="margin:10px 0px">
+          <div style="background:#B71C1C; width:100%; height:10px"></div>
+          <span style="font-size:20px;color:#424242"><b>Promo Hari ini</b></span>
+        </div>
+
+        <v-carousel
+          height=300
+          interval=4000
+          hide-delimiters
+        >
+          <div v-show="load_data" style="margin:150px auto; width:5%;">
+              <v-layout column justify-center align-center>
                 <hollow-dots-spinner
                   :animation-duration="1000"
                   :dot-size="15"
                   :dots-num="3"
                   color="#ff1d5e"
                 />
-            </v-layout>
-        </div>
-        <router-link v-for="(item,i) in datas"
-          style="text-decoration :none"
-          :key="i"
-          :to="{name: 'detail_informasi', params: {data: item} }"
-        >
-          <v-carousel-item
-            v-if="item.category=='sliders'" 
-            :src="item.url"
+              </v-layout>
+          </div>
+          <router-link v-for="(item,i) in datas"
+            style="text-decoration :none"
+            :key="i"
+            :to="{name: 'detail_informasi', params: {data: item} }"
           >
-            <h5 style="color:white; padding:10px 20px; background:rgba(0,0,0,0.2)" class="headline">{{item.title}}</h5>
-          </v-carousel-item>
-        </router-link>
-      </v-carousel>  
-      
+            <v-carousel-item
+              v-if="item.category=='sliders'" 
+              :src="item.url"
+            >
+              <h5 style="color:white; margin-top:250px; padding:10px 20px; background:rgba(0,0,0,0.2)" class="headline">{{item.title}}</h5>
+            </v-carousel-item>
+          </router-link>
+        </v-carousel> 
+      </v-card>
     </v-container>   
     <!-- /content up -->
 
-    <!-- <v-container style="margin-top:50px;">
-      <div>
-        <div style="background:#E65100; width:100%; height:10px"></div>
-        <span style="font-size:40px; padding:10px 20px; color:#B71C1C; background:#FAFAFA; position:relative;top:-36px;left:60px"><b>Testimonial</b></span>
+    <v-container fluid>
+      <div style="margin:10px;">
+        <span style="font-size:40px; color:#B71C1C;"><b>Ribuan Pelajar Terbantu Dan Lolos PTN !</b></span>
       </div>
 
-      <p>lorem ipsum dolor sit amet lorem ipusm dolor</p>
-    </v-container> -->
+      <v-layout row wrap>
+        <v-flex md7>
+          <div style="font-size:20px;color:#616161;margin:10px 20px">
+          <hr style="margin:20px 0px;">
+            <b>Unduh Aplikasi Kami di:</b>
+            <div style="margin-top:5px">
+              <img :src="require('../assets/images/google-play.png')" width="200px" alt="">
+              <img :src="require('../assets/images/app-store.png')" height="61px" width="200px" alt="">
+            </div>
+          </div>
+        </v-flex>
 
-    <!-- <hr>
-    <v-divider></v-divider> -->
+        <v-flex md5 sm12 xs12>
+          <h6 class="title" style="margin:12px 0px;color:#616161">Spesial Khusus Member Baru</h6>
+          
+          <v-carousel
+              style="border-radius:10px"
+              hide-delimiters
+              height=180
+              interval=6000
+              hide-controls
+          >
+              <div v-show="load_data" style="margin:50px auto; width:5%;">
+                  <v-layout column justify-center align-center>
+                      <hollow-dots-spinner
+                      :animation-duration="1000"
+                      :dot-size="15"
+                      :dots-num="3"
+                      color="#ff1d5e"
+                      />
+                  </v-layout>
+              </div>
+
+              <v-carousel-item
+                  v-for="(item,i) in member"
+                  :key="i"
+                  :src="item.url"
+              >
+
+              <v-jumbotron
+                  dark
+                  src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
+              >
+      
+                  <div style="margin:25px 25px 10px 25px; text-transform:capitalize;color:white">
+                      <span>Membership</span>
+                      <h4 class="display-1">
+                          <b v-if="item.name.length<30">{{item.name}}</b>
+                          <b v-else>{{item.name.substring(0,30)+"..."}}</b>
+                      </h4>
+                  </div>
+                  <div style="margin:0px 28px;border-top:1px solid white">
+                      <h6 class="title" v-if="item.coupon_name!=null" style="color:white;float:right;padding-top:10px">kode kupon: {{item.coupon_code}}</h6>
+                      <div class="clear"></div>
+                  </div>
+              
+              </v-jumbotron>
+              </v-carousel-item>
+          </v-carousel> 
+          </v-flex>
+      </v-layout>
+    </v-container>
 
   </div>
 </template>
@@ -79,8 +131,11 @@
     },
     data(){
       return {
+        // gradient: 'to top right, rgba(63,81,181, .7), rgba(25,32,72, .7)',
         load_data:true,    
         datas:[],
+        member: []
+        
       }
     },
     mounted(){
@@ -100,6 +155,15 @@
         })
         .catch(error=>{console.log(error)})
       }
+
+      axios.get('/master/membership')
+      .then(response => {
+          this.load_data = false
+          this.member = response.data.data
+      })
+      .catch(error => {
+          console.log(error.response)
+      })
     }
   }
 </script>

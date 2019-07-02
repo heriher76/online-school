@@ -14,12 +14,14 @@
   <v-data-iterator
     :items="dataDaftarPelajaran.data"
     :rows-per-page-items="rowsPerPageItems"
+    :pagination.sync="pagination"
     content-class="layout row wrap"
     :expand="expand"
     :search="search"
     :custom-filter="filterSearch"
     no-data-text="Pelajaran tidak tersedia"
     no-results-text="Pelajaran tidak ditemukan"
+    :hide-actions="true"
     >
     <template v-slot:item="props">
       <v-flex xs12 sm6 md4 lg3>
@@ -47,7 +49,17 @@
           <v-card-title primary-title>
             <div>
               <div class="headline">
-                <router-link v-bind:to="'/cerevid/detail-pelajaran/'+props.item.id" style="text-decoration: none;">{{props.item.title}}</router-link>
+                <router-link v-bind:to="'/cerevid/detail-pelajaran/'+props.item.id" style="text-decoration: none;">
+                  <div v-if="props.item.title.length<32">{{props.item.title}}</div>
+                  <div v-else>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on }">
+                        <span v-on="on">{{props.item.title.substring(0,29)}}...</span>
+                      </template>
+                      <span>{{props.item.title}}</span>
+                    </v-tooltip>
+                  </div>
+                </router-link>
               </div>
               <span class="grey--text">{{props.item.teacher.name}}</span>
             </div>
@@ -80,6 +92,23 @@
       </v-flex>
     </template>
   </v-data-iterator>
+  <v-layout row wrap>
+  <v-flex class="mt-4" offset-md10 offset-sm8 md2 sm4 xs12 style="text-align:right">
+    <v-select
+      :items="rowsPerPageItems"
+      label="Tampil Data per Halaman"
+      v-model="pagination.rowsPerPage"
+      outline
+    ></v-select>
+  </v-flex>
+  </v-layout>
+  <div class="text-xs-center">
+    <v-pagination
+      v-model="pagination.page"
+      :length="parseInt(Math.ceil(pagination.totalItems/pagination.rowsPerPage)) || 1"
+      :total-visible="7"
+    ></v-pagination>
+  </div>
 </v-container>
 </template>
 <script>
@@ -88,10 +117,13 @@ export default {
   data: () => ({
     expand: true,
     pagination: {
-      rowsPerPage: 8
+      rowsPerPage: 8,
+      totalItems: 0,
+      page: 1
     },
     search: '',
-    rowsPerPageItems: [4],
+    rowsPerPageItems: [4,8,12],
+    isiAwal: true
   }),
   methods: {
     filterSearch(items, search, filter) {
@@ -145,6 +177,10 @@ export default {
   },
   computed: {
     dataDaftarPelajaran() {
+      if(this.$store.state.dataPelajaran.data && this.isiAwal){
+        this.pagination.totalItems = this.$store.state.dataPelajaran.data.length
+        this.isiAwal = false
+      }
       return this.$store.state.dataPelajaran || {}
     },
     dataFavoritbyUser() {
