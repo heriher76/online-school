@@ -75,7 +75,7 @@
         </div>
 
         
-        <v-btn block round color="#d44132" dark large @click="loginGoogle">
+        <v-btn block color="#d44132" style="font-size:14px" dark large @click="loginGoogle">
           <div style="float:left; padding:3px 5px 0px 0px">
              <img width="40px" alt="Google &quot;G&quot; Logo" :src="require('../../assets/images/icon_gplus.png')"/>
          </div>
@@ -195,6 +195,7 @@
       login(){      
         this.btn_load = true
         this.loadLogin = true
+
         this.$store.dispatch('retrieveToken', {
           email: this.email,
           password: this.password

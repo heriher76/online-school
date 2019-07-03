@@ -97,7 +97,7 @@ background: linear-gradient(90deg, rgba(97,94,94,1) 0%, rgba(29,65,106,1) 73%);
                     <template>
                       <v-list-tile @click="cariDetailPelajaran(data.item.id)">
                         <v-list-tile-avatar>
-                          <img :src="'http://admin.ceredinas.id/public/cover/'+ data.item.cover">
+                          <img :src="data.item.cover">
                         </v-list-tile-avatar>
                         <v-list-tile-content>
                           <v-list-tile-title v-html="data.item.title"></v-list-tile-title>

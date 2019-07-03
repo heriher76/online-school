@@ -239,6 +239,16 @@ export default new Router({
       }
     },
 
+    {
+      path: "/cereout/hubungi kami",
+      name: 'hubungi_kami',
+      component: () => import("./views/cereout/HubungiKami.vue"),
+      props: true,
+      meta: {
+        requiresAuth: true
+      }
+    },
+
     // -----------------------------cerecall-----------------------------
     {
       path: "/cerecall",

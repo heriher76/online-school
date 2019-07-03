@@ -14,7 +14,7 @@
                 <!-- sub content -->
                 <v-flex md9 sm12 xs12 style="min-height:300px">
                     <v-card color="#B71C1C" dark style="margin-bottom:8px">
-                        <div class="hidden-md-and-up" style="float:left; margin:18px 10px 0px 20px">
+                        <div v-if="user.membership==1" class="hidden-md-and-up" style="float:left; margin:18px 10px 0px 20px">
                             <v-menu
                                 v-model="menuList"
                                 :close-on-content-click="false"
@@ -51,7 +51,7 @@
                         </div>
                         <v-card-text class="px-0"><h6 class="title" style="margin:4px 20px">Tryout</h6></v-card-text>
 
-                        <div class="hidden-md-and-up">
+                        <div v-if="user.membership==1" class="hidden-md-and-up">
                             <v-autocomplete
                                 v-model="model"
                                 :items="searchItem"
@@ -239,9 +239,15 @@
                             </v-flex>  
                             
                         </v-layout>     
-                    
+            
                         <div v-else-if="user.membership==0">
-                            <router-link :to="{name:'membership'}" style="color:black;text-decoration:none">
+                            <router-link v-if="user.class==null" :to="{name: 'my_account', params:{snackb: 'true'}}" style="color:black;text-decoration:none">
+                                <v-card dark class="elevation-10" color="#03A9F4" style="border-radius:10px;border:2px solid white;text-align:center;padding:20px">
+                                    <b style="font-size:28px;">DAFTARKAN DIRIMU MEMBER DI<span style="color:#B71C1C;-webkit-text-stroke-width: 0.8px;-webkit-text-stroke-color: white;">CEREBRUM</span> SEKARANG JUGA !!</b>
+                                    <p>Klik Disini Untuk Mendaftar</p>
+                                </v-card>
+                            </router-link>
+                            <router-link v-else :to="{name:'membership'}" style="color:black;text-decoration:none">
                                 <v-card dark class="elevation-10" color="#03A9F4" style="border-radius:10px;border:2px solid white;text-align:center;padding:20px">
                                     <b style="font-size:28px;">DAFTARKAN DIRIMU MEMBER DI<span style="color:#B71C1C;-webkit-text-stroke-width: 0.8px;-webkit-text-stroke-color: white;">CEREBRUM</span> SEKARANG JUGA !!</b>
                                     <p>Klik Disini Untuk Mendaftar</p>
@@ -398,26 +404,6 @@
                 }
             },
 
-            // show search data
-            // lihatListTryout(val){
-            //     var n;
-            //     this.load_data = true
-            //     this.listPanel = false
-            //     this.note      = false
-
-            //     axios.get('/cereouts')
-            //     .then(response => {
-            //         this.load_data = false
-            //         this.listPanel = true
-            //         this.note      = true
-            //         this.items     = response.data.data
-            //     })
-            //     .catch(error =>{
-            //         this.load_data = false
-            //         console.log(error)
-            //     })
-            // },
-
             // get list tryout by class
             showClassLT(val){
                 this.load_data = true
@@ -438,7 +424,7 @@
                     })
                 }
                 else{
-                    axios.get('http://api.ceredinas.id/api/cereouts/class/'+val)
+                    axios.get('/cereouts/class/'+val)
                     .then(response => {
                         this.load_data = false
                         this.listPanel = true
@@ -472,7 +458,7 @@
                         console.log(error)
                     })
                 }else{
-                    axios.get('http://api.ceredinas.id/api/cereouts/attempttryout/class/'+val)
+                    axios.get('/cereouts/attempttryout/class/'+val)
                     .then(response => {
                         this.load_data = false
                         this.listPanel = true
@@ -508,7 +494,7 @@
                     })
                 }
                 else{
-                    axios.get('http://api.ceredinas.id/api/cereouts/attempttryout/class/'+val+'/expire')
+                    axios.get('/cereouts/attempttryout/class/'+val+'/expire')
                     .then(response => {
                         this.load_data = false
                         this.listPanel = true

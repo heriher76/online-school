@@ -1,77 +1,81 @@
 <template>
     <v-container grid-list-md>
-      <div class="nav-result">
-          <ul>
-              <li><router-link class="active" :to="{name: 'cerecall'}">CARI GURU</router-link></li>
-              <li><router-link :to="{name: 'cerecall_history'}">RIWAYAT</router-link></li>
-          </ul>
-      </div>
-
-      <v-select
-        :items="lessons"
-        label="Pilih Mata Pelajaran"
-        item-text="name"
-        item-value="id"
-        @change="showTeacher"
-      ></v-select>
-      
-      <div v-show="load_data" style="margin:150px auto; width:5%;">
-        <v-layout column justify-center align-center>
-            <hollow-dots-spinner
-              :animation-duration="1000"
-              :dot-size="15"
-              :dots-num="3"
-              color="#ff1d5e"
-            />
-        </v-layout>
-      </div>
-
-      <div v-show="showCard">
-        <v-card class="elevation-20">
-          <h3 style="padding:10px 20px">Pilih Guru</h3>
-        </v-card>
-        <v-layout row wrap>
-          <div v-if="teachers == 0" style="font-size:20px; margin-top:30px" class="mx-auto">
-            Data tidak ditemukan !
+      <v-layout>
+        <v-flex xs12 sm8 offset-sm2>
+          <div class="nav-result">
+              <ul>
+                  <li><router-link class="active" :to="{name: 'cerecall'}">CARI GURU</router-link></li>
+                  <li><router-link :to="{name: 'cerecall_history'}">RIWAYAT</router-link></li>
+              </ul>
           </div>
 
-          <v-flex md3 v-for="teacher in teachers" :key="teacher.id">
-            <v-card style="padding-top:10px;">
-              <v-img
-                style="border-radius:100%; border:1px solid #E0E0E0; width:180px; margin:0px auto; height:180px"
-                :src="teacher.photo"
-              >
-              </v-img>
-              <v-card-title>
-                <div class="mx-auto">
-                  <h6 class="title" style="text-align:center;color:black">{{teacher.name}}</h6>
-                  <v-card-actions style="height:25px">
-                    <v-rating
-                      v-model="teacher.rating"
-                      background-color="yellow accent-4"
-                      color="yellow accent-4"
-                      dense
-                      half-increments
-                      :readonly="true"
-                      size="15"
-                    ></v-rating>
-                    <span class="grey--text text--lighten-2 caption mr-2">
-                      ({{ teacher.rating }})
-                    </span>
-                  </v-card-actions>    
-                </div>
-              </v-card-title>
+          <v-select
+            :items="lessons"
+            label="Pilih Mata Pelajaran"
+            item-text="name"
+            item-value="id"
+            @change="showTeacher"
+          ></v-select>
+          
+          <div v-show="load_data" style="margin:150px auto; width:5%;">
+            <v-layout column justify-center align-center>
+                <hollow-dots-spinner
+                  :animation-duration="1000"
+                  :dot-size="15"
+                  :dots-num="3"
+                  color="#ff1d5e"
+                />
+            </v-layout>
+          </div>
 
-              <v-card-actions style="margin-top:-10px">
-                <v-btn block dark color="orange" @click="postHistory(teacher)">Pilih</v-btn> 
-                <!-- <v-btn block dark color="orange" :to="{ name:'cerecall_chat', params: { guruId: '1'}}">Pilih</v-btn>  -->
-              </v-card-actions>
-
+          <div v-show="showCard">
+            <v-card class="elevation-20">
+              <h3 style="padding:10px 20px">Pilih Guru</h3>
             </v-card>
-            <v-divider></v-divider>
-          </v-flex>
-        </v-layout>
-      </div>
+            <v-layout row wrap>
+              <div v-if="teachers == 0" style="font-size:20px; margin-top:30px" class="mx-auto">
+                Data tidak ditemukan !
+              </div>
+
+              <v-flex md3 v-for="teacher in teachers" :key="teacher.id">
+                <v-card style="padding-top:10px;">
+                  <v-img
+                    style="border-radius:100%; border:1px solid #E0E0E0; width:130px; margin:0px auto; height:130px"
+                    :src="teacher.photo"
+                  >
+                  </v-img>
+                  <v-card-title>
+                    <div class="mx-auto">
+                      <h6 class="title" style="text-align:center;color:black">{{teacher.name}}</h6>
+                      <v-card-actions style="height:25px">
+                        <v-rating
+                          v-model="teacher.rating"
+                          background-color="yellow accent-4"
+                          color="yellow accent-4"
+                          dense
+                          half-increments
+                          :readonly="true"
+                          size="15"
+                        ></v-rating>
+                        <span class="grey--text text--lighten-2 caption mr-2">
+                          ({{ teacher.rating }})
+                        </span>
+                      </v-card-actions>    
+                    </div>
+                  </v-card-title>
+
+                  <v-card-actions style="margin-top:-10px">
+                    <v-btn block dark color="orange" @click="postHistory(teacher)">Pilih</v-btn> 
+                    <!-- <v-btn block dark color="orange" :to="{ name:'cerecall_chat', params: { guruId: '1'}}">Pilih</v-btn>  -->
+                  </v-card-actions>
+
+                </v-card>
+                <v-divider></v-divider>
+              </v-flex>
+            </v-layout>
+          </div>
+        </v-flex>
+      </v-layout>
     </v-container>
 </template>
 

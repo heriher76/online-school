@@ -199,6 +199,7 @@
     },
 
     mounted(){      
+
       axios.get('/auth/user')
       .then(response => {
         this.user = response.data.data
@@ -207,7 +208,7 @@
         console.log(error)
       })
 
-      axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
+      axios.get('https://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
       .then(response => {
           // let imageNode = document.getElementById('myprofile');
           let imgUrl     = URL.createObjectURL(response.data)

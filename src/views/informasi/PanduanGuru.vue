@@ -1,6 +1,6 @@
 <template>
   <v-layout v-resize="onResize" column align-center justify-center>
-	<iframe src="http://admin.ceredinas.id/panduanGuru" :height="windowSize.y" width="100%"></iframe>
+	<iframe src="https://admin.ceredinas.id/panduanGuru" :height="windowSize.y" width="100%"></iframe>
   </v-layout>
 </template>
 <script type='text/javascript'>
