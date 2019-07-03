@@ -107,11 +107,6 @@
           @get-initial-status="getUserData">
         </facebook-login> -->
 
-<<<<<<< HEAD
-        <v-facebook-login app-id="318638459074473"></v-facebook-login>
-
-=======
->>>>>>> 68785ded525995117784d6ee85008b9a84b9b406
         <hr style="margin-bottom:15px">
         <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>
       </div>
@@ -219,7 +214,7 @@
             })
           }else{
             this.$swal('Sukses', 'Selamat Datang!', 'success')
-            window.location.href = "/"
+            return setTimeout(() => (window.location.href = "/"), 4000)
           }
         })
         .catch(error => {

@@ -56,7 +56,13 @@
                      -->
                     <v-text-field style="height:60px" v-model="datas.data.phone" label="Phone Number" placeholder="Nomor Handphone"></v-text-field>
                     <v-text-field style="height:60px" v-model="datas.data.address" label="Alamat" placeholder="Alamat"></v-text-field>
-                    <v-text-field style="height:60px" v-model="datas.data.gender" label="Gender" placeholder="Jenis Kelamin"></v-text-field>
+                    <v-select
+                        v-model="datas.data.gender" 
+                        :items="list_kelamin"
+                        item-text="name"
+                        item-value="name"
+                        label="Jenis Kelamin"
+                    ></v-select>
                     <v-text-field style="height:60px" v-model="datas.data.birth_place" label="Birth Place" placeholder="Tempat Lahir"></v-text-field>
                     <!-- <v-text-field style="height:60px" v-model="datas.data.birth_date" label="Birth Date" placeholder="Tanggal Lahir"></v-text-field> -->
                     <label>Tanggal Lahir</label>
@@ -183,6 +189,10 @@
             option3_university_name: '',
             birth_date: new Date().toISOString().substr(0, 10),
             list_kelas: [],
+            list_kelamin: [
+                { name: 'Laki - Laki' },
+                { name: 'Perempuan' }
+            ],
             is_load1 :false,
             showImage:true
         }),
@@ -280,7 +290,6 @@
                 })
             },
             submit (event) {
-                console.log(this.kelas)
                 this.btn_load = true
                 this.$store.dispatch('editProfileUser', {
                     name: this.datas.data.name,
@@ -291,10 +300,10 @@
                     birth_date: this.datas.data.birth_date,
                     parrent_name: this.datas.data.parrent_name,
                     parrent_phone: this.datas.data.parrent_phone,
-                    class_id: this.kelas || this.datas.data.class.class_id,
-                    option1: this.option1_department_name || this.datas.data.option1.department_id,
-                    option2: this.option2_department_name || this.datas.data.option2.department_id,
-                    option3: this.option3_department_name || this.datas.data.option3.department_id
+                    class_id: this.kelas,
+                    option1: this.option1_department_name,
+                    option2: this.option2_department_name,
+                    option3: this.option3_department_name
                 })
                 .then(response => {
                   this.btn_load = false
