@@ -310,12 +310,15 @@
                 <div class="nav-bal">
                     <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
-                        <router-link v-if="cekMember=='0'" to="/membership">
-                        <v-icon style="margin:-2px" v-on="on">add</v-icon>
-                        </router-link>
-                        <router-link v-else-if="cekMember=='1'" to="/my poin">
-                        <v-icon style="margin:-2px" v-on="on">add</v-icon>
-                        </router-link>
+                      <router-link v-if="user.class==null" :to="{name: 'my_account', params:{snackb: 'true'}}">
+                      <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                      </router-link>
+                      <router-link v-else-if="cekMember=='0'" to="/membership">
+                      <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                      </router-link>
+                      <router-link v-else-if="cekMember=='1'" to="/my poin">
+                      <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                      </router-link>
                     </template>
                     <span>Top up</span>
                     </v-tooltip>
