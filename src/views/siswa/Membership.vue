@@ -2,10 +2,19 @@
     <v-container>
         <v-layout>
             <v-flex xs12 sm6 offset-sm3>
-            <v-card color="#B71C1C">
-                <v-card-title style="color:white">
-                    <h6 class="title">Membership</h6>
-                </v-card-title>
+            <v-card color="#B71C1C" style="z-index:1;margin:-10px">
+                <v-layout row wrap>
+                    <v-flex md7>
+                        <v-card-title style="margin-top:10px; color:white">
+                            <h6 class="title">Membership</h6>
+                        </v-card-title>
+                    </v-flex>
+                    <v-flex md5>
+                        <v-card-title style="float:right">
+                            <v-btn v-if="history!=0" small @click="btHistory">History</v-btn>
+                        </v-card-title>
+                    </v-flex>
+                </v-layout>
             </v-card>
     
             <v-card>
@@ -14,7 +23,7 @@
                     <h6 class="title" style="color:#D50000">Jadilah Member Sekarang!</h6>
                 </div>
                 <div style="padding:18px;">
-                    <div v-show="load_data" style="margin:0px auto; padding-top:40px; width:5%;">
+                    <div v-show="load_data" style="margin:0px auto; padding-top:20px; width:5%;">
                         <v-progress-circular
                         :size="40"
                         color="primary"
@@ -26,11 +35,10 @@
                         <v-flex md12>
                             <v-card v-for="item in items" :key="item.id" style="padding:15px;margin:11px">
                                 <div style="float:left">
-                                    <h6 class="title" style="color:#D50000">{{item.name}}</h6>
-                                    <span style="font-size:12px; color:#D50000">Rp. {{ formatPrice(item.price) }}</span>
+                                    <h5 class="headline" style="padding:8px;color:#D50000"><b>{{item.name}}</b></h5>
                                 </div>
                                 <div style="float:right">
-                                    <v-btn color="#D50000" @click="alertBuy(item)" dark>Beli</v-btn>
+                                    <v-btn color="#D50000" @click="detail(item)" dark>Beli</v-btn>
                                 </div>
                                 <div class="clear"></div>
                             </v-card>
@@ -39,13 +47,56 @@
 
                     <div class="clear"></div>
                 </div>
-                <LoadingScreen4 :loading="loadingSubmit"></LoadingScreen4>
-        
+                <LoadingScreen4 :loading="loadingSubmit"></LoadingScreen4>        
             </v-card>
 
-            <div id="result-json"></div>
-
             </v-flex>
+            
+            <!-- ringkasan tagihan -->
+            <v-flex >
+                <v-card v-show="showDetail" style="height:100%;min-width:250px; margin:0px 5px">
+                    <v-card-title style="font-size:18px"><b>Detail Tagihan</b></v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text style="color:#424242">
+                        <h6 class="title">{{ringkasan.name}}</h6>
+                        <div style="margin-top:5px">
+                            <div style="width:50%;float:left">
+                                <span>Harga</span>    
+                            </div>
+                            <div style="width:50%;float:left">
+                                <b>: Rp. {{formatPrice(ringkasan.price)}}</b>    
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </v-card-text>
+                    <v-divider></v-divider>
+
+                    <v-card-actions v-show="actKupon">
+                        <a @click="showKupon" style="margin-left:6px;color:red"><b>Gunakan voucher</b></a>
+                    </v-card-actions>
+                    <v-card-actions v-show="actBayar">
+                        <v-btn dark color="success" block @click="buyMember(ringkasan)">Bayar</v-btn>
+                    </v-card-actions>
+        
+                    <v-card-actions v-show="fieldKupon" style="margin:0px 5px">
+                        <v-text-field
+                            style="margin-top:5px"
+                            label="kode kupon"
+                            v-model="kuponKode"
+                        ></v-text-field>
+                        <v-btn dark color="success" block @click="postVoucher(ringkasan)">Pakai</v-btn>
+                    </v-card-actions>
+
+                    <div v-show="responKupon">
+                        <p v-if="resPayment.isCoupon == false" style="color:orange;margin:0px 15px">kupon tidak dapat digunakan</p>
+                        <p v-else style="color:#42A5F5;margin:0px 15px">kupon berhasil digunakan</p>
+                        <v-card-actions>
+                            <v-btn dark color="success" block @click="lanjutBayar">Lanjut Pembayaran</v-btn>
+                        </v-card-actions>
+                    </div>
+                </v-card>
+            </v-flex>
+            <!-- /ringkasan tagihan -->
         </v-layout>
     </v-container>
 </template>
@@ -57,9 +108,25 @@
     export default {
         data() {
             return{
+                text_info: '',
+                snackbar: '',
+
+                history: [],
+
+                responKupon: false,
+                actKupon: true,
+                actBayar: true,
+                fieldKupon:false,
+                showDetail:false,
+                ringkasan:[],
+                kuponKode: '',
+                resPayment: [],
+
+                dialog:false,
                 load_data:true,
                 loadingSubmit: false,    
                 items: [],
+                user: []
             }
         },
 
@@ -67,12 +134,34 @@
             LoadingScreen4
         },
  
-        mounted(){      
+        mounted(){     
+            Axios.get('/auth/user')
+            .then(response => {
+                this.user = response.data.data
+                if(this.user.membership == 1){
+                    return this.$router.push({name: 'my_poin'})
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
             Axios.get('/master/membership')
             .then(response => {
                 this.load_data = false
-                console.log(response.data)
+                // console.log(response.data)
                 this.items = response.data.data
+            })
+            .catch(error => {
+                console.log(error.response)
+            })
+
+            // get history
+            Axios.get('/payment/'+this.$store.state.dataUser)
+            .then(response => {
+                this.load_data = false
+                this.history   = response.data.data
+                // console.log(response.data)
             })
             .catch(error => {
                 console.log(error.response)
@@ -80,63 +169,102 @@
         },
 
         methods:{
-            alertBuy(val) {
-                this.$swal({
-                    title: 'Apakah Anda Yakin?',
-                    text: 'Anda akan membeli paket '+val.name,
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya',
-                    cancelButtonText: 'Tidak',
-                    showCloseButton: true,
-                    showLoaderOnConfirm: true
-                }).then((result) => {
-                    if(result.value) { 
-                        return this.buyMember(val)
-                    }
-                })
+            btHistory(){
+                return this.$router.push({name: 'membership_history'})
             },
 
-            buyMember(val){
-                // this.snackbar  = true
-                // this.text_info = 'Success'
+            detail(val){
+                this.showDetail = true
+                this.ringkasan  = val
+            },
+            showKupon(){
+                this.actBayar   = false
+                this.actKupon   = false
+                this.fieldKupon = true
+            },
+
+            postVoucher(val){
                 this.loadingSubmit=true,
                 Axios.post('/payment/create',{
                     user_id: this.$store.state.dataUser,
                     nominal: val.price,
                     membership_id: val.id,
-                    type: 1
+                    type: 1,
+                    coupon_code: this.kuponKode 
+                })
+                .then(response => {
+                    this.actKupon      = true
+                    this.fieldKupon    = false
+                    this.loadingSubmit = false
+                    this.responKupon   = true
+                    this.resPayment    = response.data
+                })
+                .catch(error => {
+                    console.log(error.response)
+                })
+            },
+
+            lanjutBayar(){
+                snap.show();
+                snap.pay(this.resPayment.snap_token, {
+                        onSuccess:(result)=>{
+                            this.snackbar  = true,
+                            this.text_info = 'Transaksi berhasil dilakukan'
+                            return this.$router.push({name: 'membership_history', params:{snackB: this.snackbar, textB: this.text_info}})
+                        },
+                        onPending:(result)=>{
+                            this.snackbar  = true,
+                            this.text_info = result.status_message + ', silahkan lanjutkan pembayaran !'
+                            return this.$router.push({name: 'membership_history', params:{snackB: this.snackbar, textB: this.text_info}})
+                        },
+                        onError:(result)=>{
+                            this.snackbar  = true,
+                            this.text_info = 'Transaksi gagal dilakukan'
+                            return this.$router.push({name: 'membership_history', params:{snackB: this.snackbar, textB: this.text_info}})
+                        },
+                        onClose:()=>{
+                            this.snackbar  = true,
+                            this.text_info = 'Anda telah menutup halaman pembayaran'
+                            return this.$router.push({name: 'membership_history', params:{snackB: this.snackbar, textB: this.text_info}})
+                        }
+                })
+            },
+            
+            buyMember(val){
+                var n = 'cek'
+                this.loadingSubmit=true,
+                Axios.post('/payment/create',{
+                    user_id: this.$store.state.dataUser,
+                    nominal: val.price,
+                    membership_id: val.id,
+                    type: 1,
+                    coupon_code: ''
                 })
                 .then(response => {
                     this.loadingSubmit=false
                     snap.show();
                     snap.pay(response.data.snap_token, {
-                        onSuccess: function(result){
-                            document.getElementById('result-json').innerHTML = result.status_message;
-                            console.log('success')
-                            console.log(result)
+                        onSuccess:(result)=>{
+                            this.snackbar  = true,
+                            this.text_info = 'Transaksi berhasil dilakukan'
+                            return this.$router.push({name: 'membership_history', params:{snackB: this.snackbar, textB: this.text_info}})
                         },
-                        onPending: function(result){
-                            document.getElementById('result-json').innerHTML = result.status_message;                        
-                            console.log('pending');
-                            console.log(result);
+                        onPending:(result)=>{
+                            this.snackbar  = true,
+                            this.text_info = result.status_message + ', silahkan lanjutkan pembayaran !'
+                            return this.$router.push({name: 'membership_history', params:{snackB: this.snackbar, textB: this.text_info}})
                         },
-                        onError: function(result){
-                            document.getElementById('result-json').innerHTML = result.status_message;     
-                            console.log('error');
-                            console.log(result);
+                        onError:(result)=>{
+                            this.snackbar  = true,
+                            this.text_info = 'Transaksi gagal dilakukan'
+                            return this.$router.push({name: 'membership_history', params:{snackB: this.snackbar, textB: this.text_info}})
                         },
-                        onClose: function(){
-                            document.getElementById('result-json').innerHTML = 'customer closed the popup without finishing the payment'
-                            console.log('customer closed the popup without finishing the payment');
+                        onClose:()=>{
+                            this.snackbar  = true,
+                            this.text_info = 'Anda telah menutup halaman pembayaran'
+                            return this.$router.push({name: 'membership_history', params:{snackB: this.snackbar, textB: this.text_info}})
                         }
                     })
-                    // window.open("https://app.sandbox.veritrans.co.id/snap/v2/vtweb/"+response.data.snap_token)
-                    // window.open("https://app.sandbox.veritrans.co.id/snap/v2/vtweb/"+response.data.snap_token,
-                    //             'my_window', 
-                    //             'width=1600, height=620, resizable=no',
-                    //             '_blank'
-                    //             )
                 })
                 .catch(error => {
                     console.log(error.response)
@@ -144,7 +272,7 @@
             },
 
             formatPrice(value) {
-                let val = (value/1).toFixed(2).replace('.', ',')
+                let val = (value/1).toFixed(0).replace('.', '')
                 return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
             },
         }

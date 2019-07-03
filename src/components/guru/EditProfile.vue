@@ -50,26 +50,30 @@
             <!--  -->
             <div v-show="edit_prof" class="edit_profile">
                 <form @submit.prevent="login">
-                    <v-text-field style="height:60px" v-model="datas.data.name" label="Name" placeholder="nama lengkap"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.name" label="Nama" placeholder="Nama Lengkap"></v-text-field>
                     <!-- <v-text-field style="height:60px" v-model="datas.data.email" label="Email" placeholder="email"></v-text-field>
                      -->
-                    <v-text-field style="height:60px" v-model="datas.data.phone" label="Phone Number" placeholder="nomor telepon"></v-text-field>
-                    <v-text-field style="height:60px" v-model="datas.data.gender" label="Gender" placeholder="gender"></v-text-field>
-                    <v-text-field style="height:60px" v-model="datas.data.birth_place" label="Birth Place" placeholder="birth place"></v-text-field>
-                    <v-text-field style="height:60px" v-model="datas.data.birth_date" label="Birth Date" placeholder="birth date"></v-text-field>
-                    <v-text-field style="height:60px" v-model="datas.data.parrent_name" label="Parrent Name" placeholder="parrent name"></v-text-field>
-                    <v-text-field style="height:60px" v-model="datas.data.parrent_phone" label="Parrent Phone" placeholder="parrent phone"></v-text-field>
-                    <v-text-field style="height:60px" v-if="datas.data.class" v-model="datas.data.class.name_class" label="Class" placeholder="class"></v-text-field>
-                    <v-text-field style="height:60px" v-if="datas.data.option1" v-model="datas.data.option1.department_name" label="Pilihan Pertama" placeholder="pilihan pertama"></v-text-field>
-                    <v-text-field style="height:60px" v-if="datas.data.option2" v-model="datas.data.option2" label="Pilihan Kedua" placeholder="pilihan kedua"></v-text-field>
-                    <v-text-field style="height:60px" v-if="datas.data.option3" v-model="datas.data.option3" label="Pilihan Ketiga" placeholder="pilihan ketiga"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.phone" label="Nomor Telepon" placeholder="Nomor Telepon"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.address" label="Alamat" placeholder="Alamat"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.gender" label="Jenis Kelamin" placeholder="Jenis Kelamin"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.birth_place" label="Tempat Lahir" placeholder="Tempat Lahir"></v-text-field>
+                    <label>Tanggal Lahir</label>
+                    <br>
+                    <v-date-picker v-model="datas.data.birth_date"></v-date-picker>
+                    <br><br>
+                    <v-text-field style="height:60px" v-model="datas.data.parrent_name" label="Nama Orang Tua" placeholder="Nama Orang Tua"></v-text-field>
+                    <v-text-field style="height:60px" v-model="datas.data.parrent_phone" label="Nomor Orang Tua" placeholder="Nomor Orang Tua"></v-text-field>
+                    <!-- <v-text-field style="height:60px" v-if="datas.data.class" v-model="datas.data.class.name_class" label="Class" placeholder="class"></v-text-field> -->
+                    <!-- <v-text-field style="height:60px" v-if="datas.data.option1" v-model="datas.data.option1.department_name" label="Pilihan Pertama" placeholder="pilihan pertama"></v-text-field> -->
+                    <!-- <v-text-field style="height:60px" v-if="datas.data.option2" v-model="datas.data.option2" label="Pilihan Kedua" placeholder="pilihan kedua"></v-text-field> -->
+                    <!-- <v-text-field style="height:60px" v-if="datas.data.option3" v-model="datas.data.option3" label="Pilihan Ketiga" placeholder="pilihan ketiga"></v-text-field> -->
                     <v-divider></v-divider>
                     <v-btn @click="submit" :loading="btn_load" dark>Update</v-btn>  
                     <v-btn @click="cancel" dark>Cancel</v-btn> 
                 </form>
             </div>
             <!--  -->
-            <ChangePassword v-show="chg_pass" @canceled="showEditProfile" :idUser="this.datas.data.id"/>
+            <ChangePassword v-show="chg_pass" @canceled="showEditProfile" :idUser="this.datas.data.id" :email="this.datas.data.email"/>
         </v-flex>
     </v-layout>
 </template>

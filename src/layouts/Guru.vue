@@ -19,7 +19,7 @@
 
       <!-- <v-spacer></v-spacer> -->
 
-      <v-btn v-if="!loggedIn" flat @click="linkLogin">Sign In</v-btn>
+      <v-btn v-if="!loggedIn" flat @click="linkLogin">Masuk</v-btn>
 
       <!-- header actions -->
       <div v-if="loggedIn" class="nav-action hidden-sm-and-down">
@@ -52,11 +52,10 @@
                 </v-list-tile>
                 </v-list>
 
-
                 <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" flat @click="linkAkun">My Account</v-btn>
-                <v-btn color="red" flat @click="linkLogout">Sign Out</v-btn>
+                <v-btn color="primary" flat @click="linkAkun">Akun Saya</v-btn>
+                <v-btn color="red" flat @click="linkLogout">Keluar</v-btn>
                 </v-card-actions>
             </v-card>
             </v-menu>
@@ -189,16 +188,19 @@
 
     created() {
       const loggedIn = this.$store.getters.loggedIn
-      console.log(loggedIn)
+      const status = this.$store.state.status
       if (!loggedIn) {
           this.$router.push({path:'/guru/login'})
       }
+      console.log(status)
+      // if (loggedIn && status != 1) {
+      //     this.$router.push({path:'/'})
+      // }
     },
 
     mounted(){      
       axios.get('/auth/user')
       .then(response => {
-        console.log(response)
         this.user = response.data.data
       })
       .catch(error => {
@@ -220,7 +222,7 @@
         return this.$router.push({path:'/guru'})
       },
       linkPusatBantuan(){
-        return this.$router.push({path:'/guru/pusat-bantuan'})
+        return this.$router.push({path:'/pusat bantuan'})
       },
       linkCerevid(){
         return this.$router.push({path:'/guru/cerevid'})

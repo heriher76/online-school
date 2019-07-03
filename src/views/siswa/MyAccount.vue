@@ -1,6 +1,20 @@
 <template>
     <v-container>
         <div class="my_account">
+            <v-snackbar
+                v-model="snackbar"
+                :multi-line="'multi-line'"
+                :right="'right'"
+                :timeout="3000"
+                :top="'top'"
+                color="rgba(0,0,0,0.5)"
+            >
+                Silahkan lengkapi data diri anda terlebih dahulu !
+                <v-btn :color="'col'" flat @click="snackbar = false">
+                Close
+                </v-btn>
+            </v-snackbar>
+
             <v-layout>
                 <v-flex xs12 sm6 offset-sm3>
                 <v-card>
@@ -18,7 +32,7 @@
                     <v-card-title>
                         <!-- detail -->
                         <MyProfile v-show="my_profile" :datas="this.dataProfileUser" :photo="this.photo"/>
-                        <EditProfile v-show="edit_profile" @canceled="showMyProfile" :datas="this.dataProfileUser" :photo="this.photo"/>
+                        <EditProfile v-show="edit_profile" @canceled="showMyProfile" :datas="this.dataProfileUser" :photo="this.photo" :listUniversity="this.listUniversity" :listClass="this.listClass"/>
                         <!-- /detail -->
                     </v-card-title>   
                 </v-card>
@@ -34,13 +48,17 @@
     import EditProfile from "../../components/siswa/EditProfile"
 
     export default {
+        props: ["snackb"],
         data () {
             return {
+                snackbar: this.snackb,
                 user: [],
                 my_profile: true,
                 edit_profile: false,
                 photo: '',
-                dataProfileUser: null
+                dataProfileUser: null,
+                listClass: null,
+                listUniversity: null,
             }
         },
 
@@ -60,12 +78,33 @@
             }
         },
         created(){
+            //get list Kelas
+            axios.get('/master/class')
+            .then(response => {
+                console.log(response.data.data)
+                this.listClass= response.data.data
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+            //get list University
+            axios.get('/master/getAllDataUniversity')
+            .then(response => {
+                console.log(response.data.data)
+                this.listUniversity= response.data.data
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
             //get profile
             axios.defaults.headers = {  
               'Authorization': 'Bearer ' + this.$store.state.token
             }
             axios.get('/auth/user')
             .then(response => {
+                console.log(response)
                 this.dataProfileUser= response.data
             })
             .catch(error => {

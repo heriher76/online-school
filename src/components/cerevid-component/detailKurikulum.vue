@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-layout>
     <v-expansion-panel :expand="true">
       <v-expansion-panel-content
         v-for="(section, index) in dataDetailMateri.data"
@@ -53,14 +53,14 @@
         </v-card>
       </v-expansion-panel-content>
     </v-expansion-panel>
-  </div>
+  </v-layout>
 </template>
 <script>
   export default {
   	data: () => ({
   	}),
 		methods: {
-      async getDataDetailMateri(){
+      getDataDetailMateri(){
         this.$store.dispatch('getDataDetailMateri')
         .then(response => {
         })

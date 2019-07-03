@@ -6,51 +6,49 @@
                     <v-card>
                         <v-layout row wrap>
                             <v-flex md9 style="padding-top:22px;padding-left:35px;text-transform:capitalize">                        
-                               <h6 class="title">{{name}}</h6>
+                               <h6 class="title">{{detQuest.tryout_name}}</h6>
                             </v-flex>
                             <v-flex md3>             
                                 <!-- timer -->
-                                <!-- <Timer :time="time"/> -->
-                                <div style="width:180px;float:right; color:red" v-if="hours <= '00' && minutes <= '00' && seconds <= '00'">
-                                   <!-- dialog time out -->
-                                    <v-dialog v-model="timeoutDialog" persistent max-width="290">
-                                    <v-card>
-                                        <v-card-title class="headline">Waktu Habis</v-card-title>
-                                        <v-card-text>Waktu pengerjaan telah habis</v-card-text>
-                                        <v-card-actions>
-                                        <v-btn block color="green darken-1" flat dark @click="submit">OK</v-btn>
-                                        </v-card-actions>
-                                    </v-card>
-                                    </v-dialog>
-                                    <!-- /dialog time out -->
+                                <div style="width:160px;float:right;">
+                                    <h6 class="subheading" style="margin-top:7px;float:left">Durasi:&nbsp;</h6> 
+                                    <countdown v-show="StartTimer" :time="totalTime" :transform="transform">
+                                        <template slot-scope="props">
+                                            <div>
+                                                <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px;">
+                                                    <span>{{ props.minutes }}</span>
+                                                </div>
+                                                <div style="border:1px solid #BDBDBD;float:left;padding:8px;">
+                                                    <span> {{ props.seconds }}</span>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                        </template>
+                                    </countdown>
 
-                                    <h6 class="subheading" style="float:left">Timer :</h6>
-                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px">
-                                        <span>00</span>
-                                    </div>
-                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px">
-                                        <span>00</span>
-                                    </div>
-                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px">
-                                        <span>00</span>
-                                    </div>
-                                    <div class="clear"></div>
-                                </div>
+                                    <div v-show="EndTimer" style="color:red">
+                                        <v-dialog v-model="timeoutDialog" persistent max-width="290">
+                                            <v-card>
+                                                <v-card-title class="headline">Waktu Habis</v-card-title>
+                                                <v-card-text>Waktu pengerjaan telah habis</v-card-text>
+                                                <v-card-actions>
+                                                <v-btn block color="green darken-1" flat dark @click="submit">OK</v-btn>
+                                                </v-card-actions>
+                                            </v-card>
+                                        </v-dialog>
 
-                                <div style="width:180px;float:right;" v-else>
-                                    <h6 class="subheading" style="float:left">Timer:&nbsp;</h6> 
-                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;">
-                                        <span>{{ hours }}</span>
+                                        <div style="border:1px solid red;float:left;padding:8px;margin:0px 5px">
+                                            <span>00</span>
+                                        </div>
+                                        <div style="border:1px solid red;float:left;padding:8px">
+                                            <span>00</span>
+                                        </div>
+                                        <div class="clear"></div>
                                     </div>
-                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px;">
-                                        <span>{{ minutes }}</span>
-                                    </div>
-                                    <div style="border:1px solid #BDBDBD;float:left;padding:8px;">
-                                        <span> {{ seconds }}</span>
-                                    </div>
-                                    <div class="clear"></div>
+
                                 </div>
                                 <!-- timer -->
+
                             </v-flex>
                         </v-layout>
                     </v-card>
@@ -59,6 +57,15 @@
                 <v-flex md9>
                     <v-card style="padding:5px;">
                         <span style="margin:18px;font-size:18px"><b>Soal No. {{hal+1}}</b></span>
+                        <div v-if="scoringSystem==1" style="margin:0px 10px 0px 0px;font-size:16px;float:right">
+                            <span style="color:#757575"><b>Nilai Benar : <span style="color:#0091EA">{{detQuest.correct_score}}</span></b></span>
+                            <span style="margin:10px">|</span>
+                            <span style="color:#757575"><b>Nilai Salah : <span style="color:red">{{detQuest.incorrect_score}}</span></b></span>    
+                        </div>
+                        <div v-else-if="scoringSystem==2" style="margin:0px 10px 0px 0px;font-size:16px;float:right">
+                            <span style="color:#757575"><b>Bobot Soal: <span style="color:#8BC34A">{{detQuest.weight}}</span></b></span>
+                        </div>
+                        <div class="clear"></div>
                     </v-card>
                     <v-card style="min-height:347px">
                         <div style="position: absolute;top: 0;left: 0;width: 100%;height: 100%; overflow: auto">
@@ -98,8 +105,6 @@
                                 value="1" v-model="markanswer[hal]"
                             ></v-checkbox> 
                         </div>
-                        <!-- <v-btn v-if="hal == markanswer[hal]" @click="delMark(hal)" dark color="orange" small>Hapus Tanda</v-btn>
-                        <v-btn v-else @click="mark(hal)" small>Tandai</v-btn> -->
                         <div class="clear"></div>
                     </v-card>
                 </v-flex>
@@ -154,36 +159,41 @@
             </v-layout>
         </v-container>
         <LoadingScreen3 :loading="loadSubmit"></LoadingScreen3>
-        <!-- {{answer}} -->
     </div>
 </template>
 
-<script>
-    // import Timer from "../cereout-component/Timer"    
+<script>   
     import LoadingScreen3 from'../../components/loading-screen/Loading3'
     import axios from 'axios';
+    import { constants } from 'crypto';
 
     export default {
-        props:["name","cereoutId", "time", "attemptId"],
+        props:["cereoutId", "scoringSystem", "attemptId"],
 
         components:{
-            // Timer,
             LoadingScreen3
         },
         
         data () {
             return {
-                loadSubmit: false,
-                timeoutDialog:true,
-                timer: null,
-                totalTime: this.time * 60,//konversi ke detik
-
                 load_data: true,
 
+                StartTimer: true,
+                EndTimer: false,
+                timeoutDialog:false,
+
+                cekDurasi: 0,//this.time * 60, //konversi ke detik
+                timeUp: 0,
+                interval: null,
+                ////
+
+                totalTime: 0,//this.time * 60000,//konversi ke milidetik
                 hal: 0,
+                detQuest: [],
                 questions: [],       
                 quest: "",
                 options: [],
+                loadSubmit: false,
 
                 myTime: '',
                 answer: [],
@@ -193,8 +203,7 @@
             }
         },
 
-
-        methods:{
+        methods:{            
             alertDisplay() {
                 this.$swal({
                     title: 'Apakah anda yakin?',
@@ -214,7 +223,7 @@
 
             //uncheck mark
             uncheck(val) {
-                this.tmpanswer[val] = false
+                this.tmpanswer[val] = null
             },
 
             submit() {
@@ -222,8 +231,7 @@
                 var ans = ''
                 var n = ''
                 
-                // this.myTime = this.hours +""+ this.minutes +"Menit"+ this.seconds +"Detik"
-                this.myTime = this.minutes
+                this.myTime = Math.round(this.timeUp / 60)
                 for(var i=0; i < this.questions.length; i++){
                     if(this.tmpanswer[i] == 0){
                         ans = 'A'
@@ -254,7 +262,7 @@
                     }              
                     this.answer.push(tmp)
                 }
-
+                
                 axios.post('/cereouts/'+this.cereoutId+'/attempts/'+this.attemptId+'/valuation', {
                     my_time: this.myTime,
                     answers: this.answer
@@ -270,8 +278,9 @@
             },
 
             viewQuestion(index) {   
-                this.hal   = index 
-                this.quest = this.questions[index].question
+                this.hal     = index
+                this.detQuest= this.questions[index] 
+                this.quest   = this.questions[index].question
                 this.options = this.questions[index].option
             },
 
@@ -279,8 +288,9 @@
                 if(hal > 0){
                     hal--
                     this.hal   = hal
-                    this.quest = this.questions[hal].question
-                    this.options = this.questions[hal].option
+                    this.detQuest  = this.questions[hal]
+                    this.quest     = this.questions[hal].question
+                    this.options   = this.questions[hal].option
                 }
             },
 
@@ -288,53 +298,37 @@
                 if(hal < this.questions.length-1){
                     hal++
                     this.hal   = hal
-                    this.quest = this.questions[hal].question
-                    this.options = this.questions[hal].option
+                    this.detQuest = this.questions[hal]
+                    this.quest    = this.questions[hal].question
+                    this.options  = this.questions[hal].option
                 }
             },
 
-            // mark(hal){
-            //     if(hal < this.questions.length-1){
-            //         this.markanswer[hal].push(1)
-            //     }
+            transform(props) { //timer
+                Object.entries(props).forEach(([key, value]) => {
+                    // Adds leading zero
+                    const digits = value < 10 ? `0${value}` : value;
+                    props[key] = `${digits}`;
+                });
 
-            //     console.log(hal)
-            // },
+                return props;
+            },
 
-            // delMark(hal){
-            //     const index = this.markanswer.indexOf(hal) //mencari index
-            //     this.markanswer.splice(index, 1)
-            // },
+            toggleTimer() {
+                this.interval = setInterval(this.incrementTime, 1000);
+            },
+            incrementTime() {
+                this.timeUp = parseInt(this.timeUp) + 1;
 
-            //function timer
-            startTimer: function() {
-                this.timer = setInterval(() => this.countdown(), 1000); //1000ms = 1 second
+                if(this.timeUp == this.cekDurasi){
+                    clearInterval(this.interval);
+                    this.StartTimer   = false
+                    this.EndTimer     = true
+                    this.timeoutDialog= true
+                }
+            
             },
             
-            padTime: function(time){
-                return (time < 10 ? '0' : '') + time;
-            },
-            countdown: function() {
-                this.totalTime--;
-            }
-            //function timer
-        },
-
-        computed: {
-            //function timer
-            hours: function() {        
-                const hours = Math.trunc(this.totalTime / 60 /60) % 24;
-                return this.padTime(hours);
-            },
-            minutes: function(){
-                const minutes = Math.trunc(this.totalTime / 60) % 60;
-                return this.padTime(minutes);
-            },
-            seconds: function() {
-                const seconds = Math.trunc(this.totalTime - this.minutes) % 60;
-                return this.padTime(seconds);
-            }
-            //function timer
         },
 
         mounted(){
@@ -343,11 +337,15 @@
                 this.load_data = false
                 this.questions = response.data.data
                 
-                this.startTimer()
-
+                // this.startTimer()
+                this.detQuest  = this.questions[0]
                 this.quest     = this.questions[0].question
                 this.options   = this.questions[0].option;
-                console.log(response.data)
+                
+                this.cekDurasi = this.detQuest.duration * 60
+                this.totalTime = this.detQuest.duration * 60000
+
+                this.toggleTimer() //aktifkan countUp
             })
             .catch(error =>{
                 console.log(error.response)
@@ -366,60 +364,4 @@
     a.btn-num:hover{
         color: black
     }
-
-    /* .container {
-        display: block;
-        position: relative;
-        margin-bottom:-20px;
-    }
-
-    .container input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-    }
-
-    .checkmark {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        height: 16px;
-        width: 16px;
-        background-color: #eee;
-        border-radius: 100%;
-    }
-
-    .checkmark p {
-        margin-left:24px; 
-        margin-top:-4px; 
-        font-size:16px
-    }
-
-    .container:hover input ~ .checkmark {
-        background-color: #ccc;
-    }
-
-    .container input:checked ~ .checkmark {
-        background-color: #2196F3;
-    }
-
-    .checkmark:after {
-        content: "";
-        position: absolute;
-        display: none;
-    }
-
-    .container input:checked ~ .checkmark:after {
-        display: block;
-    }
-
-    .container .checkmark:after {
-        top: 4px;
-        left: 4px;
-        width: 8px;
-        height: 8px;
-        border-radius: 100%;
-        background: white;
-    } */
 </style>

@@ -2,11 +2,11 @@
     <div class="change_passw">
     	<form @submit.prevent="login">
             <v-text-field v-model="email" style="height:60px" label="Email"></v-text-field>
-	        <v-text-field v-model="password" style="height:60px" label="Old Password"></v-text-field>
-	        <v-text-field v-model="newPassword" style="height:60px" label="New Password"></v-text-field>
+	        <v-text-field v-model="password" style="height:60px" label="Password Lama"></v-text-field>
+	        <v-text-field v-model="newPassword" style="height:60px" label="Password Baru"></v-text-field>
 	        <v-divider></v-divider>
 	        <v-btn block color="red" :loading="btn_load" @click="submit" dark>Update</v-btn>
-            <v-btn block @click="cancel" dark>Cancel</v-btn>
+            <v-btn block @click="cancel" dark>Kembali</v-btn>
 	    </form>
     </div>
 </template>
@@ -15,7 +15,7 @@
 	import axios from 'axios';
 
     export default {
-        props: ['idUser'],
+        props: ['idUser', 'email'],
         data: () => ({
             email: '',
             password: '',
@@ -28,15 +28,21 @@
             },
             submit (event) {
                 this.btn_load = true
-                axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token
+                axios.defaults.headers = {  
+                    'Authorization': 'Bearer ' + this.$store.state.token 
+                }
                 axios.post('http://api.ceredinas.id/api/auth/user/changePassword/'+this.idUser,{
-                  currentPassword: this.currentPassword,
+                  email: this.email,
+                  password: this.password,
                   newPassword: this.newPassword
                 })
                 .then(response => {
-                  console.log(response.data)
+                  this.btn_load = false
+                  this.$swal('Sukses', 'Berhasil Mengganti Password!', 'success')
                 })
                 .catch(error => {
+                  this.btn_load = false
+                  this.$swal('Oops', 'Gagal Mengganti Password!', 'warning')
                   console.log(error)
                 })
             }

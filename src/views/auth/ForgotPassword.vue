@@ -2,12 +2,12 @@
     <div class="forgot_password">
       <v-container>
         <v-layout>
-            <v-flex xs12 md4 sm4 offset-sm4>
+            <v-flex xs12 md6 sm6 offset-sm3>
                 <v-card>
                     <v-card-title primary-title>
                         <div style="margin: 0px 15px">
-                            <h3 class="headline mb-0"><b>Get Your Password</b></h3>
-                            <p style="font-size:13px;color:#757575">Please enter your email address. You will receive a link to create a new password via email.</p>
+                            <h3 class="headline mb-0"><b>Lupa Password</b></h3>
+                            <p style="font-size:13px;color:#757575">Silahkan masukkan alamat Email Valid untuk mendapatkan kode verifikasi reset password akun anda.</p>
 
                             <v-text-field
                                 color="black"
@@ -16,7 +16,7 @@
                                 label="E-mail"
                             ></v-text-field>
                             
-                             <v-btn dark block color="red">Reset password</v-btn>
+                             <v-btn @click="submitEmail" dark block color="red" :loading="btn_load">Kirim Kode Verifikasi</v-btn>
                         </div>
                     </v-card-title>
                 </v-card>
@@ -27,10 +27,13 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     data () {
       return {
         show_pass: false,
+        btn_load: false,
         password: '',
         rules: {
           required: value => !!value || 'Required.',
@@ -46,6 +49,27 @@
             return pattern.test(value) || 'Invalid e-mail.'
           }
         }
+      }
+    },
+    methods: {
+      submitEmail() {
+        this.btn_load = true
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + this.$store.state.token
+        }
+        axios.post('/password/create', {
+          email: this.email
+        })
+        .then(response => {
+          this.btn_load = false
+          this.$swal('Sukses', 'Silahkan Cek Email Anda!', 'success')
+          this.$router.push({ name:'login' })
+        })
+        .catch(error => {
+          this.btn_load = false
+          this.$swal('Oops', 'Gagal Mengirim Kode Reset!', 'warning')
+          console.log(error)
+        })
       }
     }
   }

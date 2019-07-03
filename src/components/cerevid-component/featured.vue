@@ -2,7 +2,7 @@
 		<div>
 			<v-container grid-list-md>
 				<v-layout row wrap>
-				    <v-flex xs12 sm6 md6>
+				    <v-flex xs12 sm12 md12>
 					    <v-select
 					        :items="datas.data"
 					        label="Kelas"
@@ -13,7 +13,7 @@
 					        outline
 					    ></v-select>
 					</v-flex>
-				    <v-flex xs12 sm6 md6>
+				    <v-flex xs12 sm12 md12>
 					    <v-select
 					        :items="dataLesson"
 					        label="Pelajaran"
@@ -44,7 +44,7 @@
 						<v-flex xs12 sm6 md3>
 								<v-card>
 									<v-img
-										v-bind:src="'http://admin.ceredinas.id/public/cover/'+ props.item.cover"
+										v-bind:src="props.item.cover"
 										height="200px"
 									>
 	                  <v-flex offset-xs9 align-end flexbox>
@@ -69,7 +69,17 @@
 									<v-card-title primary-title>
 										<div>
 											<div class="headline">
-												<router-link v-bind:to="'/cerevid/detail-pelajaran/'+props.item.id" style="text-decoration: none;">{{props.item.title}}</router-link>
+	                      <router-link v-bind:to="'/cerevid/detail-pelajaran/'+props.item.id" style="text-decoration: none;">
+	                        <div v-if="props.item.title.length<32">{{props.item.title}}</div>
+	                        <div v-else>
+	                          <v-tooltip bottom>
+	                            <template v-slot:activator="{ on }">
+	                              <span v-on="on">{{props.item.title.substring(0,29)}}...</span>
+	                            </template>
+	                            <span>{{props.item.title}}</span>
+	                          </v-tooltip>
+	                        </div>
+	                      </router-link>
 											</div>
 											<span class="grey--text">{{props.item.teacher.name}}</span>
 										</div>
@@ -132,7 +142,7 @@ export default {
     LoadingScreen
   },
   methods: {
-    async getDataPelajaranbyLesson() {
+    getDataPelajaranbyLesson() {
       this.$store.dispatch('getDataPelajaranbyLesson', {
           id: this.pelajaran
         })
@@ -141,7 +151,7 @@ export default {
           console.log(error)
         })
     },
-    async getDataFavoritbyUser() {
+    getDataFavoritbyUser() {
       this.$store.dispatch('getDataFavoritbyUser')
         .then(response => {})
     },

@@ -30,7 +30,7 @@
 	                  <v-container grid-list-md>
 	                    <v-layout wrap>
 	                      <v-flex xs12 sm6 md12>
-	                        <v-text-field label="Judul Quiz *" required></v-text-field>
+	                        <v-text-field v-model="title" label="Judul Quiz *" required></v-text-field>
 	                      </v-flex>
 	                    </v-layout>
 	                  </v-container>
@@ -39,7 +39,7 @@
 	                <v-card-actions>
 	                  <v-spacer></v-spacer>
 	                  <v-btn color="blue darken-1" flat @click="tambahBab = false">Tutup</v-btn>
-	                  <v-btn color="blue darken-1" flat @click="tambahBab = false">Tambah</v-btn>
+	                  <v-btn color="blue darken-1" flat @click="submitQuiz">Tambah</v-btn>
 	                </v-card-actions>
 	              </v-card>
 	            </v-dialog>
@@ -89,7 +89,6 @@
         title: '',
         konten: '',
         right: null,
-        btn_load: false,
         tambahBab: false,
         headers: [
             { text: 'No', value: 'no' },
@@ -112,30 +111,21 @@
       }
 	},
 	methods: {
-        submit(){
-          // this.btn_load = true;
+        submitQuiz(){
+          this.tambahBab = false;
 
-          // let data = new FormData();
-          // data.append('cover', this.dataDetailPelajaran.data.cover);
-          // data.set('title', this.dataDetailPelajaran.data.title);
-          // data.set('description', this.dataDetailPelajaran.data.description);
-          // data.set('curriculum', this.dataDetailPelajaran.data.curriculum);
-          // data.set('lesson_id', this.dataDetailPelajaran.data.lesson_id);
-          // data.set('user_id', this.dataDetailPelajaran.data.dataUser);
-
-          // axios.defaults.headers = {  
-          //   'Content-Type': 'multipart/form-data',  
-          //   'Authorization': 'Bearer ' + this.$store.state.token 
-          // }
-          // axios.put('http://api.ceredinas.id/api/courses/'+this.$route.params.id, data)
-          // .then(response => {
-          //   this.btn_load = false;
-          //   console.log(response.data)
-          // })
-          // .catch(error => {
-          //   this.btn_load = false;
-          //   console.log(error)
-          // })
+          axios.defaults.headers = {   
+            'Authorization': 'Bearer ' + this.$store.state.token 
+          }
+          axios.post('http://api.ceredinas.id/api/sections/'+this.$route.params.idSection+'/quiz/create', {
+            title: this.title
+          })
+          .then(response => {
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
         }
     }
   }

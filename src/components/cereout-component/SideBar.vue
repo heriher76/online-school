@@ -1,8 +1,8 @@
 <template>
     <div class="sidebar">
         <v-navigation-drawer permanent fixed style="margin-left:30px; top:113px; z-index:0;" height="280" width="250">
-            <v-toolbar height="50">
-            <h5 class="headline" style="margin:0px 20px;color:black">Application</h5>
+            <v-toolbar dark color="#B71C1C" height="50">
+            <h5 class="headline" style="margin:0px 20px;">Menu Cereout</h5>
             </v-toolbar>
             <v-list dense class="pt-0">
                 <v-list-tile to="/cereout/dashboard" style="margin-top:10px">

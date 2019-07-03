@@ -2,7 +2,7 @@
     <div class="my_exams">
         <v-container>
             <v-toolbar color="#B71C1C" dark>
-                <v-toolbar-title>Exam Details</v-toolbar-title>
+                <v-toolbar-title>Detail Tryout</v-toolbar-title>
             </v-toolbar>
             <v-container>
                 <v-card style="text-transform:capitalize">
@@ -75,7 +75,10 @@
                             <v-list-tile>
                                 <v-list-tile-content>
                                 <v-list-tile-title>Sistem Penilaian</v-list-tile-title>
-                                <v-list-tile-sub-title>{{detail.scoring_system}}</v-list-tile-sub-title>
+                                <v-list-tile-sub-title>
+                                  <span v-if="detail.scoring_system==1">Penilaian Lama</span>
+                                  <span v-else-if="detail.scoring_system==2">Penilaian IRT (Item Response Theory)</span>
+                                </v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                             <!-- <v-list-tile>
@@ -90,16 +93,16 @@
                 <v-divider></v-divider>
 
                 <v-btn dark @click="action(detail)" color="info">
-                  Attempt Now
+                  Coba Sekarang
                   <v-icon right dark>launch</v-icon>
                 </v-btn>
-                <v-btn @click="$router.go(-1)">Cancel</v-btn>
+                <v-btn @click="$router.go(-1)">Batal</v-btn>
 
                 <!-- loading -->
-                <v-dialog v-model="loading" hide-overlay persistent width="300">
+                <v-dialog v-model="loading" hide-overlay persistent width="400">
                   <v-card color="primary" dark>
                     <v-card-text>
-                      Please stand by
+                      Sedang menyiapkan, mohon tunggu sebentar
                       <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
                     </v-card-text>
                   </v-card>
@@ -160,11 +163,11 @@
           })
           .then(response => {
             this.loading = false
-            console.log(response.data)
+            // console.log(response.data)
           
             if(response.data.status == true){ //cek user member atau bukan
               this.$router.push({name: 'dashboard'})
-              let routeData = this.$router.resolve({name: 'exam_page', params:{id:data.id, name: data.name, durasi:data.duration, attemptId:response.data.data.id}});
+              let routeData = this.$router.resolve({name: 'exam_page', params:{id:data.id, scoringSystem: data.scoring_system, attemptId:response.data.data.id}});
               window.open(routeData.href,
                           'my_window', 
                           'width=1600, height=620, resizable=no',

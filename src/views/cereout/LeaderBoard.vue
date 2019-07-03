@@ -13,7 +13,7 @@
                 <!-- /sidebar -->
 
                 <!-- leader board -->
-                <v-flex md9 sm12 xs12>
+                <v-flex md9 sm12 xs12 style="min-height:300px">
                     <v-card color="#B71C1C" dark>
                         <v-card-text class="px-0"><h6 class="title" style="margin:4px 20px">Papan Peringkat</h6></v-card-text>
                     </v-card>
@@ -22,41 +22,8 @@
                     <v-layout row wrap>
                       <v-flex md12 sm12 xs12>
                         <v-card>
-                          <v-card color="red" dark >
-                            <v-card-text>Kelas <span v-if="user.class!=null">{{user.class.name_class}}</span></v-card-text>
-                          </v-card>
-
-                          <!-- loading -->
-                          <div v-show="load_dataClass" style="margin:0px auto; padding:40px; width:5%;">
-                              <v-progress-circular
-                              :size="40"
-                              color="primary"
-                              indeterminate
-                              ></v-progress-circular>
-                          </div>
-                          <!-- /loading -->
-
-                          <div v-show="tablClass" class="tabl">
-                            <v-data-table
-                              :headers="headers"
-                              :items="leaderClass"
-                              disable-initial-sort
-                            >
-                              <template v-slot:items="props">
-                                  <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.name}}</b></td>
-                                  <td v-else>{{props.item.name}}</td>
-                                  <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.score}}</b></td>
-                                  <td v-else>{{props.item.score}}</td>
-                              </template>
-                            </v-data-table>
-                          </div>
-                        </v-card>
-                      </v-flex>
-
-                      <v-flex md12 sm12 xs12>
-                        <v-card>
-                          <v-card color="red" dark >
-                            <v-card-text>Pelajaran </v-card-text>
+                          <v-card color="#546E7A" dark>
+                            <v-card-text style="font-size:18px;">Pelajaran </v-card-text>
                           </v-card>
 
                           <!-- select -->
@@ -92,6 +59,40 @@
                               disable-initial-sort
                             >
                               <template v-slot:items="props">
+                                  <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.name}}</b></td>
+                                  <td v-else>{{props.item.name}}</td>
+                                  <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.score}}</b></td>
+                                  <td v-else>{{props.item.score}}</td>
+                              </template>
+                            </v-data-table>
+                          </div>
+                        </v-card>
+                      </v-flex>
+                      
+                      <v-flex md12 sm12 xs12>
+                        <v-card>
+                          <v-card color="#0288D1" dark >
+                            <v-card-text style="font-size:18px">Kelas <span v-if="user.class!=null">{{user.class.name_class}}</span></v-card-text>
+                          </v-card>
+
+                          <!-- loading -->
+                          <div v-show="load_dataClass" style="margin:0px auto; padding:40px; width:5%;">
+                              <v-progress-circular
+                              :size="40"
+                              color="primary"
+                              indeterminate
+                              ></v-progress-circular>
+                          </div>
+                          <!-- /loading -->
+
+                          <div v-show="tablClass" class="tabl">
+                            <v-data-table
+                              :headers="headers"
+                              :items="leaderClass"
+                              disable-initial-sort
+                            >
+                              <template v-slot:items="props">
+                                <!-- {{props.item}} -->
                                   <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.name}}</b></td>
                                   <td v-else>{{props.item.name}}</td>
                                   <td v-if="props.item.name == user.name" style="background:#F5F5F5;color:red"><b>{{props.item.score}}</b></td>
@@ -168,7 +169,7 @@
           this.tabl      = true
           this.text_judul= 'Pelajaran '//+this.pelajaran
           this.leader    = response.data.data
-          console.log(response.data)
+          // console.log(response.data)
         })
         .catch(error => {
           console.log(error.response)
@@ -209,7 +210,7 @@
         this.tablClass     = true
         this.leaderClass = response.data.data
         // this.leader      = response.data.data
-        console.log(response.data)
+        // console.log(response.data)
       })
       .catch(error => {
         console.log(error.response)
@@ -218,7 +219,7 @@
       Axios.get('/master/class')//get class
       .then(response => {
         this.classs = response.data
-        console.log(response.data)
+        // console.log(response.data)
       })
       .catch(error => {console.log(error.response)})
 

@@ -13,7 +13,7 @@
                 <!-- /sidebar -->
                 
                 <!-- results -->
-                <v-flex md9 sm12 xs12>
+                <v-flex md9 sm12 xs12 style="min-height:300px">
                     <v-card color="#B71C1C">
                         <div style="float:left; margin-top:9px">
                             <v-btn color="white" @click="$router.go(-1)" icon small >
@@ -43,8 +43,8 @@
                             <td>{{ props.item.score }}</td>
                             <td>{{ props.item.result_status }}</td>
                             <td> 
-                                <router-link :to="{name: 'result_detail', params:{id: props.item.id, data: props.item, act:0}}">Detail</router-link> | 
-                                <router-link :to="{name: 'result_detail', params:{id: props.item.id, data: props.item, act:1}}">Lihat Pembahasan</router-link>
+                                <router-link :to="{name: 'result_detail', params:{idTryout: props.item.id, data: props.item}}">Detail</router-link>
+                                <!-- <router-link :to="{name: 'result_detail', params:{id: props.item.id, data: props.item, act:1}}">Lihat Pembahasan</router-link> -->
                             </td>
                         </template>
  
@@ -101,7 +101,7 @@
             this.load_data = false
             this.tabl      = true
             this.results   = response.data.data
-            console.log(response.data)
+            // console.log(response.data)
         })
         .catch(error => {
             console.log(error.response)

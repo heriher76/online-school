@@ -8,37 +8,37 @@
         <v-flex md9 style="font-size:14px">
             <table>
                 <tr height="30">
-                    <td width="120"><b>Name</b></td><td v-if="datas.data.name">{{ datas.data.name }}</td>
+                    <td width="120"><b>Nama</b></td><td v-if="datas.data.name">{{ datas.data.name }}</td>
                 </tr>
                 <tr height="30">
                     <td><b>E-mail</b></td><td v-if="datas.data.email !== null">{{ datas.data.email }}</td>
                 </tr>
                 <tr height="30">
-                    <td><b>Phone Number</b></td><td v-if="datas.data.phone !== null">{{ datas.data.phone }}</td>
+                    <td><b>Nomor Telepon</b></td><td v-if="datas.data.phone !== null">{{ datas.data.phone }}</td>
                 </tr>
                 <tr height="30">
-                    <td><b>Address</b></td><td v-if="datas.data.address !== null">{{ datas.data.address }}</td>
+                    <td><b>Alamat</b></td><td v-if="datas.data.address !== null">{{ datas.data.address }}</td>
                 </tr>
                 <tr height="30">
-                    <td><b>Birth Place</b></td><td v-if="datas.data.birth_place !== null">{{ datas.data.birth_place }}</td>
+                    <td><b>Tempat Lahir</b></td><td v-if="datas.data.birth_place !== null">{{ datas.data.birth_place }}</td>
                 </tr>
                 <tr height="30">
-                    <td><b>Birth Date</b></td><td v-if="datas.data.birth_date !== null">{{ datas.data.birth_date }}</td>
+                    <td><b>Tanggal Lahir</b></td><td v-if="datas.data.birth_date !== null">{{ datas.data.birth_date }}</td>
                 </tr>
                 <tr height="30">
-                    <td><b>Gender</b></td><td v-if="datas.data.gender !== null">{{ datas.data.gender }}</td>
+                    <td><b>Jenis Kelamin</b></td><td v-if="datas.data.gender !== null">{{ datas.data.gender }}</td>
                 </tr>
                 <tr height="30">
-                    <td><b>Parrent Name</b></td><td v-if="datas.data.parrent_name !== null">{{ datas.data.parrent_name }}</td>
+                    <td><b>Nama Orang Tua</b></td><td v-if="datas.data.parrent_name !== null">{{ datas.data.parrent_name }}</td>
                 </tr>
                 <tr height="30">
-                    <td><b>Parrent Phone</b></td><td v-if="datas.data.parrent_phone !== null">{{ datas.data.parrent_phone }}</td>
+                    <td><b>Nomor Orang Tua</b></td><td v-if="datas.data.parrent_phone !== null">{{ datas.data.parrent_phone }}</td>
                 </tr>
                 <tr height="30">
                     <td><b>Membership</b></td><td v-if="datas.data.membership !== null">{{ datas.data.membership }}</td>
                 </tr>
                 <tr height="30">
-                    <td><b>Class</b></td><td v-if="datas.data.class !== null">{{ datas.data.class.name_class }}</td>
+                    <td><b>Kelas</b></td><td v-if="datas.data.class !== null">{{ datas.data.class.name_class }}</td>
                 </tr>
                 <tr height="30">
                     <td><b>Pilihan Pertama</b></td><td v-if="datas.data.option1 !== null">{{ datas.data.option1.department_name }} - {{ datas.data.option1.university_name }}</td>

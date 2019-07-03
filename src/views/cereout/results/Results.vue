@@ -13,13 +13,13 @@
                 <!-- /sidebar -->
                 
                 <!-- results -->
-                <v-flex md9 sm12 xs12>
+                <v-flex md9 sm12 xs12 style="min-height:300px">
                     <v-card color="#B71C1C" dark>
                         <v-card-text class="px-0"><h6 class="title" style="margin:4px 20px">Hasil Tryout</h6></v-card-text>
                     </v-card>
                     <br>
                     <v-card>
-                        <div v-show="load_data" style="margin:0px auto; padding:40px; width:5%;">
+                        <div v-show="load_data" style="margin:0px auto; padding:100px; width:5%;">
                             <v-progress-circular
                             :size="40"
                             color="primary"
@@ -86,7 +86,7 @@
             this.load_data = false
             this.tabl      = true
             this.results   = response.data.data
-            console.log(response.data)
+            // console.log(response.data)
         })
         .catch(error => {
             console.log(error.response)
