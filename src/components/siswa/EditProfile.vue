@@ -2,7 +2,7 @@
     <v-layout row wrap="">
         <v-flex md3>
             <div style="height:100px;width:85px;">
-                <img :src="photo" width="100%" height="100%" alt="" v-show='showImage'>
+                <img :src="datas.data.photo_url" width="100%" height="100%" alt="" v-show='showImage'>
                 <LoadingScreen1 :loading="is_load1"></LoadingScreen1>
             </div>
 
@@ -193,13 +193,13 @@
         watch: {
           birth_date (date) {
             this.birth_date= date
-            console.log(this.birth_date)
+            // console.log(this.birth_date)
           },
           kelas (newVal) {
             this.kelas= newVal
           },
           option1_university_name (university1) {
-            console.log(university1)
+            // console.log(university1)
             this.option1_university_name = university1
             this.listUniversity.map((univ) => {
                 if (univ.id == this.option1_university_name) {
@@ -208,7 +208,7 @@
             })
           },
           option2_university_name (university2) {
-            console.log(university2)
+            // console.log(university2)
             this.option2_university_name = university2
             this.listUniversity.map((univ) => {
                 if (univ.id == this.option2_university_name) {
@@ -217,7 +217,7 @@
             })
           },
           option3_university_name (university3) {
-            console.log(university3)
+            // console.log(university3)
             this.option3_university_name = university3
             this.listUniversity.map((univ) => {
                 if (univ.id == this.option3_university_name) {
@@ -251,7 +251,7 @@
                 this.file = this.$refs.file.files[0];
             },
             submitPhoto (event) {
-                console.log(this.file)
+                // console.log(this.file)
                 this.dialog = false
                 this.btn_upload = true
                 this.showImage = !this.showImage
@@ -266,12 +266,15 @@
                     'Authorization': 'Bearer ' + this.$store.state.token
                 }
 
-                axios.post('http://api.ceredinas.id/api/auth/changePhotoProfile/'+this.$store.state.dataUser, data)
+                axios.post('https://api.ceredinas.id/api/auth/changePhotoProfile/'+this.$store.state.dataUser, data)
                 .then(response => {
                   this.showImage = !this.showImage
                   this.is_load1 = !this.is_load1
                   this.$swal('Sukses', 'Berhasil Mengganti Photo Profile!', 'success')
-                  console.log(response.data)
+                  .then(() => {
+                        window.location.href = "/my account"
+                    })
+                //   console.log(response.data)
                 })
                 .catch(error => {
                   this.showImage = !this.showImage
@@ -281,7 +284,7 @@
                 })
             },
             submit (event) {
-                console.log(this.kelas)
+                // console.log(this.kelas)
                 this.btn_load = true
                 this.$store.dispatch('editProfileUser', {
                     name: this.datas.data.name,
@@ -298,9 +301,12 @@
                     option3: this.option3_department_name || this.datas.data.option3.department_id
                 })
                 .then(response => {
-                  this.btn_load = false
-                  this.$swal('Sukses', 'Berhasil Mengganti Profile!', 'success')
-                  // this.$router.push({path: '/'})
+                    this.btn_load = false
+                    this.$swal('Sukses', 'Berhasil Mengganti Profile!', 'success')
+                    .then(() => {
+                        window.location.href = "/my account"
+                    })
+                    // this.$router.push({path: '/'})
                 })
                 .catch(error => {
                   this.btn_load = false
