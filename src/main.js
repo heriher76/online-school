@@ -6,8 +6,8 @@ import VueGoogleCharts from 'vue-google-charts';
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import VueCarousel from '@chenfengyuan/vue-carousel';
 
-// import VueMathjax from 'vue-mathjax'
-
+import UUID from 'vue-uuid';
+ 
 import axios from 'axios';
 
 import ReadMore from 'vue-read-more';
@@ -27,7 +27,7 @@ const gauthOption = {
   prompt: 'select_account'
 }
 
-// Vue.use(VueMathjax)
+Vue.use(UUID);
 
 Vue.use(GAuth, gauthOption)
 

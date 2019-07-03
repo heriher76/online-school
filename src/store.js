@@ -226,9 +226,11 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios.post('/auth/login',{
           email: credentials.email,
-          password: credentials.password
+          password: credentials.password,
+          device_id: credentials.device_id
         })
         .then(response => {
+          console.log(response.data)
           const token    = response.data.access_token
           const dataUser   = response.data.data.id
           

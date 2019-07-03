@@ -70,40 +70,42 @@ export default {
     },
     incrementTime() {
         this.time = parseInt(this.time) + 1;
-        axios.get('/auth/user')
-        .then(response => {
-          // console.log(response.data.data)
-          this.cekStatus = response.data.data.status
-          if(this.cekStatus == 1){
-            return this.$router.push({name:'dashboard_guru'})
-          }
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
+        if(this.$store.state.token!=null){
+          axios.get('/auth/user')
+          .then(response => {
+            // console.log(response.data.data)
+            this.cekStatus = response.data.data.status
+            if(this.cekStatus == 1){
+              return this.$router.push({name:'dashboard_guru'})
+            }
+          })
+          .catch(error => {
+            console.log(error.response)
+          })
 
-        axios.get('/cereouts/running')
-        .then(response => {
-          if(response.data.status == true){
-            this.dialogRunning = true
-            this.data = response.data.data
-          }
-          else if(response.data.status == false){
-            this.dialogRunning = false
-            this.data = response.data.data
-          }
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
+          axios.get('/cereouts/running')
+          .then(response => {
+            if(response.data.status == true){
+              this.dialogRunning = true
+              this.data = response.data.data
+            }
+            else if(response.data.status == false){
+              this.dialogRunning = false
+              this.data = response.data.data
+            }
+          })
+          .catch(error => {
+            console.log(error.response)
+          })
+      }
     },
 
   },
 
   mounted(){  
-    if(this.$store.getters.loggedIn){
+    // if(this.$store.getters.loggedIn){
       this.toggleTimer()
-    }
+    // }
   },
 }
 </script>
