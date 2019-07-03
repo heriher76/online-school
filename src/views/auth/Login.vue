@@ -93,19 +93,6 @@
           </v-facebook-login>
         </center>
         <br>
-    
-        <!-- <facebook-login class="button"
-          appId="318638459074473"
-          @login="getUserData"
-          @logout="onLogout"
-          @sdk-loaded="sdkLoaded">
-        </facebook-login> -->
-
-         <!-- <facebook-login class="button"
-          appId="318638459074473"
-          @login="getUserData"
-          @get-initial-status="getUserData">
-        </facebook-login> -->
 
         <hr style="margin-bottom:15px">
         <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>
@@ -117,7 +104,7 @@
 
 
 <script>
-// import Vue from "vue";
+  // import { uuid } from 'vue-uuid';
   import axios from "axios"
   import LoadingScreen2 from'../../components/loading-screen/Loading2'
   import { VFBLogin as VFacebookLogin } from 'vue-facebook-login-component'
@@ -133,14 +120,16 @@
 
     data () {
       return {
+        // uuid: uuid.v1(),
+
         time: 0,
         interval: null,
 
-        isConnected: false,
-        name: '',
-        email: '',
-        personalID: '',
-        FB: undefined,
+        // isConnected: false,
+        // name: '',
+        // email: '',
+        // personalID: '',
+        // FB: undefined,
 
         snackbar: false,
         snackbarGoogle:false,
@@ -172,7 +161,6 @@
     mounted(){
       this.snackbar = this.regist
       this.toggleTimer()
-      
     },
 
     created() {
@@ -198,7 +186,8 @@
 
         this.$store.dispatch('retrieveToken', {
           email: this.email,
-          password: this.password
+          password: this.password,
+          device_id: this.uuid
         })
         .then(response => {
           this.btn_load = false
@@ -247,7 +236,8 @@
 
       loginGoogle(){
         this.$gAuth.signIn()
-        .then(GoogleUser => {console.log(GoogleUser)
+        .then(GoogleUser => {
+          console.log(GoogleUser)
           //on success
           this.$store.dispatch('retrieveTokenGoogle', {
             token: GoogleUser.getAuthResponse().access_token
@@ -272,32 +262,7 @@
         })
       },
 
-      //login facebook
-      getUserData() {
-        // FB.getLoginStatus(response => {
-        //   if (response.status === 'connected') {
-        //     console.log(response.authResponse.accessToken);
-        //     //on success
-        //     this.$store.dispatch('retrieveTokenFacebook', {
-        //       token: response.authResponse.accessToken
-        //     })
-        //     .then(response => {
-        //       console.log(response)
-        //       this.loadLogin      = true
-        //       this.snackbarGoogle = true
-        //       this.textbarGoogle  = "Berhasil masuk dengan facebook !!"
-
-        //       return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 1500)
-        //     })
-        //     .catch(error => {
-        //       this.snackbarGoogle = true
-        //       this.textbarGoogle  = "Gagal masuk dengan facebok !!"
-
-        //       console.log(error)
-        //     })
-        //   }
-        // })
-      },
+      
     }
   }
 </script>
