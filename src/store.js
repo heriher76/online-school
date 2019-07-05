@@ -25,7 +25,7 @@ export default new Vuex.Store({
     dataVideo: [],
     dataText: [],
     dataQuiz: [],
-    dataDetailForum: [],
+    dataDetailForum: []
   },
 
   getters: {
@@ -71,6 +71,7 @@ export default new Vuex.Store({
     getInformation(state, info){
       state.info = info
     },
+
 //------------------------------------------cerevid---------------------------------------------
     getDataPelajaran(state, dataPelajaran){
       state.dataPelajaran = dataPelajaran
@@ -639,6 +640,7 @@ export default new Vuex.Store({
         })
       })
     },
+
 //----------------------------------------------------------------------------------------------------------
     // -----------------------------SISWA
     // get profile
