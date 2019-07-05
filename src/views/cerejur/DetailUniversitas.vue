@@ -77,6 +77,103 @@
                     </div>
                 </v-flex>
             </v-layout>
+
+            <v-layout row wrap mt-3>
+              <v-flex md8>
+                <v-tabs color="#f5f5f5" next-icon="mdi-arrow-right-bold-box-outline" prev-icon="mdi-arrow-left-bold-box-outline" show-arrows>
+                  <v-tab :href="'#forum-diskusi'" style="text-decoration:none;">
+                    Forum Diskusi
+                  </v-tab>
+                  <v-tabs-items>
+                    <v-tab-item :value="'forum-diskusi'">
+                      <v-card>
+                        <v-container>
+                          <v-layout>
+                          <v-flex md12 sm12 xs12>
+                            <v-list three-line>
+                              <template v-for="item in this.forums">
+                                <v-list-tile>
+                                  <v-list-tile-content style="overflow-x:auto">
+                                    <v-card flat>
+                                    <v-list-tile-title v-html="item.user.name" class="ml-3"></v-list-tile-title>
+                                    <v-tooltip bottom>
+                                      <template v-slot:activator="{ on }">
+                                        <span v-on="on">
+                                          <v-list-tile-sub-title v-html="item.content" class="ml-3"></v-list-tile-sub-title>
+                                        </span>
+                                      </template>
+                                      <span>{{item.content}}</span>
+                                    </v-tooltip>
+                                  </v-card>
+                                  </v-list-tile-content>
+                                  <v-list-tile-action>
+                                    <v-list-tile-action-text>
+                                      {{ item.created_at }}
+                                    </v-list-tile-action-text>
+                                    <v-list-tile-action-text>
+                                      <a @click="tampilForm(item.id)">Balas</a>
+                                    </v-list-tile-action-text>
+                                  </v-list-tile-action>
+                                </v-list-tile>
+                                <div v-if="item.nested.length">
+                                  <div v-for="comments in item.nested">
+                                    <v-divider class="ml-4"></v-divider>
+                                    <v-list-tile class="ml-4">
+                                      <v-list-tile-content style="overflow-x:auto">
+                                        <v-card flat>
+                                          <v-list-tile-title v-html="comments.nested_name" class="ml-3"></v-list-tile-title>
+                                          <v-tooltip bottom>
+                                            <template v-slot:activator="{ on }">
+                                              <span v-on="on">
+                                                <v-list-tile-sub-title v-html="comments.nested_content" class="ml-3"></v-list-tile-sub-title>
+                                              </span>
+                                            </template>
+                                            <span>{{comments.nested_content}}</span>
+                                          </v-tooltip>
+                                        </v-card>
+                                      </v-list-tile-content>
+                                      <v-list-tile-action>
+                                        <!-- <v-list-tile-action-text>
+                                          {{ comments.nested }}
+                                        </v-list-tile-action-text> -->
+                                        <!-- <v-list-tile-action-text>
+                                          <a @click="tampilForm(item.id)">Balas</a>
+                                        </v-list-tile-action-text> -->
+                                      </v-list-tile-action>
+                                    </v-list-tile>
+                                  </div>
+                                </div>
+                                    <v-container class="text-xs-center" v-show="forumId==item.id">
+                                      <v-form @submit.prevent="kirimKomentar" ref="formKomentar">
+                                        <v-textarea name="input" v-model="body_balas" label="Tulis Balasan" hint="Isi balasan anda disini."></v-textarea>
+                                        <div class="justify-end">
+                                          <v-btn :loading="loading_balas" :disabled="!formIsValidBalas" color="#2c3e50" class="white--text" @click="kirimKomentar">Kirim Balasan</v-btn>
+                                        </div>
+                                      </v-form>
+                                    </v-container>
+                                <v-divider></v-divider>
+                              </template>
+                            </v-list>
+                            <v-container class="text-xs-center">
+                              <v-form @submit.prevent="kirimPertanyaan" ref="form">
+                                <v-textarea name="input-7-1" v-model="body" label="Tulis Pertanyaan" hint="Isi pertanyaan anda disini." :rules="[rules_body.required]"></v-textarea>
+                                <div class="justify-end">
+                                  <v-btn :loading="loading" :disabled="!formIsValid" color="#2c3e50" class="white--text" @click="kirimPertanyaan">Kirim Pertanyaan</v-btn>
+                                </div>
+                              </v-form>
+                            </v-container>
+                            <v-layout class="justify-center">
+                            </v-layout>
+                          </v-flex>
+                        </v-layout>
+                        </v-container>
+                      </v-card>
+                    </v-tab-item>
+                  </v-tabs-items>
+                </v-tabs>
+              </v-flex>
+            </v-layout>
+
         </v-container>
         
     </div>
@@ -92,10 +189,106 @@
             return{
                 load_data:true,    
                 faculties:[],
+                forums:[],
+                myname: "",
+                myid: "",
+                body: "",
+                body_balas: "",
+                rules_body: {
+                  required: value => !!value || 'Required.',
+                },
+                forumId: null,
+                loading: false,
+                loading_balas: false
             }
         },
 
-        mounted(){console.log(this.link_image)
+        methods: {
+        	tampilForm(id){
+		      if(this.forumId==null){
+		        this.forumId = id
+		      }else if(this.forumId!=id){
+		        this.forumId = id
+		      }else{
+		          this.forumId = null
+		      }
+		    },
+		    kirimKomentar() {
+		    	console.log(this.forumId)
+		      this.loading_balas=true
+		      axios.post('/cerejur/forum', {
+		      	univ_id : this.id,
+	      		user_id : this.myid,
+	      		comment_id : this.forumId,
+	      		content : this.body_balas
+		      })
+		      .then(response => {
+		          this.loading_balas=false
+		          this.$swal('Sukses', 'Berhasil Mengirim Balasan...', 'success')
+		          
+		          // get again forum comment
+		          axios.get('/cerejur/forum/'+this.id)
+		          .then(response => {
+		              this.load_data = false
+		              this.forums = response.data.data
+		          })
+		          .catch(error =>{
+		              console.log(error)
+		          })
+
+		      	  this.body_balas = null
+		          this.$refs.form.reset()
+		        })
+		        .catch(error => {
+		          this.loading_balas=false
+		          this.$refs.form.reset()
+		          this.$swal('Oopps', 'Gagal Mengirim Balasan...', 'warning')
+		        })
+		    },
+		    kirimPertanyaan() {
+		      this.loading=true
+		      axios.post('/cerejur/forum', {
+		      	univ_id : this.id,
+	      		user_id : this.myid,
+	      		comment_id : null,
+	      		content : this.body
+		      })
+		      .then(response => {
+		          this.loading=false
+		          this.$swal('Sukses', 'Berhasil Mengirim Pertanyaan...', 'success')
+		          
+		          // get again forum comment
+		          axios.get('/cerejur/forum/'+this.id)
+		          .then(response => {
+		              this.load_data = false
+		              this.forums = response.data.data
+		          })
+		          .catch(error =>{
+		              console.log(error)
+		          })
+
+		      	  this.body = null
+		          this.$refs.form.reset()
+		        })
+		        .catch(error => {
+		          this.loading=false
+		          this.$refs.form.reset()
+		          this.$swal('Oopps', 'Gagal Mengirim Pertanyaan...', 'warning')
+		        })
+		    },
+        },
+
+        created(){
+        	axios.get('/auth/user')
+            .then(response => {console.log(response)
+                this.load_data = false
+                this.myname = response.data.data.name
+                this.myid = response.data.data.id
+            })
+            .catch(error =>{
+                console.log(error)
+            })
+
             axios.get('/cerejur/faculty/'+this.id)
             .then(response => {console.log(response)
                 this.load_data = false
@@ -104,6 +297,28 @@
             .catch(error =>{
                 console.log(error)
             })
+
+            axios.get('/cerejur/forum/'+this.id)
+            .then(response => {console.log(response)
+                this.load_data = false
+                this.forums = response.data.data
+            })
+            .catch(error =>{
+                console.log(error)
+            })
+        },
+
+        computed: {
+        	formIsValid() {
+        	  return (
+        	    this.body
+        	  )
+        	},
+        	formIsValidBalas() {
+        	  return (
+        	    this.body_balas
+        	  )
+        	},
         }
         
     }
