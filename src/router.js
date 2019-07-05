@@ -279,6 +279,33 @@ export default new Router({
       component: () => import("./views/cerecall/ChatPage.vue")
     },
 
+    // -----------------------------cerefo-----------------------------    
+    {
+      path: "/cerefo",
+      name: 'cerefo',
+      component: () => import("./views/cerefo/Index.vue")
+    },
+
+    // -----------------------------cerejur-----------------------------    
+    {
+      path: "/cerejur",
+      name: 'cerejur',
+      component: () => import("./views/cerejur/Index.vue")
+    },
+
+    {
+      path: "/cerejur/detail-universitas",
+      name: 'cerejur_detail_universitas',
+      props: true,
+      component: () => import("./views/cerejur/DetailUniversitas.vue")
+    },    
+
+    {
+      path: "/cerejur/detail-universitas/detail-jurusan",
+      name: 'cerejur_detail_jurusan',
+      props: true,
+      component: () => import("./views/cerejur/DetailJurusan.vue")
+    },    
 
     // -----------------------------cerevid-----------------------------
     {

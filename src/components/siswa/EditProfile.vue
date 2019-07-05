@@ -294,6 +294,19 @@
             },
             submit (event) {
                 this.btn_load = true
+
+                let asalKelas = '';
+                (this.datas.data.class) ? asalKelas = this.datas.data.class.name_class : asalKelas = ''
+
+                let pilihanSatu = '';
+                (this.datas.data.option1) ? pilihanSatu = this.datas.data.option1.department_id : pilihanSatu = ''
+
+                let pilihanDua = '';
+                (this.datas.data.option2) ? pilihanDua = this.datas.data.option2.department_id : pilihanDua = ''
+
+                let pilihanTiga = '';
+                (this.datas.data.option3) ? pilihanTiga = this.datas.data.option3.department_id : pilihanTiga = ''
+
                 this.$store.dispatch('editProfileUser', {
                     name: this.datas.data.name,
                     gender: this.datas.data.gender,
@@ -303,10 +316,10 @@
                     birth_date: this.datas.data.birth_date,
                     parrent_name: this.datas.data.parrent_name,
                     parrent_phone: this.datas.data.parrent_phone,
-                    class_id: this.kelas,
-                    option1: this.option1_department_name,
-                    option2: this.option2_department_name,
-                    option3: this.option3_department_name
+                    class_id: this.kelas || asalKelas,
+                    option1: this.option1_department_name || pilihanSatu,
+                    option2: this.option2_department_name || pilihanDua,
+                    option3: this.option3_department_name || pilihanTiga
                 })
                 .then(response => {
                     this.btn_load = false

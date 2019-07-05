@@ -15,6 +15,8 @@
         <v-btn v-if="loggedIn" flat @click="linkCereout" active-class="false">Cereout</v-btn>
         <v-btn v-if="loggedIn" flat @click="linkCerelisasi" active-class="false">Cerelisasi</v-btn>
         <v-btn v-if="loggedIn" flat @click="linkCerecall" active-class="false">Cerecall</v-btn>
+        <v-btn v-if="loggedIn" flat @click="linkCerejur" active-class="false">Cerejur</v-btn>
+        <v-btn v-if="loggedIn" flat @click="linkCerefo" active-class="false">Cerefo</v-btn>
         <v-btn flat @click="linkTentang" active-class="false">Tentang</v-btn>
       </v-toolbar-items>
 
@@ -373,6 +375,18 @@
               <v-list-tile-title>CERECALL</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
+
+          <v-list-tile @click="linkCerejur">
+            <v-list-tile-content>
+              <v-list-tile-title>CEREJUR</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
+          <v-list-tile @click="linkCerefo">
+            <v-list-tile-content>
+              <v-list-tile-title>CEREFO</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
         </div>
 
         <v-list-tile @click="linkTentang">
@@ -454,6 +468,12 @@ export default {
     },
     linkCerecall(){
       this.$router.push({path:'/cerecall'})
+    },
+    linkCerejur(){
+      this.$router.push({path:'/cerejur'})
+    },
+    linkCerefo(){
+      this.$router.push({path:'/cerefo'})
     },
 
     linkTentang(){
