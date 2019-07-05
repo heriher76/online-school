@@ -98,13 +98,14 @@
         <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>
       </div>
       
+
       <LoadingScreen2 :loading="loadLogin"></LoadingScreen2>
     </div>
 </template>
 
 
 <script>
-  // import { uuid } from 'vue-uuid';
+  import { uuid } from 'vue-uuid';
   import axios from "axios"
   import LoadingScreen2 from'../../components/loading-screen/Loading2'
   import { VFBLogin as VFacebookLogin } from 'vue-facebook-login-component'
@@ -120,7 +121,7 @@
 
     data () {
       return {
-        // uuid: uuid.v1(),
+        uuid: uuid.v1(),
 
         time: 0,
         interval: null,
