@@ -19,14 +19,7 @@
 	                                indeterminate
 	                                ></v-progress-circular>
 	                            </div>
-	                            <li v-for="(recent, index) in posts" :key="recent.id">
-	                                <div v-if="index<10">
-	                                    <a @click="detail(recent)" style="text-transform:capitalize">{{recent.title}}&nbsp;</a> <br>
-	                                    <span style="color:#757575; font-size:12px">dimuat: {{recent.created_at}}</span>
-	                                    <v-divider></v-divider>
-	                                </div>
-	                            </li>
-	                            <v-btn color="default" style="border-radius: 10%;">Pemrograman</v-btn>
+	                            <v-btn v-for="category in this.categories" color="default" style="border-radius: 10%;">{{category.cerepost_name}}</v-btn>
 	                        </ul>
 	                    </div>
 
@@ -89,6 +82,7 @@
             return{
                 load_data:true,    
                 datas:[],
+                categories: []
             }
         },
 
@@ -105,6 +99,7 @@
             axios.get('/cerepost')
             .then(response => {
             	console.log(response)
+            	this.categories = response.data.data
                 this.load_data = false
             })
             .catch(error =>{
