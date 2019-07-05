@@ -279,6 +279,13 @@ export default new Router({
       component: () => import("./views/cerecall/ChatPage.vue")
     },
 
+    // -----------------------------cerefo-----------------------------    
+    {
+      path: "/cerefo",
+      name: 'cerefo',
+      component: () => import("./views/cerefo/Index.vue")
+    },
+
     // -----------------------------cerejur-----------------------------    
     {
       path: "/cerejur",
