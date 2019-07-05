@@ -77,7 +77,7 @@
 	                                                        <v-icon dark>thumb_up_alt</v-icon>
 	                                                      </v-btn>
 	                                                  </div>
-	                                                  <v-btn fab dark small style="opacity:0.85; float: left;" @click="simpanFavorit(post.id)">
+	                                                  <v-btn :to="{ name: 'cerefo_detail_post', params: {id: post.id}}" fab dark small style="opacity:0.85; float: left;" @click="simpanFavorit(post.id)">
 	                                                  	{{post.comments}}
                                                         <v-icon dark>chat_bubble_outline</v-icon>
                                                       </v-btn>
