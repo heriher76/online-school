@@ -286,6 +286,12 @@ export default new Router({
       component: () => import("./views/cerefo/Index.vue")
     },
 
+    {
+      path: "/cerefo/detail-postingan/:id",
+      name: 'cerefo_detail_post',
+      component: () => import("./views/cerefo/DetailPost.vue")
+    },
+
     // -----------------------------cerejur-----------------------------    
     {
       path: "/cerejur",
