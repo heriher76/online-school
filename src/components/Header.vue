@@ -17,7 +17,7 @@
         <v-btn v-if="loggedIn" flat @click="linkCerecall" active-class="false">Cerecall</v-btn>
         <v-btn v-if="loggedIn" flat @click="linkCerejur" active-class="false">Cerejur</v-btn>
         <v-btn v-if="loggedIn" flat @click="linkCerefo" active-class="false">Cerefo</v-btn>
-        <v-btn flat @click="linkTentang" active-class="false">Tentang</v-btn>
+        <v-btn v-if="!loggedIn" flat @click="linkTentang" active-class="false">Tentang</v-btn>
       </v-toolbar-items>
 
       <v-spacer></v-spacer>
