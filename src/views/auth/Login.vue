@@ -97,7 +97,6 @@
         <hr style="margin-bottom:15px">
         <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>
       </div>
-      
 
       <LoadingScreen2 :loading="loadLogin"></LoadingScreen2>
     </div>
@@ -123,14 +122,10 @@
       return {
         uuid: uuid.v1(),
 
+        deviceId: '',
+
         time: 0,
         interval: null,
-
-        // isConnected: false,
-        // name: '',
-        // email: '',
-        // personalID: '',
-        // FB: undefined,
 
         snackbar: false,
         snackbarGoogle:false,
@@ -162,6 +157,24 @@
     mounted(){
       this.snackbar = this.regist
       this.toggleTimer()
+
+      var OneSignal = require('onesignal-node'); 
+      
+      var myClient = new OneSignal.Client({      
+        userAuthKey: 'NjZjNGVkODMtODllZi00YzQzLWE1YzYtNGM0MTRlODY2NTc3',  
+        app: { appAuthKey: 'ZmNhY2QzNmMtNDZiZS00ODkyLTg4ZDktNWViNTc3NzBiYmE5', appId: '2d19fd0a-de81-4b9c-86dc-d85c34c10ca6' }      
+      });  
+
+      // If you want to add device to current app, don't add app_id in deviceBody      
+      var deviceBody = {      
+          device_type: 1,      
+          language: 'tr'      
+      };      
+          
+      myClient.addDevice(deviceBody, (err, httpResponse, data) => {
+          console.log(data)
+          this.deviceId = data.id
+      });    
     },
 
     created() {
@@ -188,7 +201,8 @@
         this.$store.dispatch('retrieveToken', {
           email: this.email,
           password: this.password,
-          device_id: this.uuid
+          // device_id: this.uuid
+          device_id: this.deviceId
         })
         .then(response => {
           this.btn_load = false

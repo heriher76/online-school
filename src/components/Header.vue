@@ -124,6 +124,8 @@
                           </template>
                           <span>Cerecall Masuk</span>
                           </v-tooltip>
+
+
                         </div>  
                       </v-list-tile-sub-title>
 
@@ -197,13 +199,36 @@
 
             <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-                <router-link to="">
+              <router-link v-if="chatRun==0" to="">
+              <v-icon color="#F44336" v-on="on">email</v-icon>
+              </router-link>
+
+              <router-link v-else :to="{name: 'cerecall_chat'}">
+                <!-- {{cekChat.id}} -->
                 <v-icon color="#F44336" v-on="on">email</v-icon>
-                </router-link>
+                <span style="margin-left:-9px;top:40px;border-radius:100%;position:absolute;background:orange">
+                  <v-icon dark small>
+                    notifications
+                  </v-icon>
+                </span>
+              </router-link>
+
             </template>
             <span>Cerecall Masuk</span>
             </v-tooltip>
 
+            <!-- <v-badge color="orange">
+              <template v-slot:badge>
+                <v-icon dark small>
+                  notifications
+                </v-icon>
+              </template>
+              <router-link to="">
+                <v-icon color="#F44336">email</v-icon>
+              </router-link>
+            </v-badge> -->
+
+              
             <v-menu
               v-model="menu"
               :close-on-content-click="false"
@@ -415,6 +440,9 @@ export default {
   },
   data() {
     return {
+      chatRun: [],
+      cekChat: [],
+
       menuDrop:false,
       bt_src:true,
       src: false,
@@ -444,6 +472,16 @@ export default {
       })
       .catch(error => {
         console.log(error)
+      })
+
+      axios.get('/cerecall/student/history/running')
+      .then(response => {
+        this.chatRun = response.data.data
+        this.cekChat = response.data.data[0]
+        // console.log(this.cekChat)
+      })
+      .catch(error => {
+        console.log(error.response)
       })
     }
 
