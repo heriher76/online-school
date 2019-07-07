@@ -25,7 +25,9 @@ export default new Vuex.Store({
     dataVideo: [],
     dataText: [],
     dataQuiz: [],
-    dataDetailForum: []
+    dataDetailForum: [],
+    dataHistoryChatRunningGuru: [],
+    dataChatGuru: [],
   },
 
   getters: {
@@ -141,7 +143,14 @@ export default new Vuex.Store({
 
     pushDataDetailForum(state, dataForum){
       state.dataDetailForum.data.push(dataForum.data)
-    }
+    },
+    //----------------------------------Cerecall Guru--------------------------------------------
+    getDataHistoryChatRunningGuru(state, dataHistoryChatRunningGuru){
+      state.dataHistoryChatRunningGuru = dataHistoryChatRunningGuru
+    },
+    getDataChatGuru(state, dataChatGuru){
+      state.dataChatGuru = dataChatGuru
+    },
 
   },
 
@@ -206,7 +215,7 @@ export default new Vuex.Store({
         context.commit('retrieveToken', token)
       })
       .catch(error => {
-      })  
+      })
     },
 
     //login google function
@@ -219,7 +228,7 @@ export default new Vuex.Store({
       })
       .catch(error => {
         console.log(error.response);
-      })  
+      })
     },
 
     //login function
@@ -234,7 +243,7 @@ export default new Vuex.Store({
           console.log(response.data)
           const token    = response.data.access_token
           const dataUser   = response.data.data.id
-          
+
           localStorage.setItem('access_token', token)
           context.commit('retrieveToken', token)
 
@@ -711,7 +720,6 @@ export default new Vuex.Store({
           }
           axios.put('/auth/teacher/'+this.state.dataUser, data)
           .then(response => {
-
             console.log(response.data)
           })
           .catch(error => {
@@ -720,6 +728,31 @@ export default new Vuex.Store({
           })
         // })
       }
+    },
+//-----------------------------------cerecall guru---------------------------------------
+    getHistoryChatRunningGuru(context){
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
+      }
+      axios.get('/cerecall/teacher/history/running')
+      .then(response => {
+        context.commit('getDataHistoryChatRunningGuru', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    getChatGuru(context,data){
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
+      }
+      axios.get('/cerecall/chat/'+data.id)
+      .then(response => {
+        context.commit('getDataChatGuru', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
   }
 });

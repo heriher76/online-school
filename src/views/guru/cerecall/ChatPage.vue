@@ -10,23 +10,22 @@
                 <SideBar class="hidden-sm-and-down" style="float:left;"/>
             </v-card>
         </v-flex>
-				
+
 		<v-flex md9 sm12 xs12>
 			<h1>CereCall Guru</h1>
-            {{dataHistory}}
             <div class="cerecall_chat">
                 <v-container>
                     <div class="chat_box">
                         <v-card>
                             <div class="header_chat">
                                 <v-card style="padding:10px">
-                                    <div class="head_info">
+                                    <div class="head_info" v-for="data in dataHistoryChatRunningGuru.data">
                                         <div class="img_usr">
-                                            <img src="https://picsum.photos/510/300?random" height="100%" width="100%" alt="">
+                                            <img :src="data.student.student_photo" height="100%" width="100%" alt="">
                                         </div>
-                                            
+
                                         <span style="font-size:18px; margin:10px">
-                                            <b>Bean English {{$route.params.guruId}}</b>
+                                            <b>{{data.student.student_name}}</b>
                                         </span>
                                         <div style="float:right">
                                             <v-btn icon dark color="red">
@@ -37,9 +36,66 @@
                                     </div>
                                 </v-card>
                             </div>
-                            <div class="live_chat">
-                                ada yang bisa dibantu?
-                            </div>
+														<div style="overflow:auto; height:600px" class="my-2">
+															<div v-if="realtime()">
+	                            <v-layout class="live_chat mx-4" v-for="data in dataChatGuru.data">
+																<v-card-text style="overflow:auto">
+																	<v-layout justify-end v-if="data.sender==2">
+																		<v-card color="green lighten-2" class="pr-5 pl-3 py-2">
+																			<div class="caption">
+																				{{data.updated_at.split(' ')[1].substr(0, 5)}}
+																			</div>
+																			<div v-if="!data.is_image">
+																				{{data.content}}
+																			</div>
+																			<div v-else>
+																				<a
+	      																	@click.stop="dialog = true"
+																				>
+																					<img :src="data.content" style="max-height:300px">
+																				</a>
+																				<v-dialog
+																		      v-model="dialog"
+																		    >
+																		      <v-layout class="text-md-center">
+																		        <v-card-text>
+																								<img :src="data.content" style="max-height:550px">
+																		        </v-card-text>
+																		      </v-layout>
+																		    </v-dialog>
+																			</div>
+																		</v-card>
+																	</v-layout>
+																	<v-layout v-else>
+																		<v-card color="grey lighten-3" class="pr-5 pl-3 py-2">
+																			<div class="caption">
+																				{{data.updated_at.split(' ')[1].substr(0, 5)}}
+																			</div>
+																			<div v-if="!data.is_image">
+																				{{data.content}}
+																			</div>
+																			<div v-else>
+																				<a
+	      																	@click.stop="dialog = true"
+																				>
+																					<img :src="data.content" style="max-height:300px">
+																				</a>
+																				<v-dialog
+																		      v-model="dialog"
+																		    >
+																		      <v-layout class="text-md-center">
+																		        <v-card-text>
+																								<img :src="data.content" style="max-height:550px">
+																		        </v-card-text>
+																		      </v-layout>
+																		    </v-dialog>
+																			</div>
+																		</v-card>
+																	</v-layout>
+																</v-card-text>
+	                            </v-layout>
+														</div>
+														</div>
                             <div class="action_chat">
                                 <input type="text" placeholder="ketik pesan">
                             </div>
@@ -57,30 +113,48 @@
 
 <script>
 	import SideBar from '../../../components/guru/SideBar'
-    import axios from 'axios'
 
 	export default {
         name: 'dashboard',
         data: () => ({
-            dataHistory:[],
+        	dialog: false
         }),
         components: {
             SideBar,
         },
-        methods: {
-            getHistoryChat(){
-                axios.defaults.headers = {
-                    'Authorization': 'Bearer ' + context.state.token
-                }
-                axios.get('/api/cerecall/teacher/history/running')
-                .then(response => {
-                    this.dataHistory = response.data.data
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-            }
-        }
+    		methods: {
+	        getHistoryChatRunningGuru(){
+	        	this.$store.dispatch('getHistoryChatRunningGuru')
+	          .then(response => {
+	          })
+	        },
+	        getChatGuru(){
+	        	this.$store.dispatch('getChatGuru',{id:this.$route.params.id})
+	        	.then(response => {
+							return true
+	        	})
+	      	},
+					realtime(){
+						if(this.getChatGuru)
+						console.log('cikk ahhhhh')
+						return true
+					}
+        },
+				created(){
+					this.getChatGuru()
+					this.getHistoryChatRunningGuru()
+				},
+				computed:{
+		        dataChatGuru(){
+		          return this.$store.state.dataChatGuru || {}
+		        },
+				    dataHistoryChatRunningGuru(){
+				      return this.$store.state.dataHistoryChatRunningGuru || {}
+				    },
+			      userId(){
+			        return this.$store.state.dataUser || {}
+			      },
+				}
     }
 </script>
 

@@ -10,7 +10,7 @@
                 <SideBar class="hidden-sm-and-down" style="float:left;"/>
             </v-card>
         </v-flex>
-				
+
 				<v-flex md9 sm12 xs12>
 					<h1>CereCall Guru</h1>
 
@@ -26,23 +26,32 @@
 			            	  	<v-btn @click="accept" color="primary" depressed>Terima</v-btn>
 			            	  	<v-btn @click="hide" color="warning" depressed>Tolak</v-btn>
 			            	  </center>
-			            	</modal>	
+			            	</modal>
 			                <v-toolbar flat color="white">
 			                    <v-toolbar-title>Riwayat Chat</v-toolbar-title>
 			                </v-toolbar>
 			                <v-data-table
-			                    class="elevation-1"
+												:headers="headers"
+    										:items="dataHistoryChatRunningGuru.data"
+			                  class="elevation-1"
 			                >
-			                    <template>
-			                    <td></td>
-			                    <td></td>
-			                    <td></td>
-			                    <td></td>
-			                    <td></td>
-			                    <td></td>
-			                    <td></td>
-			                    <td></td>
-			                    </template>
+			                	<template v-slot:items="props">
+													<tr v-if="props.item.teacher.teacher_id==userId">
+				                		<td>{{props.index+1}}</td>
+					                	<td>{{props.item.student.student_name}}</td>
+					                	<td>{{props.item.student.student_class}}</td>
+					                	<td>{{props.item.rating}}</td>
+					                	<td>{{props.item.review}}</td>
+					                	<td>
+						                  <v-btn
+						                    @click="accept(props.item.id)"
+																color="success"
+						                    >
+						                    Chat
+						                  </v-btn>
+														</td>
+													</tr>
+				                </template>
 			                </v-data-table>
 			            </v-card>
 			                <button @click="
@@ -62,7 +71,7 @@
 	import VModal from 'vue-js-modal'
 
   	Vue.use(VModal)
-	
+
 	export default {
         name: 'dashboard',
         components: {
@@ -70,18 +79,42 @@
         },
         data: () => ({
           siswa: 'Heri Hermawan',
-          pelajaran: 'Pelajaran Bahasa Inggris'
+          pelajaran: 'Pelajaran Bahasa Inggris',
+	        headers:[
+						{text:'No.',value:'index'},
+						{text:'Nama Murid',value:'student_name'},
+						{text:'Kelas Murid',value:'student_class'},
+						{text:'Rating',value:'rating'},
+						{text:'Review',value:'review'},
+						{text:'Aksi',value:'aksi',sortable: false},
+					],
         }),
         methods: {
-          show () {
-          	this.$modal.show('consult');
-          },
-          accept () {
-          	return this.$router.push({path:'/guru/cerecall/chat'})
-          },
-          hide () {
-            this.$modal.hide('consult');
-          }
-        }
+	          getHistoryChatRunningGuru(){
+	            this.$store.dispatch('getHistoryChatRunningGuru')
+	            .then(response => {
+	            })
+	          },
+	          show () {
+	          	this.$modal.show('consult');
+	          },
+	          accept (id) {
+	          	return this.$router.push({path:'/guru/cerecall/chat/'+id})
+	          },
+	          hide () {
+	            this.$modal.hide('consult');
+	          }
+        },
+				created(){
+					this.getHistoryChatRunningGuru()
+				},
+				computed:{
+		        dataHistoryChatRunningGuru(){
+		          return this.$store.state.dataHistoryChatRunningGuru || {}
+		        },
+			      userId(){
+			        return this.$store.state.dataUser || {}
+			      },
+				}
     }
 </script>
