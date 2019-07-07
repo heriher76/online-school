@@ -23,6 +23,7 @@
                         </v-layout>
                     </div>
                     
+
                     <v-card v-show="listHistory" style="min-height:400px;" flat>
                         <div style="position: absolute;top:0px; left:0; width:100%; height:100%; overflow:auto">
                             <v-card style="margin:10px" class="elevation-8" v-for="item in history" :key="item.id">
@@ -43,7 +44,6 @@
                                         <v-list-tile-action>
                                             <v-list-tile-action-text>
                                                  <div style="float:right">
-                                                     {{item.status}}
                                                     <v-chip color="info" v-if="item.status == 1" text-color="white">
                                                         Menunggu Konfirmasi
                                                     </v-chip>
@@ -96,6 +96,7 @@ export default {
     },
 
     mounted(){
+        console.log("coba")
         axios.get('/cerecall/student/history')
         .then(response => {
             this.load_data   = false
