@@ -3,6 +3,7 @@
     <!-- header -->
     <nav>
       <Header/>
+      <!-- <h1>{{cekStatus}}</h1> -->
     </nav>
     <!-- /header -->
 
@@ -74,7 +75,7 @@ export default {
           axios.get('/auth/user')
           .then(response => {
             // console.log(response.data.data)
-            this.cekStatus = response.data.data.status
+            this.cekStatus = response.data.data.role
             if(this.cekStatus == 1){
               return this.$router.push({name:'dashboard_guru'})
             }

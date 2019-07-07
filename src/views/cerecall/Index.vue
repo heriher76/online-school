@@ -10,12 +10,19 @@
           </div>
 
           <v-select
+            v-if="chatRunning==0"
             :items="lessons"
             label="Pilih Mata Pelajaran"
             item-text="name"
             item-value="id"
             @change="showTeacher"
           ></v-select>
+
+          <v-card v-else class="elevation-10" color="#B71C1C" dark style="border-radius:10px;margin:20px 80px;padding:10px">
+            <h6 class="title" style="float:left;margin:13px">Anda memiliki chat aktif. Lanjutkan sekarang!</h6>
+            <v-btn style="float:right;border-radius:10px;" :to="{name: 'cerecall_chat'}" light>Mulai</v-btn>
+            <div class="clear"></div>
+          </v-card>
           
           <div v-show="load_data" style="margin:150px auto; width:5%;">
             <v-layout column justify-center align-center>
@@ -76,6 +83,7 @@
           </div>
         </v-flex>
       </v-layout>
+      <!-- {{chatRunning}}hello -->
     </v-container>
 </template>
 
@@ -91,6 +99,7 @@
 
     data (){
       return {
+        chatRunning:[],
         lessons: [],
         teachers: [],
 
@@ -111,7 +120,7 @@
           this.load_data = false
           this.showCard  = true
           this.teachers  = response.data.data
-          console.log(response.data)
+          // console.log(response.data)
         })
         .catch(error => {console.log(error.response)})
       },
@@ -142,7 +151,7 @@
                 )
               })
               .catch(error => {
-                console.log(response.data)
+                console.log(error.response)
                 return this.$swal(
                   'Gagal!',
                   'Pengajuan anda gagal diproses silahkan ulangi kembali!',
@@ -153,7 +162,6 @@
             }
         })
       },
-
 
       linkUlasan(){
         return this.$router.push({name:'cerecall_ulasan', params: { guruId: '1'}})
@@ -168,6 +176,14 @@
       })
       .catch(error => {console.log(error.response)})
 
+      axios.get('/cerecall/student/history/running')
+      .then(response => {
+        this.chatRunning = response.data.data
+        // console.log(this.chatRunning)
+      })
+      .catch(error => {
+          console.log(error.response)
+      })  
     }
   }
 </script>

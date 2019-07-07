@@ -26,6 +26,7 @@ export default new Vuex.Store({
     dataText: [],
     dataQuiz: [],
     dataDetailForum: [],
+    dataHistoryChatGuru: [],
     dataHistoryChatRunningGuru: [],
     dataChatGuru: [],
   },
@@ -145,6 +146,9 @@ export default new Vuex.Store({
       state.dataDetailForum.data.push(dataForum.data)
     },
     //----------------------------------Cerecall Guru--------------------------------------------
+    getDataHistoryChatGuru(state, dataHistoryChatGuru){
+      state.dataHistoryChatGuru = dataHistoryChatGuru
+    },
     getDataHistoryChatRunningGuru(state, dataHistoryChatRunningGuru){
       state.dataHistoryChatRunningGuru = dataHistoryChatRunningGuru
     },
@@ -730,6 +734,18 @@ export default new Vuex.Store({
       }
     },
 //-----------------------------------cerecall guru---------------------------------------
+    getHistoryChatGuru(context){
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
+      }
+      axios.get('/cerecall/teacher/history')
+      .then(response => {
+        context.commit('getDataHistoryChatGuru', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
     getHistoryChatRunningGuru(context){
       axios.defaults.headers = {
         'Authorization': 'Bearer ' + context.state.token

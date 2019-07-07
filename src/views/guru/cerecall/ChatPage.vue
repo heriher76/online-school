@@ -37,61 +37,72 @@
                                 </v-card>
                             </div>
 														<div style="overflow:auto; height:600px" class="my-2">
-															<div v-if="realtime()">
+															<div>
 	                            <v-layout class="live_chat mx-4" v-for="data in dataChatGuru.data">
 																<v-card-text style="overflow:auto">
-																	<v-layout justify-end v-if="data.sender==2">
-																		<v-card color="green lighten-2" class="pr-5 pl-3 py-2">
-																			<div class="caption">
-																				{{data.updated_at.split(' ')[1].substr(0, 5)}}
-																			</div>
-																			<div v-if="!data.is_image">
-																				{{data.content}}
-																			</div>
-																			<div v-else>
-																				<a
-	      																	@click.stop="dialog = true"
-																				>
-																					<img :src="data.content" style="max-height:300px">
-																				</a>
-																				<v-dialog
-																		      v-model="dialog"
-																		    >
-																		      <v-layout class="text-md-center">
-																		        <v-card-text>
-																								<img :src="data.content" style="max-height:550px">
-																		        </v-card-text>
-																		      </v-layout>
-																		    </v-dialog>
-																			</div>
-																		</v-card>
-																	</v-layout>
-																	<v-layout v-else>
-																		<v-card color="grey lighten-3" class="pr-5 pl-3 py-2">
-																			<div class="caption">
-																				{{data.updated_at.split(' ')[1].substr(0, 5)}}
-																			</div>
-																			<div v-if="!data.is_image">
-																				{{data.content}}
-																			</div>
-																			<div v-else>
-																				<a
-	      																	@click.stop="dialog = true"
-																				>
-																					<img :src="data.content" style="max-height:300px">
-																				</a>
-																				<v-dialog
-																		      v-model="dialog"
-																		    >
-																		      <v-layout class="text-md-center">
-																		        <v-card-text>
-																								<img :src="data.content" style="max-height:550px">
-																		        </v-card-text>
-																		      </v-layout>
-																		    </v-dialog>
-																			</div>
-																		</v-card>
-																	</v-layout>
+																	<div v-if="data!=null">
+																		<v-layout justify-end v-if="data.sender==2">
+																			<v-card color="green lighten-2" class="pr-5 pl-3 py-2">
+																				<div class="caption">
+																					{{data.updated_at.split(' ')[1].substr(0, 5)}}
+																				</div>
+																				<div v-if="!data.is_image">
+																					{{data.content}}
+																				</div>
+																				<div v-else>
+																					<a
+		      																	@click.stop="dialog = true"
+																					>
+																						<img :src="data.content" style="max-height:300px">
+																					</a>
+																					<v-dialog
+																			      v-model="dialog"
+																			    >
+																			      <v-layout class="text-md-center">
+																			        <v-card-text>
+																									<img :src="data.content" style="max-height:550px">
+																			        </v-card-text>
+																			      </v-layout>
+																			    </v-dialog>
+																				</div>
+																			</v-card>
+																		</v-layout>
+																		<v-layout v-else>
+																			<v-card color="grey lighten-3" class="pr-5 pl-3 py-2">
+																				<div class="caption">
+																					{{data.updated_at.split(' ')[1].substr(0, 5)}}
+																				</div>
+																				<div v-if="!data.is_image">
+																					{{data.content}}
+																				</div>
+																				<div v-else>
+																					<a
+		      																	@click.stop="dialog = true"
+																					>
+																						<img :src="data.content" style="max-height:300px">
+																					</a>
+																					<v-dialog
+																			      v-model="dialog"
+																			    >
+																			      <v-layout class="text-md-center">
+																			        <v-card-text>
+																									<img :src="data.content" style="max-height:550px">
+																			        </v-card-text>
+																			      </v-layout>
+																			    </v-dialog>
+																				</div>
+																			</v-card>
+																		</v-layout>
+																	</div>
+																	<div v-else>
+																		<v-layout>
+																			<v-card color="green lighten-2" class="pr-5 pl-3 py-2">
+																				<div class="caption">
+																					Chat ini masih kosong...
+																				</div>
+																			</v-card>
+																		</v-layout>
+																	</div>
 																</v-card-text>
 	                            </v-layout>
 														</div>
@@ -131,12 +142,12 @@
 	        getChatGuru(){
 	        	this.$store.dispatch('getChatGuru',{id:this.$route.params.id})
 	        	.then(response => {
-							return true
 	        	})
 	      	},
 					realtime(){
 						if(this.getChatGuru)
 						console.log('cikk ahhhhh')
+						this.getChatGuru()
 						return true
 					}
         },

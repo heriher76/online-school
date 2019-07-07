@@ -32,7 +32,7 @@
 			                </v-toolbar>
 			                <v-data-table
 												:headers="headers"
-    										:items="dataHistoryChatRunningGuru.data"
+    										:items="dataHistoryChatGuru.data"
 			                  class="elevation-1"
 			                >
 			                	<template v-slot:items="props">
@@ -54,9 +54,11 @@
 				                </template>
 			                </v-data-table>
 			            </v-card>
-			                <button @click="
-			            		show
-			            	">show dummy notification ? click here</button>
+									<div v-for="data in dataHistoryChatRunningGuru.data">
+			                <v-btn color="success" @click="accept(data.student.student_id)">
+												Tampilkan Chat Aktif
+											</v-btn>
+									</div>
 			        </v-flex>
 			    </v-flex>
 			</v-layout>
@@ -90,7 +92,12 @@
 					],
         }),
         methods: {
-	          getHistoryChatRunningGuru(){
+	          getHistoryChatGuru(){
+	            this.$store.dispatch('getHistoryChatGuru')
+	            .then(response => {
+	            })
+	          },
+						getHistoryChatRunningGuru(){
 	            this.$store.dispatch('getHistoryChatRunningGuru')
 	            .then(response => {
 	            })
@@ -106,10 +113,14 @@
 	          }
         },
 				created(){
+					this.getHistoryChatGuru()
 					this.getHistoryChatRunningGuru()
 				},
 				computed:{
-		        dataHistoryChatRunningGuru(){
+		        dataHistoryChatGuru(){
+		          return this.$store.state.dataHistoryChatGuru || {}
+		        },
+						dataHistoryChatRunningGuru(){
 		          return this.$store.state.dataHistoryChatRunningGuru || {}
 		        },
 			      userId(){
