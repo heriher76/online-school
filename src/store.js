@@ -770,5 +770,23 @@ export default new Vuex.Store({
         console.log(error)
       })
     },
+    sendMsg(context, credentials){
+      return new Promise((resolve, reject) => {
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + context.state.token
+        }
+        axios.post('/cerecall/chat/'+credentials.id,{
+          content: credentials.pesan,
+          is_image: credentials.is_image,
+          sender: 2
+        })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      })
+    },
   }
 });

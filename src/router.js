@@ -11,6 +11,7 @@ export default new Router({
     {
       path: "/",
       name: "home",
+      meta: {layout: "default"},
       component: require("./views/Home.vue").default,
       // meta: {
       //   requiresAuth:true
@@ -23,13 +24,15 @@ export default new Router({
       name: 'login',
       component: () => import("./views/auth/Login.vue"),
       meta: {
-        requiresVisitor:true
+        requiresVisitor:true,
+        layout: "default"
       },
       props:true
     },
     {
       path: "/logout",
       name: 'logout',
+      meta: {layout: "default"},
       component: () => import("./views/auth/Logout.vue")
     },
 
@@ -38,7 +41,8 @@ export default new Router({
       name: 'register',
       component: () => import("./views/auth/Register.vue"),
       meta: {
-        requiresVisitor:true
+        requiresVisitor:true,
+        layout: "default"
       }
     },
 
@@ -47,7 +51,8 @@ export default new Router({
       name: 'forgot_pass',
       component: () => import("./views/auth/ForgotPassword.vue"),
       meta: {
-        requiresVisitor:true
+        requiresVisitor:true,
+        layout: "default"
       }
     },
 
@@ -56,7 +61,8 @@ export default new Router({
       name: 'reset_pass',
       component: () => import("./views/auth/ResetPassword.vue"),
       meta: {
-        requiresVisitor:true
+        requiresVisitor:true,
+        layout: "default"
       }
     },
 
@@ -65,7 +71,8 @@ export default new Router({
       name: 'membership',
       component: () => import("./views/siswa/Membership.vue"),
       meta: {
-        requiresAuth:true
+        requiresAuth:true,
+        layout: "default"
       }
     },
     {
@@ -74,7 +81,8 @@ export default new Router({
       component: () => import("./views/siswa/MembershipHistory.vue"),
       props: true,
       meta: {
-        requiresAuth:true
+        requiresAuth:true,
+        layout: "default"
       }
     },
 
@@ -84,7 +92,8 @@ export default new Router({
       name: 'my_poin',
       component: () => import("./views/siswa/MyPoin.vue"),
       meta: {
-        requiresAuth:true
+        requiresAuth:true,
+        layout: "default"
       }
     },
     {
@@ -93,7 +102,8 @@ export default new Router({
       component: () => import("./views/siswa/MyPoinHistory.vue"),
       props:true,
       meta: {
-        requiresAuth:true
+        requiresAuth:true,
+        layout: "default"
       }
     },
 
@@ -101,6 +111,7 @@ export default new Router({
     {
       path: "/informasi",
       name: 'informasi',
+      meta: {layout: "default"},
       component: () => import("./views/informasi/Index.vue"),
       // meta: {
       //   requiresVisitor:true
@@ -111,6 +122,7 @@ export default new Router({
       path: "/informasi/detail",
       name: 'detail_informasi',
       props: true,
+      meta: {layout: "default"},
       component: () => import("./views/informasi/ReadMore.vue"),
       // meta: {
       //   requiresVisitor:true
@@ -120,35 +132,41 @@ export default new Router({
     {
       path: "/kebijakan-privasi",
       name: 'kebijakan_privasi',
+      meta: {layout: "default"},
       component: () => import("./views/informasi/KebijakanPrivasi.vue"),
     },
 
     {
       path: "/panduan-siswa",
       name: 'panduan_siswa',
+      meta: {layout: "default"},
       component: () => import("./views/informasi/PanduanSiswa.vue"),
     },
 
     {
       path: "/panduan-guru",
       name: 'panduan_guru',
+      meta: {layout: "default"},
       component: () => import("./views/informasi/PanduanGuru.vue"),
     },
 
     {
       path: "/syarat-ketentuan",
       name: 'syarat_ketentuan',
+      meta: {layout: "default"},
       component: () => import("./views/informasi/SyaratKetentuan.vue"),
     },
 
     {
       path: "/FAQ",
       name: 'FAQ',
+      meta: {layout: "default"},
       component: () => import("./views/informasi/FAQ.vue")
     },
     {
       path: "/pusat bantuan",
       name: 'pusat_bantuan_siswa',
+      meta: {layout: "default"},
       component: () => import("./views/informasi/PusatBantuan.vue")
     },
     // -----------------------------cereout-----------------------------
@@ -157,7 +175,8 @@ export default new Router({
       name: 'dashboard',
       component: () => import("./views/cereout/Dashboard.vue"),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        layout: "default"
       }
     },
     {
@@ -165,7 +184,8 @@ export default new Router({
       name: 'leader_board',
       component: () => import("./views/cereout/LeaderBoard.vue"),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        layout: "default"
       }
     },
 
@@ -174,7 +194,8 @@ export default new Router({
       name: 'my_exams',
       component: () => import("./views/cereout/exams/MyExams.vue"),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        layout: "default"
       }
     },
 
@@ -184,7 +205,8 @@ export default new Router({
       component: () => import("./views/cereout/exams/ExamDetails.vue"),
       props:true,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        layout: "default"
       }
     },
 
@@ -215,7 +237,8 @@ export default new Router({
       name: 'my_results',
       component: () => import("./views/cereout/results/Results.vue"),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        layout: "default"
       }
     },
 
@@ -225,7 +248,8 @@ export default new Router({
       component: () => import("./views/cereout/results/ResultsView.vue"),
       props: true,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        layout: "default"
       }
     },
 
@@ -235,7 +259,8 @@ export default new Router({
       component: () => import("./views/cereout/results/ResultDetail.vue"),
       props: true,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        layout: "default"
       }
     },
 
@@ -245,7 +270,8 @@ export default new Router({
       component: () => import("./views/cereout/HubungiKami.vue"),
       props: true,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        layout: "default"
       }
     },
 
@@ -255,7 +281,8 @@ export default new Router({
       name: 'cerecall',
       component: () => import("./views/cerecall/Index.vue"),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        layout: "default"
       }
     },
     {
@@ -263,19 +290,22 @@ export default new Router({
       name: 'cerecall_history',
       component: () => import("./views/cerecall/History.vue"),
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        layout: "default"
       }
     },
 
     {
       path: "/cerecall/ulasan/:guruId",
       name: 'cerecall_ulasan',
+      meta: {layout: "default"},
       component: () => import("./views/cerecall/Ulasan.vue")
     },
 
     {
       path: "/cerecall/chat",
       name: 'cerecall_chat',
+      meta: {layout: "default"},
       component: () => import("./views/cerecall/ChatPage.vue")
     },
 
@@ -283,12 +313,14 @@ export default new Router({
     {
       path: "/cerefo",
       name: 'cerefo',
+      meta: {layout: "default"},
       component: () => import("./views/cerefo/Index.vue")
     },
 
     {
       path: "/cerefo/detail-postingan/:id",
       name: 'cerefo_detail_post',
+      meta: {layout: "default"},
       component: () => import("./views/cerefo/DetailPost.vue")
     },
 
@@ -296,6 +328,7 @@ export default new Router({
     {
       path: "/cerejur",
       name: 'cerejur',
+      meta: {layout: "default"},
       component: () => import("./views/cerejur/Index.vue")
     },
 
@@ -303,6 +336,7 @@ export default new Router({
       path: "/cerejur/detail-universitas",
       name: 'cerejur_detail_universitas',
       props: true,
+      meta: {layout: "default"},
       component: () => import("./views/cerejur/DetailUniversitas.vue")
     },
 
@@ -310,6 +344,7 @@ export default new Router({
       path: "/cerejur/detail-universitas/detail-jurusan",
       name: 'cerejur_detail_jurusan',
       props: true,
+      meta: {layout: "default"},
       component: () => import("./views/cerejur/DetailJurusan.vue")
     },
 
@@ -317,52 +352,62 @@ export default new Router({
     {
       path: "/cerevid",
       name: "cerevid_home",
+      meta: {layout: "default"},
       component: () => import("./views/cerevid/home.vue")
     },
     {
       path: "/cerevid/semua-pelajaran",
       name: "cerevid_semua_pelajaran",
+      meta: {layout: "default"},
       component: () => import("./views/cerevid/semuaPelajaran.vue")
     },
     {
       path: "/cerevid/favorit",
       name: "cerevid_favorit",
+      meta: {layout: "default"},
       component: () => import("./views/cerevid/wishlist.vue")
     },
     {
       path: "/cerevid/daftar-pelajaran",
       name: "cerevid_daftar_pelajaran",
+      meta: {layout: "default"},
       component: () => import("./views/cerevid/daftarPelajaran.vue")
     },
     {
       path: "/cerevid/detail-pelajaran/:id",
       name: "cerevid_detail_pelajaran",
+      meta: {layout: "default"},
       component: () => import("./views/cerevid/detailPelajaran.vue")
     },
     {
       path: "/cerevid/detail-pelajaran/:id/materi",
       name: "cerevid_materi",
+      meta: {layout: "default"},
       component: () => import("./views/cerevid/materi.vue")
     },
     // -----------------------------Cerelisasi-----------------------------
     {
       path: "/cerelisasi",
       name: "cerelisasi_form_input",
+      meta: {layout: "default"},
       component: () => import("./views/cerelisasi/formInput.vue")
     },
     {
       path: "/cerelisasi/form-input-siswa",
       name: "cerelisasi_form_input_siswa",
+      meta: {layout: "default"},
       component: () => import("./views/cerelisasi/formInput.vue")
     },
     {
       path: "/cerelisasi/hasil-analisis",
       name: "cerelisasi_analisis",
+      meta: {layout: "default"},
       component: () => import("./views/cerelisasi/hasilAnalisis.vue")
     },
     {
       path: "/cerelisasi/riwayat",
       name: "cerelisasi_riwayat",
+      meta: {layout: "default"},
       component: () => import("./views/cerelisasi/riwayat.vue")
     },
     // -----------------------------Lainnya-----------------------------
@@ -370,6 +415,7 @@ export default new Router({
     {
       path: "/about",
       name: "about",
+      meta: {layout: "default"},
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -382,6 +428,7 @@ export default new Router({
     {
       path: "/my account",
       name: 'my_account',
+      meta: {layout: "default"},
       component: () => import("./views/siswa/MyAccount.vue"),
       props:true
     },
