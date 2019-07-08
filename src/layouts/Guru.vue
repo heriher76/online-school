@@ -175,7 +175,8 @@
         loadLogout: false,
         menu: false,
         user: [],
-        userPhoto: ''
+        userPhoto: '',
+        cekStatus: ''
       }
     },
 
@@ -187,12 +188,12 @@
     },
 
     created() {
+      this.incrementTime()
       const loggedIn = this.$store.getters.loggedIn
       const status = this.$store.state.status
       if (!loggedIn) {
           this.$router.push({path:'/guru/login'})
       }
-      console.log(status)
       // if (loggedIn && status != 1) {
       //     this.$router.push({path:'/'})
       // }
@@ -219,6 +220,21 @@
       })
     },
     methods: {
+      incrementTime() {
+        this.time = parseInt(this.time) + 1;
+
+        axios.get('/auth/user')
+        .then(response => {
+          // console.log(response.data.data)
+          this.cekStatus = response.data.data.role
+          if(this.cekStatus == 2){
+            return this.$router.push({name:'home'})
+          }
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+      },
       linkDashboard(){
         return this.$router.push({path:'/guru'})
       },
