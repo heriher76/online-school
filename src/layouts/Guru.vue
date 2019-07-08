@@ -225,7 +225,7 @@
 
         axios.get('/auth/user')
         .then(response => {
-          // console.log(response.data.data)
+          console.log(response.data.data)
           this.cekStatus = response.data.data.role
           if(this.cekStatus == 2){
             return this.$router.push({name:'home'})

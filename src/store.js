@@ -5,7 +5,7 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-axios.defaults.baseURL = 'http://api.ceredinas.id/api';
+axios.defaults.baseURL = 'https://api.ceredinas.id/api';
 
 export default new Vuex.Store({
   state: {
@@ -370,7 +370,7 @@ export default new Vuex.Store({
     },
 
     getDataPelajaranbyTeacher(context){
-      console.log(this.state.dataUser)
+      // console.log(this.state.dataUser)
       axios.defaults.headers = {
         'Authorization': 'Bearer ' + context.state.token
       }
