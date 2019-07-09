@@ -20,24 +20,24 @@
     </script>
     <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML"></script>
 
-
-    <!-- OneSignalauthKey:NjZjNGVkODMtODllZi00YzQzLWE1YzYtNGM0MTRlODY2NTc3
-    OneSignalappId:2d19fd0a-de81-4b9c-86dc-d85c34c10ca6
-    UserAuthKey:NjZjNGVkODMtODllZi00YzQzLWE1YzYtNGM0MTRlODY2NTc3 -->
-
-    <!-- <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    <link rel="manifest" href="<%= BASE_URL %>manifest.json" />
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
     <script>
       var OneSignal = window.OneSignal || [];
-        OneSignal.push(function () {
-          OneSignal.init({
-            appId: "2d19fd0a-de81-4b9c-86dc-d85c34c10ca6",
-            autoRegister: false,
-            notifyButton: {
-              enable: true,
-            },
-          });
+      OneSignal.push(function() {
+        OneSignal.init({
+          appId: "2d19fd0a-de81-4b9c-86dc-d85c34c10ca6",
+          autoResubscribe: true,
+          notifyButton: {
+            enable: true,
+          }, 
+          allowLocalhostAsSecureOrigin: true,
+          persistNotification: false //disimis notif after 20seconds
         });
-    </script> -->
+        OneSignal.setDefaultNotificationUrl("http://localhost:8080/cerecall/chat");
+        OneSignal.showNativePrompt();
+      });
+    </script>
 
     <style>
       .clear{ 
@@ -47,6 +47,7 @@
     </style>
   </head>
   <body>
+    <a href="#" id="my-notification-button" style="display: none;">Subscribe to Notifications</a>
     <noscript>
       <strong>We're sorry but cerebrum doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
