@@ -279,7 +279,7 @@ export default new Router({
       component: () => import("./views/cerecall/ChatPage.vue")
     },
 
-    // -----------------------------cerefo-----------------------------    
+    // -----------------------------cerefo-----------------------------
     {
       path: "/cerefo",
       name: 'cerefo',
@@ -292,7 +292,7 @@ export default new Router({
       component: () => import("./views/cerefo/DetailPost.vue")
     },
 
-    // -----------------------------cerejur-----------------------------    
+    // -----------------------------cerejur-----------------------------
     {
       path: "/cerejur",
       name: 'cerejur',
@@ -304,14 +304,14 @@ export default new Router({
       name: 'cerejur_detail_universitas',
       props: true,
       component: () => import("./views/cerejur/DetailUniversitas.vue")
-    },    
+    },
 
     {
       path: "/cerejur/detail-universitas/detail-jurusan",
       name: 'cerejur_detail_jurusan',
       props: true,
       component: () => import("./views/cerejur/DetailJurusan.vue")
-    },    
+    },
 
     // -----------------------------cerevid-----------------------------
     {
@@ -419,7 +419,7 @@ export default new Router({
       component: () => import("./views/guru/cerecall/History.vue")
     },
     {
-      path: "/guru/cerecall/chat",
+      path: "/guru/cerecall/chat/:id",
       name: 'chat_guru',
       meta: {layout: "guru"},
       component: () => import("./views/guru/cerecall/ChatPage.vue")

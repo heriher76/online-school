@@ -5,7 +5,7 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-axios.defaults.baseURL = 'http://api.ceredinas.id/api';
+axios.defaults.baseURL = 'https://api.ceredinas.id/api';
 
 export default new Vuex.Store({
   state: {
@@ -25,7 +25,10 @@ export default new Vuex.Store({
     dataVideo: [],
     dataText: [],
     dataQuiz: [],
-    dataDetailForum: []
+    dataDetailForum: [],
+    dataHistoryChatGuru: [],
+    dataHistoryChatRunningGuru: [],
+    dataChatGuru: [],
   },
 
   getters: {
@@ -141,7 +144,17 @@ export default new Vuex.Store({
 
     pushDataDetailForum(state, dataForum){
       state.dataDetailForum.data.push(dataForum.data)
-    }
+    },
+    //----------------------------------Cerecall Guru--------------------------------------------
+    getDataHistoryChatGuru(state, dataHistoryChatGuru){
+      state.dataHistoryChatGuru = dataHistoryChatGuru
+    },
+    getDataHistoryChatRunningGuru(state, dataHistoryChatRunningGuru){
+      state.dataHistoryChatRunningGuru = dataHistoryChatRunningGuru
+    },
+    getDataChatGuru(state, dataChatGuru){
+      state.dataChatGuru = dataChatGuru
+    },
 
   },
 
@@ -206,7 +219,7 @@ export default new Vuex.Store({
         context.commit('retrieveToken', token)
       })
       .catch(error => {
-      })  
+      })
     },
 
     //login google function
@@ -219,7 +232,7 @@ export default new Vuex.Store({
       })
       .catch(error => {
         console.log(error.response);
-      })  
+      })
     },
 
     //login function
@@ -234,7 +247,7 @@ export default new Vuex.Store({
           console.log(response.data)
           const token    = response.data.access_token
           const dataUser   = response.data.data.id
-          
+
           localStorage.setItem('access_token', token)
           context.commit('retrieveToken', token)
 
@@ -357,7 +370,7 @@ export default new Vuex.Store({
     },
 
     getDataPelajaranbyTeacher(context){
-      console.log(this.state.dataUser)
+      // console.log(this.state.dataUser)
       axios.defaults.headers = {
         'Authorization': 'Bearer ' + context.state.token
       }
@@ -711,7 +724,6 @@ export default new Vuex.Store({
           }
           axios.put('/auth/teacher/'+this.state.dataUser, data)
           .then(response => {
-
             console.log(response.data)
           })
           .catch(error => {
@@ -720,6 +732,43 @@ export default new Vuex.Store({
           })
         // })
       }
+    },
+//-----------------------------------cerecall guru---------------------------------------
+    getHistoryChatGuru(context){
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
+      }
+      axios.get('/cerecall/teacher/history')
+      .then(response => {
+        context.commit('getDataHistoryChatGuru', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    getHistoryChatRunningGuru(context){
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
+      }
+      axios.get('/cerecall/teacher/history/running')
+      .then(response => {
+        context.commit('getDataHistoryChatRunningGuru', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    getChatGuru(context,data){
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
+      }
+      axios.get('/cerecall/chat/'+data.id)
+      .then(response => {
+        context.commit('getDataChatGuru', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
   }
 });
