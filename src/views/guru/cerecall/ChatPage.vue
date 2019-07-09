@@ -109,11 +109,11 @@
 							</div>
 							</div>
 		                    <div class="action_chat">
-		                        <input type="file" ref="file" id="img" style="display: none">
-		                        <button class="file-img" @click="$refs.file.click()">
-		                        	<v-icon large color="red">insert_photo</v-icon> 
-		                        </button>
-		                        <form @submit.prevent="" @keyup.enter="sendMsg">
+			                        <input type="file" ref="file" style="display: none">
+			                        <button class="file-img" @click="$refs.file.click()">
+			                        	<v-icon large color="red">insert_photo</v-icon> 
+			                        </button>
+		                        <form @submit.prevent="" ref="form" @keyup.enter="sendMsg">
 		                            <input class="msg" ref="pesan" type="text" v-model="pesan" placeholder="Ketik pesan">
 		                        </form>
 		                        <button class="send" @click="sendMsg"><v-icon color="red">send</v-icon></button>
@@ -140,6 +140,7 @@
         data: () => ({
         	dialog: false,
         	pesan:null,
+        	img:null,
         	is_image:null,
         }),
         components: {
@@ -164,6 +165,9 @@
 			},
             sendMsg(){
             	this.cekImg()
+            	if(this.is_image==1){
+            		this.pesan = this.$refs.file.value
+            	}
 	        	this.$store.dispatch('sendMsg',{
 	        		id:this.$route.params.id,
 	        		pesan:this.pesan,
@@ -171,10 +175,11 @@
 	        	})
 	        	.then(response => {
 	        		console.log(this.is_image)
-	        		this.$refs.pesan.reset()
-	        		this.$refs.file.reset()
+	        		this.$refs.form.reset()
 	        	})
 			    .catch(error => {
+	        		console.log(this.is_image)
+	        		this.$refs.form.reset()
 			    })
             },
             cekImg(){

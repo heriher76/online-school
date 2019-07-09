@@ -9,7 +9,7 @@
 
     <!-- content -->
     <v-content>
-      <v-dialog v-model="dialogRunning" persistent max-width="290">
+      <!-- <v-dialog v-model="dialogRunning" persistent max-width="290">
         <v-card>
             <v-card-title class="headline">Tryout Masih Berjalan </v-card-title>
             <v-card-text>Anda belum menyelesaikan tryout, selesaikan sekarang !!</v-card-text>
@@ -17,7 +17,7 @@
             <v-btn block color="green darken-1" flat dark @click="attemptRunning">Oke</v-btn>
             </v-card-actions>
         </v-card>
-      </v-dialog>
+      </v-dialog> -->
 
       <slot/>
     </v-content>
@@ -49,22 +49,22 @@ export default {
       time: 0,
       interval: null,
 
-      data:[],
-      dialogRunning:false
+      // data:[],
+      // dialogRunning:false
     }
   },
 
   methods:{
-    attemptRunning(){
-      this.dialogRunning = false
-      this.$router.push({name: 'dashboard'})
-      let routeData = this.$router.resolve({name: 'exam_page', params:{id: this.data.tryout_id, scoringSystem: this.data.scoring_system, attemptId: this.data.id}});
-        window.open(routeData.href,
-                    'my_window', 
-                    'width=1600, height=620, resizable=no',
-                    '_blank'
-                    )
-    },
+    // attemptRunning(){
+    //   this.dialogRunning = false
+    //   this.$router.push({name: 'dashboard'})
+    //   let routeData = this.$router.resolve({name: 'exam_page', params:{id: this.data.tryout_id, scoringSystem: this.data.scoring_system, attemptId: this.data.id}});
+    //     window.open(routeData.href,
+    //                 'my_window', 
+    //                 'width=1600, height=620, resizable=no',
+    //                 '_blank'
+    //                 )
+    // },
 
     toggleTimer() {
         this.interval = setInterval(this.incrementTime, 1000);
@@ -84,20 +84,20 @@ export default {
             console.log(error.response)
           })
 
-          axios.get('/cereouts/running')
-          .then(response => {
-            if(response.data.status == true){
-              this.dialogRunning = true
-              this.data = response.data.data
-            }
-            else if(response.data.status == false){
-              this.dialogRunning = false
-              this.data = response.data.data
-            }
-          })
-          .catch(error => {
-            console.log(error.response)
-          })
+          // axios.get('/cereouts/running')
+          // .then(response => {
+          //   if(response.data.status == true){
+          //     this.dialogRunning = true
+          //     this.data = response.data.data
+          //   }
+          //   else if(response.data.status == false){
+          //     this.dialogRunning = false
+          //     this.data = response.data.data
+          //   }
+          // })
+          // .catch(error => {
+          //   console.log(error.response)
+          // })
       }
     },
 

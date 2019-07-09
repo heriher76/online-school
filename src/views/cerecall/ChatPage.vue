@@ -60,11 +60,12 @@
                                             <v-card-text>
                                                 <v-textarea
                                                     solo
+                                                    :rules="[rules.required]"
                                                     v-model="reportMsg"
                                                     label="Isi Report"
                                                 ></v-textarea>
-                                                <!-- <input name="photo" ref="file" type="file" @change="this.handleFileUpload"> -->
-                                                <input type="file" id="file" ref="myFiles" class="custom-file-input" @change="previewFiles" multiple>
+                                                <input type="file" @change="onFileSelected">
+                                                <!-- <input type="file" id="file" name="photo" ref="myFiles" class="custom-file-input" @change="previewFiles" multiple> -->
                                             </v-card-text>                                        
                                             <v-card-actions>
                                                 <v-btn color="red" dark block @click="report">Kirim Report</v-btn>
@@ -114,7 +115,7 @@
                                                         </v-card-text>
                                                         <v-divider></v-divider>
                                                         <v-card-actions class="justify-space-between">
-                                                            <v-btn @click="addRating" color="#B71C1C" block dark>Rate Now</v-btn>
+                                                            <v-btn @click="addRating" color="#B71C1C" block dark>Kirim Ulasan</v-btn>
                                                         </v-card-actions>
                                                     </v-card>
                                                 </v-dialog>
@@ -126,23 +127,44 @@
                         </v-card>
                     </div>
                     <div class="live_chat" style="height:380px">
-                        <div style="position: absolute;top:70px;padding:20px;left:0;width: 100%;height: 74%; overflow: auto">
+                        <div v-show="loadChat" style="background:rgba(0,0,0,0.2);text-align:center;z-index:1;position:absolute;width:100%;height:75%">
+                            <fulfilling-bouncing-circle-spinner
+                                style="margin:160px auto 0px auto"
+                                :animation-duration="1500"
+                                :size="40"
+                                color="#fff"
+                            />
+                            <span style="color:white">loading...</span>
+                        </div>
+
+                        <div id="box" ref="msgDisplay">
                             <div v-for="chat in chatItem" :key="chat.id" class="box-chat">
                                 <span v-if="chat.sender==1" class="chat-siswa">
                                     <v-img v-if="chat.is_image==1" :src="chat.content" height="200px"></v-img>
                                     <span>{{chat.content}}</span> 
+                                    <span style="font-size:9px;margin-left:10px;">{{moment(chat.created_at).format('hh:mm')}}</span>
                                 </span>
                                 <span v-if="chat.sender==2" class="chat-guru">
                                     <v-img v-if="chat.is_image==1" :src="chat.content" height="200px"></v-img>
                                     <span>{{chat.content}}</span>
+                                    <span style="font-size:9px;margin-left:10px;">{{moment(chat.created_at).format('hh:mm')}}</span>
                                 </span>
                                 <div class="clear"></div>
                             </div>
                         </div>
+                        
+                        <div style="position:absolute;bottom:60px;left:0px;">
+                            <v-btn v-show="btScroll" @click="scrollBottom" color="red" dark icon><v-icon>keyboard_arrow_down</v-icon></v-btn>
+                            <!-- <div v-if="chatItem.length+=1">
+                            {{chatItem.length}}
+                            </div> -->
+                        </div>
+
                     </div>
 
                     <div class="action_chat">
-                        <input type="file" ref="file" style="display: none">
+                        <!-- <input type="file" ref="file" style="display: none"> -->
+                        <input type="file" ref="file" style="display:none" @change="this.handleFileUpload">
                         <button class="file-img" @click="$refs.file.click()"> <v-icon large color="red">insert_photo</v-icon> </button>
                         <form @submit.prevent="sendMsg" @keyup.enter="sendMsg">
                             <input class="msg" type="text" v-model="content" placeholder="Ketik pesan">
@@ -157,22 +179,33 @@
 </template>
 
 <script>
+    import Vue from "vue";
+    import { FulfillingBouncingCircleSpinner } from 'epic-spinners'
     import StarRating from 'vue-star-rating'
     import axios from 'axios';
+    import moment from 'moment'
     export default {
         components: {
             StarRating,
+            FulfillingBouncingCircleSpinner
         },
 
         data () {
-            return {     
-                
+            return {    
+                selectedFile: null,
+                cekTop: '',
+                btScroll:false,
+                interval:null,
+                loadChat:true,
                 snackbar:false,  
                 // file: '',
                 files: [],
                 review: '',
                 reportMsg: '',
                 // reportImg: '',
+                rules: {
+                    required: v => !!v || 'This field is required'
+                },
                 content: '',
                 contentImg: '',
                 chatRunning: [],
@@ -189,13 +222,21 @@
             }
         },
         methods: {
+            moment,
+
+            onFileSelected(event){
+                this.selectedFile = event.target.files[0]
+                // console.log(event)
+            },
+
             setRating: function(rating) {
                 this.textArea = true
                 this.rating = rating
             },
 
             addRating(){
-                this.dialog2=false
+                this.dialog2  = false
+                this.loadChat = true
                 axios.put('/cerecall/history/'+this.chatRunning.id,{
                     student_id : this.studentInfo.student_id,
                     teacher_id : this.teacherInfo.teacher_id,
@@ -203,9 +244,10 @@
                     review : this.review
                 })
                 .then(response=>{
+                    this.loadChat = false
                     this.$swal("Sukses", "Percakapan berhasil diakhiri!")
                     this.$router.push({name: 'cerecall'})
-                    console.log(response.data)
+                    // console.log(response.data)
                 })
                 .catch(error=>{
                     console.log(error.response)
@@ -220,45 +262,50 @@
                 })
                 .then(response => {
                     this.content = ''
-                    axios.get('/cerecall/chat/'+this.chatRunning.id)
-                    .then(response => {
-                        this.chatItem = response.data.data
-                    })
-                    .catch(error => {console.log(error.response)})
-                    // console.log(response.data)
+                    setTimeout(() => (this.scrollBottom()), 0)
                 })
                 .catch(error => {
-                    console.log(error.response)
+                    this.content = ''
+                    setTimeout(() => (this.scrollBottom()), 0)
                 })
             },
-            sendImg(){
+
+            handleFileUpload(){
+                this.contentImg = this.$refs.file.files[0];
+            // },
+
+            // sendImg(){
+                let filePhoto = new FormData();
+                filePhoto.append('content', this.contentImg);
+
                 axios.post('/cerecall/chat/'+this.chatRunning.id,{
-                    content: this.contentImg,
+                    content: filePhoto,
                     is_image: 1,
                     sender: 1
                 })
                 .then(response => {
                     this.content = ''
+                    setTimeout(() => (this.scrollBottom()), 0)
                     console.log(response.data)
                 })
                 .catch(error => {
+                    this.content = ''
+                    setTimeout(() => (this.scrollBottom()), 0)
                     console.log(error.response)
                 })
             },
 
             report(){
-                console.log(this.files)
-                let reportImg = new FormData();
-                reportImg.append('photo', this.files);
-
-                console.log(reportImg)
-
                 this.dialog_report = false
+
+                const fd = new FormData();
+                fd.append('image_url', this.selectedFile)
+                
                 axios.post('/cerecall/report/'+this.chatRunning.id,{
                     student_id: this.studentInfo.student_id,
                     teacher_id: this.teacherInfo.teacher_id,
                     report: this.reportMsg,
-                    image_url: reportImg
+                    image_url: fd
                 })
                 .then(response=>{
                     this.snackbar = true
@@ -271,14 +318,29 @@
 
             previewFiles() {
                 this.files = this.$refs.myFiles.files[0]
+                console.log(this.files)
+            },
+
+            scrollBottom(){
+                var container = this.$el.querySelector("#box");
+                container.scrollTop = container.scrollHeight;   
+                this.cekTop = container.scrollTop
+            }
+        },
+            
+        updated() {  
+            var container = this.$el.querySelector("#box");
+            // this.cekTop = container.scrollTop
+
+            console.log(this.cekTop)
+            console.log(container.scrollTop)
+
+            if(container.scrollTop < this.cekTop){
+                this.btScroll = true
+            }else if(container.scrollTop == this.cekTop){
+                this.btScroll = false
             }
 
-            // handleFileUpload(){
-            //     this.file = this.$refs.file.files[0];
-            // },
-        },
-
-        created(){
             axios.get('/cerecall/chat/'+this.chatRunning.id)
             .then(response => {
                 this.chatItem = response.data.data
@@ -288,7 +350,7 @@
             })
         },
 
-        mounted(){
+        created(){
             axios.get('/cerecall/student/history/running')
             .then(response => {
                 this.chatRunning = response.data.data[0]
@@ -297,7 +359,10 @@
                 // console.log(this.cekChat)
                 axios.get('/cerecall/chat/'+this.chatRunning.id)
                 .then(response => {
+                    this.loadChat = false
                     this.chatItem = response.data.data
+                    console.log(this.chatItem)
+                    setTimeout(() => (this.scrollBottom()), 0)
                 })
                 .catch(error => {
                     console.log(error.response)
@@ -307,21 +372,23 @@
                 console.log(error.response)
             })
 
-            var OneSignal = require('onesignal-node'); 
-            var myClient = new OneSignal.Client({      
-                userAuthKey: 'NjZjNGVkODMtODllZi00YzQzLWE1YzYtNGM0MTRlODY2NTc3',  
-                app: { appAuthKey: 'ZmNhY2QzNmMtNDZiZS00ODkyLTg4ZDktNWViNTc3NzBiYmE5', appId: '2d19fd0a-de81-4b9c-86dc-d85c34c10ca6' }      
-            });  
 
-            myClient.viewNotifications('limit=1', function (err, httpResponse, data) {      
-                if (httpResponse.statusCode === 200 && !err) {      
-                    console.log(data);      
-                }      
-            }); 
+
+            // var OneSignal = require('onesignal-node'); 
+            // var myClient = new OneSignal.Client({      
+                //     userAuthKey: 'NjZjNGVkODMtODllZi00YzQzLWE1YzYtNGM0MTRlODY2NTc3',  
+            //     app: { appAuthKey: 'ZmNhY2QzNmMtNDZiZS00ODkyLTg4ZDktNWViNTc3NzBiYmE5', appId: '2d19fd0a-de81-4b9c-86dc-d85c34c10ca6' }      
+            // });  
+
+            // myClient.viewNotifications('limit=1', function (err, httpResponse, data) {      
+                //     if (httpResponse.statusCode === 200 && !err) {      
+                    //         // console.log(data);      
+            //     }      
+            // }); 
             
             // myClient.viewNotification('notificationId', function (err, httpResponse, data) {      
-            //     if (httpResponse.statusCode === 200 && !err) {      
-            //         console.log(data);      
+                //     if (httpResponse.statusCode === 200 && !err) {      
+                    //         console.log(data);      
             //     }      
             // }); 
 
@@ -334,6 +401,16 @@
     .chat_box{
         width:80%;
         margin:0px auto;
+    }
+
+    #box{
+        position: absolute;
+        top:70px;
+        padding:20px;
+        left:0;
+        width: 100%;
+        height: 74%; 
+        overflow: auto
     }
 
     .box-chat{
@@ -374,7 +451,7 @@
 
     .live_chat{
         /* margin: 20px; */
-        padding: 20px;
+        /* padding: 20px; */
     }
 
     .action_chat{
@@ -384,6 +461,7 @@
 
     .file-img{
         margin-top: 2px;
+        margin-right: 4px;
         outline: none;
         float: left
     }
@@ -391,14 +469,20 @@
         background: white;
         padding: 10px 15px;
         border-radius: 18px;
-        width:92%;
-        float:left;
+        width:90%;
         outline:none;
         float:left;
     }
 
+    @media only screen and (max-width: 1265px) {    
+        input.msg{
+            width:73%;
+        }
+    } 
+
     .send{
         outline:none;
-        margin: 8px 0px 0px 10px
+        float: left;
+        margin: 8px 8px 0px 10px
     }
 </style>
