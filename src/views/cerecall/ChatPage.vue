@@ -330,10 +330,9 @@
             
         updated() {  
             var container = this.$el.querySelector("#box");
-            // this.cekTop = container.scrollTop
 
-            console.log(this.cekTop)
-            console.log(container.scrollTop)
+            // console.log("cek",this.cekTop)
+            // console.log("top",container.scrollTop)
 
             if(container.scrollTop < this.cekTop){
                 this.btScroll = true
@@ -356,12 +355,12 @@
                 this.chatRunning = response.data.data[0]
                 this.teacherInfo = response.data.data[0].teacher
                 this.studentInfo = response.data.data[0].student
-                // console.log(this.cekChat)
+                // console.log(this.chatRunning)
                 axios.get('/cerecall/chat/'+this.chatRunning.id)
                 .then(response => {
                     this.loadChat = false
                     this.chatItem = response.data.data
-                    console.log(this.chatItem)
+                    // console.log(this.chatItem)
                     setTimeout(() => (this.scrollBottom()), 0)
                 })
                 .catch(error => {
@@ -371,27 +370,6 @@
             .catch(error => {
                 console.log(error.response)
             })
-
-
-
-            // var OneSignal = require('onesignal-node'); 
-            // var myClient = new OneSignal.Client({      
-                //     userAuthKey: 'NjZjNGVkODMtODllZi00YzQzLWE1YzYtNGM0MTRlODY2NTc3',  
-            //     app: { appAuthKey: 'ZmNhY2QzNmMtNDZiZS00ODkyLTg4ZDktNWViNTc3NzBiYmE5', appId: '2d19fd0a-de81-4b9c-86dc-d85c34c10ca6' }      
-            // });  
-
-            // myClient.viewNotifications('limit=1', function (err, httpResponse, data) {      
-                //     if (httpResponse.statusCode === 200 && !err) {      
-                    //         // console.log(data);      
-            //     }      
-            // }); 
-            
-            // myClient.viewNotification('notificationId', function (err, httpResponse, data) {      
-                //     if (httpResponse.statusCode === 200 && !err) {      
-                    //         console.log(data);      
-            //     }      
-            // }); 
-
         },
     }
 </script>
