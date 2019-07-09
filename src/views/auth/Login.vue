@@ -104,7 +104,7 @@
 
 
 <script>
-  import { uuid } from 'vue-uuid';
+  // import { uuid } from 'vue-uuid';
   import axios from "axios"
   import LoadingScreen2 from'../../components/loading-screen/Loading2'
   import { VFBLogin as VFacebookLogin } from 'vue-facebook-login-component'
@@ -120,7 +120,7 @@
 
     data () {
       return {
-        uuid: uuid.v1(),
+        // uuid: uuid.v1(),
 
         deviceId: '',
 
@@ -158,23 +158,7 @@
       this.snackbar = this.regist
       this.toggleTimer()
 
-      var OneSignal = require('onesignal-node'); 
-      
-      var myClient = new OneSignal.Client({      
-        userAuthKey: 'NjZjNGVkODMtODllZi00YzQzLWE1YzYtNGM0MTRlODY2NTc3',  
-        app: { appAuthKey: 'ZmNhY2QzNmMtNDZiZS00ODkyLTg4ZDktNWViNTc3NzBiYmE5', appId: '2d19fd0a-de81-4b9c-86dc-d85c34c10ca6' }      
-      });  
-
-      // If you want to add device to current app, don't add app_id in deviceBody      
-      var deviceBody = {      
-          device_type: 1,      
-          language: 'tr'      
-      };      
-          
-      myClient.addDevice(deviceBody, (err, httpResponse, data) => {
-          console.log(data)
-          this.deviceId = data.id
-      });    
+      this.getOneSignalId()
     },
 
     created() {
@@ -184,6 +168,28 @@
     },
 
     methods:{
+      async getOneSignalId() {
+        try {
+          const OneSignal = window.OneSignal || []
+          OneSignal.push(() => {
+            OneSignal.isPushNotificationsEnabled(isEnabled => {
+              if (isEnabled) {
+                // user has subscribed
+                OneSignal.getUserId(userId => {
+                  // return userId
+                  // console.log(`player_id of the subscribed user is : ${userId}`)
+                  this.deviceId = userId
+                  // console.log(this.deviceId)
+                  // Make a POST call to your server with the user ID
+                })
+              }
+            })
+          })
+        } catch (exception) {
+          console.log(exception)
+        }
+      },
+
       toggleTimer() {
         this.interval = setInterval(this.incrementTime, 1000);
       },

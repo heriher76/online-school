@@ -96,7 +96,7 @@ export default {
     },
 
     mounted(){
-        console.log("coba")
+        // console.log("coba")
         axios.get('/cerecall/student/history')
         .then(response => {
             this.load_data   = false
