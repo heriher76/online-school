@@ -10,6 +10,7 @@
           </div>
 
           <v-select
+            :loading="loadLesson"
             v-if="chatRunning==0"
             :items="lessons"
             label="Pilih Mata Pelajaran"
@@ -100,6 +101,7 @@
     data (){
       return {
         chatRunning:[],
+        loadLesson: true,
         lessons: [],
         teachers: [],
 
@@ -191,7 +193,8 @@
     mounted(){
       axios.get('/master/lesson')//get lesson
       .then(response => {
-        this.lessons = response.data.data
+        this.loadLesson = false
+        this.lessons    = response.data.data
       })
       .catch(error => {console.log(error.response)})
 
