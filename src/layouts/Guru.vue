@@ -200,7 +200,11 @@
     },
 
     mounted(){      
-
+      var OneSignal = window.OneSignal || [];
+      OneSignal.push(function() {
+        OneSignal.setDefaultNotificationUrl("http://localhost:8080/guru/cerecall/chat");
+      });
+      //===============================================================================
       axios.get('/auth/user')
       .then(response => {
         this.user = response.data.data

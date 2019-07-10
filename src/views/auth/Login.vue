@@ -35,7 +35,7 @@
         <h2 class="display-1">Selamat Datang</h2>
         <p>Masuk dengan akun anda</p>
         
-        <form @submit.prevent="login" @keyup.enter="login">
+        <form @submit.prevent @keyup.enter="login">
           <v-text-field
             dark
             color="white"
@@ -172,14 +172,16 @@
         try {
           const OneSignal = window.OneSignal || []
           OneSignal.push(() => {
+            console.log('cek',OneSignal.isPushNotificationsEnabled())
             OneSignal.isPushNotificationsEnabled(isEnabled => {
+
               if (isEnabled) {
                 // user has subscribed
                 OneSignal.getUserId(userId => {
                   // return userId
                   // console.log(`player_id of the subscribed user is : ${userId}`)
                   this.deviceId = userId
-                  // console.log(this.deviceId)
+                  // console.log(this.deviceId)`
                   // Make a POST call to your server with the user ID
                 })
               }

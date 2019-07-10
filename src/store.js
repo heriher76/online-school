@@ -781,10 +781,11 @@ export default new Vuex.Store({
           sender: 2
         })
         .then(response => {
-          console.log(response)
+          resolve(response)
         })
         .catch(error => {
           console.log(error)
+          reject(error)
         })
       })
     },

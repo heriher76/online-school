@@ -45,7 +45,7 @@
                                     </div>
                                 </v-card>
                             </div>
-							<div style="overflow:auto; height:600px" class="my-2">
+							<div id="box" style="overflow:auto; height:600px" class="my-2">
 							<div v-if="realtime()">
 	                            <v-layout class="live_chat mx-4" v-for="data in dataChatGuru.data">
 									<v-card-text style="overflow:auto">
@@ -106,7 +106,10 @@
 										</div>
 									</v-card-text>
 	                            </v-layout>
-							</div>
+							</div>                        
+		                        <div style="position:absolute;bottom:60px;left:0px;">
+		                            <v-btn v-show="btScroll" @click="scrollBottom" color="red" dark icon><v-icon>keyboard_arrow_down</v-icon></v-btn>
+		                        </div>
 							</div>
 		                    <div class="action_chat">
 			                        <input type="file" ref="file" style="display: none">
@@ -142,6 +145,9 @@
         	pesan:null,
         	img:null,
         	is_image:null,
+            cekTop: '',
+            btScroll:false,
+            is_load:false
         }),
         components: {
             SideBar,
@@ -153,11 +159,22 @@
 	        	})
 	        },
 	        getChatGuru(){
-	        	this.$store.dispatch('getChatGuru',{id:this.$route.params.id})
-	        	.then(response => {
-	        	})
-			    .catch(error => {
-			    })
+	        	if(this.dataHistoryChatRunningGuru.data){
+	        		for(var i=0;i<this.dataHistoryChatRunningGuru.data.length;i++)
+		        	this.$store.dispatch('getChatGuru',{id:this.dataHistoryChatRunningGuru.data[i].id})
+		        	.then(response => {
+		        		if(!this.is_load){
+		        			this.scrollBottom()
+		        			this.is_load = true
+		        		}
+		        	})
+				    .catch(error => {
+		        		if(!this.is_load){
+		        			this.scrollBottom()
+		        			this.is_load = true
+		        		}
+				    })
+				}
 	      	},
 			realtime(){
 				this.getChatGuru()
@@ -173,14 +190,14 @@
 	        		pesan:this.pesan,
 	        		is_image:this.is_image
 	        	})
-	        	.then(response => {
-	        		console.log(this.is_image)
-	        		this.$refs.form.reset()
-	        	})
-			    .catch(error => {
-	        		console.log(this.is_image)
-	        		this.$refs.form.reset()
-			    })
+		        .then(response => {
+	        		this.pesan = ''
+		        })
+		        .catch(error => {
+	        		this.pesan = ''
+		        })
+
+			    this.is_load = false
             },
             cekImg(){
 	        	if(this.$refs.file.value == 0){
@@ -189,11 +206,26 @@
 				    this.is_image = 1
 				}
             },
+            scrollBottom(){
+	            var container = this.$el.querySelector("#box");
+	            container.scrollTop = container.scrollHeight;   
+				this.cekTop = container.scrollTop;
+            }
         },
 		created(){
 			this.getChatGuru()
 			this.getHistoryChatRunningGuru()
 		},
+            
+        updated() {  
+            var container = this.$el.querySelector("#box");
+            if(container.scrollTop < this.cekTop){
+                this.btScroll = true
+            }else if(container.scrollTop == this.cekTop){
+                this.btScroll = false
+                this.is_load = false
+            }
+        },
 		computed:{
 		    dataChatGuru(){
 		    	return this.$store.state.dataChatGuru || {}

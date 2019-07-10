@@ -466,7 +466,7 @@ export default new Router({
       component: () => import("./views/guru/cerecall/History.vue")
     },
     {
-      path: "/guru/cerecall/chat/:id",
+      path: "/guru/cerecall/chat",
       name: 'chat_guru',
       meta: {layout: "guru"},
       component: () => import("./views/guru/cerecall/ChatPage.vue")
