@@ -389,8 +389,9 @@
 		    'Authorization': 'Bearer ' + this.$store.state.token
 		}
 		axios.get('/cerelisasi/analysis')
-		.then(response => {
-		  this.dataAnalysis = response.data.data
+		.then(response => {console.log(response)
+		  this.dataAnalysis = response.data.data;
+		  (this.dataAnalysis == null) ? this.dataAnalysis = { my_point : 0 } : null;
 		  if(this.dataAnalysis.my_point != 0){
 		  	this.$swal('Hasil Simulasi', 'Anda Sudah Melakukan Simulasi', 'success')
 		  	this.$router.push({ name:'cerelisasi_analisis', params: { data: this.dataAnalysis, name: this.name } })
