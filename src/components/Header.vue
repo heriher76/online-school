@@ -224,18 +224,6 @@
             <span>Cerecall Masuk</span>
             </v-tooltip>
 
-            <!-- <v-badge color="orange">
-              <template v-slot:badge>
-                <v-icon dark small>
-                  notifications
-                </v-icon>
-              </template>
-              <router-link to="">
-                <v-icon color="#F44336">email</v-icon>
-              </router-link>
-            </v-badge> -->
-
-              
             <v-menu
               v-model="menu"
               :close-on-content-click="false"
@@ -441,15 +429,6 @@
     <!-- /navigation-drawer -->
 
     <LoadingScreen1 :loading="loadLogout"></LoadingScreen1>
-    <v-dialog v-model="dialogRunning" persistent max-width="290">
-      <v-card>
-          <v-card-title class="headline">Tryout Masih Berjalan </v-card-title>
-          <v-card-text>Anda belum menyelesaikan tryout, selesaikan sekarang !!</v-card-text>
-          <v-card-actions>
-          <v-btn block color="green darken-1" flat dark @click="attemptRunning">Oke</v-btn>
-          </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
@@ -478,9 +457,6 @@ export default {
       user: [],
       userPhoto: '',
       cekMember:[],
-
-      data:[],
-      dialogRunning:false
     }
   },
 
@@ -502,21 +478,6 @@ export default {
       .catch(error => {
         console.log(error.response)
       })
-
-      axios.get('/cereouts/running')
-      .then(response => {
-        if(response.data.status == true){
-          this.dialogRunning = true
-          this.data = response.data.data
-        }
-        else if(response.data.status == false){
-          this.dialogRunning = false
-          this.data = response.data.data
-        }
-      })
-      .catch(error => {
-        console.log(error.response)
-      })
     }
   },
 
@@ -530,26 +491,11 @@ export default {
       .catch(error => {
         console.log(error)
       })
-      // axios.get('/cerecall/student/history/running')
-      // .then(response => {
-      //   this.chatRun = response.data.data
-      //   this.cekChat = response.data.data[0]
-      //   // console.log(this.cekChat)
-      // })
-      // .catch(error => {
-      //   console.log(error.response)
-      // })
-
-      axios.get('/cereouts/running')
+      axios.get('/cerecall/student/history/running')
       .then(response => {
-        if(response.data.status == true){
-          this.dialogRunning = true
-          this.data = response.data.data
-        }
-        else if(response.data.status == false){
-          this.dialogRunning = false
-          this.data = response.data.data
-        }
+        this.chatRun = response.data.data
+        this.cekChat = response.data.data[0]
+        // console.log(this.cekChat)
       })
       .catch(error => {
         console.log(error.response)

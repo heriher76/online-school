@@ -56,7 +56,7 @@
                                                 <v-icon>close</v-icon>
                                             </v-btn>
                                             <div class="clear"></div>
-                                            <!-- <form enctype="multipart/form-data"> -->
+                                            <form enctype="multipart/form-data">
                                             <v-card-text>
                                                 <v-textarea
                                                     solo
@@ -64,13 +64,13 @@
                                                     v-model="reportMsg"
                                                     label="Isi Report"
                                                 ></v-textarea>
-                                                <input type="file" @change="onFileSelected">
-                                                <!-- <input type="file" id="file" name="photo" ref="myFiles" class="custom-file-input" @change="previewFiles" multiple> -->
+                                                <!-- <input type="file" @change="onFileSelected"> -->
+                                                <input name="image_url" id="foto" ref="fileM" type="file" @change="this.handleFileUpload">
                                             </v-card-text>                                        
                                             <v-card-actions>
-                                                <v-btn color="red" dark block @click="report">Kirim Report</v-btn>
+                                                <v-btn color="red" dark block @click="this.report">Kirim Report</v-btn>
                                             </v-card-actions>
-                                            <!-- </form> -->
+                                            </form>
                                         </v-card>
                                     </v-dialog>
 
@@ -138,15 +138,43 @@
                         </div>
 
                         <div id="box" ref="msgDisplay">
-                            <div v-for="chat in chatItem" :key="chat.id" class="box-chat">
+                            <div v-for="(chat, index) in chatItem" :key="chat.id" class="box-chat">
                                 <span v-if="chat.sender==1" class="chat-siswa">
-                                    <v-img v-if="chat.is_image==1" :src="chat.content" height="200px"></v-img>
-                                    <span>{{chat.content}}</span> 
+                                    <v-img v-if="chat.is_image==1" @click.stop="dialog[index] = true" style="cursor:pointer" :src="chat.content" height="200px" width="260px">
+                                        <template v-slot:placeholder>
+                                            <v-layout
+                                                fill-height
+                                                align-center
+                                                justify-center
+                                                ma-0
+                                            >
+                                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                            </v-layout>
+                                        </template>
+                                    </v-img>
+                                    <v-dialog v-model="dialog[index]" max-width="500">
+                                        <v-img :src="chat.content"></v-img>
+                                    </v-dialog>
+                                    <span v-if="chat.is_image!=1">{{chat.content}}</span> 
                                     <span style="font-size:9px;margin-left:10px;">{{moment(chat.created_at).format('hh:mm')}}</span>
                                 </span>
                                 <span v-if="chat.sender==2" class="chat-guru">
-                                    <v-img v-if="chat.is_image==1" :src="chat.content" height="200px"></v-img>
-                                    <span>{{chat.content}}</span>
+                                    <v-img v-if="chat.is_image==1" @click.stop="dialog[index] = true" style="cursor:pointer" :src="chat.content" height="200px" width="260px">
+                                        <template v-slot:placeholder>
+                                            <v-layout
+                                                fill-height
+                                                align-center
+                                                justify-center
+                                                ma-0
+                                            >
+                                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                            </v-layout>
+                                        </template>
+                                    </v-img>
+                                    <v-dialog v-model="dialog[index]" max-width="500">
+                                        <v-img :src="chat.content"></v-img>
+                                    </v-dialog>
+                                    <span v-if="chat.is_image!=1">{{chat.content}}</span> 
                                     <span style="font-size:9px;margin-left:10px;">{{moment(chat.created_at).format('hh:mm')}}</span>
                                 </span>
                                 <div class="clear"></div>
@@ -163,8 +191,7 @@
                     </div>
 
                     <div class="action_chat">
-                        <!-- <input type="file" ref="file" style="display: none"> -->
-                        <input type="file" ref="file" style="display:none" @change="this.handleFileUpload">
+                        <input type="file" ref="file" style="display:none" @change="this.sendImg">
                         <button class="file-img" @click="$refs.file.click()"> <v-icon large color="red">insert_photo</v-icon> </button>
                         <form @submit.prevent="sendMsg" @keyup.enter="sendMsg">
                             <input class="msg" type="text" v-model="content" placeholder="Ketik pesan">
@@ -192,6 +219,7 @@
 
         data () {
             return {    
+                dialog: [],
                 selectedFile: null,
                 cekTop: '',
                 btScroll:false,
@@ -199,10 +227,10 @@
                 loadChat:true,
                 snackbar:false,  
                 // file: '',
-                files: [],
+                // files: [],
                 review: '',
                 reportMsg: '',
-                // reportImg: '',
+                reportImg: '',
                 rules: {
                     required: v => !!v || 'This field is required'
                 },
@@ -270,11 +298,9 @@
                 })
             },
 
-            handleFileUpload(){
+            sendImg(){
                 this.contentImg = this.$refs.file.files[0];
-            // },
 
-            // sendImg(){
                 let filePhoto = new FormData();
                 filePhoto.append('content', this.contentImg);
 
@@ -295,17 +321,21 @@
                 })
             },
 
-            report(){
-                this.dialog_report = false
+            handleFileUpload(){
+                this.reportImg = this.$refs.fileM.files[0];
+            },
 
-                const fd = new FormData();
-                fd.append('image_url', this.selectedFile)
+            report(event){
+                this.dialog_report = false
+                
+                let data = new FormData();
+                data.append('image_url', this.reportImg);
                 
                 axios.post('/cerecall/report/'+this.chatRunning.id,{
                     student_id: this.studentInfo.student_id,
                     teacher_id: this.teacherInfo.teacher_id,
                     report: this.reportMsg,
-                    image_url: fd
+                    data
                 })
                 .then(response=>{
                     this.snackbar = true
@@ -314,11 +344,6 @@
                 .catch(error=>{
                     console.log(error.response)
                 })
-            },
-
-            previewFiles() {
-                this.files = this.$refs.myFiles.files[0]
-                console.log(this.files)
             },
 
             scrollBottom(){
@@ -330,10 +355,9 @@
             
         updated() {  
             var container = this.$el.querySelector("#box");
-            // this.cekTop = container.scrollTop
 
-            console.log(this.cekTop)
-            console.log(container.scrollTop)
+            // console.log("cek",this.cekTop)
+            // console.log("top",container.scrollTop)
 
             if(container.scrollTop < this.cekTop){
                 this.btScroll = true
@@ -356,12 +380,12 @@
                 this.chatRunning = response.data.data[0]
                 this.teacherInfo = response.data.data[0].teacher
                 this.studentInfo = response.data.data[0].student
-                // console.log(this.cekChat)
+                // console.log(this.chatRunning)
                 axios.get('/cerecall/chat/'+this.chatRunning.id)
                 .then(response => {
                     this.loadChat = false
                     this.chatItem = response.data.data
-                    console.log(this.chatItem)
+                    // console.log(this.chatItem)
                     setTimeout(() => (this.scrollBottom()), 0)
                 })
                 .catch(error => {
@@ -371,27 +395,6 @@
             .catch(error => {
                 console.log(error.response)
             })
-
-
-
-            // var OneSignal = require('onesignal-node'); 
-            // var myClient = new OneSignal.Client({      
-                //     userAuthKey: 'NjZjNGVkODMtODllZi00YzQzLWE1YzYtNGM0MTRlODY2NTc3',  
-            //     app: { appAuthKey: 'ZmNhY2QzNmMtNDZiZS00ODkyLTg4ZDktNWViNTc3NzBiYmE5', appId: '2d19fd0a-de81-4b9c-86dc-d85c34c10ca6' }      
-            // });  
-
-            // myClient.viewNotifications('limit=1', function (err, httpResponse, data) {      
-                //     if (httpResponse.statusCode === 200 && !err) {      
-                    //         // console.log(data);      
-            //     }      
-            // }); 
-            
-            // myClient.viewNotification('notificationId', function (err, httpResponse, data) {      
-                //     if (httpResponse.statusCode === 200 && !err) {      
-                    //         console.log(data);      
-            //     }      
-            // }); 
-
         },
     }
 </script>

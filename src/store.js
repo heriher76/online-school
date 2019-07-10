@@ -244,7 +244,7 @@ export default new Vuex.Store({
           device_id: credentials.device_id
         })
         .then(response => {
-          console.log(response.data)
+          // console.log(response.data)
           const token    = response.data.access_token
           const dataUser   = response.data.data.id
 
