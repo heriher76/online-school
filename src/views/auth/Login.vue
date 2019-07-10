@@ -172,20 +172,17 @@
         try {
           const OneSignal = window.OneSignal || []
           OneSignal.push(() => {
-            console.log('cek',OneSignal.isPushNotificationsEnabled())
-            OneSignal.isPushNotificationsEnabled(isEnabled => {
-
-              if (isEnabled) {
+            // OneSignal.isPushNotificationsEnabled(isEnabled => {
+            //   if (isEnabled) {
                 // user has subscribed
                 OneSignal.getUserId(userId => {
-                  // return userId
                   // console.log(`player_id of the subscribed user is : ${userId}`)
                   this.deviceId = userId
                   // console.log(this.deviceId)`
                   // Make a POST call to your server with the user ID
                 })
-              }
-            })
+            //   }
+            // })
           })
         } catch (exception) {
           console.log(exception)
