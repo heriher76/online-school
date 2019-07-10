@@ -184,11 +184,13 @@
 
 								    <label>Skor TKA</label>
 								    <v-text-field
-								    	v-for="lesson in listLesson"
+								    	v-for="(lesson,index) in listLesson"
+								    	v-model="tka[index]"
 								     	:counter="3"
 								     	:rules="nilaiRules"
 								     	:label="lesson.name"
 								     	required
+								     	@change="inputTka(index)"
 								    ></v-text-field>
 
 									<v-layout justify-end ma-4>
@@ -253,15 +255,7 @@
       tps2: '',
       tps3: '',
       tps4: '',
-      tka_saintek1: '',
-      tka_saintek2: '',
-      tka_saintek3: '',
-      tka_saintek4: '',
-      tka_soshum1: '',
-      tka_soshum2: '',
-      tka_soshum3: '',
-      tka_soshum4: '',
-      tka_soshum5: '',
+      tka: [],
       tipe: '',
       item_tipe: [
       	{value: 0, name: 'SBMPTN'},
@@ -314,7 +308,6 @@
             if(response.data.data.option1) {
             	this.option1_university_name = response.data.data.option1.university_name
             	this.option1_department_name = response.data.data.option1.department_id
-            	console.log(this.option1_university_name)
             	this.listUniversity.map((univ) => {
             	    if (univ.name == this.option1_university_name) {
             	        this.departmentUniversity1 = univ.department
@@ -441,27 +434,18 @@
     	},
     },
 	methods: {
+	  inputTka (index) {
+	  	console.log(index)
+	  	console.log(this.tka)
+	  	let test = this.tka
+	  	console.log(test[0])
+	  },
       validate () {
         if (this.$refs.form.validate()) {
 			this.snackbar = true
 			this.btn_load = true
-			this.points.push(Number(this.tps1))
-			this.points.push(Number(this.tps2))
-			this.points.push(Number(this.tps3))
-			this.points.push(Number(this.tps4))
+			this.points = this.tka
 
-			if(this.kelas == 'Saintek'){
-				this.points.push(Number(this.tka_saintek1))
-				this.points.push(Number(this.tka_saintek2))
-				this.points.push(Number(this.tka_saintek3))
-				this.points.push(Number(this.tka_saintek4))
-			}else if(this.kelas == 'Soshum'){
-				this.points.push(Number(this.tka_soshum1))
-				this.points.push(Number(this.tka_soshum2))
-				this.points.push(Number(this.tka_soshum3))
-				this.points.push(Number(this.tka_soshum4))
-				this.points.push(Number(this.tka_soshum5))
-			}
 			this.departments.push(this.option1_department_name)
 			this.departments.push(this.option2_department_name)
 			this.departments.push(this.option3_department_name)
