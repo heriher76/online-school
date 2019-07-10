@@ -182,76 +182,16 @@
 								     	required
 								    ></v-text-field>
 
-								    <div v-if="kelas == 'Saintek'">
-									    <label>Skor TKA Saintek</label>
-									    <v-text-field
-									     	v-model="tka_saintek1"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Matematika SAINTEK"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_saintek2"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Fisika"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_saintek3"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Kimia"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_saintek4"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Biologi"
-									     	required
-									    ></v-text-field>
-								    </div>
-
-								    <div v-if="kelas == 'Soshum'">
-									    <label>Skor TKA Soshum</label>
-									    <v-text-field
-									     	v-model="tka_soshum1"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Matematika SOSHUM"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_soshum2"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Geografi"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_soshum3"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Sejarah"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_soshum4"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Sosiologi"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_soshum5"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Ekonomi"
-									     	required
-									    ></v-text-field>
-								    </div>
+								    <label>Skor TKA</label>
+								    <v-text-field
+								    	v-for="(lesson,index) in listLesson"
+								    	v-model="tka[index]"
+								     	:counter="3"
+								     	:rules="nilaiRules"
+								     	:label="lesson.name"
+								     	required
+								     	@change="inputTka(index)"
+								    ></v-text-field>
 
 									<v-layout justify-end ma-4>
 									    <v-btn
@@ -310,19 +250,12 @@
       dataAnalysis: null,
       points: [],
       departments: [],
+      listLesson: [],
       tps1: '',
       tps2: '',
       tps3: '',
       tps4: '',
-      tka_saintek1: '',
-      tka_saintek2: '',
-      tka_saintek3: '',
-      tka_saintek4: '',
-      tka_soshum1: '',
-      tka_soshum2: '',
-      tka_soshum3: '',
-      tka_soshum4: '',
-      tka_soshum5: '',
+      tka: [],
       tipe: '',
       item_tipe: [
       	{value: 0, name: 'SBMPTN'},
@@ -375,7 +308,6 @@
             if(response.data.data.option1) {
             	this.option1_university_name = response.data.data.option1.university_name
             	this.option1_department_name = response.data.data.option1.department_id
-            	console.log(this.option1_university_name)
             	this.listUniversity.map((univ) => {
             	    if (univ.name == this.option1_university_name) {
             	        this.departmentUniversity1 = univ.department
@@ -444,6 +376,13 @@
     	},
     	kelas(newKelas) {
     		this.kelas = newKelas
+    		this.item_kelas.map(item => {
+    			console.log(item.name);
+    			if(item.name == this.kelas){
+    				this.listLesson = item.lessons
+    			}
+    		})
+    		console.log(this.listLesson)
     	},
     	listUniversity() {
     		this.listUniversity.map((univ) => {
@@ -495,27 +434,18 @@
     	},
     },
 	methods: {
+	  inputTka (index) {
+	  	console.log(index)
+	  	console.log(this.tka)
+	  	let test = this.tka
+	  	console.log(test[0])
+	  },
       validate () {
         if (this.$refs.form.validate()) {
 			this.snackbar = true
 			this.btn_load = true
-			this.points.push(Number(this.tps1))
-			this.points.push(Number(this.tps2))
-			this.points.push(Number(this.tps3))
-			this.points.push(Number(this.tps4))
+			this.points = this.tka
 
-			if(this.kelas == 'Saintek'){
-				this.points.push(Number(this.tka_saintek1))
-				this.points.push(Number(this.tka_saintek2))
-				this.points.push(Number(this.tka_saintek3))
-				this.points.push(Number(this.tka_saintek4))
-			}else if(this.kelas == 'Soshum'){
-				this.points.push(Number(this.tka_soshum1))
-				this.points.push(Number(this.tka_soshum2))
-				this.points.push(Number(this.tka_soshum3))
-				this.points.push(Number(this.tka_soshum4))
-				this.points.push(Number(this.tka_soshum5))
-			}
 			this.departments.push(this.option1_department_name)
 			this.departments.push(this.option2_department_name)
 			this.departments.push(this.option3_department_name)
