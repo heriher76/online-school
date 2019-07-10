@@ -182,76 +182,14 @@
 								     	required
 								    ></v-text-field>
 
-								    <div v-if="kelas == 'Saintek'">
-									    <label>Skor TKA Saintek</label>
-									    <v-text-field
-									     	v-model="tka_saintek1"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Matematika SAINTEK"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_saintek2"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Fisika"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_saintek3"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Kimia"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_saintek4"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Biologi"
-									     	required
-									    ></v-text-field>
-								    </div>
-
-								    <div v-if="kelas == 'Soshum'">
-									    <label>Skor TKA Soshum</label>
-									    <v-text-field
-									     	v-model="tka_soshum1"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Matematika SOSHUM"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_soshum2"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Geografi"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_soshum3"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Sejarah"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_soshum4"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Sosiologi"
-									     	required
-									    ></v-text-field>
-									    <v-text-field
-									     	v-model="tka_soshum5"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	label="Ekonomi"
-									     	required
-									    ></v-text-field>
-								    </div>
+								    <label>Skor TKA</label>
+								    <v-text-field
+								    	v-for="lesson in listLesson"
+								     	:counter="3"
+								     	:rules="nilaiRules"
+								     	:label="lesson.name"
+								     	required
+								    ></v-text-field>
 
 									<v-layout justify-end ma-4>
 									    <v-btn
@@ -310,6 +248,7 @@
       dataAnalysis: null,
       points: [],
       departments: [],
+      listLesson: [],
       tps1: '',
       tps2: '',
       tps3: '',
@@ -444,6 +383,13 @@
     	},
     	kelas(newKelas) {
     		this.kelas = newKelas
+    		this.item_kelas.map(item => {
+    			console.log(item.name);
+    			if(item.name == this.kelas){
+    				this.listLesson = item.lessons
+    			}
+    		})
+    		console.log(this.listLesson)
     	},
     	listUniversity() {
     		this.listUniversity.map((univ) => {
