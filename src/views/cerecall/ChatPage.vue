@@ -140,7 +140,7 @@
                         <div id="box" ref="msgDisplay">
                             <div v-for="(chat, index) in chatItem" :key="chat.id" class="box-chat">
                                 <span v-if="chat.sender==1" class="chat-siswa">
-                                    <v-img v-if="chat.is_image==1" @click.stop="dialog[index] = true" style="cursor:pointer" :src="chat.content" height="200px" width="260px">
+                                    <v-img v-if="chat.is_image==1" @click.stop="dialog[index] = true" style="cursor:pointer" :src="chat.content" height="180px" width="260px">
                                         <template v-slot:placeholder>
                                             <v-layout
                                                 fill-height
@@ -159,7 +159,7 @@
                                     <span style="font-size:9px;margin-left:10px;">{{moment(chat.created_at).format('hh:mm')}}</span>
                                 </span>
                                 <span v-if="chat.sender==2" class="chat-guru">
-                                    <v-img v-if="chat.is_image==1" @click.stop="dialog[index] = true" style="cursor:pointer" :src="chat.content" height="200px" width="260px">
+                                    <v-img v-if="chat.is_image==1" @click.stop="dialog[index] = true" style="cursor:pointer" :src="chat.content" height="180px" width="260px">
                                         <template v-slot:placeholder>
                                             <v-layout
                                                 fill-height
@@ -193,7 +193,7 @@
                     <div class="action_chat">
                         <input type="file" ref="file" style="display:none" @change="this.sendImg">
                         <button class="file-img" @click="$refs.file.click()"> <v-icon large color="red">insert_photo</v-icon> </button>
-                        <form @submit.prevent="sendMsg" @keyup.enter="sendMsg">
+                        <form @submit.prevent @keyup.enter="sendMsg">
                             <input class="msg" type="text" v-model="content" placeholder="Ketik pesan">
                         </form>
                         <button class="send" @click="sendMsg"><v-icon color="red">send</v-icon></button>

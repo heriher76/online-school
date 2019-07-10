@@ -89,6 +89,8 @@ export default {
             if(response.data.status == true){
               this.dialogRunning = true
               this.data = response.data.data
+
+              //tambah kondisi waktu berakhir
             }
             else if(response.data.status == false){
               this.dialogRunning = false
@@ -103,10 +105,17 @@ export default {
 
   },
 
+
   mounted(){  
     // if(this.$store.getters.loggedIn){
       this.toggleTimer()
     // }
-  },
+
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.setDefaultNotificationUrl("http://localhost:8080/cerecall/chat");
+    });
+
+  },  
 }
 </script>
