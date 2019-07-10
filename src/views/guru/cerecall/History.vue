@@ -55,8 +55,8 @@
 			                </v-data-table>
 			            </v-card>
 									<div v-for="data in dataHistoryChatRunningGuru.data">
-			                <v-btn color="success" @click="accept(data.student.student_id)">
-												Tampilkan Chat Aktif
+			                <v-btn color="red" class="white--text" @click="accept(data.id)">
+												Anda memiliki chat aktif, Klik untuk Lanjutkan Chat
 											</v-btn>
 									</div>
 			        </v-flex>

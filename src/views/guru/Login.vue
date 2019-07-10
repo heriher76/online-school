@@ -75,7 +75,7 @@
       return {
         loadLogin: false,
         btn_load: false,
-        
+        deviceId : '',
         checkbox: '',
 
         show_pass: false,
@@ -95,14 +95,33 @@
         }
       }
     },
-
-    methods:{
+    mounted(){
+      this.getOneSignalId()
+    },
+    methods:{ 
+      async getOneSignalId() {
+        try {
+          const OneSignal = window.OneSignal || []
+          OneSignal.push(() => {
+                // user has subscribed
+                OneSignal.getUserId(userId => {
+                  // return userId
+                  this.deviceId = userId
+                  // console.log(this.deviceId)
+                  // Make a POST call to your server with the user ID
+                })
+          })
+        } catch (exception) {
+          console.log(exception)
+        }
+      },
       login(){      
         this.btn_load = true
         this.loadLogin = true
         this.$store.dispatch('retrieveToken', {
           email: this.email,
-          password: this.password
+          password: this.password,
+          device_id: this.deviceId
         })
         .then(response => {
           this.btn_load = false
