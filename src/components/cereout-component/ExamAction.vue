@@ -6,13 +6,12 @@
                     <v-card>
                         <v-layout row wrap>
                             <v-flex md9 style="padding-top:22px;padding-left:35px;text-transform:capitalize">                        
-                               <h6 class="title">{{name}}</h6>
+                               <h6 class="title">{{detQuest.tryout_name}}</h6>
                             </v-flex>
                             <v-flex md3>             
                                 <!-- timer -->
                                 <div style="width:160px;float:right;">
                                     <h6 class="subheading" style="margin-top:7px;float:left">Durasi:&nbsp;</h6> 
-                                   
                                     <countdown v-show="StartTimer" :time="totalTime" :transform="transform">
                                         <template slot-scope="props">
                                             <div>
@@ -58,6 +57,15 @@
                 <v-flex md9>
                     <v-card style="padding:5px;">
                         <span style="margin:18px;font-size:18px"><b>Soal No. {{hal+1}}</b></span>
+                        <div v-if="scoringSystem==1" style="margin:0px 10px 0px 0px;font-size:16px;float:right">
+                            <span style="color:#757575"><b>Nilai Benar : <span style="color:#0091EA">{{detQuest.correct_score}}</span></b></span>
+                            <span style="margin:10px">|</span>
+                            <span style="color:#757575"><b>Nilai Salah : <span style="color:red">{{detQuest.incorrect_score}}</span></b></span>    
+                        </div>
+                        <div v-else-if="scoringSystem==2" style="margin:0px 10px 0px 0px;font-size:16px;float:right">
+                            <span style="color:#757575"><b>Bobot Soal: <span style="color:#8BC34A">{{detQuest.weight}}</span></b></span>
+                        </div>
+                        <div class="clear"></div>
                     </v-card>
                     <v-card style="min-height:347px">
                         <div style="position: absolute;top: 0;left: 0;width: 100%;height: 100%; overflow: auto">
@@ -71,6 +79,21 @@
                             </div>
                             <v-container>
                                 <p style="font-size:16px" v-html="quest"></p>
+
+                                <!-- <textarea v-model="formula" cols="30" rows="10"></textarea> -->
+                                <!-- <vue-mathjax :formula="cek"></vue-mathjax> -->
+
+                                <!-- <p>$$e^{i\pi} + 1 = 0$$</p>  -->
+
+                                <!-- <p style="font-size:16px" v-html="coba"></p> -->
+
+<!-- cek {{cek}} <br>
+la {{latex}} -->
+
+                                <!-- <input v-model="latex"/><br> -->
+                                <!-- <div :key="latex">{{latex}}</div> -->
+                                <!-- <div :key="latex">{{latex}}</div> -->
+   
                                 <div v-for="(n,key,index) in options" :key="n.index">
                                     <label v-if="n.option!=null">
                                         <input type="radio" style="float:left;margin:4px" :value="key" v-model="tmpanswer[hal]" name="opt">
@@ -102,19 +125,16 @@
                 </v-flex>
     
                 <v-flex md3>
-                    <v-card style="padding:15px;height:100%"> 
-                        <div style="min-height:90%;">
-                            <v-card style="padding:2px 5px">
-                                <b>Navigasi Soal</b>
-                            </v-card><br>
+                    <v-card style="height:424px;padding:15px"> 
+                        <v-card style="padding:2px 5px">
+                            <b>Navigasi Soal</b>
+                        </v-card><br>
+                        <div style="margin:-10px 0px 10px 0px;width:100%;height:55%;overflow:auto">
                             <a
                                 class="btn-num"
                                 v-for="(item, key, index) in questions" :key="item.id" 
                                 @click="viewQuestion(key)"
                             >  
-                                <!-- <span v-if="key+1 < 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 14.6px">{{key+1}}</span> 
-                                <span v-else-if="key+1 >= 10 && hal+1==key+1" style="background:#03A9F4;padding:10px 10.6px">{{key+1}}</span>  -->
-                                
                                 <!-- ditandai -->
                                 <span v-if="key+1 < 10 && markanswer[key]=='1'" style="background:orange;padding:10px 14.6px">{{key+1}} </span>       
                                 <span v-else-if="key+1 >= 10 && markanswer[key]=='1'" style="background:orange;padding:10px 10.6px">{{key+1}}</span>
@@ -128,71 +148,64 @@
                                 <span v-else-if="key+1 >= 10 && tmpanswer[key]!=null" style="background:#8BC34A;padding:10px 10.6px">{{key+1}}</span>  
                             </a>
                             <div class="clear"></div>
-                            
-                            <v-card style="padding:2px 5px">
-                                <b>Keterangan</b>
-                            </v-card>
-                            <v-layout>
-                                <v-flex md5>
-                                    <div><span style="width:15px;height:15px;background:#8BC34A; margin:2.6px; float:left"></span><span>Terjawab</span></div>
-                                    <div><span style="width:15px;height:15px;background:orange; margin:2.6px; float:left"></span><span>Ditandai</span></div>
-                                </v-flex>
-                                <v-flex md7>
-                                    <div><span style="width:15px;height:15px;background:#BDBDBD; margin:2.6px; float:left"></span><span>Belum Terjawab</span></div>
-                                    <!-- <div><span style="width:15px;height:15px;background:#03A9F4; margin:2.6px; float:left"></span><span>Aktif</span></div> -->
-                                </v-flex>
-                            </v-layout>          
-                        </div>     
+                        </div>
+
+                        <v-card style="padding:2px 5px">
+                            <b>Keterangan</b>
+                        </v-card>
+                        <v-layout>
+                            <v-flex md5>
+                                <div><span style="width:15px;height:15px;background:#8BC34A; margin:2.6px; float:left"></span><span>Terjawab</span></div>
+                                <div><span style="width:15px;height:15px;background:orange; margin:2.6px; float:left"></span><span>Ditandai</span></div>
+                            </v-flex>
+                            <v-flex md7>
+                                <div><span style="width:15px;height:15px;background:#BDBDBD; margin:2.6px; float:left"></span><span>Belum Terjawab</span></div>
+                            </v-flex>
+                        </v-layout>          
                         <v-divider></v-divider>
-                        <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn>                
-                        <!-- <v-btn block color="red" dark @click="submit">Akhiri</v-btn> -->
+                        <v-btn block color="red" dark v-on:click="alertDisplay">Akhiri</v-btn>     
                     </v-card>
                 </v-flex>
             </v-layout>
         </v-container>
         <LoadingScreen3 :loading="loadSubmit"></LoadingScreen3>
-        <!-- {{answer}} -->
+
     </div>
 </template>
 
-<script>
-    // import Timer from "../cereout-component/Timer"    
+<script>   
     import LoadingScreen3 from'../../components/loading-screen/Loading3'
     import axios from 'axios';
-    import { constants } from 'crypto';
 
     export default {
-        props:["name","cereoutId", "time", "attemptId"],
+        props:["cereoutId", "scoringSystem", "attemptId"],
 
         components:{
-            // Timer,
             LoadingScreen3
         },
         
         data () {
             return {
+                latex: '',
+                
+                load_data: true,
+
                 StartTimer: true,
                 EndTimer: false,
                 timeoutDialog:false,
 
-                cekDurasi: this.time * 60,
+                cekDurasi: 0,//this.time * 60, //konversi ke detik
                 timeUp: 0,
                 interval: null,
                 ////
 
-                loadSubmit: false,
-                // timer: null,
-                // totalTime: this.time * 60,//konversi ke detik
-
-                totalTime: this.time * 60000,//konversi ke milidetik
-
-                // timerShow: false,
-                load_data: true,
-
+                totalTime: 0,//this.time * 60000,//konversi ke milidetik
                 hal: 0,
+                detQuest: [],
                 questions: [],       
                 quest: "",
                 options: [],
+                loadSubmit: false,
 
                 myTime: '',
                 answer: [],
@@ -202,7 +215,14 @@
             }
         },
 
-        methods:{            
+        methods:{     
+            
+            reRender() {
+                if(window.MathJax) {
+                    console.log('rendering mathjax');
+                    window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub], () => console.log('done'));
+                }
+            },
             alertDisplay() {
                 this.$swal({
                     title: 'Apakah anda yakin?',
@@ -222,7 +242,7 @@
 
             //uncheck mark
             uncheck(val) {
-                this.tmpanswer[val] = false
+                this.tmpanswer[val] = null
             },
 
             submit() {
@@ -230,8 +250,7 @@
                 var ans = ''
                 var n = ''
                 
-                // this.myTime = (this.time - 5) / 60
-                this.myTime = this.timeUp
+                this.myTime = Math.round(this.timeUp / 60)
                 for(var i=0; i < this.questions.length; i++){
                     if(this.tmpanswer[i] == 0){
                         ans = 'A'
@@ -278,17 +297,23 @@
             },
 
             viewQuestion(index) {   
-                this.hal   = index 
-                this.quest = this.questions[index].question
+                this.hal     = index
+                this.detQuest= this.questions[index] 
+                this.quest   = this.questions[index].question
                 this.options = this.questions[index].option
+
+                this.latex = this.quest.replace(/(<span[^>]+>|<span>|<\/span>)/g, '$')
             },
 
             previous(hal){
                 if(hal > 0){
                     hal--
                     this.hal   = hal
-                    this.quest = this.questions[hal].question
-                    this.options = this.questions[hal].option
+                    this.detQuest  = this.questions[hal]
+                    this.quest     = this.questions[hal].question
+                    this.options   = this.questions[hal].option
+
+                    this.latex = this.quest.replace(/(<span[^>]+>|<span>|<\/span>)/g, '$')
                 }
             },
 
@@ -296,8 +321,11 @@
                 if(hal < this.questions.length-1){
                     hal++
                     this.hal   = hal
-                    this.quest = this.questions[hal].question
-                    this.options = this.questions[hal].option
+                    this.detQuest = this.questions[hal]
+                    this.quest    = this.questions[hal].question
+                    this.options  = this.questions[hal].option
+
+                    this.latex = this.quest.replace(/(<span[^>]+>|<span>|<\/span>)/g, '$')
                 }
             },
 
@@ -317,7 +345,6 @@
             incrementTime() {
                 this.timeUp = parseInt(this.timeUp) + 1;
 
-                // console.log(this.timeUp)
                 if(this.timeUp == this.cekDurasi){
                     clearInterval(this.interval);
                     this.StartTimer   = false
@@ -329,21 +356,35 @@
             
         },
 
+        watch: {
+            latex: function() {
+                console.log('data changed')
+                // this.reRender();
+                this.$nextTick().then(()=>{
+                    this.reRender();
+                });
+            }
+        },
+
         mounted(){
+            this.reRender();
+
             axios.get('/cereouts/question/' + this.cereoutId)
             .then(response => {
                 this.load_data = false
                 this.questions = response.data.data
                 
                 // this.startTimer()
-
+                this.detQuest  = this.questions[0]
                 this.quest     = this.questions[0].question
                 this.options   = this.questions[0].option;
                 
-                this.timerShow = true
-                // this.totalTime = this.time * 60000
+                this.latex     = this.quest.replace(/(<span[^>]+>|<span>|<\/span>)/g, '$')
+
+                this.cekDurasi = this.detQuest.duration * 60
+                this.totalTime = this.detQuest.duration * 60000
+
                 this.toggleTimer() //aktifkan countUp
-                // console.log(response.data)
             })
             .catch(error =>{
                 console.log(error.response)

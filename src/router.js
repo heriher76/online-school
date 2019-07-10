@@ -189,7 +189,7 @@ export default new Router({
     },
 
     {
-      path: "/cereout/exams/start/:id/:name/:durasi/:attemptId",
+      path: "/cereout/exams/start/:id/:scoringSystem/:attemptId",
       name: 'exam_page',
       meta: {layout: "exam"},
       component: () => import("./views/cereout/exams/ExamPage.vue"),
@@ -239,6 +239,16 @@ export default new Router({
       }
     },
 
+    {
+      path: "/cereout/hubungi kami",
+      name: 'hubungi_kami',
+      component: () => import("./views/cereout/HubungiKami.vue"),
+      props: true,
+      meta: {
+        requiresAuth: true
+      }
+    },
+
     // -----------------------------cerecall-----------------------------
     {
       path: "/cerecall",
@@ -264,11 +274,44 @@ export default new Router({
     },
 
     {
-      path: "/cerecall/chat/:guruId",
+      path: "/cerecall/chat",
       name: 'cerecall_chat',
       component: () => import("./views/cerecall/ChatPage.vue")
     },
 
+    // -----------------------------cerefo-----------------------------
+    {
+      path: "/cerefo",
+      name: 'cerefo',
+      component: () => import("./views/cerefo/Index.vue")
+    },
+
+    {
+      path: "/cerefo/detail-postingan/:id",
+      name: 'cerefo_detail_post',
+      component: () => import("./views/cerefo/DetailPost.vue")
+    },
+
+    // -----------------------------cerejur-----------------------------
+    {
+      path: "/cerejur",
+      name: 'cerejur',
+      component: () => import("./views/cerejur/Index.vue")
+    },
+
+    {
+      path: "/cerejur/detail-universitas",
+      name: 'cerejur_detail_universitas',
+      props: true,
+      component: () => import("./views/cerejur/DetailUniversitas.vue")
+    },
+
+    {
+      path: "/cerejur/detail-universitas/detail-jurusan",
+      name: 'cerejur_detail_jurusan',
+      props: true,
+      component: () => import("./views/cerejur/DetailJurusan.vue")
+    },
 
     // -----------------------------cerevid-----------------------------
     {
@@ -376,7 +419,7 @@ export default new Router({
       component: () => import("./views/guru/cerecall/History.vue")
     },
     {
-      path: "/guru/cerecall/chat",
+      path: "/guru/cerecall/chat/:id",
       name: 'chat_guru',
       meta: {layout: "guru"},
       component: () => import("./views/guru/cerecall/ChatPage.vue")

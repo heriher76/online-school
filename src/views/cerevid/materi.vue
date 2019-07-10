@@ -4,7 +4,7 @@
     <v-container fluid v-if="dataDetailMateri.data">
       <v-layout row wrap>
         <v-flex xs12 sm12 md8>
-          <v-card-text style="padding-top: 0">
+          <v-card-text>
             <div v-if="tipeMateri == 'video'">
               <materiVideo :datas="dataDetailMateri.data" />
             </div>
@@ -30,6 +30,7 @@
             </div>
           </v-card-text>
         </v-flex>
+        <br/>
         <v-flex xs12 sm12 md4>
           <v-toolbar color="#34495e" dark flat>
             <v-list-tile>
@@ -40,22 +41,26 @@
 
             <div style="position: absolute;top: 0;left: 0;width: 100%;height: 100%; overflow:auto">
                   <v-expansion-panel expand v-model="panel">
-                    <v-expansion-panel-content v-for="(item, index) in dataDetailMateri.data">
-                      <template v-slot:header>
+                    <v-expansion-panel-content v-for="(item, index) in dataDetailMateri.data"  style="background-color: #eee;color: rgba(0,0,0,0.87);">
+                      <template v-slot:header >
                         <div>
                           {{index+1}}. {{ item.title }}
                         </div>
                       </template>
+                      <v-card>
                       <v-divider></v-divider>
                       <div v-for="materi in item.videos">
                         <v-list-tile avatar @click="tipeMateri = 'video'" :href="'#1-'+item.id+'-'+materi.id">
                           <v-list-tile-avatar>
                             <v-icon>videocam</v-icon>
                           </v-list-tile-avatar>
-
                           <v-list-tile-content>
-                            <v-list-tile-title v-html="materi.title"></v-list-tile-title>
-                            <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
+                                <v-tooltip bottom>
+                                  <template v-slot:activator="{ on }">
+                                    <span v-on="on"><v-list-tile-title v-html="materi.title"></v-list-tile-title></span>
+                                  </template>
+                                  <span>{{materi.title}}</span>
+                                </v-tooltip>
                           </v-list-tile-content>
 
                           <v-spacer></v-spacer>
@@ -73,8 +78,12 @@
                           </v-list-tile-avatar>
 
                           <v-list-tile-content>
-                            <v-list-tile-title v-html="materi.title"></v-list-tile-title>
-                            <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
+                                <v-tooltip bottom>
+                                  <template v-slot:activator="{ on }">
+                                    <span v-on="on"><v-list-tile-title v-html="materi.title"></v-list-tile-title></span>
+                                  </template>
+                                  <span>{{materi.title}}</span>
+                                </v-tooltip>
                           </v-list-tile-content>
 
                           <v-spacer></v-spacer>
@@ -92,8 +101,12 @@
                           </v-list-tile-avatar>
 
                           <v-list-tile-content>
-                            <v-list-tile-title v-html="materi.title"></v-list-tile-title>
-                            <v-list-tile-sub-title v-html="materi.subtitle"></v-list-tile-sub-title>
+                                <v-tooltip bottom>
+                                  <template v-slot:activator="{ on }">
+                                    <span v-on="on"><v-list-tile-title v-html="materi.title"></v-list-tile-title></span>
+                                  </template>
+                                  <span>{{materi.title}}</span>
+                                </v-tooltip>
                           </v-list-tile-content>
 
                           <v-spacer></v-spacer>
@@ -104,6 +117,7 @@
                           </div>
                         </v-list-tile>
                       </div>
+                      </v-card>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
             </div>
@@ -142,11 +156,13 @@
               <v-tab-item :value="'forum-diskusi'">
                 <v-card>
                   <v-container>
-                    <v-flex>
+                    <v-layout>
+                    <v-flex md12 sm12 xs12>
                       <v-list three-line>
                         <template v-for="item in dataDetailForum.data">
                           <v-list-tile>
-                            <v-list-tile-content>
+                            <v-list-tile-content style="overflow-x:auto">
+                              <v-card flat>
                               <v-list-tile-title v-html="item.user" class="ml-3"></v-list-tile-title>
                               <v-tooltip bottom>
                                 <template v-slot:activator="{ on }">
@@ -156,6 +172,7 @@
                                 </template>
                                 <span>{{item.body}}</span>
                               </v-tooltip>
+                            </v-card>
                             </v-list-tile-content>
                             <v-list-tile-action>
                               <v-list-tile-action-text>
@@ -170,8 +187,9 @@
                             <div v-for="comments in item.comments">
                               <v-divider class="ml-4"></v-divider>
                               <v-list-tile class="ml-4">
-                                <v-list-tile-content>
-                                  <v-list-tile-title v-html="comments.user" class="ml-3"></v-list-tile-title>
+                                <v-list-tile-content style="overflow-x:auto">
+                                  <v-card flat>
+                                    <v-list-tile-title v-html="comments.user" class="ml-3"></v-list-tile-title>
                                     <v-tooltip bottom>
                                       <template v-slot:activator="{ on }">
                                         <span v-on="on">
@@ -180,6 +198,7 @@
                                       </template>
                                       <span>{{comments.body}}</span>
                                     </v-tooltip>
+                                  </v-card>
                                 </v-list-tile-content>
                                 <v-list-tile-action>
                                   <v-list-tile-action-text>
@@ -214,6 +233,7 @@
                       <v-layout class="justify-center">
                       </v-layout>
                     </v-flex>
+                  </v-layout>
                   </v-container>
                 </v-card>
               </v-tab-item>
@@ -248,6 +268,7 @@ export default {
       forumId: null,
       panel: [],
       load: true,
+      ketemu: false
     }
   },
   methods: {
@@ -330,12 +351,23 @@ export default {
       }
       return this.$store.state.dataDetailMateri || {}
     },
+    dataPelajaranbyUser(){
+      return this.$store.state.dataPelajaranbyUser || {}
+    },
     dataDetailForum() {
       return this.$store.state.dataDetailForum || {}
     },
     userId() {
       return this.$store.state.dataUser || {}
     },
+    courseId() {
+      return this.$route.params.id || {}
+    },
   },
 }
 </script>
+<style>
+.theme--light.v-expansion-panel .v-expansion-panel__container .v-expansion-panel__header .v-expansion-panel__header__icon .v-icon{
+  color:rgb(0,0,0,0.87);
+}
+</style>

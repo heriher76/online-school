@@ -75,7 +75,10 @@
                             <v-list-tile>
                                 <v-list-tile-content>
                                 <v-list-tile-title>Sistem Penilaian</v-list-tile-title>
-                                <v-list-tile-sub-title>{{detail.scoring_system}}</v-list-tile-sub-title>
+                                <v-list-tile-sub-title>
+                                  <span v-if="detail.scoring_system==1">Penilaian Lama</span>
+                                  <span v-else-if="detail.scoring_system==2">Penilaian IRT (Item Response Theory)</span>
+                                </v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                             <!-- <v-list-tile>
@@ -93,7 +96,7 @@
                   Coba Sekarang
                   <v-icon right dark>launch</v-icon>
                 </v-btn>
-                <v-btn @click="$router.go(-1)">Cancel</v-btn>
+                <v-btn @click="$router.go(-1)">Batal</v-btn>
 
                 <!-- loading -->
                 <v-dialog v-model="loading" hide-overlay persistent width="400">
@@ -164,7 +167,7 @@
           
             if(response.data.status == true){ //cek user member atau bukan
               this.$router.push({name: 'dashboard'})
-              let routeData = this.$router.resolve({name: 'exam_page', params:{id:data.id, name: data.name, durasi:data.duration, attemptId:response.data.data.id}});
+              let routeData = this.$router.resolve({name: 'exam_page', params:{id:data.id, scoringSystem: data.scoring_system, attemptId:response.data.data.id}});
               window.open(routeData.href,
                           'my_window', 
                           'width=1600, height=620, resizable=no',

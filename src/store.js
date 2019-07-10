@@ -12,6 +12,7 @@ export default new Vuex.Store({
     token: localStorage.getItem('access_token') || null, //get token,
     dataUser : localStorage.getItem('getDataUser') || null,
     classId : localStorage.getItem('getDataClassId') || null,
+    status : localStorage.getItem('getStatus') || null,
     info: [],
     dataClass: [],
     dataPelajaran: [],
@@ -25,6 +26,9 @@ export default new Vuex.Store({
     dataText: [],
     dataQuiz: [],
     dataDetailForum: [],
+    dataHistoryChatGuru: [],
+    dataHistoryChatRunningGuru: [],
+    dataChatGuru: [],
   },
 
   getters: {
@@ -42,6 +46,10 @@ export default new Vuex.Store({
       state.classId = classId
     },
 
+    retrieveStatus(state,status){
+      state.status = status
+    },
+
     retrieveDataUser(state,dataUser){
       state.dataUser = dataUser
     },
@@ -54,6 +62,10 @@ export default new Vuex.Store({
       state.classId = null
     },
 
+    destroyStatus(state) {
+      state.status = null
+    },
+
     destroydataUser(state) {
       state.dataUser = null
     },
@@ -62,6 +74,7 @@ export default new Vuex.Store({
     getInformation(state, info){
       state.info = info
     },
+
 //------------------------------------------cerevid---------------------------------------------
     getDataPelajaran(state, dataPelajaran){
       state.dataPelajaran = dataPelajaran
@@ -131,7 +144,17 @@ export default new Vuex.Store({
 
     pushDataDetailForum(state, dataForum){
       state.dataDetailForum.data.push(dataForum.data)
-    }
+    },
+    //----------------------------------Cerecall Guru--------------------------------------------
+    getDataHistoryChatGuru(state, dataHistoryChatGuru){
+      state.dataHistoryChatGuru = dataHistoryChatGuru
+    },
+    getDataHistoryChatRunningGuru(state, dataHistoryChatRunningGuru){
+      state.dataHistoryChatRunningGuru = dataHistoryChatRunningGuru
+    },
+    getDataChatGuru(state, dataChatGuru){
+      state.dataChatGuru = dataChatGuru
+    },
 
   },
 
@@ -147,7 +170,7 @@ export default new Vuex.Store({
           password_confirmation: r.password_confirmation
         })
         .then(response => {
-          console.log(response.data)
+          // console.log(response.data)
           resolve(response)
         })
         .catch(error => {
@@ -161,9 +184,11 @@ export default new Vuex.Store({
     cekAuth(context){
       axios.get('/auth/user')
       .then(response => {
+        // console.log(response)
         // console.log("auth", response.data.data.class.class_id)
         const dataUser   = response.data.data.id
         const cekClassId = response.data.data.class
+        const status = response.data.data.status
 
         if(cekClassId != null){
           const classId  = response.data.data.class.class_id
@@ -177,6 +202,9 @@ export default new Vuex.Store({
 
         localStorage.setItem('getDataUser', dataUser)
         context.commit('retrieveDataUser', dataUser)
+
+        localStorage.setItem('getStatus', status)
+        context.commit('retrieveStatus', status)
       })
       .catch(error=>{
       })
@@ -191,18 +219,19 @@ export default new Vuex.Store({
         context.commit('retrieveToken', token)
       })
       .catch(error => {
-      })  
+      })
     },
 
-    //login function
+    //login google function
     retrieveTokenGoogle(context, data){
       axios.get('/login/google?token='+data.token)
       .then(response => {
-        const token    = response.data.access_token
+        const token = response.data.access_token
         localStorage.setItem('access_token', token)
         context.commit('retrieveToken', token)
       })
       .catch(error => {
+        console.log(error.response);
       })
     },
 
@@ -211,20 +240,20 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios.post('/auth/login',{
           email: credentials.email,
-          password: credentials.password
+          password: credentials.password,
+          device_id: credentials.device_id
         })
         .then(response => {
-          const token    = response.data.access_token
-          // const dataUser = response.data.data.id
-          // const classId  = response.data.data.class_id
-          localStorage.setItem('access_token', token)
-          // localStorage.setItem('getDataUser', dataUser)
-          // localStorage.setItem('getDataClassId', classId)
-          context.commit('retrieveToken', token)
-          // context.commit('retrieveDataUser', dataUser)
-          // context.commit('retrieveClassId', classId)
-          resolve(response)
           // console.log(response.data)
+          const token    = response.data.access_token
+          const dataUser   = response.data.data.id
+
+          localStorage.setItem('access_token', token)
+          context.commit('retrieveToken', token)
+
+          localStorage.setItem('getDataUser', dataUser)
+          context.commit('retrieveDataUser', dataUser)
+          resolve(response)
         })
         .catch(error => {
           console.log(error)
@@ -243,22 +272,26 @@ export default new Vuex.Store({
         // return new Promise((resolve, reject) => {
           axios.get('/auth/logout')
           .then(response => {
-            localStorage.removeItem('getDataUser')
             localStorage.removeItem('access_token')
+            localStorage.removeItem('getDataUser')
             localStorage.removeItem('getDataClassId')
+            localStorage.removeItem('getStatus')
             context.commit('destroyDataClassId')
             context.commit('destroyToken')
             context.commit('destroydataUser')
+            context.commit('destroyStatus')
             // resolve(response)
             // console.log(response.data)
           })
           .catch(error => {
-            localStorage.removeItem('getDataUser')
             localStorage.removeItem('access_token')
+            localStorage.removeItem('getDataUser')
             localStorage.removeItem('getDataClassId')
+            localStorage.removeItem('getStatus')
             context.commit('destroyDataClassId')
             context.commit('destroyToken')
             context.commit('destroydataUser')
+            context.commit('destroyStatus')
             // reject(error)
           })
         // })
@@ -337,6 +370,7 @@ export default new Vuex.Store({
     },
 
     getDataPelajaranbyTeacher(context){
+      // console.log(this.state.dataUser)
       axios.defaults.headers = {
         'Authorization': 'Bearer ' + context.state.token
       }
@@ -619,6 +653,7 @@ export default new Vuex.Store({
         })
       })
     },
+
 //----------------------------------------------------------------------------------------------------------
     // -----------------------------SISWA
     // get profile
@@ -648,7 +683,11 @@ export default new Vuex.Store({
             birth_date: credentials.birth_date,
             parrent_name: credentials.parrent_name,
             parrent_phone: credentials.parrent_phone,
-            address: credentials.address
+            address: credentials.address,
+            class_id: credentials.class_id,
+            option1: credentials.option1,
+            option2: credentials.option2,
+            option3: credentials.option3,
           }
           // return new Promise((resolve, reject) => {
           axios.defaults.headers = {
@@ -685,7 +724,6 @@ export default new Vuex.Store({
           }
           axios.put('/auth/teacher/'+this.state.dataUser, data)
           .then(response => {
-
             console.log(response.data)
           })
           .catch(error => {
@@ -694,6 +732,43 @@ export default new Vuex.Store({
           })
         // })
       }
+    },
+//-----------------------------------cerecall guru---------------------------------------
+    getHistoryChatGuru(context){
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
+      }
+      axios.get('/cerecall/teacher/history')
+      .then(response => {
+        context.commit('getDataHistoryChatGuru', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    getHistoryChatRunningGuru(context){
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
+      }
+      axios.get('/cerecall/teacher/history/running')
+      .then(response => {
+        context.commit('getDataHistoryChatRunningGuru', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    getChatGuru(context,data){
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
+      }
+      axios.get('/cerecall/chat/'+data.id)
+      .then(response => {
+        context.commit('getDataChatGuru', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
   }
 });

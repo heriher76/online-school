@@ -25,11 +25,11 @@
                         <div v-if="cekFavorit(props.item.id)">
                           <div v-for="fav in dataFavoritbyUser.data">
                             <div v-if="fav.course.course_id==props.item.id">
-                            <v-btn fab dark small color="pink" style="opacity:0.85;" @click="hapusFavorit(fav.id)">
-                              <v-icon dark >favorite</v-icon>
-                            </v-btn>
+                              <v-btn fab dark small color="pink" style="opacity:0.85;" @click="hapusFavorit(fav.id)">
+                                <v-icon dark >favorite</v-icon>
+                              </v-btn>
+                            </div>
                           </div>
-                        </div>
                         </div>
                         <div v-else>
                             <v-btn fab dark small style="opacity:0.85;" @click="simpanFavorit(props.item.id)">

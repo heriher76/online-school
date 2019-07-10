@@ -13,7 +13,7 @@
                 <!-- /sidebar -->
                 
                 <!-- results -->
-                <v-flex md9 sm12 xs12>
+                <v-flex md9 sm12 xs12 style="min-height:300px">
                     <v-card color="#B71C1C">
                         <div style="float:left; margin-top:9px">
                             <v-btn color="white" @click="$router.go(-1)" icon small >

@@ -45,7 +45,7 @@
                     </v-list-tile-content>
                 </v-list-tile>
 
-                <v-list-tile to="">
+                <v-list-tile to="/cereout/hubungi kami">
                     <v-list-tile-action>
                     <v-icon>phone</v-icon>
                     </v-list-tile-action>

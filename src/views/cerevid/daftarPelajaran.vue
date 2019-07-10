@@ -21,12 +21,14 @@
       <v-data-iterator
 				:items="dataPelajaranbyUser.data"
 				:rows-per-page-items="rowsPerPageItems"
+        :pagination.sync="pagination"
 				content-class="layout row wrap"
 				:expand="expand"
         :search="search"
         :custom-filter="filterSearch"
 				no-data-text="Pelajaran tidak tersedia"
 				no-results-text="Pelajaran tidak ditemukan"
+        :hide-actions="true"
 				>
         <template v-slot:item="props">
           <v-flex xs12 sm6 md3>
@@ -112,6 +114,23 @@
           </v-flex>
         </template>
       </v-data-iterator>
+      <v-layout row wrap>
+        <v-flex class="mt-4" offset-md10 offset-sm8 md2 sm4 xs12 style="text-align:right">
+          <v-select
+            :items="rowsPerPageItems"
+            label="Tampil Data per Halaman"
+            v-model="pagination.rowsPerPage"
+            outline
+          ></v-select>
+        </v-flex>
+      </v-layout>
+      <div class="text-xs-center">
+        <v-pagination
+          v-model="pagination.page"
+          :length="parseInt(Math.ceil(pagination.totalItems/pagination.rowsPerPage)) || 1"
+          :total-visible="5"
+        ></v-pagination>
+      </div>
     </v-container>
   </v-container>
   <!-- end scontent -->
@@ -125,10 +144,16 @@ export default {
     subNavbar,
   },
   data: () => ({
-    expand: true,
-    rowsPerPageItems: [4],
     progress: [],
-		search: '',
+    expand: true,
+    pagination: {
+      rowsPerPage: 8,
+      totalItems: 0,
+      page: 1
+    },
+    search: '',
+    rowsPerPageItems: [4,8,12],
+    isiAwal: true
   }),
   methods: {
 		filterSearch(items, search, filter){
@@ -181,6 +206,10 @@ export default {
   },
   computed: {
     dataPelajaranbyUser() {
+      if(this.$store.state.dataPelajaranbyUser.data && this.isiAwal){
+        this.pagination.totalItems = this.$store.state.dataPelajaranbyUser.data.length
+        this.isiAwal = false
+      }
       return this.$store.state.dataPelajaranbyUser || {}
     },
     dataFavoritbyUser() {

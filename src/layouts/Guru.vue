@@ -175,7 +175,8 @@
         loadLogout: false,
         menu: false,
         user: [],
-        userPhoto: ''
+        userPhoto: '',
+        cekStatus: ''
       }
     },
 
@@ -187,13 +188,19 @@
     },
 
     created() {
+      this.incrementTime()
       const loggedIn = this.$store.getters.loggedIn
+      const status = this.$store.state.status
       if (!loggedIn) {
           this.$router.push({path:'/guru/login'})
       }
+      // if (loggedIn && status != 1) {
+      //     this.$router.push({path:'/'})
+      // }
     },
 
     mounted(){      
+
       axios.get('/auth/user')
       .then(response => {
         this.user = response.data.data
@@ -202,7 +209,7 @@
         console.log(error)
       })
 
-      axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
+      axios.get('https://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
       .then(response => {
           // let imageNode = document.getElementById('myprofile');
           let imgUrl     = URL.createObjectURL(response.data)
@@ -213,11 +220,26 @@
       })
     },
     methods: {
+      incrementTime() {
+        this.time = parseInt(this.time) + 1;
+
+        axios.get('/auth/user')
+        .then(response => {
+          console.log(response.data.data)
+          this.cekStatus = response.data.data.role
+          if(this.cekStatus == 2){
+            return this.$router.push({name:'home'})
+          }
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+      },
       linkDashboard(){
         return this.$router.push({path:'/guru'})
       },
       linkPusatBantuan(){
-        return this.$router.push({path:'/guru/pusat-bantuan'})
+        return this.$router.push({path:'/pusat bantuan'})
       },
       linkCerevid(){
         return this.$router.push({path:'/guru/cerevid'})

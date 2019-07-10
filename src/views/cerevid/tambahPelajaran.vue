@@ -122,11 +122,13 @@
           }
           axios.post('http://api.ceredinas.id/api/courses/create', data)
           .then(response => {
+            console.log(response)
             this.btn_load = false;
             this.$swal('Sukses', 'Berhasil Menambah Pelajaran!', 'success')
             this.$router.push({path:'/guru/cerevid/daftar-pelajaran'})
           })
           .catch(error => {
+            console.log(error)
             this.btn_load = false;
             this.$swal('Oops', 'Gagal Menambah Pelajaran!', 'warning')
           })

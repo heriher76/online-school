@@ -15,7 +15,9 @@
         <v-btn v-if="loggedIn" flat @click="linkCereout" active-class="false">Cereout</v-btn>
         <v-btn v-if="loggedIn" flat @click="linkCerelisasi" active-class="false">Cerelisasi</v-btn>
         <v-btn v-if="loggedIn" flat @click="linkCerecall" active-class="false">Cerecall</v-btn>
-        <v-btn flat @click="linkTentang" active-class="false">Tentang</v-btn>
+        <v-btn v-if="loggedIn" flat @click="linkCerejur" active-class="false">Cerejur</v-btn>
+        <v-btn v-if="loggedIn" flat @click="linkCerefo" active-class="false">Cerefo</v-btn>
+        <v-btn v-if="!loggedIn" flat @click="linkTentang" active-class="false">Tentang</v-btn>
       </v-toolbar-items>
 
       <v-spacer></v-spacer>
@@ -59,7 +61,112 @@
       <!-- /header action responsive -->
 
       <!-- header actions -->
-      <div v-if="loggedIn" class="nav-action hidden-sm-and-down">
+      <div v-if="loggedIn" class="hidden-sm-and-down">
+        <div class="hidden-lg-and-up">
+          <v-menu
+            v-model="menuDrop"
+            :close-on-content-click="false"
+            :nudge-width="200"
+            offset-x
+          >
+          <template v-slot:activator="{ on }">
+            <a v-on="on">
+            <v-icon>list</v-icon><v-icon>arrow_drop_down</v-icon>
+            </a>
+          </template>
+              <v-card height="130px" style="padding-top:25px">
+                <v-list>
+                  <v-list-tile avatar>
+                    <v-list-tile-avatar>
+                      <img v-if="user.photo_url!=null" :src="user.photo_url">
+                    </v-list-tile-avatar>
+
+                    <v-list-tile-content style="height:100px;">
+                      <v-list-tile-title @click="linkAkun">{{user.name}}
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                              <a @click="linkAkun">
+                              <v-icon color="blue" v-on="on">edit</v-icon>
+                              </a>
+                          </template>
+                          <span>Akun Saya</span>
+                        </v-tooltip>
+                      </v-list-tile-title>
+
+                      <v-list-tile-sub-title>{{user.email}}</v-list-tile-sub-title>
+                    
+                      <v-list-tile-sub-title>
+                        <a style="color:red" flat @click="linkLogout">Keluar</a>
+                        <div style="float:right;">
+                          <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                              <router-link to="/cerevid/daftar-pelajaran">
+                              <v-icon color="blue" v-on="on">book</v-icon>
+                              </router-link>
+                          </template>
+                          <span>Pelajaran saya di Cerevid</span>
+                          </v-tooltip>
+                          
+                          <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                              <router-link to="/cerevid/favorit">
+                              <v-icon color="pink" v-on="on">favorite</v-icon>
+                              </router-link>
+                          </template>
+                          <span>Pelajaran Favorit di Cerevid</span>
+                          </v-tooltip>
+
+                          <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                            <router-link v-if="chatRun==0" to="">
+                            <v-icon color="#F44336" v-on="on">email</v-icon>
+                            </router-link>
+                            <router-link v-else :to="{name: 'cerecall_chat'}">
+                              <!-- {{cekChat.id}} -->
+                              <v-icon color="#F44336" v-on="on">email</v-icon>
+                              <span style="margin-left:-9px;top:12px;border-radius:100%;position:absolute;background:orange">
+                                <v-icon dark small>
+                                  notifications
+                                </v-icon>
+                              </span>
+                            </router-link>
+                          </template>
+                          <span>Cerecall Masuk</span>
+                          </v-tooltip>
+
+
+                        </div>  
+                      </v-list-tile-sub-title>
+
+                      <v-list-tile-sub-title>
+                        <div class="nav-bal">
+                            <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <router-link v-if="cekMember=='0'" to="/membership">
+                                <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                                </router-link>
+                                <router-link v-else-if="cekMember=='1'" to="/my poin">
+                                <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                                </router-link>
+                            </template>
+                            <span>Top up</span>
+                            </v-tooltip>
+
+                            <b>Cerecoin : {{user.balance}} </b>
+
+                            <div class="clear"></div>
+                        </div>
+                      </v-list-tile-sub-title>
+
+                    </v-list-tile-content>
+                  </v-list-tile>
+                </v-list>
+              </v-card>
+          </v-menu>
+        </div>
+      </div>
+      
+      <div v-if="loggedIn" class="nav-action hidden-md-and-down">
         <div class="nav-bal">
             <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -101,9 +208,18 @@
 
             <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-                <router-link to="">
+              <router-link v-if="chatRun==0" to="">
+              <v-icon color="#F44336" v-on="on">email</v-icon>
+              </router-link>
+              <router-link v-else :to="{name: 'cerecall_chat'}">
+                <!-- {{cekChat.id}} -->
                 <v-icon color="#F44336" v-on="on">email</v-icon>
-                </router-link>
+                <span style="margin-left:-9px;top:40px;border-radius:100%;position:absolute;background:orange">
+                  <v-icon dark small>
+                    notifications
+                  </v-icon>
+                </span>
+              </router-link>
             </template>
             <span>Cerecall Masuk</span>
             </v-tooltip>
@@ -203,9 +319,18 @@
 
                   <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
-                      <router-link to="">
+                    <router-link v-if="chatRun==0" to="">
+                    <v-icon color="#F44336" v-on="on">email</v-icon>
+                    </router-link>
+                    <router-link v-else :to="{name: 'cerecall_chat'}">
+                      <!-- {{cekChat.id}} -->
                       <v-icon color="#F44336" v-on="on">email</v-icon>
-                      </router-link>
+                      <span style="margin-left:-9px;top:12px;border-radius:100%;position:absolute;background:orange">
+                        <v-icon dark small>
+                          notifications
+                        </v-icon>
+                      </span>
+                    </router-link>
                   </template>
                   <span>Cerecall Masuk</span>
                   </v-tooltip>
@@ -216,17 +341,20 @@
                 <div class="nav-bal">
                     <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
-                        <router-link v-if="cekMember=='0'" to="/membership">
-                        <v-icon style="margin:-2px" v-on="on">add</v-icon>
-                        </router-link>
-                        <router-link v-else-if="cekMember=='1'" to="/my poin">
-                        <v-icon style="margin:-2px" v-on="on">add</v-icon>
-                        </router-link>
+                      <router-link v-if="user.class==null" :to="{name: 'my_account', params:{snackb: 'true'}}">
+                      <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                      </router-link>
+                      <router-link v-else-if="cekMember=='0'" to="/membership">
+                      <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                      </router-link>
+                      <router-link v-else-if="cekMember=='1'" to="/my poin">
+                      <v-icon style="margin:-2px" v-on="on">add</v-icon>
+                      </router-link>
                     </template>
                     <span>Top up</span>
                     </v-tooltip>
 
-                    <b>Poin : {{user.balance}} </b>
+                    <b>Cerecoin : {{user.balance}} </b>
 
                     <div class="clear"></div>
                 </div>
@@ -276,6 +404,18 @@
               <v-list-tile-title>CERECALL</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
+
+          <v-list-tile @click="linkCerejur">
+            <v-list-tile-content>
+              <v-list-tile-title>CEREJUR</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
+          <v-list-tile @click="linkCerefo">
+            <v-list-tile-content>
+              <v-list-tile-title>CEREFO</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
         </div>
 
         <v-list-tile @click="linkTentang">
@@ -304,6 +444,10 @@ export default {
   },
   data() {
     return {
+      chatRun: [],
+      cekChat: [],
+
+      menuDrop:false,
       bt_src:true,
       src: false,
       drawer: false,
@@ -312,7 +456,7 @@ export default {
       menuRespn: false,
       user: [],
       userPhoto: '',
-      cekMember:[]
+      cekMember:[],
     }
   },
 
@@ -320,6 +464,20 @@ export default {
     loggedIn: function(){
       this.menu = false
       return this.$store.getters.loggedIn
+    }
+  },
+
+  updated(){
+    if(this.$store.getters.loggedIn){
+      axios.get('/cerecall/student/history/running')
+      .then(response => {
+        this.chatRun = response.data.data
+        this.cekChat = response.data.data[0]
+        // console.log(this.cekChat)
+      })
+      .catch(error => {
+        console.log(error.response)
+      })
     }
   },
 
@@ -332,6 +490,15 @@ export default {
       })
       .catch(error => {
         console.log(error)
+      })
+      axios.get('/cerecall/student/history/running')
+      .then(response => {
+        this.chatRun = response.data.data
+        this.cekChat = response.data.data[0]
+        // console.log(this.cekChat)
+      })
+      .catch(error => {
+        console.log(error.response)
       })
     }
 
@@ -357,6 +524,12 @@ export default {
     linkCerecall(){
       this.$router.push({path:'/cerecall'})
     },
+    linkCerejur(){
+      this.$router.push({path:'/cerejur'})
+    },
+    linkCerefo(){
+      this.$router.push({path:'/cerefo'})
+    },
 
     linkTentang(){
       this.$router.push({path:'/about'})
@@ -380,12 +553,22 @@ export default {
     linkAkun(){
       this.menu = false
       this.$router.push({path:'/my account'})
-    }
+    },
 
     // linkAkun(){
     //   menu = false
     //   this.$router.push({path:'/cerecall'})
     // }
+    attemptRunning(){
+      this.dialogRunning = false
+      this.$router.push({name: 'dashboard'})
+      let routeData = this.$router.resolve({name: 'exam_page', params:{id: this.data.tryout_id, scoringSystem: this.data.scoring_system, attemptId: this.data.id}});
+        window.open(routeData.href,
+                    'my_window', 
+                    'width=1600, height=620, resizable=no',
+                    '_blank'
+                    )
+    },
   }
 }
 </script>

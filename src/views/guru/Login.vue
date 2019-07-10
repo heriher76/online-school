@@ -36,7 +36,7 @@
               v-model="checkbox"
               label="Remember Me"
           ></v-checkbox>
-          <router-link to="/guru/forgot-password" class="label-forgot">Lupa kata sandi?</router-link>
+          <router-link to="/forgot password" class="label-forgot">Lupa kata sandi?</router-link>
           
           <v-btn @click="login" :loading="btn_load" round large block>Masuk</v-btn>  
         </form>
@@ -111,11 +111,11 @@
             this.$swal('Oopps', 'Anda Tidak Memiliki Akses Kesini!', 'warning')
             this.$store.dispatch('destroyToken')
             .then(response => {
-                this.$router.push({path:'/'})
+                
             })
-            // .catch(error => {
-            //     console.log(error)
-            //   })
+            .catch(error => {
+                console.log(error)
+              })
           }else{
             window.location.href = "/guru"
           }

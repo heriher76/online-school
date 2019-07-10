@@ -23,7 +23,7 @@
                     </v-card-title>                
                     <v-card-title style="float:right">
                         <a @click="pg_edit" v-show="my_profile"> <v-icon small>create</v-icon> Edit Profile</a>
-                        <a @click="" v-show="back"> <v-icon small>create</v-icon> Back</a>
+                        <!-- <a @click="" v-show="back"> <v-icon small>create</v-icon> Back</a> -->
                     </v-card-title>
                     <div class="clear"></div>
                 </v-card>
@@ -81,7 +81,7 @@
             //get list Kelas
             axios.get('/master/class')
             .then(response => {
-                console.log(response.data.data)
+                // console.log(response.data.data)
                 this.listClass= response.data.data
             })
             .catch(error => {
@@ -91,7 +91,7 @@
             //get list University
             axios.get('/master/getAllDataUniversity')
             .then(response => {
-                console.log(response.data.data)
+                // console.log(response.data.data)
                 this.listUniversity= response.data.data
             })
             .catch(error => {
@@ -104,7 +104,7 @@
             }
             axios.get('/auth/user')
             .then(response => {
-                console.log(response)
+                console.log(response.data)
                 this.dataProfileUser= response.data
             })
             .catch(error => {
@@ -116,7 +116,7 @@
                 'Authorization': 'Bearer ' + this.$store.state.token
             }
 
-            axios.get('http://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
+            axios.get('https://api.ceredinas.id/api/auth/photoProfile/'+this.$store.state.dataUser, {responseType: 'blob'})
             .then(response => {
                 let imageNode = document.getElementById('myprofile');
                 let imgUrl = URL.createObjectURL(response.data)

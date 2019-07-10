@@ -1,83 +1,102 @@
 <template>
     <div class="cerecall_chat">
+        <v-snackbar
+            v-model="snackbar"
+            :multi-line="'multi-line'"
+            :right="'right'"
+            :timeout="6000"
+            :top="'top'"
+            color="rgba(0,0,0,0.5)"
+        >
+            Berhasil dilaporkan
+            <v-btn :color="'col'" flat @click="snackbar = false">
+            Close
+            </v-btn>
+        </v-snackbar>
+
         <v-container>
             <div class="chat_box">
-                <v-card>
+                <v-card color="#fff0f1">
                     <div class="header_chat">
-                        <v-card style="padding:10px">
+                        <v-card color="#F44336" dark style="padding:10px">
                             <div class="head_info">
                                 <div class="img_usr">
-                                    <img src="https://picsum.photos/510/300?random" height="100%" width="100%" alt="">
+                                    <img :src="teacherInfo.teacher_photo" height="100%" width="100%" alt="">
                                 </div>
                                     
-                                <div style="font-size:18px; margin:12px 0px 0px 8px; float:left">
-                                    <b>Bean English {{$route.params.guruId}}</b>
+                                <div style=" margin:0px 0px 0px 10px; float:left">
+                                    <b style="font-size:18px;">{{teacherInfo.teacher_name}}</b><br>
+                                    <span>{{chatRunning.lesson}}</span>
                                 </div>
 
                                 <div style="float:right">
                                     <v-tooltip bottom>
                                         <template v-slot:activator="{ on }">  
-                                            <v-btn @click="dialog1=true" icon dark color="light-green">
+                                            <v-btn @click="dialog_report=true" icon dark flat>
+                                                <v-icon v-on="on">info</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>Laporkan</span>
+                                    </v-tooltip>
+                                    
+                                    <v-tooltip bottom>
+                                        <template v-slot:activator="{ on }">  
+                                            <v-btn @click="dialog1=true" icon dark flat>
                                                 <v-icon v-on="on">done</v-icon>
                                             </v-btn>
                                         </template>
                                         <span>Akhiri</span>
                                     </v-tooltip>
-                                    <v-menu :nudge-width="100">
-                                        <template v-slot:activator="{ on }" style="margin-bottom:-80px">
-                                            <span v-on="on" flat style="cursor:pointer"><v-icon>more_vert</v-icon></span>
-                                        </template>
-                                        <v-list>
-                                        
-                                            <v-dialog v-model="dialog_report" persistent max-width="400">
-                                                <template v-slot:activator="{ on }">
-                                                    <v-btn color="black" flat="" dark v-on="on">Laporkan</v-btn>
-                                                </template>
-                                                <v-card>
-                                                    <v-card-title class="headline">Laporkan Guru</v-card-title>
-                                                    
-                                                    <v-card-text>
-                                                        <v-textarea
-                                                            solo
-                                                            label="Isi Laporan"
-                                                        ></v-textarea>
-                                                    </v-card-text>
-
-                                                    <input type="file" style="margin-left:16px">
-                                                    
-                                                    <v-card-actions>
-                                                    <v-spacer></v-spacer>
-                                                    <v-btn color="red" flat @click="dialog_report = false">Batal</v-btn>
-                                                    <v-btn color="primary" flat @click="dialog_report = false">Kirim</v-btn>
-                                                    </v-card-actions>
-                                                </v-card>
-                                            </v-dialog>
-
-                                        </v-list>
-                                    </v-menu>
                                 </div>
+
+                                    <v-dialog v-model="dialog_report" persistent max-width="400">
+                                        <v-card>
+                                            <v-card-title class="headline" style="float:left">Report Guru</v-card-title>
+                                            <v-btn icon style="float:right;margin:15px" @click="dialog_report = false">
+                                                <v-icon>close</v-icon>
+                                            </v-btn>
+                                            <div class="clear"></div>
+                                            <form enctype="multipart/form-data">
+                                            <v-card-text>
+                                                <v-textarea
+                                                    solo
+                                                    :rules="[rules.required]"
+                                                    v-model="reportMsg"
+                                                    label="Isi Report"
+                                                ></v-textarea>
+                                                <!-- <input type="file" @change="onFileSelected"> -->
+                                                <input name="image_url" id="foto" ref="fileM" type="file" @change="this.handleFileUpload">
+                                            </v-card-text>                                        
+                                            <v-card-actions>
+                                                <v-btn color="red" dark block @click="this.report">Kirim Report</v-btn>
+                                            </v-card-actions>
+                                            </form>
+                                        </v-card>
+                                    </v-dialog>
 
                                     <v-dialog v-model="dialog1" persistent max-width="300">
                                         <v-card>
-                                            <v-card-title class="headline">Yakin akan diakhiri?</v-card-title>
-                                            <v-card-text>Fitur ini akan memotong poin anda secara otomatis.</v-card-text>
+                                            <!-- <v-card-title class="headline">Yakin akan diakhiri?</v-card-title> -->
+                                            <v-card-text>Apakah anda yakin ingin mengakhiri sesi konsultasi?</v-card-text>
                                             <v-card-actions>
                                                 <v-spacer></v-spacer>
-                                                <v-btn color="green darken-1" flat @click="dialog1 = false">Jangan</v-btn>
-                                                <v-btn @click="dialog2=true, dialog1=false" flat dark color="light-green">akhiri</v-btn>
+                                                <v-btn color="green darken-1" flat @click="dialog1 = false">Tidak</v-btn>
+                                                <v-btn @click="dialog2=true, dialog1=false" flat dark color="light-green">Ya</v-btn>
 
                                                 <v-dialog v-model="dialog2" persistent max-width="380">
                                                     <v-card>
-                                                        <v-card-title class="headline" primary-title>
-                                                            Rate Bean English {{$route.params.guruId}}
-                                                        </v-card-title>
+                                                        <v-card-title class="headline" style="float:left">Ulasan Guru</v-card-title>
+                                                        <v-btn icon style="float:right;margin:15px" @click="dialog2 = false">
+                                                            <v-icon>close</v-icon>
+                                                        </v-btn>
+                                                        <div class="clear"></div>
                                                         <v-card-text>
-                                                            If you enjoy, please take a few seconds to rate your experience with your teacher. It really helps!
-                                                            <div class="text-xs-center mt-5">
+                                                            <div class="text-xs-center ">
+                                                            Berikan bintang mu untuk guru ini
                                                                 <div style="display:inline-block;">
                                                                     <star-rating 
                                                                         inactive-color="#E0E0E0"
-                                                                        active-color="#FFC107"
+                                                                        active-color="#424242"
                                                                         :increment="0.5"
                                                                         v-bind:star-size="40"
                                                                         :show-rating="false" 
@@ -89,15 +108,14 @@
                                                             <div v-show="textArea">
                                                                 <v-textarea
                                                                     solo
-                                                                    name="input-7-4"
-                                                                    label="Berikan masukan untuk gurumu"
+                                                                    v-model="review"
+                                                                    label="Berikan masukan untuk guru ini"
                                                                 ></v-textarea>
                                                             </div>
                                                         </v-card-text>
                                                         <v-divider></v-divider>
                                                         <v-card-actions class="justify-space-between">
-                                                            <v-btn @click="dialog2=false" flat>No Thanks</v-btn>
-                                                            <v-btn @click="dialog2=false" color="primary" flat>Rate Now</v-btn>
+                                                            <v-btn @click="addRating" color="#B71C1C" block dark>Kirim Ulasan</v-btn>
                                                         </v-card-actions>
                                                     </v-card>
                                                 </v-dialog>
@@ -108,27 +126,78 @@
                             </div>
                         </v-card>
                     </div>
-                    <div class="live_chat">
-                        hello
+                    <div class="live_chat" style="height:380px">
+                        <div v-show="loadChat" style="background:rgba(0,0,0,0.2);text-align:center;z-index:1;position:absolute;width:100%;height:75%">
+                            <fulfilling-bouncing-circle-spinner
+                                style="margin:160px auto 0px auto"
+                                :animation-duration="1500"
+                                :size="40"
+                                color="#fff"
+                            />
+                            <span style="color:white">loading...</span>
+                        </div>
+
+                        <div id="box" ref="msgDisplay">
+                            <div v-for="(chat, index) in chatItem" :key="chat.id" class="box-chat">
+                                <span v-if="chat.sender==1" class="chat-siswa">
+                                    <v-img v-if="chat.is_image==1" @click.stop="dialog[index] = true" style="cursor:pointer" :src="chat.content" height="200px" width="260px">
+                                        <template v-slot:placeholder>
+                                            <v-layout
+                                                fill-height
+                                                align-center
+                                                justify-center
+                                                ma-0
+                                            >
+                                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                            </v-layout>
+                                        </template>
+                                    </v-img>
+                                    <v-dialog v-model="dialog[index]" max-width="500">
+                                        <v-img :src="chat.content"></v-img>
+                                    </v-dialog>
+                                    <span v-if="chat.is_image!=1">{{chat.content}}</span> 
+                                    <span style="font-size:9px;margin-left:10px;">{{moment(chat.created_at).format('hh:mm')}}</span>
+                                </span>
+                                <span v-if="chat.sender==2" class="chat-guru">
+                                    <v-img v-if="chat.is_image==1" @click.stop="dialog[index] = true" style="cursor:pointer" :src="chat.content" height="200px" width="260px">
+                                        <template v-slot:placeholder>
+                                            <v-layout
+                                                fill-height
+                                                align-center
+                                                justify-center
+                                                ma-0
+                                            >
+                                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                            </v-layout>
+                                        </template>
+                                    </v-img>
+                                    <v-dialog v-model="dialog[index]" max-width="500">
+                                        <v-img :src="chat.content"></v-img>
+                                    </v-dialog>
+                                    <span v-if="chat.is_image!=1">{{chat.content}}</span> 
+                                    <span style="font-size:9px;margin-left:10px;">{{moment(chat.created_at).format('hh:mm')}}</span>
+                                </span>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                        
+                        <div style="position:absolute;bottom:60px;left:0px;">
+                            <v-btn v-show="btScroll" @click="scrollBottom" color="red" dark icon><v-icon>keyboard_arrow_down</v-icon></v-btn>
+                            <!-- <div v-if="chatItem.length+=1">
+                            {{chatItem.length}}
+                            </div> -->
+                        </div>
+
                     </div>
 
-                    <!-- <v-text-field
-                        v-model="message"
-                        :append-icon="marker ? 'mdi-map-marker' : 'mdi-map-marker-off'"
-                        :append-outer-icon="message ? 'mdi-send' : 'mdi-microphone'"
-                        :prepend-icon="icon"
-                        box
-                        clear-icon="mdi-close-circle"
-                        clearable
-                        label="Message"
-                        type="text"
-                        @click:append="toggleMarker"
-                        @click:append-outer="sendMessage"
-                        @click:prepend="changeIcon"
-                        @click:clear="clearMessage"
-                    ></v-text-field> -->
                     <div class="action_chat">
-                        <input type="text" placeholder="ketik pesan">
+                        <input type="file" ref="file" style="display:none" @change="this.sendImg">
+                        <button class="file-img" @click="$refs.file.click()"> <v-icon large color="red">insert_photo</v-icon> </button>
+                        <form @submit.prevent="sendMsg" @keyup.enter="sendMsg">
+                            <input class="msg" type="text" v-model="content" placeholder="Ketik pesan">
+                        </form>
+                        <button class="send" @click="sendMsg"><v-icon color="red">send</v-icon></button>
+                        <div class="clear"></div> 
                     </div>
                 </v-card>
             </div>
@@ -136,25 +205,240 @@
     </div>
 </template>
 
+<script>
+    import Vue from "vue";
+    import { FulfillingBouncingCircleSpinner } from 'epic-spinners'
+    import StarRating from 'vue-star-rating'
+    import axios from 'axios';
+    import moment from 'moment'
+    export default {
+        components: {
+            StarRating,
+            FulfillingBouncingCircleSpinner
+        },
+
+        data () {
+            return {    
+                dialog: [],
+                selectedFile: null,
+                cekTop: '',
+                btScroll:false,
+                interval:null,
+                loadChat:true,
+                snackbar:false,  
+                // file: '',
+                // files: [],
+                review: '',
+                reportMsg: '',
+                reportImg: '',
+                rules: {
+                    required: v => !!v || 'This field is required'
+                },
+                content: '',
+                contentImg: '',
+                chatRunning: [],
+                teacherInfo: [],
+                studentInfo: [],
+                chatItem: [],     
+                dialog_report:false,
+                dialog1: false,
+                dialog2: false,
+                textArea: false,
+                rating: 3,
+                currentRating: "No Rating",
+
+            }
+        },
+        methods: {
+            moment,
+
+            onFileSelected(event){
+                this.selectedFile = event.target.files[0]
+                // console.log(event)
+            },
+
+            setRating: function(rating) {
+                this.textArea = true
+                this.rating = rating
+            },
+
+            addRating(){
+                this.dialog2  = false
+                this.loadChat = true
+                axios.put('/cerecall/history/'+this.chatRunning.id,{
+                    student_id : this.studentInfo.student_id,
+                    teacher_id : this.teacherInfo.teacher_id,
+                    rating : this.rating,
+                    review : this.review
+                })
+                .then(response=>{
+                    this.loadChat = false
+                    this.$swal("Sukses", "Percakapan berhasil diakhiri!")
+                    this.$router.push({name: 'cerecall'})
+                    // console.log(response.data)
+                })
+                .catch(error=>{
+                    console.log(error.response)
+                })
+            },
+
+            sendMsg(){
+                axios.post('/cerecall/chat/'+this.chatRunning.id,{
+                    content: this.content,
+                    is_image: null,
+                    sender: 1
+                })
+                .then(response => {
+                    this.content = ''
+                    setTimeout(() => (this.scrollBottom()), 0)
+                })
+                .catch(error => {
+                    this.content = ''
+                    setTimeout(() => (this.scrollBottom()), 0)
+                })
+            },
+
+            sendImg(){
+                this.contentImg = this.$refs.file.files[0];
+
+                let filePhoto = new FormData();
+                filePhoto.append('content', this.contentImg);
+
+                axios.post('/cerecall/chat/'+this.chatRunning.id,{
+                    content: filePhoto,
+                    is_image: 1,
+                    sender: 1
+                })
+                .then(response => {
+                    this.content = ''
+                    setTimeout(() => (this.scrollBottom()), 0)
+                    console.log(response.data)
+                })
+                .catch(error => {
+                    this.content = ''
+                    setTimeout(() => (this.scrollBottom()), 0)
+                    console.log(error.response)
+                })
+            },
+
+            handleFileUpload(){
+                this.reportImg = this.$refs.fileM.files[0];
+            },
+
+            report(event){
+                this.dialog_report = false
+                
+                let data = new FormData();
+                data.append('image_url', this.reportImg);
+                
+                axios.post('/cerecall/report/'+this.chatRunning.id,{
+                    student_id: this.studentInfo.student_id,
+                    teacher_id: this.teacherInfo.teacher_id,
+                    report: this.reportMsg,
+                    data
+                })
+                .then(response=>{
+                    this.snackbar = true
+                    console.log(response.data)
+                })
+                .catch(error=>{
+                    console.log(error.response)
+                })
+            },
+
+            scrollBottom(){
+                var container = this.$el.querySelector("#box");
+                container.scrollTop = container.scrollHeight;   
+                this.cekTop = container.scrollTop
+            }
+        },
+            
+        updated() {  
+            var container = this.$el.querySelector("#box");
+
+            // console.log("cek",this.cekTop)
+            // console.log("top",container.scrollTop)
+
+            if(container.scrollTop < this.cekTop){
+                this.btScroll = true
+            }else if(container.scrollTop == this.cekTop){
+                this.btScroll = false
+            }
+
+            axios.get('/cerecall/chat/'+this.chatRunning.id)
+            .then(response => {
+                this.chatItem = response.data.data
+            })
+            .catch(error => {
+                console.log(error.response)
+            })
+        },
+
+        created(){
+            axios.get('/cerecall/student/history/running')
+            .then(response => {
+                this.chatRunning = response.data.data[0]
+                this.teacherInfo = response.data.data[0].teacher
+                this.studentInfo = response.data.data[0].student
+                // console.log(this.chatRunning)
+                axios.get('/cerecall/chat/'+this.chatRunning.id)
+                .then(response => {
+                    this.loadChat = false
+                    this.chatItem = response.data.data
+                    // console.log(this.chatItem)
+                    setTimeout(() => (this.scrollBottom()), 0)
+                })
+                .catch(error => {
+                    console.log(error.response)
+                })
+            })
+            .catch(error => {
+                console.log(error.response)
+            })
+        },
+    }
+</script>
+
+
 <style>
     .chat_box{
         width:80%;
         margin:0px auto;
     }
 
+    #box{
+        position: absolute;
+        top:70px;
+        padding:20px;
+        left:0;
+        width: 100%;
+        height: 74%; 
+        overflow: auto
+    }
+
+    .box-chat{
+        padding:5px
+    }
+
+    .chat-guru{
+        float:left;
+        border-radius:0px 15px 15px 18px;
+        background:white;
+        padding:8px 10px
+    }
+
+    .chat-siswa{
+        float:right;
+        border-radius:15px 18px 0px 15px;
+        background:#F44336;
+        color:white;
+        padding:8px 10px
+    }
     
     @media only screen and (max-width: 650px) {
         .chat_box{
             width:100%;
         }
-    }
-
-    .header_chat{
-
-    }
-
-    .head_info{
-
     }
 
     .head_info .img_usr{
@@ -169,7 +453,8 @@
     }
 
     .live_chat{
-        margin: 20px;
+        /* margin: 20px; */
+        /* padding: 20px; */
     }
 
     .action_chat{
@@ -177,82 +462,30 @@
         padding: 10px
     }
 
-    .action_chat input{
+    .file-img{
+        margin-top: 2px;
+        margin-right: 4px;
+        outline: none;
+        float: left
+    }
+    input.msg{
         background: white;
-        padding: 5px 10px;
-        width: 100%;
+        padding: 10px 15px;
+        border-radius: 18px;
+        width:90%;
+        outline:none;
+        float:left;
+    }
+
+    @media only screen and (max-width: 1265px) {    
+        input.msg{
+            width:73%;
+        }
+    } 
+
+    .send{
+        outline:none;
+        float: left;
+        margin: 8px 8px 0px 10px
     }
 </style>
-
-
-<script>
-    import StarRating from 'vue-star-rating'
-    export default {
-        components: {
-            StarRating,
-        },
-
-        data () {
-            return {            
-                dialog_report:false,
-                dialog1: false,
-                dialog2: false,
-                textArea: false,
-                rating: 3,
-                currentRating: "No Rating",
-
-                 password: 'Password',
-                    show: false,
-                    message: 'Hey!',
-                    marker: true,
-                    iconIndex: 0,
-                    icons: [
-                        'mdi-emoticon',
-                        'mdi-emoticon-cool',
-                        'mdi-emoticon-dead',
-                        'mdi-emoticon-excited',
-                        'mdi-emoticon-happy',
-                        'mdi-emoticon-neutral',
-                        'mdi-emoticon-sad',
-                        'mdi-emoticon-tongue'
-                    ]
-            }
-        },
-        methods: {
-            showTextarea(){
-                this.textArea = true
-            },
-            
-
-            setRating: function(rating) {
-                this.textArea = true
-                // this.rating = "You have Selected: " + rating + " stars";
-            },
-
-            toggleMarker () {
-                this.marker = !this.marker
-            },
-            sendMessage () {
-                this.resetIcon()
-                this.clearMessage()
-            },
-            clearMessage () {
-                this.message = ''
-            },
-            resetIcon () {
-                this.iconIndex = 0
-            },
-            changeIcon () {
-                this.iconIndex === this.icons.length - 1
-                ? this.iconIndex = 0
-                : this.iconIndex++
-            }
-        },
-
-         computed: {
-            icon () {
-                return this.icons[this.iconIndex]
-            }
-        },
-    }
-</script>

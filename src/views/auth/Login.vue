@@ -75,7 +75,10 @@
         </div>
 
         
-        <v-btn block round color="error" dark large @click="loginGoogle">
+        <v-btn block color="#d44132" style="font-size:14px" dark large @click="loginGoogle">
+          <div style="float:left; padding:3px 5px 0px 0px">
+             <img width="40px" alt="Google &quot;G&quot; Logo" :src="require('../../assets/images/icon_gplus.png')"/>
+         </div>
           masuk dengan akun google
         </v-btn>
 
@@ -83,34 +86,25 @@
           masuk dengan akun facebook
         </v-btn> -->
         <center>
-          <v-facebook-login :value="true" @login="loginFacebook" app-id="318638459074473" style="width: 100%; height: 50px;"></v-facebook-login>
+          <v-facebook-login :value="true" @login="loginFacebook" app-id="318638459074473" style="width: 100%; height: 50px;">
+            <span slot="login">MASUK DENGAN AKUN FACEBOOK</span>
+            <span slot="logout">MASUK DENGAN AKUN FACEBOOK</span>
+            <span slot="working">MOHON TUNGGU....</span>
+          </v-facebook-login>
         </center>
         <br>
-    
-        <!-- <facebook-login class="button"
-          appId="318638459074473"
-          @login="getUserData"
-          @logout="onLogout"
-          @sdk-loaded="sdkLoaded">
-        </facebook-login> -->
-
-         <!-- <facebook-login class="button"
-          appId="318638459074473"
-          @login="getUserData"
-          @get-initial-status="getUserData">
-        </facebook-login> -->
 
         <hr style="margin-bottom:15px">
         <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>
       </div>
-      
+
       <LoadingScreen2 :loading="loadLogin"></LoadingScreen2>
     </div>
 </template>
 
 
 <script>
-// import Vue from "vue";
+  // import { uuid } from 'vue-uuid';
   import axios from "axios"
   import LoadingScreen2 from'../../components/loading-screen/Loading2'
   import { VFBLogin as VFacebookLogin } from 'vue-facebook-login-component'
@@ -126,14 +120,12 @@
 
     data () {
       return {
+        // uuid: uuid.v1(),
+
+        deviceId: '',
+
         time: 0,
         interval: null,
-
-        isConnected: false,
-        name: '',
-        email: '',
-        personalID: '',
-        FB: undefined,
 
         snackbar: false,
         snackbarGoogle:false,
@@ -165,10 +157,39 @@
     mounted(){
       this.snackbar = this.regist
       this.toggleTimer()
-      
+
+      this.getOneSignalId()
+    },
+
+    created() {
+      if(this.$store.getters.loggedIn){
+        window.location.href = "/"
+      }
     },
 
     methods:{
+      async getOneSignalId() {
+        try {
+          const OneSignal = window.OneSignal || []
+          OneSignal.push(() => {
+            OneSignal.isPushNotificationsEnabled(isEnabled => {
+              if (isEnabled) {
+                // user has subscribed
+                OneSignal.getUserId(userId => {
+                  // return userId
+                  // console.log(`player_id of the subscribed user is : ${userId}`)
+                  this.deviceId = userId
+                  // console.log(this.deviceId)
+                  // Make a POST call to your server with the user ID
+                })
+              }
+            })
+          })
+        } catch (exception) {
+          console.log(exception)
+        }
+      },
+
       toggleTimer() {
         this.interval = setInterval(this.incrementTime, 1000);
       },
@@ -182,29 +203,30 @@
       login(){      
         this.btn_load = true
         this.loadLogin = true
+
         this.$store.dispatch('retrieveToken', {
           email: this.email,
-          password: this.password
+          password: this.password,
+          // device_id: this.uuid
+          device_id: this.deviceId
         })
         .then(response => {
           this.btn_load = false
           this.loadLogin = false
-
+          console.log(response)
           if (response.data.role != 2) {
-            this.$swal('Oopps', 'Anda Tidak Memiliki Akses Kesini!', 'warning')
+            this.$swal('Opps', 'Anda Tidak Memiliki Akses Kesini!', 'warning')
             this.$store.dispatch('destroyToken')
             .then(response => {
-                this.$router.push({path:'/'})
+                
             })
-            // .catch(error => {
-            //     console.log(error)
-            //   })
+            .catch(error => {
+                console.log(error)
+            })
           }else{
-            window.location.href = "/"
+            this.$swal('Sukses', 'Selamat Datang!', 'success')
+            return setTimeout(() => (window.location.href = "/"), 4000)
           }
-          
-          // window.location.href = "/"
-          // this.$router.replace('/')
         })
         .catch(error => {
           this.btn_load = false
@@ -222,7 +244,7 @@
           this.btn_load = false
 
           this.$swal('Sukses', 'Berhasil Login !', 'success')
-          return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 3000)
+          return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 4000)
         })
         .catch(error => {
           this.btn_load = false
@@ -235,22 +257,22 @@
 
       loginGoogle(){
         this.$gAuth.signIn()
-        .then(GoogleUser => {console.log(GoogleUser)
+        .then(GoogleUser => {
+          console.log(GoogleUser)
           //on success
           this.$store.dispatch('retrieveTokenGoogle', {
             token: GoogleUser.getAuthResponse().access_token
           })
           .then(response => {
-            console.log(response)
+            // console.log(response)
             this.loadLogin      = true
             this.snackbarGoogle = true
-            this.textbarGoogle  = "Berhasil Masuk !!"
-
-            return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 1500)
+            this.textbarGoogle  = "Berhasil masuk dengan google!!"
+            // return setTimeout(() => (this.loadLogin = false, window.location.href = "/"), 1500)
           })
           .catch(error => {
             this.snackbarGoogle = true
-            this.textbarGoogle  = "Gagal Masuk !!"
+            this.textbarGoogle  = "Gagal masuk dengan google !!"
 
             console.log(error)
           })
@@ -261,89 +283,59 @@
         })
       },
 
-      getUserData() {
-        FB.getLoginStatus(function(response) {
-          if (response.status === 'connected') {
-            console.log(response.authResponse.accessToken);
-          }
-        });
-        // this.FB.api('/me', 'GET', {fields: 'id.name.email'},
-        //   userInformation => {
-        //     console.warn("get data from fb", userInformation)
-        //     this.personalID = userInformation.id;
-        //     this.email = userInformation.email;
-        //     this.name = userInformation.name;
-        //   }
-        // )
-      },
-      // sdkLoaded(){
-      //   this.isConnected = payload.isConnected
-      //   this.FB = payload.FB
-      //   if(this.isConnected) this.getUserData()
-      // },
-      // onLogin(){
-      //   this.isConnected = true
-      //   this.getUserData()
-      // },
-      // onLogout(){
-      //   this.isConnected = false
-      // }
-
       
-      
-
     }
   }
 </script>
 
 <style>
-    .banner-login{
-        height:650px;
-        position:relative
-    }
+.banner-login{
+    height:650px;
+    position:relative
+}
 
-    .baner-color {
-        align-items: center;
-        bottom: 0px;
-        justify-content: center;
-        opacity: .5;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        font-family: "Arial";
-        background-image: linear-gradient(10deg, #2c3e50,#ffffff,#ee1414,#51a9fc,#8e44ad);
-        background-size: 270% 350%;
-    }
+.baner-color {
+    align-items: center;
+    bottom: 0px;
+    justify-content: center;
+    opacity: .5;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    font-family: "Arial";
+    background-image: linear-gradient(10deg, #2c3e50,#ffffff,#ee1414,#51a9fc,#8e44ad);
+    background-size: 270% 350%;
+}
 
-    .panel-auth{
-        top:50px;
-        width:450px;
-        right: 0;
-        left: 0;
-        margin: 0px auto;
-        padding:20px;
-        background: rgba(0, 0, 0, 0.3);
-        position:absolute;
-        text-align:center;
-    }
+.panel-auth{
+    top:50px;
+    width:450px;
+    right: 0;
+    left: 0;
+    margin: 0px auto;
+    padding:20px;
+    background: rgba(0, 0, 0, 0.3);
+    position:absolute;
+    text-align:center;
+}
 
-    
-    @media only screen and (max-width: 650px) {
-      .panel-auth {
-        width: 100%;
-      }
-    }
 
-    .text-banner h1,h5{
-        font-family:'Arial';
-        color:white;
-    }
+@media only screen and (max-width: 650px) {
+  .panel-auth {
+    width: 100%;
+  }
+}
 
-    .label-forgot{
-        float:right;
-        margin-top:20px;
-        font-size:14px; 
-        color:white;
-        text-decoration:none
-    }
+.text-banner h1,h5{
+    font-family:'Arial';
+    color:white;
+}
+
+.label-forgot{
+    float:right;
+    margin-top:20px;
+    font-size:14px; 
+    color:white;
+    text-decoration:none
+}
 </style>

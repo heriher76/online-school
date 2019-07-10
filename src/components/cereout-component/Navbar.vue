@@ -5,6 +5,7 @@
             <li><router-link to="/cereout/leader board">Leaderboard</router-link></li>
             <li><router-link to="/cereout/exams">My Exams</router-link></li>
             <li><router-link to="/cereout/results">My Result</router-link></li>
+            <li><router-link to="/cereout/hubungi kami">Hubungi Kami</router-link></li>
         </ul>
     </div>
 </template>

@@ -2,7 +2,7 @@
     <v-layout row wrap="">
         <v-flex md3>
             <div style="height:100px;width:85px;">
-                <img :src="photo" width="100%" height="100%" alt="" v-show='showImage'>
+                <img :src="datas.data.photo_url" width="100%" height="100%" alt="" v-show='showImage'>
                 <LoadingScreen1 :loading="is_load1"></LoadingScreen1>
             </div>
 
@@ -56,7 +56,13 @@
                      -->
                     <v-text-field style="height:60px" v-model="datas.data.phone" label="Phone Number" placeholder="Nomor Handphone"></v-text-field>
                     <v-text-field style="height:60px" v-model="datas.data.address" label="Alamat" placeholder="Alamat"></v-text-field>
-                    <v-text-field style="height:60px" v-model="datas.data.gender" label="Gender" placeholder="Jenis Kelamin"></v-text-field>
+                    <v-select
+                        v-model="datas.data.gender" 
+                        :items="list_kelamin"
+                        item-text="name"
+                        item-value="name"
+                        label="Jenis Kelamin"
+                    ></v-select>
                     <v-text-field style="height:60px" v-model="datas.data.birth_place" label="Birth Place" placeholder="Tempat Lahir"></v-text-field>
                     <!-- <v-text-field style="height:60px" v-model="datas.data.birth_date" label="Birth Date" placeholder="Tanggal Lahir"></v-text-field> -->
                     <label>Tanggal Lahir</label>
@@ -66,115 +72,74 @@
                     <v-text-field style="height:60px" v-model="datas.data.parrent_name" label="Nama Orang Tua" placeholder="Nama Orang Tua"></v-text-field>
                     <v-text-field style="height:60px" v-model="datas.data.parrent_phone" label="Nomor Orang Tua" placeholder="Nomor Orang Tua"></v-text-field>
                     <br>
+                    <label style="color: red">*Apabila tidak ingin mengganti kelas ataupun pilihan jurusan, maka tidak perlu diisi kembali</label>
+                    <br>
                     <!-- Kelas -->
-                    <label>Pilih Kelas</label>
+                    <label><b>Pilihan Kelas</b></label>
+                    <br>
+                    <label v-if="datas.data.class" style="background-color: yellow; border: solid 1px black; padding: 3px;">{{ datas.data.class.name_class }}</label>
                     <v-select
-                        v-if="datas.data.class"
-                        v-model="datas.data.class.name_class" 
-                        :items="listClass"
-                        label="Kelas *"
-                    ></v-select>
-                    <v-select
-                        v-else
                         v-model="kelas" 
                         :items="listClass"
                         item-text="name"
-                        item-value="name"
+                        item-value="id"
                         label="Kelas *"
                     ></v-select>
                     <br>
                     <!-- Pilihan Pertama -->
-                    <label>Pilihan Pertama</label>
+                    <label><b>Pilihan Pertama</b></label>
+                    <br>
+                    <label v-if="datas.data.option1" style="background-color: yellow; border: solid 1px black; padding: 3px;">{{ datas.data.option1.university_name }} - {{ datas.data.option1.department_name }}</label>
                     <v-select
-                        v-if="datas.data.option1"
-                        v-model="datas.data.option1.university_name" 
-                        :items="listUniversity"
-                        label="Universitas *"
-                    ></v-select>
-                    <v-select
-                        v-else
                         v-model="option1_university_name" 
                         :items="listUniversity"
                         item-text="name"
-                        item-value="name"
+                        item-value="id"
                         label="Universitas *"
-                    ></v-select>
+                    ></v-select>    
                     <v-select
-                        v-if="datas.data.option1"
-                        v-model="datas.data.option1.department_name" 
-                        :items="departmentUniversity1"
-                        label="Jurusan *"
-                    ></v-select>
-                    <v-select
-                        v-else
                         v-model="option1_department_name" 
                         :items="departmentUniversity1"
                         item-text="name"
-                        item-value="name"
+                        item-value="id"
                         label="Jurusan *"
                     ></v-select>
                     <br>
                     <!-- Pilihan Kedua -->
-                    <label>Pilihan Kedua</label>
+                    <label><b>Pilihan Kedua</b></label>
+                    <br>
+                    <label v-if="datas.data.option2" style="background-color: yellow; border: solid 1px black; padding: 3px;">{{ datas.data.option2.university_name }} - {{ datas.data.option2.department_name }}</label>
                     <v-select
-                        v-if="datas.data.option2"
-                        v-model="datas.data.option2.university_name" 
-                        :items="listUniversity"
-                        label="Universitas *"
-                    ></v-select>
-                    <v-select
-                        v-else
                         v-model="option2_university_name" 
                         :items="listUniversity"
                         item-text="name"
-                        item-value="name"
+                        item-value="id"
                         label="Universitas *"
                     ></v-select>
-
                     <v-select
-                        v-if="datas.data.option2"
-                        v-model="datas.data.option2.department_name" 
-                        :items="departmentUniversity2"
-                        label="Jurusan *"
-                    ></v-select>
-                    <v-select
-                        v-else
                         v-model="option2_department_name" 
                         :items="departmentUniversity2"
                         item-text="name"
-                        item-value="name"
+                        item-value="id"
                         label="Jurusan *"
                     ></v-select>
                     <br>
                     <!-- Pilihan Ketiga -->
-                    <label>Pilihan Ketiga</label>
+                    <label><b>Pilihan Ketiga</b></label>
+                    <br>
+                    <label v-if="datas.data.option3" style="background-color: yellow; border: solid 1px black; padding: 3px;">{{ datas.data.option3.university_name }} - {{ datas.data.option3.department_name }}</label>
                     <v-select
-                        v-if="datas.data.option3"
-                        v-model="datas.data.option3.university_name" 
-                        :items="listUniversity"
-                        label="Universitas *"
-                    ></v-select>
-                    <v-select
-                        v-else
                         v-model="option3_university_name" 
                         :items="listUniversity"
                         item-text="name"
-                        item-value="name"
+                        item-value="id"
                         label="Universitas *"
                     ></v-select>
-
                     <v-select
-                        v-if="datas.data.option3"
-                        v-model="datas.data.option3.department_name" 
-                        :items="departmentUniversity3"
-                        label="Jurusan *"
-                    ></v-select>
-                    <v-select
-                        v-else
                         v-model="option3_department_name" 
                         :items="departmentUniversity3"
                         item-text="name"
-                        item-value="name"
+                        item-value="id"
                         label="Jurusan *"
                     ></v-select>
 
@@ -185,7 +150,7 @@
             </div>
             <!-- {{dataUser}} -->
             <!--  -->
-            <ChangePassword v-show="chg_pass" @canceled="showEditProfile" :idUser="this.datas.data.id" :email="this.datas.data.email"/>
+            <ChangePassword v-show="chg_pass" @canceled="showEditProfile" :idUser="this.datas.data.id" :myemail="this.datas.data.email"/>
         </v-flex>
     </v-layout>
 </template>
@@ -213,9 +178,9 @@
             address: '',
             file: '',
             kelas: '',
-            departmentUniversity1: '',
-            departmentUniversity2: '',
-            departmentUniversity3: '',
+            departmentUniversity1: [],
+            departmentUniversity2: [],
+            departmentUniversity3: [],
             option1_department_name: '',
             option2_department_name: '',
             option3_department_name: '',
@@ -224,6 +189,10 @@
             option3_university_name: '',
             birth_date: new Date().toISOString().substr(0, 10),
             list_kelas: [],
+            list_kelamin: [
+                { name: 'Laki - Laki' },
+                { name: 'Perempuan' }
+            ],
             is_load1 :false,
             showImage:true
         }),
@@ -234,34 +203,34 @@
         watch: {
           birth_date (date) {
             this.birth_date= date
-            console.log(this.birth_date)
+            // console.log(this.birth_date)
           },
           kelas (newVal) {
             this.kelas= newVal
           },
           option1_university_name (university1) {
-            console.log(university1)
+            // console.log(university1)
             this.option1_university_name = university1
             this.listUniversity.map((univ) => {
-                if (univ.name == this.option1_university_name) {
+                if (univ.id == this.option1_university_name) {
                     this.departmentUniversity1 = univ.department
                 }
             })
           },
           option2_university_name (university2) {
-            console.log(university2)
+            // console.log(university2)
             this.option2_university_name = university2
             this.listUniversity.map((univ) => {
-                if (univ.name == this.option2_university_name) {
+                if (univ.id == this.option2_university_name) {
                     this.departmentUniversity2 = univ.department
                 }
             })
           },
           option3_university_name (university3) {
-            console.log(university3)
+            // console.log(university3)
             this.option3_university_name = university3
             this.listUniversity.map((univ) => {
-                if (univ.name == this.option3_university_name) {
+                if (univ.id == this.option3_university_name) {
                     this.departmentUniversity3 = univ.department
                 }
             })
@@ -292,7 +261,7 @@
                 this.file = this.$refs.file.files[0];
             },
             submitPhoto (event) {
-                console.log(this.file)
+                // console.log(this.file)
                 this.dialog = false
                 this.btn_upload = true
                 this.showImage = !this.showImage
@@ -307,12 +276,14 @@
                     'Authorization': 'Bearer ' + this.$store.state.token
                 }
 
-                axios.post('http://api.ceredinas.id/api/auth/changePhotoProfile/'+this.$store.state.dataUser, data)
+                axios.post('https://api.ceredinas.id/api/auth/changePhotoProfile/'+this.$store.state.dataUser, data)
                 .then(response => {
                   this.showImage = !this.showImage
                   this.is_load1 = !this.is_load1
                   this.$swal('Sukses', 'Berhasil Mengganti Photo Profile!', 'success')
-                  console.log(response.data)
+                  .then(() => {
+                        window.location.href = "/my account"
+                    })
                 })
                 .catch(error => {
                   this.showImage = !this.showImage
@@ -322,11 +293,20 @@
                 })
             },
             submit (event) {
-                let kelas = this.kelas || this.datas.data.class.name_class
-                // var option1_department_name = this.option1_department_name || this.datas.data.option1.department_name
-                // var option2_department_name = this.option2_department_name || this.datas.data.option2.department_name
-                // var option3_department_name = this.option3_department_name || this.datas.data.option3.department_name
                 this.btn_load = true
+
+                let asalKelas = '';
+                (this.datas.data.class) ? asalKelas = this.datas.data.class.name_class : asalKelas = ''
+
+                let pilihanSatu = '';
+                (this.datas.data.option1) ? pilihanSatu = this.datas.data.option1.department_id : pilihanSatu = ''
+
+                let pilihanDua = '';
+                (this.datas.data.option2) ? pilihanDua = this.datas.data.option2.department_id : pilihanDua = ''
+
+                let pilihanTiga = '';
+                (this.datas.data.option3) ? pilihanTiga = this.datas.data.option3.department_id : pilihanTiga = ''
+
                 this.$store.dispatch('editProfileUser', {
                     name: this.datas.data.name,
                     gender: this.datas.data.gender,
@@ -336,13 +316,18 @@
                     birth_date: this.datas.data.birth_date,
                     parrent_name: this.datas.data.parrent_name,
                     parrent_phone: this.datas.data.parrent_phone,
-                    address: this.datas.data.address,
-                    class: kelas
+                    class_id: this.kelas || asalKelas,
+                    option1: this.option1_department_name || pilihanSatu,
+                    option2: this.option2_department_name || pilihanDua,
+                    option3: this.option3_department_name || pilihanTiga
                 })
                 .then(response => {
-                  this.btn_load = false
-                  this.$swal('Sukses', 'Berhasil Mengganti Profile!', 'success')
-                  // this.$router.push({path: '/'})
+                    this.btn_load = false
+                    this.$swal('Sukses', 'Berhasil Mengganti Profile!', 'success')
+                    .then(() => {
+                        window.location.href = "/my account"
+                    })
+                    // this.$router.push({path: '/'})
                 })
                 .catch(error => {
                   this.btn_load = false
