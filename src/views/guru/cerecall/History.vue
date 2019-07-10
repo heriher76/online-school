@@ -36,26 +36,18 @@
 			                  class="elevation-1"
 			                >
 			                	<template v-slot:items="props">
-													<tr v-if="props.item.teacher.teacher_id==userId">
+									<tr v-if="props.item.teacher.teacher_id==userId">
 				                		<td>{{props.index+1}}</td>
 					                	<td>{{props.item.student.student_name}}</td>
 					                	<td>{{props.item.student.student_class}}</td>
 					                	<td>{{props.item.rating}}</td>
 					                	<td>{{props.item.review}}</td>
-					                	<td>
-						                  <v-btn
-						                    @click="accept(props.item.id)"
-																color="success"
-						                    >
-						                    Chat
-						                  </v-btn>
-														</td>
-													</tr>
+									</tr>
 				                </template>
 			                </v-data-table>
 			            </v-card>
 									<div v-for="data in dataHistoryChatRunningGuru.data">
-			                <v-btn color="red" class="white--text" @click="accept(data.id)">
+			                <v-btn color="red" class="white--text" @click="accept()">
 												Anda memiliki chat aktif, Klik untuk Lanjutkan Chat
 											</v-btn>
 									</div>
@@ -88,7 +80,6 @@
 						{text:'Kelas Murid',value:'student_class'},
 						{text:'Rating',value:'rating'},
 						{text:'Review',value:'review'},
-						{text:'Aksi',value:'aksi',sortable: false},
 					],
         }),
         methods: {
@@ -105,8 +96,8 @@
 	          show () {
 	          	this.$modal.show('consult');
 	          },
-	          accept (id) {
-	          	return this.$router.push({path:'/guru/cerecall/chat/'+id})
+	          accept () {
+	          	return this.$router.push({path:'/guru/cerecall/chat/'})
 	          },
 	          hide () {
 	            this.$modal.hide('consult');

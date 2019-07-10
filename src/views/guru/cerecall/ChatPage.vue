@@ -147,7 +147,8 @@
         	is_image:null,
             cekTop: '',
             btScroll:false,
-            is_load:false
+            is_load:false,
+            idChat:null
         }),
         components: {
             SideBar,
@@ -160,20 +161,22 @@
 	        },
 	        getChatGuru(){
 	        	if(this.dataHistoryChatRunningGuru.data){
-	        		for(var i=0;i<this.dataHistoryChatRunningGuru.data.length;i++)
-		        	this.$store.dispatch('getChatGuru',{id:this.dataHistoryChatRunningGuru.data[i].id})
-		        	.then(response => {
-		        		if(!this.is_load){
-		        			this.scrollBottom()
-		        			this.is_load = true
-		        		}
-		        	})
-				    .catch(error => {
-		        		if(!this.is_load){
-		        			this.scrollBottom()
-		        			this.is_load = true
-		        		}
-				    })
+	        		for(var i=0;i<this.dataHistoryChatRunningGuru.data.length;i++){
+	        			this.idChat=this.dataHistoryChatRunningGuru.data[i].id;
+			        	this.$store.dispatch('getChatGuru',{id:this.dataHistoryChatRunningGuru.data[i].id})
+			        	.then(response => {
+			        		if(!this.is_load){
+			        			this.scrollBottom()
+			        			this.is_load = true
+			        		}
+			        	})
+					    .catch(error => {
+			        		if(!this.is_load){
+			        			this.scrollBottom()
+			        			this.is_load = true
+			        		}
+					    })
+					}
 				}
 	      	},
 			realtime(){
@@ -186,7 +189,7 @@
             		this.pesan = this.$refs.file.value
             	}
 	        	this.$store.dispatch('sendMsg',{
-	        		id:this.$route.params.id,
+	        		id:this.idChat,
 	        		pesan:this.pesan,
 	        		is_image:this.is_image
 	        	})

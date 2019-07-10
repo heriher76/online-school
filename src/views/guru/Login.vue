@@ -103,13 +103,13 @@
         try {
           const OneSignal = window.OneSignal || []
           OneSignal.push(() => {
-                // user has subscribed
-                OneSignal.getUserId(userId => {
-                  // return userId
-                  this.deviceId = userId
-                  // console.log(this.deviceId)
-                  // Make a POST call to your server with the user ID
-                })
+            // user has subscribed
+            OneSignal.getUserId(userId => {
+              // return userId
+              this.deviceId = userId
+              // console.log(this.deviceId)
+              // Make a POST call to your server with the user ID
+            })
           })
         } catch (exception) {
           console.log(exception)
