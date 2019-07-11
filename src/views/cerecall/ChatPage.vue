@@ -65,7 +65,6 @@
                                                     label="Isi Report"
                                                 ></v-textarea>
                                                 <input type="file" @change="selectedFile($event)">
-                                                <!-- <input name="image_url" id="foto" ref="fileM" type="file" @change="this.handleFileUpload"> -->
                                             </v-card-text>                                        
                                             <v-card-actions>
                                                 <v-btn color="red" dark block @click="this.report">Kirim Report</v-btn>
@@ -191,8 +190,8 @@
                     </div>
 
                     <div class="action_chat">
-                        <!-- <input type="file" ref="file" style="display:none" @change="this.sendImg">
-                        <button class="file-img" @click="$refs.file.click()"> <v-icon large color="red">insert_photo</v-icon> </button> -->
+                        <input type="file" ref="file" style="display:none" @change="this.sendImg">
+                        <button class="file-img" @click="$refs.file.click()"> <v-icon large color="red">insert_photo</v-icon> </button>
                         <form @submit.prevent @keyup.enter="sendMsg">
                             <input class="msg" type="text" v-model="content" placeholder="Ketik pesan">
                         </form>
@@ -220,17 +219,14 @@
         data () {
             return {    
                 dialog: [],
-                // selectedFile: null,
                 cekTop: '',
                 btScroll:false,
                 interval:null,
                 loadChat:true,
-                snackbar:false,  
-                file: null,
-                // files: [],
+                snackbar:false,
                 review: '',
                 reportMsg: '',
-                reportImg: '',
+                reportImg: null,
                 rules: {
                     required: v => !!v || 'This field is required'
                 },
@@ -263,7 +259,6 @@
                 .then(response => {
                     this.loadChat = false
                     this.chatItem = response.data.data
-                    // console.log(this.chatItem)
                     setTimeout(() => (this.scrollBottom()), 0)
                 })
                 .catch(error => {
@@ -310,14 +305,12 @@
             sendImg(){
                 this.contentImg = this.$refs.file.files[0];
 
-                let filePhoto = new FormData();
-                filePhoto.append('content', this.contentImg);
+                let formData = new FormData();
+                formData.append('content', this.contentImg);
+                formData.append('is_image', 1);
+                formData.append('sender', 1)
 
-                axios.post('/cerecall/chat/'+this.chatRunning.id,{
-                    content: filePhoto,
-                    is_image: 1,
-                    sender: 1
-                })
+                axios.post('/cerecall/chat/'+this.chatRunning.id, formData)
                 .then(response => {
                     this.content = ''
                     setTimeout(() => (this.scrollBottom()), 0)
@@ -336,26 +329,19 @@
 
             selectedFile(event){
                 console.log(event)
-                this.file = event.target.files[0]
+                this.reportImg = event.target.files[0]
             },
 
             report(event){
                 this.dialog_report = false
                 
                 let formData = new FormData();
-                formData.append('photo', this.file);
-                // for(var pair of formData.entries()){
-                //     console.log(pair[0]+', '+pair[1]);
-                // }
+                formData.append('student_id', this.studentInfo.student_id);
+                formData.append('teacher_id', this.teacherInfo.teacher_id);
+                formData.append('report', this.reportMsg)
+                formData.append('image_url', this.reportImg);
       
-                // axios.post('/cerecall/report/'+this.chatRunning.id, 
-                // {
-                //     student_id: this.studentInfo.student_id,
-                //     teacher_id: this.teacherInfo.teacher_id,
-                //     report: this.reportMsg,
-                //     formData
-                // })
-                axios.post('/auth/changePhotoProfile/'+this.$store.state.dataUser, formData)
+                axios.post('/cerecall/report/'+this.chatRunning.id, formData)
                 .then(response=>{
                     this.snackbar = true
                     console.log(response.data)
