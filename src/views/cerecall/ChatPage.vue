@@ -64,8 +64,8 @@
                                                     v-model="reportMsg"
                                                     label="Isi Report"
                                                 ></v-textarea>
-                                                <!-- <input type="file" @change="onFileSelected"> -->
-                                                <input name="image_url" id="foto" ref="fileM" type="file" @change="this.handleFileUpload">
+                                                <input type="file" @change="selectedFile($event)">
+                                                <!-- <input name="image_url" id="foto" ref="fileM" type="file" @change="this.handleFileUpload"> -->
                                             </v-card-text>                                        
                                             <v-card-actions>
                                                 <v-btn color="red" dark block @click="this.report">Kirim Report</v-btn>
@@ -191,8 +191,8 @@
                     </div>
 
                     <div class="action_chat">
-                        <input type="file" ref="file" style="display:none" @change="this.sendImg">
-                        <button class="file-img" @click="$refs.file.click()"> <v-icon large color="red">insert_photo</v-icon> </button>
+                        <!-- <input type="file" ref="file" style="display:none" @change="this.sendImg">
+                        <button class="file-img" @click="$refs.file.click()"> <v-icon large color="red">insert_photo</v-icon> </button> -->
                         <form @submit.prevent @keyup.enter="sendMsg">
                             <input class="msg" type="text" v-model="content" placeholder="Ketik pesan">
                         </form>
@@ -206,7 +206,7 @@
 </template>
 
 <script>
-    import Vue from "vue";
+    // import Vue from "vue";
     import { FulfillingBouncingCircleSpinner } from 'epic-spinners'
     import StarRating from 'vue-star-rating'
     import axios from 'axios';
@@ -220,13 +220,13 @@
         data () {
             return {    
                 dialog: [],
-                selectedFile: null,
+                // selectedFile: null,
                 cekTop: '',
                 btScroll:false,
                 interval:null,
                 loadChat:true,
                 snackbar:false,  
-                // file: '',
+                file: null,
                 // files: [],
                 review: '',
                 reportMsg: '',
@@ -246,20 +246,29 @@
                 textArea: false,
                 rating: 3,
                 currentRating: "No Rating",
+                cerecallTime: []
 
             }
         },
         methods: {
             moment,
 
-            onFileSelected(event){
-                this.selectedFile = event.target.files[0]
-                // console.log(event)
-            },
-
             setRating: function(rating) {
                 this.textArea = true
                 this.rating = rating
+            },
+
+            showChat(){
+                axios.get('/cerecall/chat/'+this.chatRunning.id)
+                .then(response => {
+                    this.loadChat = false
+                    this.chatItem = response.data.data
+                    // console.log(this.chatItem)
+                    setTimeout(() => (this.scrollBottom()), 0)
+                })
+                .catch(error => {
+                    console.log(error.response)
+                })
             },
 
             addRating(){
@@ -325,18 +334,28 @@
                 this.reportImg = this.$refs.fileM.files[0];
             },
 
+            selectedFile(event){
+                console.log(event)
+                this.file = event.target.files[0]
+            },
+
             report(event){
                 this.dialog_report = false
                 
-                let data = new FormData();
-                data.append('image_url', this.reportImg);
-                
-                axios.post('/cerecall/report/'+this.chatRunning.id,{
-                    student_id: this.studentInfo.student_id,
-                    teacher_id: this.teacherInfo.teacher_id,
-                    report: this.reportMsg,
-                    data
-                })
+                let formData = new FormData();
+                formData.append('photo', this.file);
+                // for(var pair of formData.entries()){
+                //     console.log(pair[0]+', '+pair[1]);
+                // }
+      
+                // axios.post('/cerecall/report/'+this.chatRunning.id, 
+                // {
+                //     student_id: this.studentInfo.student_id,
+                //     teacher_id: this.teacherInfo.teacher_id,
+                //     report: this.reportMsg,
+                //     formData
+                // })
+                axios.post('/auth/changePhotoProfile/'+this.$store.state.dataUser, formData)
                 .then(response=>{
                     this.snackbar = true
                     console.log(response.data)
@@ -355,10 +374,6 @@
             
         updated() {  
             var container = this.$el.querySelector("#box");
-
-            // console.log("cek",this.cekTop)
-            // console.log("top",container.scrollTop)
-
             if(container.scrollTop < this.cekTop){
                 this.btScroll = true
             }else if(container.scrollTop == this.cekTop){
@@ -380,17 +395,21 @@
                 this.chatRunning = response.data.data[0]
                 this.teacherInfo = response.data.data[0].teacher
                 this.studentInfo = response.data.data[0].student
-                // console.log(this.chatRunning)
-                axios.get('/cerecall/chat/'+this.chatRunning.id)
-                .then(response => {
-                    this.loadChat = false
-                    this.chatItem = response.data.data
-                    // console.log(this.chatItem)
-                    setTimeout(() => (this.scrollBottom()), 0)
+                
+                axios.get('/master/generalInformation')
+                .then(res => {
+                    this.cerecallTime = res.data.data[0].cerecall_time
+                    var diff = moment(new Date()).minutes() - moment(this.chatRunning.created_at).minutes()
+                    if(diff >= this.cerecallTime){
+                        this.addRating()
+                    }else{
+                        this.showChat()
+                    }
                 })
-                .catch(error => {
-                    console.log(error.response)
+                .catch(err => {
+                    console.log(err.response)
                 })
+
             })
             .catch(error => {
                 console.log(error.response)
