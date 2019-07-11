@@ -77,7 +77,8 @@ export default {
             // console.log(response.data.data)
             this.cekStatus = response.data.data.role
             if(this.cekStatus == 1){
-              return this.$router.push({name:'dashboard_guru'})
+              return window.location.href = "/guru"
+              // return this.$router.push({name:'dashboard_guru'})
             }
           })
           .catch(error => {
@@ -89,6 +90,8 @@ export default {
             if(response.data.status == true){
               this.dialogRunning = true
               this.data = response.data.data
+
+              console.log(this.data)
 
               //tambah kondisi waktu berakhir
             }
