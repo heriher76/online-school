@@ -314,7 +314,7 @@
                 .then(response => {
                     this.content = ''
                     setTimeout(() => (this.scrollBottom()), 0)
-                    console.log(response.data)
+                    // console.log(response.data)
                 })
                 .catch(error => {
                     this.content = ''
@@ -328,7 +328,7 @@
             },
 
             selectedFile(event){
-                console.log(event)
+                // console.log(event)
                 this.reportImg = event.target.files[0]
             },
 
