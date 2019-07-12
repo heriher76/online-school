@@ -37,7 +37,9 @@
                             </div>
 							<div id="box" style="overflow:auto; height:600px" class="my-2">
 							<div v-if="realtime()">
-	                            <v-layout class="live_chat mx-4" v-for="data in dataChatGuru.data">
+	                            <v-layout class="live_chat mx-4" v-for="data in dataChatGuru.data"
+					            v-bind:data="data"
+					            v-bind:key="data.id">
 									<v-card-text style="overflow:auto">
 										<div v-if="data!=null">
 											<v-layout justify-end v-if="data.sender==2">
