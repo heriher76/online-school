@@ -122,7 +122,6 @@
                             <v-icon color="#F44336" v-on="on">email</v-icon>
                             </router-link>
                             <router-link v-else :to="{name: 'cerecall_chat'}">
-                              <!-- {{cekChat.id}} -->
                               <v-icon color="#F44336" v-on="on">email</v-icon>
                               <span style="margin-left:-9px;top:12px;border-radius:100%;position:absolute;background:orange">
                                 <v-icon dark small>
@@ -212,7 +211,6 @@
               <v-icon color="#F44336" v-on="on">email</v-icon>
               </router-link>
               <router-link v-else :to="{name: 'cerecall_chat'}">
-                <!-- {{cekChat.id}} -->
                 <v-icon color="#F44336" v-on="on">email</v-icon>
                 <span style="margin-left:-9px;top:40px;border-radius:100%;position:absolute;background:orange">
                   <v-icon dark small>
@@ -323,7 +321,6 @@
                     <v-icon color="#F44336" v-on="on">email</v-icon>
                     </router-link>
                     <router-link v-else :to="{name: 'cerecall_chat'}">
-                      <!-- {{cekChat.id}} -->
                       <v-icon color="#F44336" v-on="on">email</v-icon>
                       <span style="margin-left:-9px;top:12px;border-radius:100%;position:absolute;background:orange">
                         <v-icon dark small>
@@ -445,7 +442,6 @@ export default {
   data() {
     return {
       chatRun: [],
-      cekChat: [],
 
       menuDrop:false,
       bt_src:true,
@@ -468,17 +464,16 @@ export default {
   },
 
   updated(){
-    if(this.$store.getters.loggedIn){
+    // if(this.$store.getters.loggedIn){
       axios.get('/cerecall/student/history/running')
       .then(response => {
         this.chatRun = response.data.data
-        this.cekChat = response.data.data[0]
-        // console.log(this.cekChat)
+        // console.log('running chat',this.chatRun)
       })
       .catch(error => {
-        console.log(error.response)
+        // console.log(error.response)
       })
-    }
+    // }
   },
 
   mounted(){      
@@ -494,7 +489,6 @@ export default {
       axios.get('/cerecall/student/history/running')
       .then(response => {
         this.chatRun = response.data.data
-        this.cekChat = response.data.data[0]
         // console.log(this.cekChat)
       })
       .catch(error => {
@@ -559,16 +553,16 @@ export default {
     //   menu = false
     //   this.$router.push({path:'/cerecall'})
     // }
-    attemptRunning(){
-      this.dialogRunning = false
-      this.$router.push({name: 'dashboard'})
-      let routeData = this.$router.resolve({name: 'exam_page', params:{id: this.data.tryout_id, scoringSystem: this.data.scoring_system, attemptId: this.data.id}});
-        window.open(routeData.href,
-                    'my_window', 
-                    'width=1600, height=620, resizable=no',
-                    '_blank'
-                    )
-    },
+    // attemptRunning(){
+    //   this.dialogRunning = false
+    //   this.$router.push({name: 'dashboard'})
+    //   let routeData = this.$router.resolve({name: 'exam_page', params:{id: this.data.tryout_id, scoringSystem: this.data.scoring_system, attemptId: this.data.id}});
+    //     window.open(routeData.href,
+    //                 'my_window', 
+    //                 'width=1600, height=620, resizable=no',
+    //                 '_blank'
+    //                 )
+    // },
   }
 }
 </script>
