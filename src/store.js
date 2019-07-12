@@ -29,6 +29,8 @@ export default new Vuex.Store({
     dataHistoryChatGuru: [],
     dataHistoryChatRunningGuru: [],
     dataChatGuru: [],
+    dataTeacherConfirm: [],
+    dataTeacherPerformance: []
   },
 
   getters: {
@@ -154,6 +156,12 @@ export default new Vuex.Store({
     },
     getDataChatGuru(state, dataChatGuru){
       state.dataChatGuru = dataChatGuru
+    },
+    getDataTeacherConfirm(state, dataTeacherConfirm){
+      state.dataTeacherConfirm = dataTeacherConfirm
+    },
+    getDataTeacherPerformance(state, dataTeacherPerformance){
+      state.dataTeacherPerformance = dataTeacherPerformance
     },
 
   },
@@ -770,15 +778,75 @@ export default new Vuex.Store({
         console.log(error)
       })
     },
+    getTeacherConfirm(context,data){
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
+      }
+      axios.get('/cerecall/teacher/confirm')
+      .then(response => {
+        context.commit('getDataTeacherConfirm', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    getTeacherPerformance(context,data){
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
+      }
+      axios.get('/cerecall/teacher/performance')
+      .then(response => {
+        context.commit('getDataTeacherPerformance', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
     sendMsg(context, credentials){
       return new Promise((resolve, reject) => {
         axios.defaults.headers = {
           'Authorization': 'Bearer ' + context.state.token
         }
-        axios.post('/cerecall/chat/'+credentials.id,{
-          content: credentials.pesan,
-          is_image: credentials.is_image,
-          sender: 2
+
+        let formData = new FormData();
+        formData.append('content', credentials.pesan);
+        formData.append('is_image', credentials.is_image);
+        formData.append('sender', 2);
+
+        axios.post('/cerecall/chat/'+credentials.id, formData)
+        .then(response => {
+          resolve(response)
+        })
+        .catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+    changeStatusTeacher(context, credentials){
+      return new Promise((resolve, reject) => {
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + context.state.token
+        }
+        axios.put('/cerecall/status', {
+          status: credentials.status
+        })
+        .then(response => {
+          resolve(response)
+        })
+        .catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+    changeStatusHistoryCall(context, credentials){
+      return new Promise((resolve, reject) => {
+        axios.defaults.headers = {
+          'Authorization': 'Bearer ' + context.state.token
+        }
+        axios.put('/cerecall/history/status/'+credentials.id, {
+          status: credentials.status
         })
         .then(response => {
           resolve(response)

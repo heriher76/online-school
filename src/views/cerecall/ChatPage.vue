@@ -304,11 +304,13 @@
 
             sendImg(){
                 this.contentImg = this.$refs.file.files[0];
-
+                console.log(this.contentImg)
                 let formData = new FormData();
                 formData.append('content', this.contentImg);
                 formData.append('is_image', 1);
                 formData.append('sender', 1)
+
+                console.log(this.formData)
 
                 axios.post('/cerecall/chat/'+this.chatRunning.id, formData)
                 .then(response => {

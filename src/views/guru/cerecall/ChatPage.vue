@@ -31,27 +31,19 @@
                                             <br>
                                     		<span class="pl-1">{{data.lesson}}</span>
 		                                </div>
-                                        <div style="float:right">
-		                                    <v-tooltip bottom>
-		                                        <template v-slot:activator="{ on }">  
-		                                            <v-btn @click="dialog1=true" icon dark flat>
-		                                                <v-icon v-on="on">done</v-icon>
-		                                            </v-btn>
-		                                        </template>
-		                                        <span>Akhiri</span>
-		                                    </v-tooltip>
-                                        </div>
                                         <div class="clear"></div>
                                     </div>
                                 </v-card>
                             </div>
 							<div id="box" style="overflow:auto; height:600px" class="my-2">
 							<div v-if="realtime()">
-	                            <v-layout class="live_chat mx-4" v-for="data in dataChatGuru.data">
+	                            <v-layout class="live_chat mx-4" v-for="data in dataChatGuru.data"
+					            v-bind:data="data"
+					            v-bind:key="data.id">
 									<v-card-text style="overflow:auto">
 										<div v-if="data!=null">
 											<v-layout justify-end v-if="data.sender==2">
-												<v-card style="border-radius:0px 15px 15px 18px;background:#F44336;color:white" class="pr-5 pl-3 py-2">
+												<v-card style="border-radius:15px 0px 15px 18px;background:#F44336;color:white" class="pr-5 pl-3 py-2">
 													<div class="caption">
 														{{data.updated_at.split(' ')[1].substr(0, 5)}}
 													</div>
@@ -59,13 +51,18 @@
 														{{data.content}}
 													</div>
 													<div v-else>
-														<a @click.stop="dialog = true">
-															<img :src="data.content" style="max-height:300px">
+														<a @click.stop="dialogId = data.id">
+															<img :src="data.content" style="max-height:100px; max-width:100px">
 														</a>
-														<v-dialog v-model="dialog" >
-															<v-layout class="text-md-center">
+														<v-dialog v-model="data.dialog" persistent>
+															<div  class="text-lg-right text-md-right text-sm-right text-xs-right" >
+															<v-btn color="white" flat @click="dialogId = null">
+                                    							<v-icon>clear</v-icon>
+                                							</v-btn>
+                                							</div>
+															<v-layout class="text-md-center"style="text-align: center">
 																<v-card-text>
-																	<img :src="data.content" style="max-height:550px">
+																	<img :src="data.content" style="max-height:550px;max-width: 500px">
 																</v-card-text>
 															</v-layout>
 														</v-dialog>
@@ -81,13 +78,18 @@
 														{{data.content}}
 													</div>
 													<div v-else>
-														<a @click.stop="dialog = true" >
-															<img :src="data.content" style="max-height:300px">
+														<a @click.stop="dialogId = data.id">
+															<img :src="data.content" style="max-height:300px; max-width:300px">
 														</a>
-														<v-dialog v-model="dialog">
-															<v-layout class="text-md-center">
+														<v-dialog v-model="data.dialog"persistent>
+															<div  class="text-lg-right text-md-right text-sm-right text-xs-right" >
+															<v-btn color="white" flat @click="dialogId = null">
+                                    							<v-icon>clear</v-icon>
+                                							</v-btn>
+                                							</div>
+															<v-layout class="text-md-center" style="text-align: center">
 																<v-card-text>
-																	<img :src="data.content" style="max-height:550px">
+																	<img :src="data.content" style="max-height:550px;max-width: 786px;text-align: center">
 																</v-card-text>
 															</v-layout>
 														</v-dialog>
@@ -112,7 +114,7 @@
 		                        </div>
 							</div>
 		                    <div class="action_chat">
-			                        <input type="file" ref="file" style="display: none">
+			                        <input type="file" ref="file" @change="sendMsg" style="display: none">
 			                        <button class="file-img" @click="$refs.file.click()">
 			                        	<v-icon large color="red">insert_photo</v-icon> 
 			                        </button>
@@ -141,14 +143,16 @@
 	export default {
         name: 'dashboard',
         data: () => ({
-        	dialog: false,
+        	dialog1: false,
+        	dialog2: false,
+        	dialogId: false,
         	pesan:null,
         	img:null,
         	is_image:null,
             cekTop: '',
             btScroll:false,
             is_load:false,
-            idChat:null
+            idChat:null,
         }),
         components: {
             SideBar,
@@ -180,26 +184,54 @@
 				}
 	      	},
 			realtime(){
-				this.getChatGuru()
-				return true
+				if(this.dataHistoryChatRunningGuru.data){
+					if(this.dataHistoryChatRunningGuru.data.length){
+						this.getChatGuru()
+						this.getHistoryChatRunningGuru()
+						return true
+					}else{
+		          		this.$router.push({path:'/guru/cerecall/'})
+					}
+				}
 			},
-            sendMsg(){
+            sendMsg(e){
             	this.cekImg()
             	if(this.is_image==1){
-            		this.pesan = this.$refs.file.value
-            	}
-	        	this.$store.dispatch('sendMsg',{
-	        		id:this.idChat,
-	        		pesan:this.pesan,
-	        		is_image:this.is_image
-	        	})
-		        .then(response => {
-	        		this.pesan = ''
-		        })
-		        .catch(error => {
-	        		this.pesan = ''
-		        })
-
+            		this.img = e.target.files[0]
+		        	this.$store.dispatch('sendMsg',{
+		        		id:this.idChat,
+		        		pesan:this.img,
+		        		is_image:this.is_image
+		        	})
+			        .then(response => {
+		        		this.pesan = ''
+		        		this.is_image = null
+				      	const input = this.$refs.file;
+				        input.type = 'text';
+				        input.type = 'file';
+			        })
+			        .catch(error => {
+		        		this.pesan = ''
+		        		this.is_image = null
+				      	const input = this.$refs.file;
+				        input.type = 'text';
+				        input.type = 'file';
+			        })
+            	}else{
+		        	this.$store.dispatch('sendMsg',{
+		        		id:this.idChat,
+		        		pesan:this.pesan,
+		        		is_image:this.is_image
+		        	})
+			        .then(response => {
+		        		this.pesan = ''
+		        		this.is_image = null
+			        })
+			        .catch(error => {
+		        		this.pesan = ''
+		        		this.is_image = null
+		        	})
+		        }
 			    this.is_load = false
             },
             cekImg(){
@@ -218,8 +250,7 @@
 		created(){
 			this.getChatGuru()
 			this.getHistoryChatRunningGuru()
-		},
-            
+		},            
         updated() {  
             var container = this.$el.querySelector("#box");
             if(container.scrollTop < this.cekTop){
@@ -231,6 +262,15 @@
         },
 		computed:{
 		    dataChatGuru(){
+		    	if(this.$store.state.dataChatGuru.data){
+		    		for(var i=0;i<this.$store.state.dataChatGuru.data.length;i++){
+		    			if(this.dialogId == this.$store.state.dataChatGuru.data[i].id){
+		    				this.$store.state.dataChatGuru.data[i].dialog = true;
+		    			}else{
+		    				this.$store.state.dataChatGuru.data[i].dialog = false;
+		    			}
+		    		}
+		    	}
 		    	return this.$store.state.dataChatGuru || {}
 		    },
 			dataHistoryChatRunningGuru(){
