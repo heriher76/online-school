@@ -7,7 +7,7 @@
                         <v-flex md4>
                             <v-img :src="require('../assets/images/logo_final2.png')" width="280px"></v-img>
                             <div style="margin:10px 20px;color:#424242">
-                                <p>PT. Cerebrum Media Tama Indonesia.</p>
+                                <p>PT Cerebrum Edukanesia Nusantara.</p>
                                 <p> Pondok Ganesha (Perumahan ITB) No 181 Rt 04 Rw 06. Jl Pondok, Jl. Melati 3, Melatiwangi, Cilengkrang, Bandung, Jawa Barat 40618.</p>
                             </div>
                         </v-flex>
@@ -56,7 +56,7 @@
             </v-card-title>
 
             <v-card-actions class="blue justify-center">
-            &copy;&nbsp;<strong> PT Cerebrum Media Tama Indonesia</strong>
+            &copy;&nbsp;<strong> PT Cerebrum Edukanesia Nusantara</strong>
             </v-card-actions>
       </v-card>
     </v-footer>
