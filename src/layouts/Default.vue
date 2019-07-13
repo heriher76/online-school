@@ -116,7 +116,7 @@ export default {
 
     var OneSignal = window.OneSignal || [];
     OneSignal.push(function() {
-      OneSignal.setDefaultNotificationUrl("http://localhost:8080/cerecall/chat");
+      OneSignal.setDefaultNotificationUrl("http://app.ceredinas.id/cerecall/chat");
     });
 
   },  

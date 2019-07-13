@@ -52,7 +52,7 @@
                             <v-card color="#546E7A" style="padding:15px;">
                                 <h4 class="headline" style="color:white;text-transform:capitalize">Grafik Nilai Kelas <label v-if="userClass != null">{{userClass.name_class}}</label></h4>
                                 <div style="background:white;height:264px;margin-top:14px">
-                                    <GChart
+                                    <!-- <GChart
                                         v-if="graf!=0"
                                         style="padding:30px 10px"
                                         :settings="{packages: ['bar']}"    
@@ -60,8 +60,12 @@
                                         :options="chartOptClass"
                                         :createChart="(el, google) => new google.charts.Bar(el)"
                                         @ready="onChartCReady"
+                                    /> -->
+                                    <GChart
+                                        v-if="graf!=0"
+                                        style="padding:30px 10px"
+                                        :data="graf"
                                     />
-
                                     <GChart
                                         v-else
                                         style="padding:30px 10px"
@@ -226,6 +230,11 @@
 
         data () {
             return {   
+                // chartData: [
+                //     ["", "Sales", "Profit"],
+                //     ["2014", 4.00, 0.00]
+                // ],
+
                 chartNull: [
                     ["Bulan", ""],
                     ["", 0]
@@ -315,7 +324,7 @@
                             if(element.score_student == null){
                                 n = 0
                             }else{
-                                n = element.score_student
+                                n = parseInt(element.score_student)
                             }
                             this.nilaiLess.push(n)
                         }
@@ -323,13 +332,12 @@
                             if(element.score_student == null){
                                 n = 0
                             }else{
-                                n = element.score_student
+                                n = parseInt(element.score_student)
                             }
                             this.nilaiLess.push(element.month, n)
                         }
                     });
                     this.chartLesson.push(this.monthLess, this.nilaiLess)
-                    
                 })
                 .catch(error => {
                     console.log(error.response)
@@ -388,7 +396,7 @@
                             if(element.score_student == null){
                                 n = 0
                             }else{
-                                n = element.score_student
+                                n = parseInt(element.score_student)
                             }
                             this.nilai.push(element.month, n)
                         }
@@ -396,7 +404,7 @@
                             if(element.score_student == null){
                                 n = 0
                             }else{
-                                n = element.score_student
+                                n = parseInt(element.score_student)
                             }
                             this.nilai.push(n)
                         }

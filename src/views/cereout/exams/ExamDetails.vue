@@ -55,8 +55,8 @@
                             </v-list-tile>
                             <v-list-tile>
                                 <v-list-tile-content>
-                                <v-list-tile-title>Batas Percobaan</v-list-tile-title>
-                                <v-list-tile-sub-title>{{detail.attempt_count}}</v-list-tile-sub-title>
+                                <v-list-tile-title>Sisa Batas Percobaan</v-list-tile-title>
+                                <v-list-tile-sub-title>{{detail.left_attempt.left_attempt}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
 
@@ -175,12 +175,14 @@
                           )
             }
             else{
-              return this.$swal('Mohon Maaf', 'Anda sudah mencapai batas maksimun percobaan', 'warning')
+              return this.$swal('Mohon Maaf', 'Anda sudah mencapai batas maksimun percobaan!', 'warning')
             }
 
           })
           .catch(error =>{
-              console.log(error)
+            // console.log(error.response)
+            this.loading = false
+            return this.$swal('Mohon Maaf', 'Gagal membuka tryout, mohon periksa koneksi jaringan anda!', 'warning')
           })
         }
         else if(this.user.membership == 0){
