@@ -509,7 +509,6 @@ export default {
       return this.$router.push({path:'/cerevid'})
     },
     linkCereout(){
-      // window.location.href = "/cereout/dashboard"
       this.$router.push({path:'/cereout/dashboard'})
     },
     linkCerelisasi(){
@@ -539,30 +538,25 @@ export default {
 
       if (!this.loadLogout) return
       setTimeout(() => (
-        this.loadLogout = false,
-        this.$router.push({path:'/logout'}) 
-      ), 3000)      
+      //   this.loadLogout = false,
+        // this.$router.push({path:'/logout'}) 
+
+        this.$store.dispatch('destroyToken')
+        .then(response => {
+          // console.log(response)
+          this.loadLogout = false
+          this.$router.push({path:'/'})
+
+            // window.location.href = "/"
+        })
+      ), 3000)     
+      
     },
 
     linkAkun(){
       this.menu = false
       this.$router.push({path:'/my account'})
     },
-
-    // linkAkun(){
-    //   menu = false
-    //   this.$router.push({path:'/cerecall'})
-    // }
-    // attemptRunning(){
-    //   this.dialogRunning = false
-    //   this.$router.push({name: 'dashboard'})
-    //   let routeData = this.$router.resolve({name: 'exam_page', params:{id: this.data.tryout_id, scoringSystem: this.data.scoring_system, attemptId: this.data.id}});
-    //     window.open(routeData.href,
-    //                 'my_window', 
-    //                 'width=1600, height=620, resizable=no',
-    //                 '_blank'
-    //                 )
-    // },
   }
 }
 </script>
