@@ -12,7 +12,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items v-show="loggedIn" class="hidden-sm-and-down" style="min-width:750px">
-        <v-btn flat @click="linkDashboard" active-class="false">Dashboard</v-btn>  
+        <v-btn flat @click="linkDashboard" active-class="false">Dashboard</v-btn>
         <v-btn flat @click="linkCerevid" active-class="false">Cerevid</v-btn>
         <v-btn flat @click="linkCerecall" active-class="false">Cerecall</v-btn>
       </v-toolbar-items>
@@ -61,12 +61,12 @@
             </v-menu>
         </div>
     </div>
-    <!-- header actions -->      
+    <!-- header actions -->
     </v-toolbar>
 
     <!-- navigation-drawer -->
-    <v-navigation-drawer 
-      v-model="drawer" 
+    <v-navigation-drawer
+      v-model="drawer"
       absolute
       temporary
     >
@@ -117,7 +117,7 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        
+
         <v-list-tile @click="linkCerevid">
           <v-list-tile-content>
             <v-list-tile-title>CEREVID</v-list-tile-title>
@@ -137,7 +137,7 @@
             <v-list-tile-title>PUSAT BANTUAN</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        
+
       </v-list>
     </v-navigation-drawer>
     <!-- /navigation-drawer -->
@@ -154,7 +154,7 @@
 
     <!-- footer -->
     <v-footer class="blue justify-center" dark height="auto">
-        &copy;2019 &nbsp; <strong>Tsamany Project</strong>
+        &copy; &nbsp; <strong>PT Cerebrum Edukanesia Nusantara</strong>
     </v-footer>
     <!-- /footer -->
   </v-app>
@@ -199,7 +199,7 @@
       // }
     },
 
-    mounted(){      
+    mounted(){
       var OneSignal = window.OneSignal || [];
       OneSignal.push(function() {
         OneSignal.setDefaultNotificationUrl("http://localhost:8080/guru/cerecall/chat");
@@ -262,8 +262,8 @@
         if (!this.loadLogout) return
         setTimeout(() => (
           this.loadLogout = false,
-          this.$router.push({path:'/logout'}) 
-        ), 3000)      
+          this.$router.push({path:'/logout'})
+        ), 3000)
       },
 
       linkAkun(){
@@ -276,7 +276,7 @@
 
 <style>
   .nav-action{
-    border-left:1px solid #E0E0E0; 
+    border-left:1px solid #E0E0E0;
     padding-left:25px
   }
 
@@ -298,7 +298,7 @@
 
   .nav-bal b{
     color:#B71C1C;
-    float:right; 
+    float:right;
     margin-top:3px
   }
 
