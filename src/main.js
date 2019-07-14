@@ -22,9 +22,7 @@ import Guru from "./layouts/Guru.vue";
 
 import GAuth from 'vue-google-oauth2'
 const gauthOption = {
-  clientId: '883336553629-klp11152039gualncajpc6qbumn3q131',
-  // 883336553629-klp11152039gualncajpc6qbumn3q131.apps.googleusercontent.com
-  // 598859419864-m3qpm4scbbe377icfjsufmbfvq51eppt
+  clientId: '598859419864-m3qpm4scbbe377icfjsufmbfvq51eppt',
   scope: 'profile email',
   prompt: 'select_account'
 }

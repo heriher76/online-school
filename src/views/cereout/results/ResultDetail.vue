@@ -126,7 +126,7 @@
                                             <div style="float:right; padding:2px 10px 0px 0px;">
                                                 <span style="color:#757575">Jawaban Benar: <b style="color:#0091EA">{{discussion.correct_answer}}</b></span>
                                                 <span style="margin:10px">|</span>
-                                                <span style="color:#757575">Jawaban Anda: <b style="color:#0091EA">{{discuss.answer}}<span v-if="discuss.answer==null">-</span></b></span>
+                                                <span style="color:#757575">Jawaban Anda: <b style="color:#0091EA"><span v-if="discuss.answer==0">-</span> <span v-else>{{discuss.answer}}</span> </b></span>
                                                 <span style="margin:10px">|</span>
                                                 <span style="color:#757575">Nilai Soal: <b style="color:#0091EA">{{discuss.score}}</b></span>
                                             </div>

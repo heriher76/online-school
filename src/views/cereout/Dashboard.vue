@@ -52,7 +52,7 @@
                             <v-card color="#546E7A" style="padding:15px;">
                                 <h4 class="headline" style="color:white;text-transform:capitalize">Grafik Nilai Kelas <label v-if="userClass != null">{{userClass.name_class}}</label></h4>
                                 <div style="background:white;height:264px;margin-top:14px">
-                                    <!-- <GChart
+                                    <GChart
                                         v-if="graf!=0"
                                         style="padding:30px 10px"
                                         :settings="{packages: ['bar']}"    
@@ -60,12 +60,12 @@
                                         :options="chartOptClass"
                                         :createChart="(el, google) => new google.charts.Bar(el)"
                                         @ready="onChartCReady"
-                                    /> -->
-                                    <GChart
+                                    />
+                                    <!-- <GChart
                                         v-if="graf!=0"
                                         style="padding:30px 10px"
                                         :data="graf"
-                                    />
+                                    /> -->
                                     <GChart
                                         v-else
                                         style="padding:30px 10px"

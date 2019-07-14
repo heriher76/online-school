@@ -38,18 +38,20 @@
                             </div>
                             <div class="clear"></div>
                         </v-card>
-
-                        <v-card style="padding:10px">
-                            <div style="float:left">
-                                <label style="font-size:12px;color:#757575">Whatsapp Admin</label><br>
-                                <span style="font-size:16px">{{item.whatsapp}}</span>
-                            </div>
-                            <div style="float:right;margin:11px 10px 0px 0px">
-                                <v-img :src="require('../../assets/images/whatsapp.png')" width="22px"></v-img>
-                                <!-- <v-icon>phone</v-icon> -->
-                            </div>
-                            <div class="clear"></div>
-                        </v-card>
+                        
+                        <a href="https://mauorder.online/diproses" style="cursor:pointer" target="_blank">
+                            <v-card style="padding:10px">
+                                <div style="float:left">
+                                    <label style="font-size:12px;color:#757575">Whatsapp Admin</label><br>
+                                    <span style="font-size:16px">{{item.whatsapp}}</span>
+                                </div>
+                                <div style="float:right;margin:11px 10px 0px 0px">
+                                    <v-img :src="require('../../assets/images/whatsapp.png')" width="22px"></v-img>
+                                    <!-- <v-icon>phone</v-icon> -->
+                                </div>
+                                <div class="clear"></div>
+                            </v-card>
+                        </a>
 
                         <v-card style="padding:10px">
                             <div style="float:left">

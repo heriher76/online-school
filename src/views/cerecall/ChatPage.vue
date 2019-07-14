@@ -84,8 +84,11 @@
 
                                                 <v-dialog v-model="dialog2" persistent max-width="380">
                                                     <v-card>
-                                                        <v-card-title class="headline" style="float:left">Ulasan Guru</v-card-title>
-                                                        <v-btn icon style="float:right;margin:15px" @click="dialog2 = false">
+                                                        <v-card-title class="headline" style="float:left">Ulasan Guru 
+                                                            <span v-show="txtDialogR" style="font-size:14px; color:red">Waktu konsultasi anda telah habis, silahkan berikan rating untuk guru ini!</span>
+                                                        </v-card-title>
+                                                        
+                                                        <v-btn v-show="btDialogR" icon style="float:right;margin:15px" @click="dialog2 = false">
                                                             <v-icon>close</v-icon>
                                                         </v-btn>
                                                         <div class="clear"></div>
@@ -218,6 +221,8 @@
 
         data () {
             return {    
+                time: 0,    
+                interval: null,
                 dialog: [],
                 cekTop: '',
                 btScroll:false,
@@ -236,6 +241,8 @@
                 teacherInfo: [],
                 studentInfo: [],
                 chatItem: [],     
+                btDialogR: true,
+                txtDialogR: false,
                 dialog_report:false,
                 dialog1: false,
                 dialog2: false,
@@ -304,13 +311,11 @@
 
             sendImg(){
                 this.contentImg = this.$refs.file.files[0];
-                console.log(this.contentImg)
+                // console.log(this.contentImg)
                 let formData = new FormData();
                 formData.append('content', this.contentImg);
                 formData.append('is_image', 1);
                 formData.append('sender', 1)
-
-                console.log(this.formData)
 
                 axios.post('/cerecall/chat/'+this.chatRunning.id, formData)
                 .then(response => {
@@ -323,10 +328,6 @@
                     setTimeout(() => (this.scrollBottom()), 0)
                     console.log(error.response)
                 })
-            },
-
-            handleFileUpload(){
-                this.reportImg = this.$refs.fileM.files[0];
             },
 
             selectedFile(event){
@@ -345,8 +346,10 @@
       
                 axios.post('/cerecall/report/'+this.chatRunning.id, formData)
                 .then(response=>{
+                    this.reportMsg = ''
+                    this.reportImg = null
                     this.snackbar = true
-                    console.log(response.data)
+                    // console.log(response.data)
                 })
                 .catch(error=>{
                     console.log(error.response)
@@ -357,7 +360,68 @@
                 var container = this.$el.querySelector("#box");
                 container.scrollTop = container.scrollHeight;   
                 this.cekTop = container.scrollTop
-            }
+            },
+
+            getRunningCerecall(){
+                axios.get('/cerecall/student/history/running')
+                .then(response => {
+                    this.chatRunning = response.data.data[0]
+                    this.teacherInfo = response.data.data[0].teacher
+                    this.studentInfo = response.data.data[0].student
+                    
+                    axios.get('/master/generalInformation')
+                    .then(res => {
+                        this.cerecallTime = res.data.data[0].cerecall_time
+                        var a = moment(new Date()) //.minutes()
+                        var b = moment(this.chatRunning.created_at) //.minutes()
+                        var diff = a.diff(b, 'minutes')
+
+                        if(diff > this.cerecallTime){
+                            // this.addRating()
+                            this.dialog2   = true
+                            this.txtDialogR= true
+                            this.btDialogR = false
+                        }else{
+                            this.showChat()
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err.response)
+                    })
+
+                })
+                .catch(error => {
+                    console.log(error.response)
+                })
+            },
+
+            toggleTimer() {
+                this.interval = setInterval(this.incrementTime, 1000);
+            },
+            incrementTime() {
+                this.time = parseInt(this.time) + 1;
+                axios.get('/cerecall/student/history/running')
+                .then(response => {
+                    this.chatRunning = response.data.data[0]
+                    axios.get('/master/generalInformation')
+                    .then(res => {
+                        this.cerecallTime = res.data.data[0].cerecall_time
+                        var a = moment(new Date()) //.minutes()
+                        var b = moment(this.chatRunning.created_at) //.minutes()
+                        var diff = a.diff(b, 'minutes')
+                        // console.log(diff)
+                        if(diff > this.cerecallTime){
+                            this.dialog2   = true
+                            this.btDialogR = false
+                            this.txtDialogR= true
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err.response)
+                    })
+                })
+                .catch(error => {console.log(error.response)})
+            },
         },
             
         updated() {  
@@ -378,30 +442,8 @@
         },
 
         created(){
-            axios.get('/cerecall/student/history/running')
-            .then(response => {
-                this.chatRunning = response.data.data[0]
-                this.teacherInfo = response.data.data[0].teacher
-                this.studentInfo = response.data.data[0].student
-                
-                axios.get('/master/generalInformation')
-                .then(res => {
-                    this.cerecallTime = res.data.data[0].cerecall_time
-                    var diff = moment(new Date()).minutes() - moment(this.chatRunning.created_at).minutes()
-                    if(diff >= this.cerecallTime){
-                        this.addRating()
-                    }else{
-                        this.showChat()
-                    }
-                })
-                .catch(err => {
-                    console.log(err.response)
-                })
-
-            })
-            .catch(error => {
-                console.log(error.response)
-            })
+            this.getRunningCerecall()
+            this.toggleTimer()
         },
     }
 </script>

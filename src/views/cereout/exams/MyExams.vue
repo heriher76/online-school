@@ -210,14 +210,14 @@
                                                 <v-list-tile v-if="ListName == 'Tryout Kadaluarsa'" class="list">
                                                     <v-list-tile-content>
                                                         <div><span style="color:#039BE5;font-size:15px; text-transform:capitalize">{{item.name}} | {{item.lesson}}</span><br>
-                                                        <span style="color:#616161;font-size:14px">Batas Percobaan: {{item.attempt_count}}</span></div>
+                                                        <span style="color:#616161;font-size:14px">Batas Percobaan: <span v-if="item.left_attempt!=null">{{item.left_attempt.left_attempt}}</span> <span v-else>{{item.attempt_count}}</span></span></div>
                                                     </v-list-tile-content>
                                                 </v-list-tile>
 
                                                 <v-list-tile v-else @click="examDetail(item)" class="list">
                                                     <v-list-tile-content>
                                                         <div><span style="color:#039BE5;font-size:15px; text-transform:capitalize">{{item.name}} | {{item.lesson}}</span><br>
-                                                        <span style="color:#616161;font-size:14px">Batas Percobaan: {{item.attempt_count}}</span></div>
+                                                        <span style="color:#616161;font-size:14px">Batas Percobaan: <span v-if="item.left_attempt!=null && ListName=='Daftar Tryout'">{{item.left_attempt.left_attempt}}</span> <span v-else-if="ListName=='Tryout Diambil'">{{item.left_attempt}}</span> <span v-else>{{item.attempt_count}}</span></span></div>
                                                     </v-list-tile-content>
                                                 </v-list-tile>
                                             </v-card>
@@ -255,56 +255,113 @@
                             </router-link>
                             <br>
                             <v-divider></v-divider> 
-                            <v-layout>
-                                <v-flex md5 sm12 xs12>
-                                    <h6 class="title" style="margin:12px 0px;color:#616161">Spesial Khusus Member Baru</h6>
+
+                            <v-container grid-list-lg>
+                                <v-layout row wrap>
+                                    <v-flex md5 sm12 xs12>
+                                        <h6 class="title" style="margin-bottom:12px;color:#616161">Spesial Khusus Member Baru</h6>
+                                        <v-carousel
+                                            style="border-radius:10px"
+                                            hide-delimiters
+                                            height=180
+                                            interval=6000
+                                            hide-controls
+                                        >
+                                            <div v-show="load_member" style="margin:50px auto; width:5%;">
+                                                <v-layout column justify-center align-center>
+                                                    <hollow-dots-spinner
+                                                        :animation-duration="1000"
+                                                        :dot-size="15"
+                                                        :dots-num="3"
+                                                        color="#ff1d5e"
+                                                    />
+                                                </v-layout>
+                                            </div>
+
+                                            <v-carousel-item
+                                                v-for="(item,i) in member"
+                                                :key="i"
+                                                :src="item.url"
+                                            >
+
+                                            <v-jumbotron
+                                                dark
+                                                src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
+                                            >
                                     
-                                    <v-carousel
-                                        style="border-radius:10px"
-                                        hide-delimiters
-                                        height=180
-                                        interval=6000
-                                        hide-controls
-                                    >
-                                        <div v-show="load_member" style="margin:50px auto; width:5%;">
+                                                <div style="margin:25px 25px 10px 25px; text-transform:capitalize;color:white">
+                                                    <span>Membership</span>
+                                                    <h4 class="display-1">
+                                                        <b v-if="item.name.length<30">{{item.name}}</b>
+                                                        <b v-else>{{item.name.substring(0,30)+"..."}}</b>
+                                                    </h4>
+                                                </div>
+                                                <div style="margin:0px 28px;border-top:1px solid white">
+                                                    <h6 class="title" v-if="item.coupon_name!=null" style="color:white;float:right;padding-top:10px">kode kupon: {{item.coupon_code}}</h6>
+                                                    <div class="clear"></div>
+                                                </div>
+                                            
+                                            </v-jumbotron>
+                                            </v-carousel-item>
+                                        </v-carousel> 
+                                    </v-flex>
+
+                                    <!-- hubungi kami -->
+                                    <v-flex md7 sm12 xs12 style="min-height:300px">
+                                        <h6 class="title" style="margin-bottom:12px;color:#616161">Hubungi Admin</h6>
+
+                                        <div v-show="load_data" style="margin:150px auto; width:5%;">
                                             <v-layout column justify-center align-center>
                                                 <hollow-dots-spinner
-                                                    :animation-duration="1000"
-                                                    :dot-size="15"
-                                                    :dots-num="3"
-                                                    color="#ff1d5e"
+                                                :animation-duration="1000"
+                                                :dot-size="15"
+                                                :dots-num="3"
+                                                color="#ff1d5e"
                                                 />
                                             </v-layout>
                                         </div>
 
-                                        <v-carousel-item
-                                            v-for="(item,i) in member"
-                                            :key="i"
-                                            :src="item.url"
-                                        >
-
-                                        <v-jumbotron
-                                            dark
-                                            src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
-                                        >
-                                
-                                            <div style="margin:25px 25px 10px 25px; text-transform:capitalize;color:white">
-                                                <span>Membership</span>
-                                                <h4 class="display-1">
-                                                    <b v-if="item.name.length<30">{{item.name}}</b>
-                                                    <b v-else>{{item.name.substring(0,30)+"..."}}</b>
-                                                </h4>
-                                            </div>
-                                            <div style="margin:0px 28px;border-top:1px solid white">
-                                                <h6 class="title" v-if="item.coupon_name!=null" style="color:white;float:right;padding-top:10px">kode kupon: {{item.coupon_code}}</h6>
+                                        <div v-show="listData" v-for="contact in contacts" :key="contact.id">
+                                            <v-card style="padding:10px">
+                                                <div style="float:left">
+                                                    <label style="font-size:12px;color:#757575">Telepon Admin</label><br>
+                                                    <span style="font-size:16px">{{contact.phone}}</span>
+                                                </div>
+                                                <div style="float:right;margin:10px 10px 0px 0px">
+                                                    <v-icon>phone</v-icon>
+                                                </div>
                                                 <div class="clear"></div>
-                                            </div>
-                                        
-                                        </v-jumbotron>
-                                        </v-carousel-item>
-                                    </v-carousel> 
+                                            </v-card>
+                                            
+                                            <a href="https://mauorder.online/diproses" style="cursor:pointer" target="_blank">
+                                                <v-card style="padding:10px">
+                                                    <div style="float:left">
+                                                        <label style="font-size:12px;color:#757575">Whatsapp Admin</label><br>
+                                                        <span style="font-size:16px">{{contact.whatsapp}}</span>
+                                                    </div>
+                                                    <div style="float:right;margin:11px 10px 0px 0px">
+                                                        <v-img :src="require('../../../assets/images/whatsapp.png')" width="22px"></v-img>
+                                                        <!-- <v-icon>phone</v-icon> -->
+                                                    </div>
+                                                    <div class="clear"></div>
+                                                </v-card>
+                                            </a>
+
+                                            <v-card style="padding:10px">
+                                                <div style="float:left">
+                                                    <label style="font-size:12px;color:#757575">Email Admin</label><br>
+                                                    <span style="font-size:16px">{{contact.email}}</span>
+                                                </div>
+                                                <div style="float:right;margin:10px 10px 0px 0px">
+                                                    <v-icon>email</v-icon>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </v-card>
+                                        </div>
                                     </v-flex>
-                            </v-layout>
+                                    <!-- /hubungi kami -->
+                                </v-layout>
+                            </v-container>
                         </div>      
                     </div>
                 </v-flex>  
@@ -332,6 +389,10 @@
         },
         data () {
             return {
+                load_data:true,
+                listData:false,
+                contacts: [],
+
                 menuList:false,
                 searchItem: [],
 
@@ -510,7 +571,7 @@
             },
 
             examDetail(data) {
-                this.$router.push({name: 'details_exams', params: {detail:data} })
+                this.$router.push({name: 'details_exams', params: {detail:data, ListName: this.ListName} })
             },
         },
 
@@ -548,6 +609,17 @@
             .then(response => {
                 this.load_member = false
                 this.member = response.data.data
+            })
+            .catch(error => {
+                console.log(error.response)
+            })
+
+            axios.get('/master/generalInformation')
+            .then(response => {
+                this.load_data = false
+                this.listData  = true
+                this.contacts  = response.data.data
+                // console.log(response.data.data)
             })
             .catch(error => {
                 console.log(error.response)
