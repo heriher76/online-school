@@ -202,7 +202,7 @@
     mounted(){
       var OneSignal = window.OneSignal || [];
       OneSignal.push(function() {
-        OneSignal.setDefaultNotificationUrl("http://app.ceredinas.id/guru/cerecall/chat");
+        OneSignal.setDefaultNotificationUrl("https://app.cerebrum.id/guru/cerecall/chat");
       });
       //===============================================================================
       axios.get('/auth/user')

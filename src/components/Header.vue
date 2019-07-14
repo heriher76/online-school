@@ -443,6 +443,9 @@ export default {
     return {
       chatRun: [],
 
+      time: 0,
+      interval: null,
+
       menuDrop:false,
       bt_src:true,
       src: false,
@@ -463,18 +466,18 @@ export default {
     }
   },
 
-  updated(){
-    // if(this.$store.getters.loggedIn){
-      axios.get('/cerecall/student/history/running')
-      .then(response => {
-        this.chatRun = response.data.data
-        // console.log('running chat',this.chatRun)
-      })
-      .catch(error => {
-        // console.log(error.response)
-      })
-    // }
-  },
+  // updated(){
+  //   // if(this.$store.getters.loggedIn){
+  //     axios.get('/cerecall/student/history/running')
+  //     .then(response => {
+  //       this.chatRun = response.data.data
+  //       console.log('running chat',this.chatRun)
+  //     })
+  //     .catch(error => {
+  //       // console.log(error.response)
+  //     })
+  //   // }
+  // },
 
   mounted(){      
     if(this.$store.getters.loggedIn){
@@ -486,19 +489,28 @@ export default {
       .catch(error => {
         console.log(error)
       })
-      axios.get('/cerecall/student/history/running')
-      .then(response => {
-        this.chatRun = response.data.data
-        // console.log(this.cekChat)
-      })
-      .catch(error => {
-        console.log(error.response)
-      })
+      
+      this.toggleTimer()
     }
 
   },
 
   methods: {
+    toggleTimer() {
+      this.interval = setInterval(this.incrementTime, 1000);
+    },
+    incrementTime() {
+      this.time = parseInt(this.time) + 1;
+      axios.get('/cerecall/student/history/running')
+      .then(response => {
+        this.chatRun = response.data.data
+        // console.log('running chat',this.chatRun)
+      })
+      .catch(error => {
+        console.log(error.response)
+      })
+    },
+
     linkHome(){
       this.$router.push({path:'/'})
     },

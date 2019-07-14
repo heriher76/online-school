@@ -8,7 +8,7 @@
                             <v-img :src="require('../assets/images/logo_final2.png')" width="280px"></v-img>
                             <div style="margin:10px 20px;color:#424242">
                                 <p>PT Cerebrum Edukanesia Nusantara.</p>
-                                <p> Pondok Ganesha (Perumahan ITB) No 181 Rt 04 Rw 06. Jl Pondok, Jl. Melati 3, Melatiwangi, Cilengkrang, Bandung, Jawa Barat 40618.</p>
+                                <p>Pondok Ganesha (Perumahan ITB) No 181 Rt 04 Rw 06. Jl Pondok, Jl. Melati 3, Melatiwangi, Cilengkrang, Bandung, Jawa Barat 40618.</p>
                             </div>
                         </v-flex>
 

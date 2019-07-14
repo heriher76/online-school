@@ -47,6 +47,7 @@
                     </v-flex>
                     <v-flex md6 sm12 xs12>
                         <v-list>
+                          <!-- {{detail}} -->
                           <v-list-tile>
                                 <v-list-tile-content>
                                 <v-list-tile-title>Pelajaran</v-list-tile-title>
@@ -55,8 +56,11 @@
                             </v-list-tile>
                             <v-list-tile>
                                 <v-list-tile-content>
-                                <v-list-tile-title>Sisa Batas Percobaan</v-list-tile-title>
-                                <v-list-tile-sub-title>{{detail.left_attempt.left_attempt}}</v-list-tile-sub-title>
+                                <v-list-tile-title>Batas Percobaan</v-list-tile-title>
+                                <v-list-tile-sub-title> 
+                                  <!-- <span v-if="detail.left_attempt!=null">{{detail.left_attempt.left_attempt}}</span> <span v-else>{{detail.attempt_count}}</span>  -->
+                                  <span v-if="detail.left_attempt!=null && ListName=='Daftar Tryout'">{{detail.left_attempt.left_attempt}}</span> <span v-else-if="ListName=='Tryout Diambil'">{{detail.left_attempt}}</span> <span v-else>{{detail.attempt_count}}</span>  
+                                </v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
 
@@ -133,7 +137,7 @@
   import axios from 'axios'
   
   export default {
-    props:["detail"],
+    props:["detail", "ListName"],
 
     data () {
       return {
@@ -182,7 +186,7 @@
           .catch(error =>{
             // console.log(error.response)
             this.loading = false
-            return this.$swal('Mohon Maaf', 'Gagal membuka tryout, mohon periksa koneksi jaringan anda!', 'warning')
+            return this.$swal('Mohon Maaf', 'Gagal membuka tryout, mohon periksa koneksi internet anda!', 'warning')
           })
         }
         else if(this.user.membership == 0){

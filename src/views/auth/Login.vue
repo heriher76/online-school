@@ -237,7 +237,8 @@
 
       loginFacebook(response) {
         this.$store.dispatch('retrieveTokenFacebook', {
-          access_token: response.authResponse.accessToken
+          access_token: response.authResponse.accessToken,
+          device_id: this.deviceId
         })
         .then(response => {
           this.btn_load = false
@@ -260,7 +261,8 @@
           console.log(GoogleUser)
           //on success
           this.$store.dispatch('retrieveTokenGoogle', {
-            token: GoogleUser.getAuthResponse().access_token
+            token: GoogleUser.getAuthResponse().access_token,
+            device_id: this.deviceId
           })
           .then(response => {
             // console.log(response)
