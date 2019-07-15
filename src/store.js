@@ -220,7 +220,7 @@ export default new Vuex.Store({
 
     //login facebook
     retrieveTokenFacebook(context, data){
-      axios.get('/login/facebook?token='+data.access_token+'&?device_id='+data.device_id)
+      axios.get('/login/facebook?token='+data.access_token+'&device_id='+data.device_id)
       .then(response => {
         const token    = response.data.access_token
         localStorage.setItem('access_token', token)
@@ -232,7 +232,7 @@ export default new Vuex.Store({
 
     //login google function
     retrieveTokenGoogle(context, data){
-      axios.get('/login/google?token='+data.token+'&?device_id='+data.device_id)
+      axios.get('/login/google?token='+data.token+'&device_id='+data.device_id)
       .then(response => {
         const token = response.data.access_token
         localStorage.setItem('access_token', token)

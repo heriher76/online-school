@@ -26,10 +26,16 @@
                                     
                                 <div style=" margin:0px 0px 0px 10px; float:left">
                                     <b style="font-size:18px;">{{teacherInfo.teacher_name}}</b><br>
-                                    <span>{{chatRunning.lesson}}</span>
+                                    <span>{{chatRunning.lesson}}</span><br>
+                                    <span class="hidden-md-and-up">
+                                        <b>Durasi:</b>&nbsp;<span v-if="time<0">0 Waktu habis</span><span v-else>{{time}} Menit lagi</span>
+                                    </span>
                                 </div>
 
-                                <div style="float:right">
+                                <div style="float:right;">
+                                    <span class="hidden-sm-and-down">
+                                        <b>Durasi Cerecall:</b>&nbsp;<span v-if="time<0">0 Waktu habis</span><span v-else>{{time}} Menit lagi</span>
+                                    </span>
                                     <v-tooltip bottom>
                                         <template v-slot:activator="{ on }">  
                                             <v-btn @click="dialog_report=true" icon dark flat>
@@ -85,7 +91,7 @@
                                                 <v-dialog v-model="dialog2" persistent max-width="380">
                                                     <v-card>
                                                         <v-card-title class="headline" style="float:left">Ulasan Guru 
-                                                            <span v-show="txtDialogR" style="font-size:14px; color:red">Waktu konsultasi anda telah habis, silahkan berikan rating untuk guru ini!</span>
+                                                            <span v-show="txtDialogR" style="font-size:14px; color:red">Waktu konsultasi anda telah habis, silahkan berikan ulasan untuk guru ini!</span>
                                                         </v-card-title>
                                                         
                                                         <v-btn v-show="btDialogR" icon style="float:right;margin:15px" @click="dialog2 = false">
@@ -213,6 +219,7 @@
     import StarRating from 'vue-star-rating'
     import axios from 'axios';
     import moment from 'moment'
+    // import { clearInterval } from 'timers';
     export default {
         components: {
             StarRating,
@@ -221,7 +228,8 @@
 
         data () {
             return {    
-                time: 0,    
+                diff: null,
+                time: null,   
                 interval: null,
                 dialog: [],
                 cekTop: '',
@@ -249,7 +257,7 @@
                 textArea: false,
                 rating: 3,
                 currentRating: "No Rating",
-                cerecallTime: []
+                // cerecallTime: []
 
             }
         },
@@ -371,13 +379,14 @@
                     
                     axios.get('/master/generalInformation')
                     .then(res => {
-                        this.cerecallTime = res.data.data[0].cerecall_time
+                        var cerecallTime = res.data.data[0].cerecall_time
                         var a = moment(new Date()) //.minutes()
                         var b = moment(this.chatRunning.created_at) //.minutes()
                         var diff = a.diff(b, 'minutes')
 
-                        if(diff > this.cerecallTime){
-                            // this.addRating()
+                        this.time = cerecallTime-diff
+
+                        if(diff > cerecallTime){
                             this.dialog2   = true
                             this.txtDialogR= true
                             this.btDialogR = false
@@ -398,19 +407,24 @@
             toggleTimer() {
                 this.interval = setInterval(this.incrementTime, 1000);
             },
+
             incrementTime() {
-                this.time = parseInt(this.time) + 1;
+                // this.time = parseInt(this.time) + 1;
+                // console.log('time',this.time)
                 axios.get('/cerecall/student/history/running')
                 .then(response => {
                     this.chatRunning = response.data.data[0]
                     axios.get('/master/generalInformation')
                     .then(res => {
-                        this.cerecallTime = res.data.data[0].cerecall_time
+                        var cerecallTime = res.data.data[0].cerecall_time
                         var a = moment(new Date()) //.minutes()
                         var b = moment(this.chatRunning.created_at) //.minutes()
                         var diff = a.diff(b, 'minutes')
-                        // console.log(diff)
-                        if(diff > this.cerecallTime){
+
+                        this.time = cerecallTime-diff
+
+                        if(diff > cerecallTime){
+                            clearInterval(this.interval)
                             this.dialog2   = true
                             this.btDialogR = false
                             this.txtDialogR= true

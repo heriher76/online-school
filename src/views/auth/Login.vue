@@ -178,7 +178,7 @@
                 OneSignal.getUserId(userId => {
                   // console.log(`player_id of the subscribed user is : ${userId}`)
                   this.deviceId = userId
-                  console.log('device_id',this.deviceId)
+                  // console.log('device_id',this.deviceId)
                   // Make a POST call to your server with the user ID
                 })
               }
