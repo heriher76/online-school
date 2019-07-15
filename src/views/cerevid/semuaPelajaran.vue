@@ -101,13 +101,13 @@
       outline
     ></v-select>
   </v-flex>
-  <div class="text-xs-center">
+  <v-flex style="text-align:center">
     <v-pagination
       v-model="pagination.page"
       :length="parseInt(Math.ceil(pagination.totalItems/pagination.rowsPerPage)) || 1"
       :total-visible="5"
     ></v-pagination>
-  </div>
+  </v-flex>
   </v-layout>
 </v-container>
 </template>

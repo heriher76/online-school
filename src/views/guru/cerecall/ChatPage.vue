@@ -178,7 +178,6 @@ export default {
               id: this.dataHistoryChatRunningGuru.data[i].id
             })
             .then(response => {
-							console.log(this.dataChatGuru.data.length)
               if (this.dataChatLength!=this.dataChatGuru.data.length) {
                 this.scrollBottom()
 								this.dataChatLength = this.dataChatGuru.data.length
@@ -257,7 +256,6 @@ export default {
       this.btScroll = true
     } else if (container.scrollTop == this.cekTop) {
       this.btScroll = false
-      this.is_load = false
     }
   },
   computed: {
