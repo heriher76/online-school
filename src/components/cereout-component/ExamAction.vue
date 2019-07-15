@@ -169,7 +169,6 @@ la {{latex}} -->
             </v-layout>
         </v-container>
         <LoadingScreen3 :loading="loadSubmit"></LoadingScreen3>
-
     </div>
 </template>
 
@@ -216,7 +215,16 @@ la {{latex}} -->
         },
 
         methods:{     
-            
+            //uncheck mark
+            uncheck(val) {
+                this.tmpanswer[val] = null
+                this.next(val)
+                this.hal   = val
+                this.detQuest = this.questions[val]
+                this.quest    = this.questions[val].question
+                this.options  = this.questions[val].option
+            },
+
             reRender() {
                 if(window.MathJax) {
                     console.log('rendering mathjax');
@@ -238,11 +246,6 @@ la {{latex}} -->
                         return this.submit()
                     }
                 })
-            },
-
-            //uncheck mark
-            uncheck(val) {
-                this.tmpanswer[val] = null
             },
 
             submit() {

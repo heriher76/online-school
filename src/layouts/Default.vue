@@ -116,9 +116,12 @@ export default {
 
     var OneSignal = window.OneSignal || [];
     OneSignal.push(function() {
-      OneSignal.setDefaultNotificationUrl("https://app.cerebrum.id/cerecall/chat");
+      OneSignal.isPushNotificationsEnabled(isEnabled => {
+        if (isEnabled) {
+          OneSignal.setDefaultNotificationUrl("https://app.cerebrum.id/cerecall/chat");
+        }
+      })
     });
-
   },  
 }
 </script>
