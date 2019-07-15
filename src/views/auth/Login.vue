@@ -93,7 +93,6 @@
           </v-facebook-login>
         </center>
         <br>
-
         <hr style="margin-bottom:15px">
         <label>Belum punya akun? <router-link to="/register" style="color:white">Daftar Sekarang</router-link></label>
       </div>
@@ -159,6 +158,7 @@
       this.toggleTimer()
 
       this.getOneSignalId()
+      
     },
 
     created() {
@@ -172,17 +172,17 @@
         try {
           const OneSignal = window.OneSignal || []
           OneSignal.push(() => {
-            // OneSignal.isPushNotificationsEnabled(isEnabled => {
-            //   if (isEnabled) {
+            OneSignal.isPushNotificationsEnabled(isEnabled => {
+              if (isEnabled) {
                 // user has subscribed
                 OneSignal.getUserId(userId => {
                   // console.log(`player_id of the subscribed user is : ${userId}`)
                   this.deviceId = userId
-                  // console.log(this.deviceId)`
+                  console.log('device_id',this.deviceId)
                   // Make a POST call to your server with the user ID
                 })
-            //   }
-            // })
+              }
+            })
           })
         } catch (exception) {
           console.log(exception)
@@ -206,7 +206,6 @@
         this.$store.dispatch('retrieveToken', {
           email: this.email,
           password: this.password,
-          // device_id: this.uuid
           device_id: this.deviceId
         })
         .then(response => {
@@ -258,8 +257,10 @@
       loginGoogle(){
         this.$gAuth.signIn()
         .then(GoogleUser => {
-          console.log(GoogleUser)
+          // console.log(GoogleUser)
           //on success
+            // console.log(GoogleUser.getAuthResponse().access_token)
+            // console.log(this.deviceId)
           this.$store.dispatch('retrieveTokenGoogle', {
             token: GoogleUser.getAuthResponse().access_token,
             device_id: this.deviceId
