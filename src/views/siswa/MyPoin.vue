@@ -7,7 +7,7 @@
                         <v-flex md7>
                             <v-card-title style="margin-top:2px; color:white">
                                 <h6 class="title" >Cerecoin Saya</h6>&nbsp;:&nbsp;
-                                <h4 class="display-1">{{user.balance}}</h4>&nbsp;<span>poin</span>
+                                <h4 class="display-1">{{user.balance}}</h4>&nbsp;<span>koin</span>
                             </v-card-title>
                         </v-flex>
                         <v-flex md5>
@@ -20,7 +20,7 @@
 
                 <v-card>
                     <div style="padding:18px">
-                        <h6 class="title">Top Up Poin</h6>
+                        <h6 class="title">Top Up Cerecoin</h6>
                         <p>Silahkan pilih jumlah nominal topup!</p>
                         <hr>
                         <div v-show="load_data" style="margin:0px auto; padding-top:40px; width:5%;">
@@ -33,8 +33,8 @@
 
                         <div v-for="nom in nominals" :key="nom.id" class="card-border">
                             <v-card @click="alertTopUp(nom)" style="cursor:pointer; padding:20px; text-align:center">
-                                <h6 class="title" >{{nom.nominal}} poin</h6>
-                                <span style="font-size:12px">Rp. {{formatPrice(nom.harga)}}</span>
+                                <h6 class="title" >{{nom.nominal}} koin</h6>
+                                <span style="font-size:14px">Rp. {{formatPrice(nom.harga)}}</span>
                             </v-card>
                         </div>
 
