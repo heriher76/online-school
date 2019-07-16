@@ -202,11 +202,11 @@
     mounted(){
       var OneSignal = window.OneSignal || [];
       OneSignal.push(function() {
-        OneSignal.isPushNotificationsEnabled(isEnabled => {
-          if (isEnabled) {
+        // OneSignal.isPushNotificationsEnabled(isEnabled => {
+        //   if (isEnabled) {
             OneSignal.setDefaultNotificationUrl("https://app.cerebrum.id/guru/cerecall/chat");
-          }
-        })
+        //   }
+        // })
       });
       //===============================================================================
       axios.get('/auth/user')

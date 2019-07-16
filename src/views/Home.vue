@@ -97,17 +97,17 @@
                   src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
               >
       
-                  <div style="margin:25px 25px 10px 25px; text-transform:capitalize;color:white">
-                      <span>Membership</span>
-                      <h4 class="display-1">
-                          <b v-if="item.name.length<30">{{item.name}}</b>
-                          <b v-else>{{item.name.substring(0,30)+"..."}}</b>
-                      </h4>
-                  </div>
-                  <div style="margin:0px 28px;border-top:1px solid white">
-                      <h6 class="title" v-if="item.coupon_name!=null" style="color:white;float:right;padding-top:10px">kode kupon: {{item.coupon_code}}</h6>
-                      <div class="clear"></div>
-                  </div>
+                <div style="margin:25px 25px 10px 25px; text-transform:capitalize;color:white">
+                    <span>Membership</span>
+                    <h5 class="headline">
+                        <b v-if="item.name.length<65">{{item.name}}</b>
+                        <b v-else>{{item.name.substring(0,65)+"..."}}</b>
+                    </h5>
+                </div>
+                <div style="margin:0px 28px;border-top:1px solid white">
+                    <h6 class="title" v-if="item.coupon_name!=null" style="color:white;float:right;padding-top:10px"><b>kode kupon:</b> {{item.coupon_code}}</h6>
+                    <div class="clear"></div>
+                </div>
               
               </v-jumbotron>
               </v-carousel-item>

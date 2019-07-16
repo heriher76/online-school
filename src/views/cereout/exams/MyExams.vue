@@ -258,7 +258,7 @@
 
                             <v-container grid-list-lg>
                                 <v-layout row wrap>
-                                    <v-flex md5 sm12 xs12>
+                                    <v-flex md6 sm12 xs12>
                                         <h6 class="title" style="margin-bottom:12px;color:#616161">Spesial Khusus Member Baru</h6>
                                         <v-carousel
                                             style="border-radius:10px"
@@ -291,13 +291,14 @@
                                     
                                                 <div style="margin:25px 25px 10px 25px; text-transform:capitalize;color:white">
                                                     <span>Membership</span>
-                                                    <h4 class="display-1">
-                                                        <b v-if="item.name.length<30">{{item.name}}</b>
-                                                        <b v-else>{{item.name.substring(0,30)+"..."}}</b>
-                                                    </h4>
+                                                    
+                                                    <h5 class="headline">
+                                                        <b v-if="item.name.length<55">{{item.name}}</b>
+                                                        <b v-else>{{item.name.substring(0,55)+"..."}}</b>
+                                                    </h5>
                                                 </div>
                                                 <div style="margin:0px 28px;border-top:1px solid white">
-                                                    <h6 class="title" v-if="item.coupon_name!=null" style="color:white;float:right;padding-top:10px">kode kupon: {{item.coupon_code}}</h6>
+                                                    <h6 class="title" v-if="item.coupon_name!=null" style="color:white;float:right;padding-top:10px"><b>kode kupon:</b> {{item.coupon_code}}</h6>
                                                     <div class="clear"></div>
                                                 </div>
                                             
@@ -307,7 +308,7 @@
                                     </v-flex>
 
                                     <!-- hubungi kami -->
-                                    <v-flex md7 sm12 xs12 style="min-height:300px">
+                                    <v-flex md6 sm12 xs12 style="min-height:300px">
                                         <h6 class="title" style="margin-bottom:12px;color:#616161">Hubungi Admin</h6>
 
                                         <div v-show="load_data" style="margin:150px auto; width:5%;">
