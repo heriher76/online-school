@@ -12,8 +12,7 @@
                       <v-divider></v-divider>
                     </div>
                       <v-container v-for="(questions, index) in materi.question">
-                        <p class="subheading">
-                          {{(index+1)+'. '+questions.question}}
+                        <p class="subheading" v-html="((index+1)+'. '+questions.question)">
                         </p>
                         <v-radio-group v-model="jawaban[index]">
                           <v-radio
