@@ -119,7 +119,7 @@
   									  ></v-divider>
   									  <v-list-tile>
   									    <v-list-tile-content>
-  									      <v-list-tile-title v-html="review.user">
+  									      <v-list-tile-title v-html="review.user.name">
   									      </v-list-tile-title>
   									      <v-rating
   									        v-model="review.star"
@@ -137,7 +137,7 @@
   								</v-list>
   					    </v-flex>
   				     </v-layout>
-               
+
                <v-container>
                  <v-layout justify-end>
                    <v-flex md12>
@@ -276,7 +276,7 @@
 				return this.$store.state.dataUser || {}
 			},
     },
-    mounted(){      
+    mounted(){
       if(this.$store.getters.loggedIn){
         axios.get('/auth/user')
         .then(response => {
@@ -292,7 +292,7 @@
       cekReview() {
         if(this.datas.data.reviews){
           for(var i=0;i<this.datas.data.reviews.length;i++){
-            if(this.datas.data.reviews[i].user==this.dataUser.name){
+            if(this.datas.data.reviews[i].user.id==this.dataUser.id){
               return true
               break;
             }

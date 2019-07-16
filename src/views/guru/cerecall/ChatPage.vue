@@ -19,7 +19,7 @@
               <v-card color="#fff0f1">
                 <div class="header_chat">
                   <v-card color="#F44336" dark style="padding:10px">
-                    <div class="head_info" v-for="data in dataHistoryChatRunningGuru.data">
+                    <div class="head_info" v-for="data in chatRunningGuru.data">
                       <div class="img_usr">
                         <img :src="data.student.student_photo" height="100%" width="100%" alt="">
                       </div>
@@ -37,7 +37,7 @@
                 </div>
                 <div id="box" style="overflow:auto; height:600px" class="my-2">
                   <div v-if="realtime()">
-                    <v-layout class="live_chat mx-4" v-for="data in dataChatGuru.data" v-bind:data="data" v-bind:key="data.id">
+                    <v-layout class="live_chat mx-4" v-for="data in chatGuru.data" v-bind:data="data" v-bind:key="data.id">
                       <v-card-text style="overflow:auto">
                         <div v-if="data!=null">
                           <v-layout justify-end v-if="data.sender==2">
@@ -161,6 +161,9 @@ export default {
     btScroll: false,
     dataChatLength: null,
     idChat: null,
+    send: false,
+    chatGuru: [],
+    chatRunningGuru:[]
   }),
   components: {
     SideBar,
@@ -184,7 +187,7 @@ export default {
               }
             })
             .catch(error => {
-              if (this.dataChatLength!=this.dataChatGuru.data.length) {
+              if (this.dataChatGuru.data) {
                 this.scrollBottom()
 								this.dataChatLength = this.dataChatGuru.data.length
               }
@@ -192,11 +195,40 @@ export default {
         }
       }
     },
+    requestChecker(){
+      var numberOfAjaxCAllPending = 0;
+      // Add a request interceptor
+      this.axios.interceptors.request.use(function (config) {
+          numberOfAjaxCAllPending++;
+          // show loader
+          return config;
+      }, function (error) {
+          return Promise.reject(error);
+      });
+
+      // Add a response interceptor
+      this.axios.interceptors.response.use(function (response) {
+          numberOfAjaxCAllPending--;
+          console.log("------------  Ajax pending", numberOfAjaxCAllPending);
+
+          if (numberOfAjaxCAllPending == 0) {
+              //hide loader
+          }
+          return response;
+      }, function (error) {
+          return Promise.reject(error);
+      });
+    },
     realtime() {
       if (this.dataHistoryChatRunningGuru.data) {
         if (this.dataHistoryChatRunningGuru.data.length) {
-          this.getChatGuru()
-          this.getHistoryChatRunningGuru()
+          this.chatGuru = this.dataChatGuru
+          this.chatRunningGuru = this.dataHistoryChatRunningGuru
+          if(!this.send){
+            this.getChatGuru()
+            this.getHistoryChatRunningGuru()
+            return true
+          }
           return true
         } else {
           this.$router.push({
@@ -205,7 +237,8 @@ export default {
         }
       }
     },
-    sendImg(e) {
+    async sendImg(e) {
+      this.send = true
       this.img = e.target.files[0]
       this.$store.dispatch('sendMsg', {
           id: this.idChat,
@@ -215,13 +248,16 @@ export default {
         .then(response => {
           this.pesan = ''
 					this.scrollBottom()
+          this.send = false
         })
         .catch(error => {
           this.pesan = ''
 					this.scrollBottom()
+          this.send = false
         })
     },
-    sendMsg() {
+    async sendMsg() {
+      this.send = true
 			if(this.pesan){
 	      var msg = this.pesan
 	      this.pesan = ''
@@ -233,10 +269,12 @@ export default {
         .then(response => {
           this.pesan = ''
 					this.scrollBottom()
+          this.send = false
         })
         .catch(error => {
           this.pesan = ''
 					this.scrollBottom()
+          this.send = false
         })
 			}
     },
