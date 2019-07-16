@@ -295,12 +295,12 @@ export default new Router({
       }
     },
 
-    {
-      path: "/cerecall/ulasan/:guruId",
-      name: 'cerecall_ulasan',
-      meta: {layout: "default"},
-      component: () => import("./views/cerecall/Ulasan.vue")
-    },
+    // {
+    //   path: "/cerecall/ulasan/:guruId",
+    //   name: 'cerecall_ulasan',
+    //   meta: {layout: "default"},
+    //   component: () => import("./views/cerecall/Ulasan.vue")
+    // },
 
     {
       path: "/cerecall/chat",

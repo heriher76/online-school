@@ -145,7 +145,7 @@
                 lesson_id: this.lessonId
               })
               .then(response => {
-                console.log(response.data)
+                // console.log(response.data)
                 return this.$swal(
                   'Berhasil!',
                   'Pengajuan anda sedang diproses mohon menunggu sebentar!',

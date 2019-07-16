@@ -219,7 +219,6 @@
     import StarRating from 'vue-star-rating'
     import axios from 'axios';
     import moment from 'moment'
-    // import { clearInterval } from 'timers';
     export default {
         components: {
             StarRating,
@@ -409,8 +408,6 @@
             },
 
             incrementTime() {
-                // this.time = parseInt(this.time) + 1;
-                // console.log('time',this.time)
                 axios.get('/cerecall/student/history/running')
                 .then(response => {
                     this.chatRunning = response.data.data[0]
