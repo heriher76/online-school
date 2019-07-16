@@ -10,7 +10,7 @@
             indeterminate
             ></v-progress-circular>
         </div>
-        <v-flex xs12 sm12 md8 style="padding-top: 15px;" v-show="!load_data">
+        <v-flex xs12 sm12 md12 style="padding-top: 15px;" v-show="!load_data">
           <v-toolbar color="#34495e" dark flat>
             <v-list-tile>
               <v-list-tile-title>{{this.post.title}}</v-list-tile-title>
@@ -25,14 +25,19 @@
               	    <div class="image_info">
               	        <v-img
               	            v-bind:src="post.image"
-              	            height="180"
+              	            height="360"
               	            class="grey darken-4"
+                            v-if="post.image"
               	        ></v-img>
+
+                        <v-layout justify-center style="position: relative;width:100%;height:100%;padding-bottom: 45%;" v-else>
+                          <iframe :src="'https://www.youtube.com/embed/'+this.post.video" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </v-layout>
               	    </div>
               	</v-flex>
               </center>
               <br>
-              <p>{{this.post.content}}</p>
+              <p v-html="this.post.content"></p>
                 <v-flex align-end flexbox>
                     <div v-if="post">
                       <div v-if="post.liked">
@@ -56,19 +61,12 @@
               <br><br><br>
               <b>{{this.post.created_at}}</b>
               <br>
-			  <label>Ditulis Oleh: {{this.post.user}}</label>
+			         <label>Ditulis Oleh: {{this.post.user}}</label>
             </div>
 
           </v-card>
         </v-flex>
-        <br>
-        <v-flex xs12 sm12 md4 v-show="!load_data">
-          <v-card-text>
-            <v-layout justify-center style="position: relative;width:100%;height:0;padding-bottom: 45%;">
-              <iframe :src="'https://www.youtube.com/embed/'+this.post.video" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </v-layout>
-          </v-card-text>
-        </v-flex>
+        
 	  </v-layout>
 
 	  <v-layout row wrap mt-3>

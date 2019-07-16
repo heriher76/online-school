@@ -26,7 +26,7 @@
     <template v-slot:item="props">
       <v-flex xs12 sm6 md4 lg3>
         <v-card>
-          <v-img v-bind:src="props.item.link_image" height="200px">
+          <v-img v-bind:src="props.item.link_image" height="320px">
             <v-flex offset-xs9 align-end flexbox>
               
             </v-flex>

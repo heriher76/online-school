@@ -24,7 +24,7 @@
                                             <div class="image_info">
                                                 <v-img
                                                     v-bind:src="this.link_image"
-                                                    height="180"
+                                                    height="300"
                                                     class="grey darken-4"
                                                 ></v-img>
                                             </div>
@@ -43,6 +43,101 @@
                                     </v-layout>
                                 </div>
                             </v-flex>
+                            
+                            <v-flex md12>
+                              <v-tabs color="#f5f5f5" next-icon="mdi-arrow-right-bold-box-outline" prev-icon="mdi-arrow-left-bold-box-outline" show-arrows>
+                                <v-tab :href="'#forum-diskusi'" style="text-decoration:none;">
+                                  Forum Diskusi
+                                </v-tab>
+                                <v-tabs-items>
+                                  <v-tab-item :value="'forum-diskusi'">
+                                    <v-card>
+                                      <v-container>
+                                        <v-layout>
+                                        <v-flex md12 sm12 xs12>
+                                          <v-list three-line>
+                                            <template v-for="item in this.forums">
+                                              <v-list-tile>
+                                                <v-list-tile-content style="overflow-x:auto">
+                                                  <v-card flat>
+                                                  <v-list-tile-title v-html="item.user.name" class="ml-3"></v-list-tile-title>
+                                                  <v-tooltip bottom>
+                                                    <template v-slot:activator="{ on }">
+                                                      <span v-on="on">
+                                                        <v-list-tile-sub-title v-html="item.content" class="ml-3"></v-list-tile-sub-title>
+                                                      </span>
+                                                    </template>
+                                                    <span>{{item.content}}</span>
+                                                  </v-tooltip>
+                                                </v-card>
+                                                </v-list-tile-content>
+                                                <v-list-tile-action>
+                                                  <v-list-tile-action-text>
+                                                    {{ item.created_at }}
+                                                  </v-list-tile-action-text>
+                                                  <v-list-tile-action-text>
+                                                    <a @click="tampilForm(item.id)">Balas</a>
+                                                  </v-list-tile-action-text>
+                                                </v-list-tile-action>
+                                              </v-list-tile>
+                                              <div v-if="item.nested.length">
+                                                <div v-for="comments in item.nested">
+                                                  <v-divider class="ml-4"></v-divider>
+                                                  <v-list-tile class="ml-4">
+                                                    <v-list-tile-content style="overflow-x:auto">
+                                                      <v-card flat>
+                                                        <v-list-tile-title v-html="comments.nested_name" class="ml-3"></v-list-tile-title>
+                                                        <v-tooltip bottom>
+                                                          <template v-slot:activator="{ on }">
+                                                            <span v-on="on">
+                                                              <v-list-tile-sub-title v-html="comments.nested_content" class="ml-3"></v-list-tile-sub-title>
+                                                            </span>
+                                                          </template>
+                                                          <span>{{comments.nested_content}}</span>
+                                                        </v-tooltip>
+                                                      </v-card>
+                                                    </v-list-tile-content>
+                                                    <v-list-tile-action>
+                                                      <!-- <v-list-tile-action-text>
+                                                        {{ comments.nested }}
+                                                      </v-list-tile-action-text> -->
+                                                      <!-- <v-list-tile-action-text>
+                                                        <a @click="tampilForm(item.id)">Balas</a>
+                                                      </v-list-tile-action-text> -->
+                                                    </v-list-tile-action>
+                                                  </v-list-tile>
+                                                </div>
+                                              </div>
+                                                  <v-container class="text-xs-center" v-show="forumId==item.id">
+                                                    <v-form @submit.prevent="kirimKomentar" ref="formKomentar">
+                                                      <v-textarea name="input" v-model="body_balas" label="Tulis Balasan" hint="Isi balasan anda disini."></v-textarea>
+                                                      <div class="justify-end">
+                                                        <v-btn :loading="loading_balas" :disabled="!formIsValidBalas" color="#2c3e50" class="white--text" @click="kirimKomentar">Kirim Balasan</v-btn>
+                                                      </div>
+                                                    </v-form>
+                                                  </v-container>
+                                              <v-divider></v-divider>
+                                            </template>
+                                          </v-list>
+                                          <v-container class="text-xs-center">
+                                            <v-form @submit.prevent="kirimPertanyaan" ref="form">
+                                              <v-textarea name="input-7-1" v-model="body" label="Tulis Pertanyaan" hint="Isi pertanyaan anda disini." :rules="[rules_body.required]"></v-textarea>
+                                              <div class="justify-end">
+                                                <v-btn :loading="loading" :disabled="!formIsValid" color="#2c3e50" class="white--text" @click="kirimPertanyaan">Kirim Pertanyaan</v-btn>
+                                              </div>
+                                            </v-form>
+                                          </v-container>
+                                          <v-layout class="justify-center">
+                                          </v-layout>
+                                        </v-flex>
+                                      </v-layout>
+                                      </v-container>
+                                    </v-card>
+                                  </v-tab-item>
+                                </v-tabs-items>
+                              </v-tabs>
+                            </v-flex>
+
                         </v-layout>
                 </v-flex>
                 
@@ -65,7 +160,7 @@
                                     <b>{{faculty.name}}</b>
                                     <ol class="side_bar">
                                         <li v-for="(department, i) in faculty.department" :key="department.id">
-                                            <router-link :to="{ name: 'cerejur_detail_jurusan', params: { name: department.name, capacity: department.capacity, description: department.description, video_url: department.video_url, interrested_num: department.interrested_num, passing_grade: department.passing_grade, id: department.id } }" style="cursor: pointer;">{{department.name}}</router-link>
+                                            <router-link :to="{ name: 'cerejur_detail_jurusan', params: { name: department.name, capacity: department.capacity, description: department.description, video_url: department.video_url, interrested_num: department.interrested_num, passing_grade: department.passing_grade, id: department.id, list_faculty: faculties } }" style="cursor: pointer;">{{department.name}}</router-link>
                                         </li>
                                         <br>
                                     </ol>
@@ -76,102 +171,6 @@
 
                     </div>
                 </v-flex>
-            </v-layout>
-
-            <v-layout row wrap mt-3>
-              <v-flex md8>
-                <v-tabs color="#f5f5f5" next-icon="mdi-arrow-right-bold-box-outline" prev-icon="mdi-arrow-left-bold-box-outline" show-arrows>
-                  <v-tab :href="'#forum-diskusi'" style="text-decoration:none;">
-                    Forum Diskusi
-                  </v-tab>
-                  <v-tabs-items>
-                    <v-tab-item :value="'forum-diskusi'">
-                      <v-card>
-                        <v-container>
-                          <v-layout>
-                          <v-flex md12 sm12 xs12>
-                            <v-list three-line>
-                              <template v-for="item in this.forums">
-                                <v-list-tile>
-                                  <v-list-tile-content style="overflow-x:auto">
-                                    <v-card flat>
-                                    <v-list-tile-title v-html="item.user.name" class="ml-3"></v-list-tile-title>
-                                    <v-tooltip bottom>
-                                      <template v-slot:activator="{ on }">
-                                        <span v-on="on">
-                                          <v-list-tile-sub-title v-html="item.content" class="ml-3"></v-list-tile-sub-title>
-                                        </span>
-                                      </template>
-                                      <span>{{item.content}}</span>
-                                    </v-tooltip>
-                                  </v-card>
-                                  </v-list-tile-content>
-                                  <v-list-tile-action>
-                                    <v-list-tile-action-text>
-                                      {{ item.created_at }}
-                                    </v-list-tile-action-text>
-                                    <v-list-tile-action-text>
-                                      <a @click="tampilForm(item.id)">Balas</a>
-                                    </v-list-tile-action-text>
-                                  </v-list-tile-action>
-                                </v-list-tile>
-                                <div v-if="item.nested.length">
-                                  <div v-for="comments in item.nested">
-                                    <v-divider class="ml-4"></v-divider>
-                                    <v-list-tile class="ml-4">
-                                      <v-list-tile-content style="overflow-x:auto">
-                                        <v-card flat>
-                                          <v-list-tile-title v-html="comments.nested_name" class="ml-3"></v-list-tile-title>
-                                          <v-tooltip bottom>
-                                            <template v-slot:activator="{ on }">
-                                              <span v-on="on">
-                                                <v-list-tile-sub-title v-html="comments.nested_content" class="ml-3"></v-list-tile-sub-title>
-                                              </span>
-                                            </template>
-                                            <span>{{comments.nested_content}}</span>
-                                          </v-tooltip>
-                                        </v-card>
-                                      </v-list-tile-content>
-                                      <v-list-tile-action>
-                                        <!-- <v-list-tile-action-text>
-                                          {{ comments.nested }}
-                                        </v-list-tile-action-text> -->
-                                        <!-- <v-list-tile-action-text>
-                                          <a @click="tampilForm(item.id)">Balas</a>
-                                        </v-list-tile-action-text> -->
-                                      </v-list-tile-action>
-                                    </v-list-tile>
-                                  </div>
-                                </div>
-                                    <v-container class="text-xs-center" v-show="forumId==item.id">
-                                      <v-form @submit.prevent="kirimKomentar" ref="formKomentar">
-                                        <v-textarea name="input" v-model="body_balas" label="Tulis Balasan" hint="Isi balasan anda disini."></v-textarea>
-                                        <div class="justify-end">
-                                          <v-btn :loading="loading_balas" :disabled="!formIsValidBalas" color="#2c3e50" class="white--text" @click="kirimKomentar">Kirim Balasan</v-btn>
-                                        </div>
-                                      </v-form>
-                                    </v-container>
-                                <v-divider></v-divider>
-                              </template>
-                            </v-list>
-                            <v-container class="text-xs-center">
-                              <v-form @submit.prevent="kirimPertanyaan" ref="form">
-                                <v-textarea name="input-7-1" v-model="body" label="Tulis Pertanyaan" hint="Isi pertanyaan anda disini." :rules="[rules_body.required]"></v-textarea>
-                                <div class="justify-end">
-                                  <v-btn :loading="loading" :disabled="!formIsValid" color="#2c3e50" class="white--text" @click="kirimPertanyaan">Kirim Pertanyaan</v-btn>
-                                </div>
-                              </v-form>
-                            </v-container>
-                            <v-layout class="justify-center">
-                            </v-layout>
-                          </v-flex>
-                        </v-layout>
-                        </v-container>
-                      </v-card>
-                    </v-tab-item>
-                  </v-tabs-items>
-                </v-tabs>
-              </v-flex>
             </v-layout>
 
         </v-container>
@@ -214,7 +213,6 @@
 		      }
 		    },
 		    kirimKomentar() {
-		    	console.log(this.forumId)
 		      this.loading_balas=true
 		      axios.post('/cerejur/forum', {
 		      	univ_id : this.id,
