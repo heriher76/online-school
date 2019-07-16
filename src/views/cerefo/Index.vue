@@ -51,7 +51,12 @@
 	                                                v-bind:src="post.image"
 	                                                height="180"
 	                                                class="grey darken-4"
+	                                            	v-if="post.image"
 	                                            ></v-img>
+
+	                                            <v-layout justify-center style="position: relative;width:100%;height:100%;padding-bottom: 60%;" v-else>
+	                                              <iframe :src="'https://www.youtube.com/embed/'+post.video" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	                                            </v-layout>
 	                                        </div>
 	                                    </v-flex>
 
@@ -59,8 +64,8 @@
 	                                        <div style="margin: 0px 25px">
 	                                        	<label>{{post.created_at}}</label>
 	                                            <h5 style="color:black;text-transform:capitalize" class="headline">{{post.title}}</h5>
-	                                            <p v-if="post.content.length<350">{{post.content}}</p>
-	                                            <p v-else>{{post.content.substring(0,350)+"..."}}</p>
+	                                            <p v-if="post.content.length<350" v-html="post.content"></p>
+	                                            <p v-else v-html='post.content.substring(0,350)+"..."'></p>
 	                                            <router-link :to="{name: 'cerefo_detail_post', params: {id: post.id, data: post} }">Baca Selanjutnya >></router-link>
 												<br>
 	                                            <v-flex align-end flexbox>
