@@ -272,9 +272,18 @@ export default new Vuex.Store({
 
     // /logout function
     destroyToken(context){
-      axios.defaults.headers = {
-        'Authorization': 'Bearer ' + context.state.token
-      }
+      // axios.defaults.headers = {
+      //   'Authorization': 'Bearer ' + context.state.token
+      // }
+        
+        // localStorage.removeItem('access_token')
+        // localStorage.removeItem('getDataUser')
+        // localStorage.removeItem('getDataClassId')
+        // localStorage.removeItem('getStatus')
+        // context.commit('destroyDataClassId')
+        // context.commit('destroyToken')
+        // context.commit('destroydataUser')
+        // context.commit('destroyStatus')
 
       if(context.getters.loggedIn) {
         // return new Promise((resolve, reject) => {
@@ -288,8 +297,9 @@ export default new Vuex.Store({
             context.commit('destroyToken')
             context.commit('destroydataUser')
             context.commit('destroyStatus')
+            this.$router.push({path:'/'})
             // resolve(response)
-            // console.log(response.data)
+            console.log(response.data)
           })
           .catch(error => {
             localStorage.removeItem('access_token')
@@ -300,6 +310,7 @@ export default new Vuex.Store({
             context.commit('destroyToken')
             context.commit('destroydataUser')
             context.commit('destroyStatus')
+            console.log(error.response)
             // reject(error)
           })
         // })

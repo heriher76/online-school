@@ -21,7 +21,7 @@
         <h2 class="display-1">Selamat Datang</h2>
         <p>Daftar akun baru</p>    
           
-        <!-- <form @submit.prevent="signUp" @keyup.enter="signUp"> -->
+        <!-- <form @submit.prevent @keyup.enter="signUp"> -->
           <v-text-field 
             label="Nama"
             dark

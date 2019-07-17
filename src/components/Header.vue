@@ -552,14 +552,14 @@ export default {
       setTimeout(() => (
       //   this.loadLogout = false,
         // this.$router.push({path:'/logout'}) 
-
         this.$store.dispatch('destroyToken')
         .then(response => {
-          // console.log(response)
           this.loadLogout = false
           this.$router.push({path:'/'})
-
-            // window.location.href = "/"
+          // window.location.href = "/"
+        }).catch(error => {
+          this.loadLogout = false
+          this.$router.push({path:'/'})
         })
       ), 3000)     
       

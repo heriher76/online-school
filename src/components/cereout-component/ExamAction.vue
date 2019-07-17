@@ -10,16 +10,19 @@
                             </v-flex>
                             <v-flex md3>             
                                 <!-- timer -->
-                                <div style="width:160px;float:right;">
+                                <div style="width:280px;float:right;">
                                     <h6 class="subheading" style="margin-top:7px;float:left">Durasi:&nbsp;</h6> 
-                                    <countdown v-show="StartTimer" :time="totalTime" :transform="transform">
+                                    <countdown v-show="StartTimer" :time="totalTime" :transform="transform" :leading-zero="false">
                                         <template slot-scope="props">
                                             <div>
+                                                <div style="border:1px solid #BDBDBD;float:left;padding:8px;">
+                                                    <span>{{ props.hours }} Jam</span>
+                                                </div>
                                                 <div style="border:1px solid #BDBDBD;float:left;padding:8px;margin:0px 5px;">
-                                                    <span>{{ props.minutes }}</span>
+                                                    <span>{{ props.minutes }} Menit</span>
                                                 </div>
                                                 <div style="border:1px solid #BDBDBD;float:left;padding:8px;">
-                                                    <span> {{ props.seconds }}</span>
+                                                    <span> {{ props.seconds }} Detik</span>
                                                 </div>
                                                 <div class="clear"></div>
                                             </div>
@@ -37,11 +40,14 @@
                                             </v-card>
                                         </v-dialog>
 
+                                        <div style="border:1px solid red;float:left;padding:8px">
+                                            <span>00 Jam</span>
+                                        </div>
                                         <div style="border:1px solid red;float:left;padding:8px;margin:0px 5px">
-                                            <span>00</span>
+                                            <span>00 Menit</span>
                                         </div>
                                         <div style="border:1px solid red;float:left;padding:8px">
-                                            <span>00</span>
+                                            <span>00 Detik</span>
                                         </div>
                                         <div class="clear"></div>
                                     </div>
@@ -79,21 +85,6 @@
                             </div>
                             <v-container>
                                 <p style="font-size:16px" v-html="quest"></p>
-
-                                <!-- <textarea v-model="formula" cols="30" rows="10"></textarea> -->
-                                <!-- <vue-mathjax :formula="cek"></vue-mathjax> -->
-
-                                <!-- <p>$$e^{i\pi} + 1 = 0$$</p>  -->
-
-                                <!-- <p style="font-size:16px" v-html="coba"></p> -->
-
-<!-- cek {{cek}} <br>
-la {{latex}} -->
-
-                                <!-- <input v-model="latex"/><br> -->
-                                <!-- <div :key="latex">{{latex}}</div> -->
-                                <!-- <div :key="latex">{{latex}}</div> -->
-   
                                 <div v-for="(n,key,index) in options" :key="n.index">
                                     <label v-if="n.option!=null">
                                         <input type="radio" style="float:left;margin:4px" :value="key" v-model="tmpanswer[hal]" name="opt">
@@ -108,8 +99,7 @@ la {{latex}} -->
                     <v-card>
                         <div style="float:left">
                             <v-btn v-if="hal!=0" @click="previous(hal)" small> <v-icon left dark>keyboard_arrow_left</v-icon> Soal Sebelumnya</v-btn>
-                            <v-btn v-if="hal+1!=questions.length" @click="next(hal)" small>soal Berikutnya <v-icon right dark>keyboard_arrow_right</v-icon></v-btn>  
-                            
+                            <v-btn v-if="hal+1!=questions.length" @click="next(hal)" small>soal Berikutnya <v-icon right dark>keyboard_arrow_right</v-icon></v-btn>       
                         </div>
                         <div style="float:right;">
                             <v-btn @click="uncheck(hal)" small>hapus jawaban</v-btn>
