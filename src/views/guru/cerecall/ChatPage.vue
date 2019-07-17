@@ -31,6 +31,14 @@
                         <br>
                         <span class="pl-1">{{data.lesson}}</span>
                       </div>
+
+                      <div class="mt-3  hidden-sm-and-down" style="float:right">
+                        <span class="pr-1">Durasi cerecall : {{time}} Menit lagi</span>
+                      </div>
+
+                      <div class="hidden-md-and-up" style="float:left">
+                        <span class="pr-1 pt-2">Durasi cerecall : {{time}} Menit lagi</span>
+                      </div>
                       <div class="clear"></div>
                     </div>
                   </v-card>
@@ -148,6 +156,7 @@
 <script>
 import SideBar from '../../../components/guru/SideBar'
 import axios from 'axios'
+import moment from 'moment'
 
 export default {
   name: 'dashboard',
@@ -163,7 +172,10 @@ export default {
     idChat: null,
     send: false,
     chatGuru: [],
-    chatRunningGuru:[]
+    chatRunningGuru:[],
+    time: null,
+    cerecallTime : null,
+    diff: null,
   }),
   components: {
     SideBar,
@@ -195,38 +207,35 @@ export default {
         }
       }
     },
-    requestChecker(){
-      var numberOfAjaxCAllPending = 0;
-      // Add a request interceptor
-      this.axios.interceptors.request.use(function (config) {
-          numberOfAjaxCAllPending++;
-          // show loader
-          return config;
-      }, function (error) {
-          return Promise.reject(error);
-      });
+    getCerecallTime(){
+		axios.get('/master/generalInformation')
+		.then(res => {
+			this.cerecallTime = res.data.data[0].cerecall_time
+		})
+		.catch(err => {
+			console.log(err.response)
+		})
+    },
+    waktuChat(){
+    	if(this.dataHistoryChatRunningGuru.data){
+	    	var a = moment(new Date()) //.minutes()
+			var b = moment(this.dataHistoryChatRunningGuru.data[0].created_at) //.minutes()
+			this.diff = a.diff(b, 'minutes')
 
-      // Add a response interceptor
-      this.axios.interceptors.response.use(function (response) {
-          numberOfAjaxCAllPending--;
-          console.log("------------  Ajax pending", numberOfAjaxCAllPending);
-
-          if (numberOfAjaxCAllPending == 0) {
-              //hide loader
-          }
-          return response;
-      }, function (error) {
-          return Promise.reject(error);
-      });
+			this.time = this.cerecallTime-this.diff
+			if(this.diff > this.cerecallTime){
+				clearInterval(this.interval)
+			}
+		}
     },
     realtime() {
+    	this.waktuChat()
       if (this.dataHistoryChatRunningGuru.data) {
-        if (this.dataHistoryChatRunningGuru.data.length) {
+        if (this.diff <= this.cerecallTime) {
           this.chatGuru = this.dataChatGuru
           this.chatRunningGuru = this.dataHistoryChatRunningGuru
           if(!this.send){
             this.getChatGuru()
-            this.getHistoryChatRunningGuru()
             return true
           }
           return true
@@ -247,12 +256,12 @@ export default {
         })
         .then(response => {
           this.pesan = ''
-					this.scrollBottom()
+		  this.scrollBottom()
           this.send = false
         })
         .catch(error => {
           this.pesan = ''
-					this.scrollBottom()
+		  this.scrollBottom()
           this.send = false
         })
     },
@@ -268,12 +277,12 @@ export default {
         })
         .then(response => {
           this.pesan = ''
-					this.scrollBottom()
+		  this.scrollBottom()
           this.send = false
         })
         .catch(error => {
           this.pesan = ''
-					this.scrollBottom()
+		  this.scrollBottom()
           this.send = false
         })
 			}
@@ -287,6 +296,7 @@ export default {
   created() {
     this.getChatGuru()
     this.getHistoryChatRunningGuru()
+    this.getCerecallTime()
   },
   updated() {
     var container = this.$el.querySelector("#box");

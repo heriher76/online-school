@@ -755,36 +755,16 @@ export default new Vuex.Store({
       })
     },
     getHistoryChatRunningGuru(context){
-      var numberOfAjaxCAllPending = 0;
-
-      // Add a request interceptor
-      axios.interceptors.request.use(function (config) {
-          numberOfAjaxCAllPending++;
-          // show loader
-          return config;
-      }, function (error) {
-          return Promise.reject(error);
-      });
-
-      // Add a response interceptor
-      axios.interceptors.response.use(function (response) {
-          numberOfAjaxCAllPending--;
-          return response;
-      }, function (error) {
-          return Promise.reject(error);
-      });
-      if (numberOfAjaxCAllPending == 0) {
-        axios.defaults.headers = {
-          'Authorization': 'Bearer ' + context.state.token
-        }
-        axios.get('/cerecall/teacher/history/running')
-        .then(response => {
-          context.commit('getDataHistoryChatRunningGuru', response.data)
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      axios.defaults.headers = {
+        'Authorization': 'Bearer ' + context.state.token
       }
+      axios.get('/cerecall/teacher/history/running')
+      .then(response => {
+        context.commit('getDataHistoryChatRunningGuru', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
     getChatGuru(context,data){
       var numberOfAjaxCAllPending = 0;
