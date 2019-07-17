@@ -19,7 +19,7 @@
               <v-card color="#fff0f1">
                 <div class="header_chat">
                   <v-card color="#F44336" dark style="padding:10px">
-                    <div class="head_info" v-for="data in dataHistoryChatRunningGuru.data">
+                    <div class="head_info" v-for="data in chatRunningGuru.data">
                       <div class="img_usr">
                         <img :src="data.student.student_photo" height="100%" width="100%" alt="">
                       </div>
@@ -31,13 +31,21 @@
                         <br>
                         <span class="pl-1">{{data.lesson}}</span>
                       </div>
+
+                      <div class="mt-3  hidden-sm-and-down" style="float:right">
+                        <span class="pr-1">Durasi cerecall : {{time}} Menit lagi</span>
+                      </div>
+
+                      <div class="hidden-md-and-up" style="float:left">
+                        <span class="pr-1 pt-2">Durasi cerecall : {{time}} Menit lagi</span>
+                      </div>
                       <div class="clear"></div>
                     </div>
                   </v-card>
                 </div>
                 <div id="box" style="overflow:auto; height:600px" class="my-2">
                   <div v-if="realtime()">
-                    <v-layout class="live_chat mx-4" v-for="data in dataChatGuru.data" v-bind:data="data" v-bind:key="data.id">
+                    <v-layout class="live_chat mx-4" v-for="data in chatGuru.data" v-bind:data="data" v-bind:key="data.id">
                       <v-card-text style="overflow:auto">
                         <div v-if="data!=null">
                           <v-layout justify-end v-if="data.sender==2">
@@ -148,6 +156,7 @@
 <script>
 import SideBar from '../../../components/guru/SideBar'
 import axios from 'axios'
+import moment from 'moment'
 
 export default {
   name: 'dashboard',
@@ -161,6 +170,12 @@ export default {
     btScroll: false,
     dataChatLength: null,
     idChat: null,
+    send: false,
+    chatGuru: [],
+    chatRunningGuru:[],
+    time: null,
+    cerecallTime : null,
+    diff: null,
   }),
   components: {
     SideBar,
@@ -184,7 +199,7 @@ export default {
               }
             })
             .catch(error => {
-              if (this.dataChatLength!=this.dataChatGuru.data.length) {
+              if (this.dataChatGuru.data) {
                 this.scrollBottom()
 								this.dataChatLength = this.dataChatGuru.data.length
               }
@@ -192,11 +207,37 @@ export default {
         }
       }
     },
+    getCerecallTime(){
+		axios.get('/master/generalInformation')
+		.then(res => {
+			this.cerecallTime = res.data.data[0].cerecall_time
+		})
+		.catch(err => {
+			console.log(err.response)
+		})
+    },
+    waktuChat(){
+    	if(this.dataHistoryChatRunningGuru.data){
+	    	var a = moment(new Date()) //.minutes()
+			var b = moment(this.dataHistoryChatRunningGuru.data[0].created_at) //.minutes()
+			this.diff = a.diff(b, 'minutes')
+
+			this.time = this.cerecallTime-this.diff
+			if(this.diff > this.cerecallTime){
+				clearInterval(this.interval)
+			}
+		}
+    },
     realtime() {
+    	this.waktuChat()
       if (this.dataHistoryChatRunningGuru.data) {
-        if (this.dataHistoryChatRunningGuru.data.length) {
-          this.getChatGuru()
-          this.getHistoryChatRunningGuru()
+        if (this.diff <= this.cerecallTime) {
+          this.chatGuru = this.dataChatGuru
+          this.chatRunningGuru = this.dataHistoryChatRunningGuru
+          if(!this.send){
+            this.getChatGuru()
+            return true
+          }
           return true
         } else {
           this.$router.push({
@@ -205,7 +246,8 @@ export default {
         }
       }
     },
-    sendImg(e) {
+    async sendImg(e) {
+      this.send = true
       this.img = e.target.files[0]
       this.$store.dispatch('sendMsg', {
           id: this.idChat,
@@ -214,14 +256,17 @@ export default {
         })
         .then(response => {
           this.pesan = ''
-					this.scrollBottom()
+		  this.scrollBottom()
+          this.send = false
         })
         .catch(error => {
           this.pesan = ''
-					this.scrollBottom()
+		  this.scrollBottom()
+          this.send = false
         })
     },
-    sendMsg() {
+    async sendMsg() {
+      this.send = true
 			if(this.pesan){
 	      var msg = this.pesan
 	      this.pesan = ''
@@ -232,11 +277,13 @@ export default {
         })
         .then(response => {
           this.pesan = ''
-					this.scrollBottom()
+		  this.scrollBottom()
+          this.send = false
         })
         .catch(error => {
           this.pesan = ''
-					this.scrollBottom()
+		  this.scrollBottom()
+          this.send = false
         })
 			}
     },
@@ -249,6 +296,7 @@ export default {
   created() {
     this.getChatGuru()
     this.getHistoryChatRunningGuru()
+    this.getCerecallTime()
   },
   updated() {
     var container = this.$el.querySelector("#box");

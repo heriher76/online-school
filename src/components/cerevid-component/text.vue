@@ -12,8 +12,7 @@
                       {{materi.title}}
                     </div>
                     <v-divider></v-divider>
-                    <p class="my-4">
-                      {{materi.content}}
+                    <p class="my-4" v-html="materi.content">
                     </p>
                   </v-container>
                 </div>

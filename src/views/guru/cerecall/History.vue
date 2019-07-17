@@ -66,17 +66,6 @@
 			        </v-flex>
 			    	<v-flex md12>
 			            <v-card>
-			            	<modal name="consult" :height="200">
-			            	  <center>
-			            	  	<h1>Ada yang ingin konsultasi nih !</h1>
-			            	  	<br>
-			            	  	<h2>{{ siswa }}</h2>
-			            	  	<p>{{ pelajaran }}</p>
-			            	  	<br>
-			            	  	<v-btn @click="accept" color="primary" depressed>Terima</v-btn>
-			            	  	<v-btn @click="hide" color="warning" depressed>Tolak</v-btn>
-			            	  </center>
-			            	</modal>
 			            <v-tabs
 					      v-model="active"
 					      color="red"
@@ -194,8 +183,6 @@
           chatActive: false,
           confirm: 0,
           user: [],
-          siswa:'heri',
-          pelajaran: 'Pelajaran Bahasa Inggris',
 	        headers_konfirmasi:[
 						{text:'No.',value:'index'},
 						{text:'Nama Murid',value:'student_name'},
@@ -251,6 +238,7 @@
 			  getTeacherConfirm(){
 	            this.$store.dispatch('getTeacherConfirm')
 	            .then(response => {
+	            	this.getHistoryChatRunningGuru()
 	            })
 	          },
 			  realtime(){
@@ -261,7 +249,7 @@
 	          	this.$modal.show('consult');
 	          },
 	          accept () {
-	          	return this.$router.push({path:'/guru/cerecall/chat/'})
+	          	return window.location.href = '/guru/cerecall/chat/';
 	          },
 	          hide () {
 	            this.$modal.hide('consult');
