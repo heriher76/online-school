@@ -12,25 +12,21 @@
                       <v-divider></v-divider>
                     </div>
                       <v-container v-for="(questions, index) in materi.question">
-                        <p class="subheading" v-html="((index+1)+'. '+questions.question)">
+                        <p class="subheading" v-html="'<b>Soal no. '+(index+1)+'</b>'+questions.question">
                         </p>
                         <v-radio-group v-model="jawaban[index]">
-                          <v-radio
-                            :label="questions.option_a"
-                            value="A"
-                          ></v-radio>
-                          <v-radio
-                            :label="questions.option_b"
-                            value="B"
-                          ></v-radio>
-                          <v-radio
-                            :label="questions.option_c"
-                            value="C"
-                          ></v-radio>
-                          <v-radio
-                            :label="questions.option_d"
-                            value="D"
-                          ></v-radio>
+                          <v-radio value="A">
+                            <template slot="label"><span class="mt-3" v-html="questions.option_a"></span></template>
+                          </v-radio>
+                          <v-radio value="B">
+                            <template slot="label"><span class="mt-3" v-html="questions.option_b"></span></template>
+                          </v-radio>
+                          <v-radio value="C">
+                            <template slot="label"><span class="mt-3" v-html="questions.option_c"></span></template>
+                          </v-radio>
+                          <v-radio value="D">
+                            <template slot="label"><span class="mt-3" v-html="questions.option_d"></span></template>
+                          </v-radio>
                         </v-radio-group>
                         <v-divider></v-divider>
                       </v-container>
