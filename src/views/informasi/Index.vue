@@ -18,28 +18,59 @@
                                     ></v-progress-circular>
                                 </div>
 
-                                <div v-for="info in datas" :key="info.id">
-                                    <v-layout row wrap="" style="border-bottom:1px solid grey; padding:10px 0px">
-                                        <v-flex md5 sm12 xs12>
-                                            <div class="image_info">
-                                                <v-img
-                                                    v-bind:src="info.url"
-                                                    height="180"
-                                                    class="grey darken-4"
-                                                ></v-img>
-                                            </div>
-                                        </v-flex>
+                                <v-data-iterator
+                                    :items="this.datas"
+                                    :rows-per-page-items="rowsPerPageItems"
+                                    :pagination.sync="pagination"
+                                    content-class="layout row wrap"
+                                    :expand="expand"
+                                    no-data-text="Universitas tidak tersedia"
+                                    no-results-text="Universitas tidak ditemukan"
+                                    :hide-actions="true"
+                                >
+                                
+                                    <template v-slot:item="props">
+                                        <v-layout row wrap="" style="border-bottom:1px solid grey; padding:10px 0px; width:100%">
+                                            <v-flex md5 sm12 xs12>
+                                                <div class="image_info">
+                                                    <v-img
+                                                        v-bind:src="props.item.url"
+                                                        height="180"
+                                                        class="grey darken-4"
+                                                    ></v-img>
+                                                </div>
+                                            </v-flex>
 
-                                        <v-flex md7 sm12 xs12>
-                                            <div style="margin: 0px 25px">
-                                                <h5 style="color:black;text-transform:capitalize" class="headline">{{info.title}}</h5>
-                                                <p v-if="info.caption.length<350">{{info.caption}}</p>
-                                                <p v-else>{{info.caption.substring(0,350)+"..."}}</p>
-                                                <router-link :to="{name: 'detail_informasi', params: {data: info} }">Read more >></router-link>
-                                            </div>
-                                        </v-flex>                      
-                                    </v-layout>
-                                </div>
+                                            <v-flex md7 sm12 xs12>
+                                                <div style="margin: 0px 25px">
+                                                    <h5 style="color:black;text-transform:capitalize" class="headline">{{props.item.title}}</h5>
+                                                    <p v-if="props.item.caption.length<350">{{props.item.caption}}</p>
+                                                    <p v-else>{{props.item.caption.substring(0,350)+"..."}}</p>
+                                                    <router-link :to="{name: 'detail_informasi', params: {data: props.item} }">Read more >></router-link>
+                                                </div>
+                                            </v-flex>                      
+                                        </v-layout>
+                   
+                                    </template>
+                                </v-data-iterator>
+                                <br>
+                                <!-- <v-layout row wrap>
+                                    <v-flex class="mt-4" offset-md10 offset-sm8 md2 sm4 xs12 style="text-align:right">
+                                        <v-select
+                                        :items="rowsPerPageItems"
+                                        label="Tampil Data per Halaman"
+                                        v-model="pagination.rowsPerPage"
+                                        outline
+                                        ></v-select>
+                                    </v-flex> -->
+                                    <div class="text-xs-center">
+                                        <v-pagination
+                                        v-model="pagination.page"
+                                        :length="parseInt(Math.ceil(pagination.totalItems/pagination.rowsPerPage)) || 1"
+                                        :total-visible="5"
+                                        ></v-pagination>
+                                    </div>
+                                <!-- </v-layout> -->
                             </v-flex>
                         </v-layout>
                 </v-flex>
@@ -66,7 +97,23 @@
             return{
                 load_data:true,    
                 datas:[],
+                expand: true,
+                pagination: {
+                    rowsPerPage: 4,
+                    totalItems: 0,
+                    page: 1
+                },
+                search: '',
+                rowsPerPageItems: [4,8,12],
             }
+        },
+
+        methods: {
+            // filterSearch(items, search, filter) {
+            //     return items.filter(datas => {
+            //         return datas.name.toLowerCase().includes(search.toLowerCase())
+            //     })
+            // }
         },
 
         mounted(){
@@ -74,6 +121,7 @@
             .then(response => {
                 this.load_data = false
                 this.datas = response.data.data
+                this.pagination.totalItems = response.data.data.length
             })
             .catch(error =>{
                 console.log(error)
