@@ -40,7 +40,7 @@
               v-if="item.category=='sliders'" 
               :src="item.url"
             >
-              <h5 style="color:white; margin-top:250px; padding:10px 20px; background:rgba(0,0,0,0.2)" class="headline">{{item.title}}</h5>
+              <!-- <h5 style="color:white; margin-top:250px; padding:10px 20px; background:rgba(0,0,0,0.2)" class="headline">{{item.title}}</h5> -->
             </v-carousel-item>
           </router-link>
         </v-carousel> 

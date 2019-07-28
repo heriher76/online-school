@@ -272,19 +272,6 @@ export default new Vuex.Store({
 
     // /logout function
     destroyToken(context){
-      // axios.defaults.headers = {
-      //   'Authorization': 'Bearer ' + context.state.token
-      // }
-        
-        // localStorage.removeItem('access_token')
-        // localStorage.removeItem('getDataUser')
-        // localStorage.removeItem('getDataClassId')
-        // localStorage.removeItem('getStatus')
-        // context.commit('destroyDataClassId')
-        // context.commit('destroyToken')
-        // context.commit('destroydataUser')
-        // context.commit('destroyStatus')
-
       if(context.getters.loggedIn) {
         // return new Promise((resolve, reject) => {
           axios.get('/auth/logout')

@@ -28,7 +28,7 @@
 
     <!-- footer -->
     <v-footer class="blue justify-center" dark height="auto">
-      &copy;&nbsp;<strong> PT Cerebrum Media Tama Indonesia</strong>
+      &copy;&nbsp;<strong> PT Cerebrum Edukanesia Nusantara</strong>
     </v-footer>
     <!-- /footer -->
   </v-app>
