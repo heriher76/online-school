@@ -11,9 +11,9 @@ export default {
                 this.$router.push({path:'/'})
                 // window.location.href = "/"
             })
-            // .catch(error => {
-            //     console.log(error)
-            //   })
+            .catch(error => {
+                this.$router.push({path:'/'})
+            })
     }
 }
 </script>

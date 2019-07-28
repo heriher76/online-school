@@ -208,11 +208,20 @@
             //uncheck mark
             uncheck(val) {
                 this.tmpanswer[val] = null
-                this.next(val)
-                this.hal   = val
-                this.detQuest = this.questions[val]
-                this.quest    = this.questions[val].question
-                this.options  = this.questions[val].option
+                
+                if(val < this.questions.length-1){
+                    this.next(val)
+                    this.hal      = val
+                    this.detQuest = this.questions[val]
+                    this.quest    = this.questions[val].question
+                    this.options  = this.questions[val].option
+                }else{
+                    this.previous(val)
+                    this.hal      = val
+                    this.detQuest = this.questions[val]
+                    this.quest    = this.questions[val].question
+                    this.options  = this.questions[val].option
+                }
             },
 
             reRender() {

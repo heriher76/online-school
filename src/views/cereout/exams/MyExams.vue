@@ -200,8 +200,8 @@
                                 </v-card>
                                 
                                 
-                                <v-card v-show="listPanel" v-if="items != 0">
-                                    <v-list>
+                                <v-card v-show="listPanel" style="height:395px;" v-if="items != 0">
+                                    <v-list style="width:100%; height:100%; overflow:auto">
                                         <div
                                             v-for="item in items"
                                             :key="item.id"
@@ -338,7 +338,7 @@
                                                 <v-card style="padding:10px">
                                                     <div style="float:left">
                                                         <label style="font-size:12px;color:#757575">Whatsapp Admin</label><br>
-                                                        <span style="font-size:16px">{{contact.whatsapp}}</span>
+                                                        <span style="font-size:16px">Chat sekarang!</span>
                                                     </div>
                                                     <div style="float:right;margin:11px 10px 0px 0px">
                                                         <v-img :src="require('../../../assets/images/whatsapp.png')" width="22px"></v-img>
