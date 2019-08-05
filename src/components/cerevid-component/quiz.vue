@@ -27,6 +27,9 @@
                           <v-radio value="D">
                             <template slot="label"><span class="mt-3" v-html="questions.option_d"></span></template>
                           </v-radio>
+                          <v-radio value="E" v-if="questions.option_e">
+                            <template slot="label"><span class="mt-3" v-html="questions.option_e"></span></template>
+                          </v-radio>
                         </v-radio-group>
                         <v-divider></v-divider>
                       </v-container>
