@@ -23,16 +23,18 @@
               <center>
               	<v-flex md5 sm12 xs12>
               	    <div class="image_info">
-              	        <v-img
-              	            v-bind:src="post.image"
-              	            height="360"
-              	            class="grey darken-4"
-                            v-if="post.image"
-              	        ></v-img>
-
-                        <v-layout justify-center style="position: relative;width:100%;height:100%;padding-bottom: 45%;" v-else>
+                        <v-layout justify-center style="position: relative;width:100%;height:100%;padding-bottom: 45%;" v-if="post.video">
                           <iframe :src="'https://www.youtube.com/embed/'+this.post.video" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </v-layout>
+
+              	        <v-img
+              	            v-bind:src="post.image"
+              	            width="auto"
+                            height="auto"
+              	            class="grey darken-4"
+                            v-else
+                            style="max-height: 360px;"
+              	        ></v-img>
               	    </div>
               	</v-flex>
               </center>
