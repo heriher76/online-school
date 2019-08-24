@@ -6,7 +6,7 @@
         <v-flex xs12 sm12 md8>
           <v-card-text>
             <v-layout justify-center style="position: relative;width:100%;height:0;padding-bottom: 45%;">
-              <iframe :src="'https://www.youtube.com/embed/'+this.video_url" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <iframe :src="'https://www.youtube.com/embed/'+this.video_url+'?autoplay=1'" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </v-layout>
             <br>
             <v-toolbar color="#34495e" dark flat>

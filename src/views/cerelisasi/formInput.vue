@@ -65,6 +65,17 @@
 								    ></v-select>
 										<div>{{select}}</div>
 
+									<v-select
+									  v-if="tipe == 1"
+								      v-model="semester"
+								      :items="list_semester"
+								      item-value="value"
+								      item-text="name"
+								      label="Batas Semester"
+								      required
+								      @change="selected1 = true"
+								    ></v-select>
+
 									<label>Pilihan Pertama</label>
 									<!-- Pilihan Pertama -->
 									<v-layout row wrap>
@@ -151,6 +162,19 @@
 										    ></v-select>
 										</v-flex>
 									</v-layout>
+
+									<div v-if="semester != '' && tipe == 1">
+									<label>Nilai Per Semester</label>
+								    <v-text-field
+								    	v-for="(i) in 6"
+								    	v-model="nilai_semester[i-1]"
+								     	:counter="3"
+								     	:rules="nilaiRules"
+								     	:label="'Semester '+i"
+								     	required
+								     	@change="inputNilaiSem(i)"
+								    ></v-text-field>
+								    </div>
 
 									<label>Skor TPS</label>
 								    <v-text-field
@@ -256,10 +280,11 @@
       tps3: '',
       tps4: '',
       tka: [],
+      nilai_semester: [],
       tipe: '',
       item_tipe: [
       	{value: 0, name: 'SBMPTN'},
-      	{value: 1, name: 'Raport'}
+      	{value: 1, name: 'SNMPTN'}
       ],
       kelas: '',
       item_kelas: [],
@@ -273,6 +298,15 @@
 	  option1_university_name: '',
 	  option2_university_name: '',
 	  option3_university_name: '',
+	  semester: '',
+	  list_semester: [
+	  	{value: 1, name: 1},
+	  	{value: 2, name: 2},
+	  	{value: 3, name: 3},
+	  	{value: 4, name: 4},
+	  	{value: 5, name: 5},
+	  	{value: 6, name: 6}
+	  ],
 	  btn_load: false
     }),
     created() {
@@ -435,10 +469,14 @@
     },
 	methods: {
 	  inputTka (index) {
-	  	console.log(index)
-	  	console.log(this.tka)
 	  	let test = this.tka
 	  	console.log(test[0])
+	  },
+	  inputNilaiSem (i) {
+	  	console.log(i)
+	  	console.log(this.nilai_semester)
+	  	let tests = this.nilai_semester
+	  	console.log(tests[0])
 	  },
       validate () {
         if (this.$refs.form.validate()) {
