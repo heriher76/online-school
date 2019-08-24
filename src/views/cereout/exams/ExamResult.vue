@@ -1,5 +1,19 @@
 <template>
     <div class="exam_result">
+        <v-snackbar
+            v-model="snackbar"
+            :multi-line="'multi-line'"
+            :right="'right'"
+            :timeout="6000"
+            :top="'top'"
+            color="rgba(0,0,0,0.5)"
+        >
+            File soal tidak tersedia !
+            <v-btn :color="'col'" flat @click="snackbar = false">
+            Close
+            </v-btn>
+        </v-snackbar>
+
         <!-- sub content -->
         <v-container fluid grid-list-md>
             <v-layout row wrap>
@@ -19,6 +33,7 @@
                                 <li><a @click="showDetail">DETAIL</a></li>
                                 <li><a @click="alert" v-show="discussMenu1">PEMBAHASAN</a></li>
                                 <li><a @click="showDiscuss" v-show="discussMenu2">PEMBAHASAN</a></li>
+                                <li><a @click="downloadSoal">DOWNLOAD SOAL</a></li>
                             </ul>
                         </div>
 
@@ -278,6 +293,7 @@
             </v-layout>
         </v-container>
         <!-- /sub content -->
+        <!-- {{IdCereout}} -->
     </div>
 </template>
 
@@ -288,10 +304,11 @@
 
     export default {
         name: 'exam_result',
-        props: ["id", "data"],
+        props: ["id", "data", "IdCereout"],
 
         data (){
             return {
+                snackbar: false,
                 latex: '',
                 detailV: true,
                 discussV: false,
@@ -318,6 +335,19 @@
         },
 
         methods: {
+            //download soal
+            downloadSoal(){
+                axios.get('/cereouts/file/'+this.IdCereout)
+                .then(res=>{
+                    this.forceFileDownload(res)
+                    // console.log(res)
+                })
+                .catch(err=>{
+                    console.log(err.res)
+                    this.snackbar = true
+                })
+            },
+
             //discuss
             viewQuestion(index) {   
                 this.hal        = index 

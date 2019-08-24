@@ -69,7 +69,7 @@
                             <span style="color:#757575"><b>Nilai Salah : <span style="color:red">{{detQuest.incorrect_score}}</span></b></span>    
                         </div>
                         <div v-else-if="scoringSystem==2" style="margin:0px 10px 0px 0px;font-size:16px;float:right">
-                            <span style="color:#757575"><b>Bobot Soal: <span style="color:#8BC34A">{{detQuest.weight}}</span></b></span>
+                            <span style="color:#757575"><b>Bobot Soal: <span style="color:#8BC34A">{{detQuest.weight.toFixed(2)}}</span></b></span>
                         </div>
                         <div class="clear"></div>
                     </v-card>
@@ -291,7 +291,7 @@
                 .then(response => {
                     this.loadSubmit = false
                     console.log(response.data)
-                    this.$router.push({name: 'exam_result', params:{id: this.attemptId, data: response.data.data, act:0}})
+                    this.$router.push({name: 'exam_result', params:{id: this.attemptId, data: response.data.data, IdCereout: this.cereoutId, act:0}})
                 })
                 .catch(error => {
                     console.log(error.response)
