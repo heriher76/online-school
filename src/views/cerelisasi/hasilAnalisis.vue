@@ -62,7 +62,7 @@
                               </v-toolbar>
                               <v-card>
                                 <v-card-text>
-                                  <div class="display-1" style="text-align:center">#{{ this.hasilAnalisis.national_ranks.my_rank }} / #{{ this.hasilAnalisis.national_ranks.other_ranks.length }}</div>
+                                  <div class="display-1" style="text-align:center">#{{ this.hasilAnalisis.national_ranks.my_rank }} / #{{ this.hasilAnalisis.national_ranks.other_ranks.slice(-1)[0].rank }}</div>
                                 </v-card-text>
                                 <v-card-actions class="justify-center">
                                   <v-btn block flat @click="ranking_nasional=true">Lihat Detail</v-btn>
