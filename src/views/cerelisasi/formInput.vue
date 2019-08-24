@@ -31,7 +31,7 @@
 								      v-model="name"
 								      :counter="25"
 								      :rules="nameRules"
-								      label="Name"
+								      label="Nama"
 								      required
 								    ></v-text-field>
 
@@ -73,7 +73,7 @@
 								      item-text="name"
 								      label="Batas Semester"
 								      required
-								      @change="selected1 = true"
+								      @change="changeSemester"
 								    ></v-select>
 
 									<label>Pilihan Pertama</label>
@@ -165,16 +165,18 @@
 
 									<div v-if="semester != '' && tipe == 1">
 									<label>Nilai Per Semester</label>
-								    <v-text-field
-								    	v-for="(i) in 6"
-								    	v-model="nilai_semester[i-1]"
-								     	:counter="3"
-								     	:rules="nilaiRules"
-								     	:label="'Semester '+i"
-								     	required
-								     	@change="inputNilaiSem(i)"
-								    ></v-text-field>
-								    </div>
+									    <div v-for="(i) in 6">
+									    <v-text-field
+									        v-if="sem[i-1].value"
+									    	v-model="nilai_semester[i-1]"
+									     	:counter="3"
+									     	:rules="nilaiRules"
+									     	:label="'Semester '+i"
+									     	required
+									     	@change="inputNilaiSem(i)"
+									    ></v-text-field>
+									    </div>
+									</div>
 
 									<label>Skor TPS</label>
 								    <v-text-field
@@ -272,6 +274,9 @@
       select3: null,
       selected3: false,
       dataAnalysis: null,
+      sem: [
+      	{value: false},{value: false},{value: false},{value: false},{value: false},{value: false}
+      ],
       points: [],
       departments: [],
       listLesson: [],
@@ -468,12 +473,22 @@
     	},
     },
 	methods: {
+	  changeSemester() {
+	  	for (var j = 0; j < this.semester; j++) {
+	  		this.sem[j].value = true;
+	  	}
+	  	for (var k = this.semester; k < 6; k++) {
+	  		this.sem[k].value = false;
+	  		this.nilai_semester[k] = null;
+	  	}
+	  	console.log(this.semester);
+	  },
 	  inputTka (index) {
 	  	let test = this.tka
 	  	console.log(test[0])
 	  },
 	  inputNilaiSem (i) {
-	  	console.log(i)
+	  	console.log(this.sem)
 	  	console.log(this.nilai_semester)
 	  	let tests = this.nilai_semester
 	  	console.log(tests[0])
@@ -482,7 +497,12 @@
         if (this.$refs.form.validate()) {
 			this.snackbar = true
 			this.btn_load = true
-			this.points = this.tka
+
+			this.nilai_semester = this.nilai_semester.filter(function(e){return e}); 
+			
+			this.points = this.tka.concat(this.nilai_semester, this.tps1, this.tps2, this.tps3, this.tps4)
+
+			console.log(this.points)
 
 			this.departments.push(this.option1_department_name)
 			this.departments.push(this.option2_department_name)
