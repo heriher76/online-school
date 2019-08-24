@@ -91,7 +91,7 @@ export default {
               this.dialogRunning = true
               this.data = response.data.data
 
-              // console.log(this.data)
+              console.log('tryout run',this.data)
 
               //tambah kondisi waktu berakhir
             }

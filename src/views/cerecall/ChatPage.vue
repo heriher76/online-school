@@ -28,13 +28,17 @@
                                     <b style="font-size:18px;">{{teacherInfo.teacher_name}}</b><br>
                                     <span>{{chatRunning.lesson}}</span><br>
                                     <span class="hidden-md-and-up">
-                                        <b>Durasi:</b>&nbsp;<span v-if="time<0">0 Waktu habis</span><span v-else>{{time}} Menit lagi</span>
+                                        <b>Durasi:</b>&nbsp;<span v-if="time<0">0 Waktu habis</span>
+                                        <!-- <span v-else>{{time}} Menit lagi</span> -->
+                                        <span v-else> {{jam}} Jam {{menit}} Menit lagi</span>
                                     </span>
                                 </div>
 
                                 <div style="float:right;">
                                     <span class="hidden-sm-and-down">
-                                        <b>Durasi Cerecall:</b>&nbsp;<span v-if="time<0">0 Waktu habis</span><span v-else>{{time}} Menit lagi</span>
+                                        <b>Durasi Cerecall:</b>&nbsp;<span v-if="time<0">Waktu habis</span>
+                                        <!-- <span v-else>{{time}} Menit lagi</span> -->
+                                        <span v-else> {{jam}} Jam {{menit}} Menit lagi</span>
                                     </span>
                                     <v-tooltip bottom>
                                         <template v-slot:activator="{ on }">  
@@ -227,6 +231,8 @@
 
         data () {
             return {    
+                jam: null,
+                menit: null,
                 diff: null,
                 time: null,   
                 interval: null,
@@ -419,6 +425,9 @@
                         var diff = a.diff(b, 'minutes')
 
                         this.time = cerecallTime-diff
+
+                        this.jam = Math.floor(this.time / 60);
+                        this.menit = this.time % 60;
 
                         if(diff > cerecallTime){
                             clearInterval(this.interval)
