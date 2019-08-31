@@ -44,6 +44,16 @@
  
 								    <!-- Kelas -->
 								    <v-select
+								      v-model="tipe"
+								      :items="item_tipe"
+								      item-value="value"
+								      item-text="name"
+								      label="Kategori"
+								      required
+								      @change="selected1 = true"
+								    ></v-select>
+
+								    <v-select
 								      v-model="kelas"
 								      :items="item_kelas"
 								      item-value="name"
@@ -54,15 +64,6 @@
 								      @change="selected1 = true"
 								    ></v-select>
 
-								    <v-select
-								      v-model="tipe"
-								      :items="item_tipe"
-								      item-value="value"
-								      item-text="name"
-								      label="Tipe Jalur"
-								      required
-								      @change="selected1 = true"
-								    ></v-select>
 										<div>{{select}}</div>
 
 									<v-select
@@ -75,93 +76,6 @@
 								      required
 								      @change="changeSemester"
 								    ></v-select>
-
-									<label>Pilihan Pertama</label>
-									<!-- Pilihan Pertama -->
-									<v-layout row wrap>
-										<v-flex md6 sm12 xs12>
-										    <v-select
-										      v-model="option1_university_name"
-										      :items="listUniversity"
-										      item-value="name"
-										      item-text="name"
-										      :rules="[v => !!v || 'Item is required']"
-										      label="Perguruan Tinggi"
-										      required
-										      @change="selected2 = true"
-										    ></v-select>
-										</v-flex>
-									    <v-flex md6 sm12 xs12>
-											<v-select
-										      v-model="option1_department_name"
-										      :items="departmentUniversity1"
-										      item-value="id"
-										      item-text="name"
-										      :rules="[v => !!v || 'Item is required']"
-										      label="Jurusan"
-										      required
-										      @change="selected2 = true"
-										    ></v-select>
-										</v-flex>
-									</v-layout>
-
-									<label>Pilihan Kedua</label>
-									<!-- Pilihan Kedua -->
-								    <v-layout row wrap>
-										<v-flex md6 sm12 xs12>
-										    <v-select
-										      v-model="option2_university_name"
-										      :items="listUniversity"
-										      item-value="name"
-										      item-text="name"
-										      :rules="[v => !!v || 'Item is required']"
-										      label="Perguruan Tinggi"
-										      required
-										      @change="selected2 = true"
-										    ></v-select>
-										</v-flex>
-									    <v-flex md6 sm12 xs12>
-											<v-select
-										      v-model="option2_department_name"
-										      :items="departmentUniversity2"
-										      item-value="id"
-										      item-text="name"
-										      :rules="[v => !!v || 'Item is required']"
-										      label="Jurusan"
-										      required
-										      @change="selected2 = true"
-										    ></v-select>
-										</v-flex>
-									</v-layout>
-
-									<label>Pilihan Ketiga</label>
-								    <!-- Pilihan Ketiga -->
-								    <v-layout row wrap>
-										<v-flex md6 sm12 xs12>
-										    <v-select
-										      v-model="option3_university_name"
-										      :items="listUniversity"
-										      item-value="name"
-										      item-text="name"
-										      :rules="[v => !!v || 'Item is required']"
-										      label="Perguruan Tinggi"
-										      required
-										      @change="selected2 = true"
-										    ></v-select>
-										</v-flex>
-									    <v-flex md6 sm12 xs12>
-											<v-select
-										      v-model="option3_department_name"
-										      :items="departmentUniversity3"
-										      item-value="id"
-										      item-text="name"
-										      :rules="[v => !!v || 'Item is required']"
-										      label="Jurusan"
-										      required
-										      @change="selected2 = true"
-										    ></v-select>
-										</v-flex>
-									</v-layout>
 
 									<div v-if="semester != '' && tipe == 1">
 									<label>Nilai Per Semester</label>
@@ -178,6 +92,7 @@
 									    </div>
 									</div>
 
+									<div v-if="tipe == 0 && tipe != ''">
 									<label>Skor TPS</label>
 								    <v-text-field
 								     	v-model="tps1"
@@ -207,7 +122,9 @@
 								     	label="Pengetahuan Kuantitatif"
 								     	required
 								    ></v-text-field>
+									</div>
 
+								    <div v-if="tipe == 0 && tipe != ''">
 								    <label>Skor TKA</label>
 								    <v-text-field
 								    	v-for="(lesson,index) in listLesson"
@@ -218,6 +135,47 @@
 								     	required
 								     	@change="inputTka(index)"
 								    ></v-text-field>
+								    </div>
+
+									<center>
+									    <v-btn
+									      color="white"
+						      			  @click="handleTambahJurusan();"
+									    >
+									      Tambah Jurusan
+									    </v-btn>
+									</center>
+
+									<div v-for="(jur, index) in totalJurusan">
+								    <label>Pilihan {{index+1}}</label>
+									<!-- Pilihan Pertama -->
+									<v-layout row wrap>
+										<v-flex md6 sm12 xs12>
+										    <v-select
+										      v-model="universities_name[index]"
+										      :items="listUniversity"
+										      item-value="name"
+										      item-text="name"
+										      :rules="[v => !!v || 'Item is required']"
+										      label="Perguruan Tinggi"
+										      required
+										      @change="changeIndexUniv(index);"
+										    ></v-select>
+										</v-flex>
+									    <v-flex md6 sm12 xs12>
+											<v-select
+										      v-model="departments_name[index]"
+										      :items="departmentUniversity[index]"
+										      item-value="id"
+										      item-text="name"
+										      :rules="[v => !!v || 'Item is required']"
+										      label="Jurusan"
+										      required
+										      @change="selected2 = true"
+										    ></v-select>
+										</v-flex>
+									</v-layout>
+									</div>
 
 									<v-layout justify-end ma-4>
 									    <v-btn
@@ -242,6 +200,7 @@
 	import sideBar from '../../components/cerelisasi-component/sideBar'
   	import LoadingScreen2 from'../../components/loading-screen/Loading2'
   	import axios from 'axios'
+  	import Swal from 'sweetalert2'
 
   	export default {
 	components: {
@@ -278,7 +237,10 @@
       	{value: false},{value: false},{value: false},{value: false},{value: false},{value: false}
       ],
       points: [],
+      universities: [],
       departments: [],
+      totalJurusan: 0,
+      idUniv: 0,
       listLesson: [],
       tps1: '',
       tps2: '',
@@ -294,15 +256,9 @@
       kelas: '',
       item_kelas: [],
       listUniversity: [],
-      departmentUniversity1: '',
-	  departmentUniversity2: '',
-	  departmentUniversity3: '',
-	  option1_department_name: '',
-	  option2_department_name: '',
-	  option3_department_name: '',
-	  option1_university_name: '',
-	  option2_university_name: '',
-	  option3_university_name: '',
+      departmentUniversity: [],
+	  departments_name: [],
+	  universities_name: [],
 	  semester: '',
 	  list_semester: [
 	  	{value: 1, name: 1},
@@ -343,47 +299,7 @@
         .then(response => {
             console.log(response)
             this.name= response.data.data.name;
-            (response.data.data.class) ? this.kelas = response.data.data.class.name_class : this.kelas = '';
-            if(response.data.data.option1) {
-            	this.option1_university_name = response.data.data.option1.university_name
-            	this.option1_department_name = response.data.data.option1.department_id
-            	this.listUniversity.map((univ) => {
-            	    if (univ.name == this.option1_university_name) {
-            	        this.departmentUniversity1 = univ.department
-            	    }
-            	})	
-            }else{
-            	this.option1_university_name = ''
-            	this.option1_department_name = ''
-            }
-
-            if(response.data.data.option2) {
-            	this.option2_university_name = response.data.data.option2.university_name
-            	this.option2_department_name = response.data.data.option2.department_id
-
-            	this.listUniversity.map((univ) => {
-            	    if (univ.name == this.option2_university_name) {
-            	        this.departmentUniversity2 = univ.department
-            	    }
-            	})	
-            }else{
-            	this.option2_university_name = ''
-            	this.option2_department_name = ''
-        	}
-
-        	if(response.data.data.option3) {
-            	this.option3_university_name = response.data.data.option3.university_name
-            	this.option3_department_name = response.data.data.option3.department_id
-
-            	this.listUniversity.map((univ) => {
-            	    if (univ.name == this.option3_university_name) {
-            	        this.departmentUniversity3 = univ.department
-            	    }
-            	})	
-            }else{
-            	this.option3_university_name = ''
-            	this.option3_department_name = ''
-        	}
+            // (response.data.data.class) ? this.kelas = 
 
         })
         .catch(error => {
@@ -428,51 +344,48 @@
     	      if (univ.name == this.option1_university_name) {
     	          this.departmentUniversity1 = univ.department
     	      }
-
-    	      if (univ.name == this.option2_university_name) {
-    	          this.departmentUniversity2 = univ.department
-    	      }
-
-    	      if (univ.name == this.option3_university_name) {
-    	          this.departmentUniversity3 = univ.department
-    	      }
     	  })
     	},
-    	option1_university_name (university1) {
-    	  this.option1_university_name = university1
+    	universities_name (university1) {
+    	  this.universities_name = university1
+    	  console.log(this.universities_name);
     	  this.listUniversity.map((univ) => {
-    	      if (univ.name == this.option1_university_name) {
-    	          this.departmentUniversity1 = univ.department
+    	      if (univ.name == this.universities_name[this.idUniv]) {
+    	          this.departmentUniversity[this.idUniv] = univ.department
+    	          console.log(this.idUniv)
+    	          console.log(this.departmentUniversity[this.idUniv])
     	      }
     	  })
     	},
-    	option2_university_name (university2) {
-    	  this.option2_university_name = university2
-    	  this.listUniversity.map((univ) => {
-    	      if (univ.name == this.option2_university_name) {
-    	          this.departmentUniversity2 = univ.department
-    	      }
-    	  })
-    	},
-    	option3_university_name (university3) {
-    	  this.option3_university_name = university3
-    	  this.listUniversity.map((univ) => {
-    	      if (univ.name == this.option3_university_name) {
-    	          this.departmentUniversity3 = univ.department
-    	      }
-    	  })
-    	},
-    	option1_department_name (department1) {
-    	  this.option1_department_name = department1
-    	},
-    	option2_department_name (department2) {
-    	  this.option2_department_name = department2
-    	},
-    	option3_department_name (department3) {
-    	  this.option3_department_name = department3
+    	departments_name (department1) {
+    	  this.departments_name = department1
+    	  console.log(this.departments_name)
     	},
     },
 	methods: {
+	  changeIndexUniv(index) {
+	  	console.log(index)
+	  	this.idUniv = index
+	  },
+	  handleTambahJurusan() {
+	  	if (this.totalJurusan == 3) {
+	  		Swal.fire({
+	  		  title: 'Apakah ingin melanjutkan?',
+	  		  text: "Analisis lebih dari 3 jurusan akan dikenakan pemotongan saldo extra",
+	  		  type: 'warning',
+	  		  showCancelButton: true,
+	  		  confirmButtonColor: '#3085d6',
+	  		  cancelButtonColor: '#d33',
+	  		  confirmButtonText: 'Ya'
+	  		}).then((result) => {
+	  		  if (result.value) {
+	  			this.totalJurusan += 1;
+	  		  }
+	  		})
+	  	}else{
+	  		this.totalJurusan += 1;
+	  	}
+	  },
 	  changeSemester() {
 	  	for (var j = 0; j < this.semester; j++) {
 	  		this.sem[j].value = true;
@@ -507,30 +420,30 @@
 			this.departments.push(this.option1_department_name)
 			this.departments.push(this.option2_department_name)
 			this.departments.push(this.option3_department_name)
-			
+			console.log(this.departments)
 			axios.defaults.headers = {
 			    'Authorization': 'Bearer ' + this.$store.state.token
 			}
-			axios.post('/cerelisasi/analysis', {
-				points: this.points,
-				departments: this.departments,
-				type: this.tipe
-			})
-			.then(response => {
-			  this.btn_load = false
-			  this.dataAnalysis = response.data.data
-			  this.departments = []
-			  this.point = []
-			  this.$swal('Sukses', 'Berhasil Menganalisis Nilai!', 'success')
-			  this.$router.push({ name:'cerelisasi_analisis', params: { data: this.dataAnalysis, name: this.name } })
-			})
-			.catch(error => {
-			  this.btn_load = false
-			  this.departments = []
-			  this.point = []
-			  this.$swal('Oops', 'Gagal Menganalisis Nilai!', 'warning')
-			  console.log(error)
-			})
+			// axios.post('/cerelisasi/analysis', {
+			// 	points: this.points,
+			// 	departments: this.departments,
+			// 	type: this.tipe
+			// })
+			// .then(response => {
+			//   this.btn_load = false
+			//   this.dataAnalysis = response.data.data
+			//   this.departments = []
+			//   this.point = []
+			//   this.$swal('Sukses', 'Berhasil Menganalisis Nilai!', 'success')
+			//   this.$router.push({ name:'cerelisasi_analisis', params: { data: this.dataAnalysis, name: this.name } })
+			// })
+			// .catch(error => {
+			//   this.btn_load = false
+			//   this.departments = []
+			//   this.point = []
+			//   this.$swal('Oops', 'Gagal Menganalisis Nilai!', 'warning')
+			//   console.log(error)
+			// })
         }
       },
 	}
