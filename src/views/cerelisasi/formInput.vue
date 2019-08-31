@@ -92,7 +92,7 @@
 									    </div>
 									</div>
 
-									<div v-if="tipe == 0 && tipe != ''">
+									<div v-if="tipe === 0">
 									<label>Skor TPS</label>
 								    <v-text-field
 								     	v-model="tps1"
@@ -124,7 +124,7 @@
 								    ></v-text-field>
 									</div>
 
-								    <div v-if="tipe == 0 && tipe != ''">
+								    <div v-if="tipe === 0 && kelas !== ''">
 								    <label>Skor TKA</label>
 								    <v-text-field
 								    	v-for="(lesson,index) in listLesson"
@@ -179,7 +179,7 @@
 
 									<v-layout justify-end ma-4>
 									    <v-btn
-									      :disabled="!valid"
+									      :disabled="departments_name.length == 0"
 									      :loading="btn_load"
 									      color="success"
 						      			  @click="validate"
@@ -417,33 +417,29 @@
 
 			console.log(this.points)
 
-			this.departments.push(this.option1_department_name)
-			this.departments.push(this.option2_department_name)
-			this.departments.push(this.option3_department_name)
-			console.log(this.departments)
 			axios.defaults.headers = {
 			    'Authorization': 'Bearer ' + this.$store.state.token
 			}
-			// axios.post('/cerelisasi/analysis', {
-			// 	points: this.points,
-			// 	departments: this.departments,
-			// 	type: this.tipe
-			// })
-			// .then(response => {
-			//   this.btn_load = false
-			//   this.dataAnalysis = response.data.data
-			//   this.departments = []
-			//   this.point = []
-			//   this.$swal('Sukses', 'Berhasil Menganalisis Nilai!', 'success')
-			//   this.$router.push({ name:'cerelisasi_analisis', params: { data: this.dataAnalysis, name: this.name } })
-			// })
-			// .catch(error => {
-			//   this.btn_load = false
-			//   this.departments = []
-			//   this.point = []
-			//   this.$swal('Oops', 'Gagal Menganalisis Nilai!', 'warning')
-			//   console.log(error)
-			// })
+			axios.post('/cerelisasi/analysis', {
+				points: this.points,
+				departments: this.departments_name,
+				type: this.tipe
+			})
+			.then(response => {
+			  this.btn_load = false
+			  this.dataAnalysis = response.data.data
+			  this.departments = []
+			  this.point = []
+			  this.$swal('Sukses', 'Berhasil Menganalisis Nilai!', 'success')
+			  this.$router.push({ name:'cerelisasi_analisis', params: { data: this.dataAnalysis, name: this.name } })
+			})
+			.catch(error => {
+			  this.btn_load = false
+			  this.departments = []
+			  this.point = []
+			  this.$swal('Oops', 'Gagal Menganalisis Nilai!', 'warning')
+			  console.log(error)
+			})
         }
       },
 	}
