@@ -79,14 +79,14 @@
 
 									<div v-if="semester !== '' && tipe ===	 1">
 									<br>
-										<div v-for="(i) in 6">
-											<label v-if="sem[i-1].value">Semester {{i}}</label>
+										<div v-for="(nilai, i) in 6">
+											<label v-if="sem[i].value">Semester {{i+1}}</label>
 										    <div 
-										    	v-if="sem[i-1].value"
+										    	v-if="sem[i].value"
 										    	v-for="(item, index) in item_tipe[tipe].kelas[kelas].skor"
 										    	>
 											    <v-text-field
-											    	v-model="tka[index]"
+											    	v-model="nilai_semester[i][index]"
 											     	:counter="3"
 											     	:rules="nilaiRules"
 											     	:label="item.name"
@@ -100,28 +100,28 @@
 									<div v-if="tipe === 0 && kelas !== ''">
 									<label>Skor TPS</label>
 								    <v-text-field
-								     	v-model="tps1"
+								     	v-model="tps[0]"
 								     	:counter="3"
 								     	:rules="nilaiRules"
 								     	label="Penalaran Umum"
 								     	required
 								    ></v-text-field>
 								    <v-text-field
-								     	v-model="tps2"
+								     	v-model="tps[1]"
 								     	:counter="3"
 								     	:rules="nilaiRules"
 								     	label="Pengetahuan Baca dan Tulis"
 								     	required
 								    ></v-text-field>
 								    <v-text-field
-								     	v-model="tps3"
+								     	v-model="tps[2]"
 								     	:counter="3"
 								     	:rules="nilaiRules"
 								     	label="Pengetahuan dan Pemahaman Umum"
 								     	required
 								    ></v-text-field>
 								    <v-text-field
-								     	v-model="tps4"
+								     	v-model="tps[3]"
 								     	:counter="3"
 								     	:rules="nilaiRules"
 								     	label="Pengetahuan Kuantitatif"
@@ -217,19 +217,19 @@
       loadAnalisis: true,
       name: '',
       nameRules: [
-        v => !!v || 'Name is required',
+        v => !!v || 'Isi Nama Terlebih Dahulu',
         v => (v && v.length <= 25) || 'Name must be less than 25 characters'
       ],
       email: '',
       emailRules: [
-        v => !!v || 'E-mail is required',
+        v => !!v || 'Isi E-mail Terlebih Dahulu',
         v => /.+@.+/.test(v) || 'E-mail must be valid'
       ],
       nilai: null,
       nilaiRules: [
-        v => !!v || 'Nilai UTBK is required',
-        v => (v && v.length <= 3) || 'Nilai UTBK must be less than 3 characters',
-        v => (v && v.length <= 3 && !isNaN(v)) || 'Nilai UTBK must be a number',
+        v => !!v || 'Isi Nilai Terlebih Dahulu',
+        v => (v && v.length <= 3) || 'Isi Nilai Kurang Dari 3 Karakter',
+        v => (v && v.length <= 3 && !isNaN(v)) || 'Isi Nilai Dengan Angka',
       ],
       select: null,
       selected1: false,
@@ -251,8 +251,9 @@
       tps2: '',
       tps3: '',
       tps4: '',
+      tps: [],
       tka: [],
-      nilai_semester: [],
+      nilai_semester: [[],[],[],[],[],[]],
       tipe: '',
       item_tipe: [
       	{
@@ -432,10 +433,13 @@
 	  	this.semester = '';
 	  	this.points = [];
 	  	this.tka = [];
+	  	this.nilai_semester = [[],[],[],[],[],[]];
 	  },
 	  handleChangeKelas() {
 	  	this.points = [];
 	  	this.tka = [];
+	  	this.tps = [];
+	  	this.nilai_semester = [[],[],[],[],[],[]];
 	  },
 	  changeIndexUniv(index) {
 	  	console.log(index)
@@ -461,35 +465,38 @@
 	  	}
 	  },
 	  changeSemester() {
+	  	this.nilai_semester = [[],[],[],[],[],[]];
+	  	
 	  	for (var j = 0; j < this.semester; j++) {
 	  		this.sem[j].value = true;
 	  	}
 	  	for (var k = this.semester; k < 6; k++) {
 	  		this.sem[k].value = false;
-	  		this.nilai_semester[k] = null;
+	  		this.nilai_semester[k] = [];
 	  	}
-	  	console.log(this.semester);
 	  },
 	  inputTka (index) {
 	  	let test = this.tka
-	  	console.log(test)
 	  },
 	  inputNilaiSem (i) {
-	  	console.log(this.sem)
-	  	console.log(this.nilai_semester)
 	  	let tests = this.nilai_semester
-	  	console.log(tests[0])
 	  },
       validate () {
         if (this.$refs.form.validate()) {
 			this.snackbar = true
 			this.btn_load = true
 
-			this.nilai_semester = this.nilai_semester.filter(function(e){return e}); 
-			
-			this.points = this.tka.concat(this.nilai_semester, this.tps1, this.tps2, this.tps3, this.tps4)
+			if (this.tipe === 0) {
+				this.points = this.tka.concat(this.tps)
+			}else {
+				this.nilai_semester = this.nilai_semester.filter(function(e){return e}); 
 
-			console.log(this.points)
+				for (var i = 0; i < this.nilai_semester.length; i++) {
+					for (var j = 0; j < this.nilai_semester[i].length; j++) {
+						this.points = this.points.concat(this.nilai_semester[i][j])
+					}
+				}
+			}console.log(this.points)
 
 			axios.defaults.headers = {
 			    'Authorization': 'Bearer ' + this.$store.state.token
