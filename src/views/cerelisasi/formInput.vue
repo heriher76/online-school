@@ -50,18 +50,18 @@
 								      item-text="name"
 								      label="Kategori"
 								      required
-								      @change="selected1 = true"
+								      @change="handleChangeTipe();"
 								    ></v-select>
 
 								    <v-select
+								      v-if="tipe !== ''"
 								      v-model="kelas"
-								      :items="item_kelas"
-								      item-value="name"
+								      :items="item_tipe[tipe].kelas"
+								      item-value="no"
 								      item-text="name"
-								      :rules="[v => !!v || 'Item is required']"
 								      label="Kelas"
 								      required
-								      @change="selected1 = true"
+								      @change="handleChangeKelas();"
 								    ></v-select>
 
 										<div>{{select}}</div>
@@ -72,27 +72,32 @@
 								      :items="list_semester"
 								      item-value="value"
 								      item-text="name"
-								      label="Batas Semester"
+								      label="Maksimal Semester"
 								      required
-								      @change="changeSemester"
+								      @change="changeSemester();"
 								    ></v-select>
 
-									<div v-if="semester != '' && tipe == 1">
-									<label>Nilai Per Semester</label>
-									    <div v-for="(i) in 6">
-									    <v-text-field
-									        v-if="sem[i-1].value"
-									    	v-model="nilai_semester[i-1]"
-									     	:counter="3"
-									     	:rules="nilaiRules"
-									     	:label="'Semester '+i"
-									     	required
-									     	@change="inputNilaiSem(i)"
-									    ></v-text-field>
-									    </div>
+									<div v-if="semester !== '' && tipe ===	 1">
+									<br>
+										<div v-for="(i) in 6">
+											<label v-if="sem[i-1].value">Semester {{i}}</label>
+										    <div 
+										    	v-if="sem[i-1].value"
+										    	v-for="(item, index) in item_tipe[tipe].kelas[kelas].skor"
+										    	>
+											    <v-text-field
+											    	v-model="tka[index]"
+											     	:counter="3"
+											     	:rules="nilaiRules"
+											     	:label="item.name"
+											     	required
+											     	@change="inputNilaiSem(i)"
+											    ></v-text-field>
+										    </div>
+										</div>
 									</div>
 
-									<div v-if="tipe === 0">
+									<div v-if="tipe === 0 && kelas !== ''">
 									<label>Skor TPS</label>
 								    <v-text-field
 								     	v-model="tps1"
@@ -127,7 +132,7 @@
 								    <div v-if="tipe === 0 && kelas !== ''">
 								    <label>Skor TKA</label>
 								    <v-text-field
-								    	v-for="(lesson,index) in listLesson"
+								    	v-for="(lesson,index) in item_tipe[tipe].kelas[kelas].skor"
 								    	v-model="tka[index]"
 								     	:counter="3"
 								     	:rules="nilaiRules"
@@ -250,8 +255,67 @@
       nilai_semester: [],
       tipe: '',
       item_tipe: [
-      	{value: 0, name: 'SBMPTN'},
-      	{value: 1, name: 'SNMPTN'}
+      	{
+      		value: 0, 
+      		name: 'SBMPTN', 
+      		kelas: [
+      			{no: 0, name: 'Saintek', skor: [
+      					{name: 'Matematika SAINTEK'},
+      					{name: 'Fisika'},
+      					{name: 'Kimia'},
+      					{name: 'Biologi'},
+      				]
+      			}, 
+      			{no: 1, name: 'Soshum', skor: [
+      					{name: 'Matematika SOSHUM'},
+      					{name: 'Geografi'},
+      					{name: 'Sejarah'},
+      					{name: 'Sosiologi'},
+      					{name: 'Ekonomi'}
+      				]
+      			}
+      		]
+      	},
+      	{
+      		value: 1, 
+      		name: 'SNMPTN', 
+      		kelas: [
+      			{no: 0, name: 'IPA', skor: [
+      					{name: 'Matematika IPA'},
+      					{name: 'Fisika'},
+      					{name: 'Kimia'},
+      					{name: 'Biologi'},
+      					{name: 'Bahasa Inggris'},
+      					{name: 'Bahasa Indonesia'}
+      				]
+      			}, 
+      			{no: 1, name: 'IPS', skor: [
+      					{name: 'Matematika IPS'},
+      					{name: 'Geografi'},
+      					{name: 'Sosiologi'},
+      					{name: 'Ekonomi'},
+      					{name: 'Bahasa Inggris'},
+      					{name: 'Bahasa Indonesia'}
+      				]
+      			}, 
+      			{no: 2, name: 'Bahasa', skor: [
+      					{name: 'Matematika'},
+      					{name: 'Sastra Indonesia'},
+      					{name: 'Antropologi'},
+      					{name: 'Bahasa Asing'},
+      					{name: 'Bahasa Inggris'},
+      					{name: 'Bahasa Indonesia'}
+      				]
+      			}, 
+      			{no: 3, name: 'SMK', skor: [
+      					{name: 'Matematika'},
+      					{name: 'Rata-rata Kompetensi'},
+      					{name: 'Bahasa Inggris'},
+      					{name: 'Bahasa Indonesia'}
+      				]
+      			}
+      		]
+      	}
       ],
       kelas: '',
       item_kelas: [],
@@ -272,14 +336,14 @@
     }),
     created() {
     	//get list Kelas
-        axios.get('/master/class')
-        .then(response => {
-            console.log(response.data.data)
-            this.item_kelas= response.data.data
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        // axios.get('/master/class')
+        // .then(response => {
+        //     console.log(response.data.data)
+        //     this.item_kelas= response.data.data
+        // })
+        // .catch(error => {
+        //     console.log(error)
+        // })
 
         //get list University
         axios.get('/master/getAllDataUniversity')
@@ -363,6 +427,16 @@
     	},
     },
 	methods: {
+	  handleChangeTipe() {
+	  	this.kelas = '';
+	  	this.semester = '';
+	  	this.points = [];
+	  	this.tka = [];
+	  },
+	  handleChangeKelas() {
+	  	this.points = [];
+	  	this.tka = [];
+	  },
 	  changeIndexUniv(index) {
 	  	console.log(index)
 	  	this.idUniv = index
@@ -398,7 +472,7 @@
 	  },
 	  inputTka (index) {
 	  	let test = this.tka
-	  	console.log(test[0])
+	  	console.log(test)
 	  },
 	  inputNilaiSem (i) {
 	  	console.log(this.sem)
