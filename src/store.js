@@ -5,7 +5,7 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-axios.defaults.baseURL = 'https://api.ceredinas.id/api';
+axios.defaults.baseURL = 'https://base.cerebrums.net/api';
 
 export default new Vuex.Store({
   state: {

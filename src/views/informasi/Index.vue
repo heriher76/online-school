@@ -6,7 +6,7 @@
                         <v-layout row wrap>
                             <v-flex md12 sm12 xs12>
                                 <v-card style="padding:10px 20px;" color="#B71C1C" dark>
-                                    <h6 class="title">INFO CEREBRUM</h6>
+                                    <h6 class="title">INFO CEREOS</h6>
                                 </v-card>
                             </v-flex>
                             <v-flex md12 sm12 xs12>

@@ -71,27 +71,27 @@
         <div style="margin-top:-30px; margin-left:50px; width:350px;height:350px;float:right">    
           <img :src="require('../assets/images/cerebrum.png')" width="100%" height="100%">
         </div>
-        <p>Cerebrum adalah super apps edukasi yang bertujuan untuk meningkatkan kualitas dan pemerataan pendidikan di Indonesia. Untuk saat ini Cerebrum telah membuat 6 produk yaitu:</p>
+        <p>Cereos adalah super apps edukasi yang bertujuan untuk meningkatkan kualitas dan pemerataan pendidikan di Indonesia. Untuk saat ini Cereos telah membuat 6 produk yaitu:</p>
         
-        <b>Cerevid - Cerebrum Video</b>
+        <b>Cerevid - Cereos Video</b>
         <p>Cerevid adalah platform video pembelajaran untuk siswa SD, SMP, dan SMA. Di cerevid video ditambahkan animasi untuk membuat siswa lebih memahami materi. Tidak hanya itu, di cerevid terdapat rangkuman materi yang di design menarik dan juga mini quiz untuk mencek sebarapa paham siswa dengan materi yang telah disampaikan.</p>
         
-        <b>Cereout - Cerebrum TryOut</b>
+        <b>Cereout - Cereos TryOut</b>
         <p>Cereout adalah platform untuk simulasi ujian berbasis komputer. Di cereout hasil analisis sangat lengkap sehingga diharapkan siswa dapat mengetahui telah sampai mana pencapaian belajarnya. Tidak hanya itu di cereout juga siswa dapat membandingkan nilai dengan peserta lain yang diharapkan dapat menyusun strategi untuk memilih PTN.</p>
         
-        <b>Cerelisasi - Cerebrum Rasionalisasi</b>
+        <b>Cerelisasi - Cereos Rasionalisasi</b>
         <p>Cerelisasi adalah platform online untuk merasionalkan nilai raport untuk SNMPTN dan merasionalkan nilai UTBK untuk SBMPTN. Di cerelisasi siswa dapat mengetahui seberapa ketat pertarungan di suatu jurusan dan peluang siswa masuk ke jurusan tersebut. Cerelisas menggunakan AI dan machine learning untuk memprediksi peluang terbesar supaya siswa dapat tembus PTN yang diinginkan.</p>
         
-        <b>Cerecall - Cerebrum Consultation</b>
+        <b>Cerecall - Cereos Consultation</b>
         <p>Cerecall adalah platform untuk menayangkan soal yang siswa kurang pahami. Siswa akan mendapatkan pembahasan berupa teks, sound, gambar, video ataupun secara live streaming dari jutaan guru di Indonesia.</p>
 
-        <b>Cerejur – Cerebrum Jurusan</b>
+        <b>Cerejur – Cereos Jurusan</b>
         <p>Cerejur adalah platform untuk mengetahui informasi tentang jurusan yang ada di seluruh Indonesia. Bersihkan video bagaimana mahasiswa belajar di jurusan tersebut hingga prospek kerja. Tidak hanya itu di cerejur juga terdapat informasi keketata jurusan yang akan diintegrasikan dengan cerelisasi untuk mengetahui peluang siswa masuk ke jurusan tersebut.</p>
  
-        <b>Cerefo - Cerebrum Info</b>
+        <b>Cerefo - Cereos Info</b>
         <p>Cerefo adalah platform utuk memperoleh informasi menarik seputar sains dan ilmu pengetahuan. Dikemas secara santai dan tidak membosankan. Tidak hanya berupa tulisan tetapi terdapat gambar dan video yang diharapkan siswa lebih tertarik untuk membaca artikel sains.</p>
 
-        <p>Tidak hanya 6 produk ini, kedepannya cerebrum akan terus mengembangkan aplikasi dan terus menambah produk yang bermanfaat. Diharapkan produk-produk dari Cerebrum dapat mewujudkan terciptanya Pemerataan dan peningkatan kualitas pendidikan di Indonesia.</p>          
+        <p>Tidak hanya 6 produk ini, kedepannya cereos akan terus mengembangkan aplikasi dan terus menambah produk yang bermanfaat. Diharapkan produk-produk dari Cereos dapat mewujudkan terciptanya Pemerataan dan peningkatan kualitas pendidikan di Indonesia.</p>          
 
       </div>
     </v-container>

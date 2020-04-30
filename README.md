@@ -1,4 +1,4 @@
-# cerebrum
+# cereos
 
 ## Project setup
 ```

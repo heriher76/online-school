@@ -198,7 +198,7 @@
 						</v-flex>
 					</v-layout>
 				</v-container>
-				<LoadingScreen2 :loading="loadAnalisis"></LoadingScreen2>
+				<!-- <LoadingScreen2 :loading="loadAnalisis"></LoadingScreen2> -->
 	</div>
 </template>
 <script>
